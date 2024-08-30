@@ -18,7 +18,13 @@ After cloning, you may wish to fetch and update the submodules:
 git fetch --recurse-submodules
 ```
 
-To fire up the local development server run the following command: 
+To fire up the local development server first install all the required dependencies
+
+```
+npm ci
+```
+
+Then run the following command: 
 
 ```
 yarn start
