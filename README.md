@@ -4,6 +4,8 @@ Proof of concept work for a developer hub using submodules from external repos t
 
 The developer hub website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
 
+![Preview](preview.png)
+
 ## Getting Started
 
 To clone the repository with the files in the submodules:
