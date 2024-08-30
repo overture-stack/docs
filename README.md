@@ -32,14 +32,12 @@ Then run the following command:
 yarn start
 ```
 
-Most changes are reflected live without having to restart the server.
-
 > [!IMPORTANT]  
 > Docusaurus requires node version 18 or higher
 
-# Managing Git Submodules
+## Managing Git Submodules
 
-## Fetching Latest Changes
+### Fetching Latest Changes
 
 To fetch the latest changes for all submodules:
 
@@ -47,7 +45,7 @@ To fetch the latest changes for all submodules:
 git fetch --recurse-submodules
 ```
 
-## Adding New Submodules
+### Adding New Submodules
 
 There are two ways to add new submodules:
 
@@ -61,7 +59,7 @@ git submodule add <GitHub repository URL> module_name
 > [!NOTE]  
 > You can also define a specific branch you would like to pull either from the command line or updating the .gitmodules with an `branch = branchName` entry
 
-## Pulling Latest Changes for All Submodules
+### Pulling Latest Changes for All Submodules
 
 To pull the latest changes for all submodules, including any new ones:
 
@@ -69,7 +67,7 @@ To pull the latest changes for all submodules, including any new ones:
 git submodule update --recursive --remote
 ```
 
-## Updating Submodule Repos Remotely
+### Updating Submodule Repos Remotely
 
 When working within a submodule:
 - `cd`ing into any submodule treats it as if you cloned the repo independently
