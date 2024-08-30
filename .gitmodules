@@ -1,6 +1,13 @@
-[submodule "docs/moduleA"]
-	path = docs/moduleA
-	url = https://github.com/MitchellShiell/moduleA.git
-[submodule "docs/moduleB"]
-	path = docs/moduleB
-	url = https://github.com/MitchellShiell/moduleB.git
+[submodule "song"]
+	path = song
+	url = https://github.com/overture-stack/score.git
+	branch = songDevDocs
+[submodule "score"]
+	path = score
+	url = https://github.com/overture-stack/score.git
+[submodule "Maestro"]
+	path = maestro
+	url = https://github.com/overture-stack/maestro.git
+[submodule "Arranger"]
+	path = arranger
+	url = https://github.com/overture-stack/arranger.git
