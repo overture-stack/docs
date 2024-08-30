@@ -26,6 +26,9 @@ yarn start
 
 Most changes are reflected live without having to restart the server.
 
+> [!IMPORTANT]  
+> Docusaurus requires node version 18 or higher
+
 # Using submodules
 
 ### Fetching Latest Changes
