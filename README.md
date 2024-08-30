@@ -37,9 +37,11 @@ Most changes are reflected live without having to restart the server.
 > [!IMPORTANT]  
 > Docusaurus requires node version 18 or higher
 
-# Using submodules
+Certainly! I'll clean up the text and organize it better. Here's an improved version:
 
-### Fetching Latest Changes
+# Managing Git Submodules
+
+## Fetching Latest Changes
 
 To fetch the latest changes for all submodules:
 
@@ -47,13 +49,21 @@ To fetch the latest changes for all submodules:
 git fetch --recurse-submodules
 ```
 
-### Adding New submodules
+## Adding New Submodules
 
-You can add new submodules by either updating the .gitmodules folder or running the following command:
+There are two ways to add new submodules:
+
+1. Update the `.gitmodules` file manually
+2. Run the following command:
 
 ```bash
-git submodule add <GitHub web URL> moduleB
+git submodule add <GitHub repository URL> module_name
 ```
+
+> [!NOTE]  
+> You can also define a specific branch you would like to pull either from the command line or updating the .gitmodules with an `branch = branchName` entry
+
+## Pulling Latest Changes for All Submodules
 
 To pull the latest changes for all submodules, including any new ones:
 
@@ -61,9 +71,12 @@ To pull the latest changes for all submodules, including any new ones:
 git submodule update --recursive --remote
 ```
 
-### Updating submodule repos remotely
+## Updating Submodule Repos Remotely
 
-By `cd`ing into any of the submodules you are effectively working within the submodule repo as you would if you cloned the repo independently, all git branching, adding, and pushing will push to the external repo. Conversly the root directory will be working within the root project, in this case the bridge repo.
+When working within a submodule:
+- `cd`ing into any submodule treats it as if you cloned the repo independently
+- Git operations like branching, adding, and pushing will push to the external repo
+- The root directory works within the root project (e.g., the bridge repo)
 
 # Docusaurus
 
