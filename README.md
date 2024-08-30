@@ -12,17 +12,19 @@ To clone the repository with the files in the submodules:
 git clone --recurse-submodules https://github.com/MitchellShiell/bridge.git
 ```
 
-After cloning, initialize and update the submodules:
+After cloning, you may wish to fetch and update the submodules:
 
 ```bash
-git submodule update --init --recursive
+git fetch --recurse-submodules
 ```
 
-Fire up the local development server. Most changes are reflected live without having to restart the server.
+To fire up the local development server run the following command: 
 
 ```
 yarn start
 ```
+
+Most changes are reflected live without having to restart the server.
 
 # Using submodules
 
