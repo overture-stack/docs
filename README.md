@@ -37,8 +37,6 @@ Most changes are reflected live without having to restart the server.
 > [!IMPORTANT]  
 > Docusaurus requires node version 18 or higher
 
-Certainly! I'll clean up the text and organize it better. Here's an improved version:
-
 # Managing Git Submodules
 
 ## Fetching Latest Changes
