@@ -75,19 +75,4 @@ When working within a submodule:
 - `cd`ing into any submodule treats it as if you cloned the repo independently
 - Git operations like branching, adding, and pushing will push to the external repo
 - The root directory works within the root project (e.g., the bridge repo)
-
-# Docusaurus
-
-### Installation
-
-```
-$ yarn
-```
-
-### Local Development
-
-```
-$ yarn start
-```
-
 This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
