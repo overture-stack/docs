@@ -4,7 +4,7 @@ Proof of concept work for a developer hub using submodules from external repos t
 
 The developer hub website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
 
-# Cloning the Repository
+## Getting Started
 
 To clone the repository with the files in the submodules:
 
@@ -18,7 +18,13 @@ After cloning, initialize and update the submodules:
 git submodule update --init --recursive
 ```
 
-This command initializes all submodules and clones them into your project.
+Fire up the local development server. Most changes are reflected live without having to restart the server.
+
+```
+yarn start
+```
+
+# Using submodules
 
 ### Fetching Latest Changes
 
@@ -41,6 +47,10 @@ To pull the latest changes for all submodules, including any new ones:
 ```bash
 git submodule update --recursive --remote
 ```
+
+### Updating submodule repos remotely
+
+By `cd`ing into any of the submodules you are effectively working within the submodule repo as you would if you cloned the repo independently, all git branching, adding, and pushing will push to the external repo. Conversly the root directory will be working within the root project, in this case the bridge repo.
 
 # Docusaurus
 
