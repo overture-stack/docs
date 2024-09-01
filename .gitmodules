@@ -7,6 +7,7 @@
 [submodule "submodules/score"]
 	path = submodules/score
 	url = https://github.com/overture-stack/score.git
+	branch = scoreDevDocUpdate
 [submodule "submodules/song"]
 	path = submodules/song
 	url = https://github.com/overture-stack/song.git

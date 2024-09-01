@@ -49,11 +49,18 @@ git fetch --recurse-submodules
 
 There are two ways to add new submodules:
 
-1. Update the `.gitmodules` file manually
+1. Update the `.gitmodules` file manually  then run:
+
+```bash
+git submodule update --recursive --remote
+```
+
+Or
+
 2. Run the following command:
 
 ```bash
-git submodule add <GitHub repository URL> module_name
+git submodule add -b <branchName> <GitHub repository URL> module_name
 ```
 
 > [!NOTE]  
