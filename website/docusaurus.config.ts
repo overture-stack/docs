@@ -4,7 +4,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'OvertureDev',
-  tagline: 'Creating applications to store, manage, and distribute massive genomic datasets',
+  tagline: 'Gathering all our developer documentation into one organized, easy-to-read site',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -78,7 +78,7 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'docsSidebar',
           position: 'left',
-          label: 'Docs',
+          label: 'Documentation',
         },
         {to: '/blog', label: 'Blog', position: 'left'},
         {

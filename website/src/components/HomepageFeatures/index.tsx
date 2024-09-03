@@ -10,32 +10,29 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
+    title: 'Deployed from',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        <a href='https://github.com/MitchellShiell/bridge' target="_blank" rel="noopener noreferrer">https://github.com/MitchellShiell/bridge</a>
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: 'Pulled together',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        using Git Submodules to fetch all our repos
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: 'Using only what is needed',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        With symlinks we are able to pull only the relevant data into the <code>website/docs</code> directory
       </>
     ),
   },

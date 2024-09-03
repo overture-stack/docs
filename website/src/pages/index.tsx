@@ -20,7 +20,7 @@ function HomepageHeader() {
           <Link
             className="button button--secondary button--lg"
             to="/docs/welcome">
-            OvertureDev KickStart Guide - 15min ⏱️
+            What is going on here? - 15min ⏱️
           </Link>
         </div>
       </div>
