@@ -29,6 +29,8 @@ const config: Config = {
     locales: ['en'],
   },
 
+  plugins: ['./docsPlugin.ts'],
+
   presets: [
     [
       'classic',
@@ -94,7 +96,7 @@ const config: Config = {
           items: [
             {
               label: 'Developer Documentation',
-              to: '/docs/moduleA',
+              to: '/docs/welcome',
             },
             {
               label: 'Product Documentation',

@@ -81,3 +81,7 @@ When working within a submodule:
 - Git operations like branching, adding, and pushing will push to the external repo
 - The root directory works within the root project (e.g., the bridge repo)
 This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+
+## SymLink fix 
+
+Fix found from here: https://github.com/facebook/docusaurus/issues/3272#issuecomment-688409489
