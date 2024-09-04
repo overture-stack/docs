@@ -156,5 +156,5 @@ You can add or update submodules in two ways:
    You can manually update the `.gitmodules` file to add new submodules or modify existing ones. Once the file is updated, pull the latest changes for all submodules, including any newly added ones:
 
    ```bash
-   git submodule update --recursive --remote
+   git submodule update --remote
    ```
