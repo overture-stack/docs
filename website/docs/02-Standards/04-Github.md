@@ -2,11 +2,13 @@
 sidebar_label: 4. GitHub Usage
 ---
 
-# Using GitHub
+# GitHub Usage
+
+Standards and best practices for GitHub.
 
 ## Repository Structure
 
-Each repository must include the minimum requirement defined in the previous section on [documenting microservices](link)
+Each repository must include the minimum requirement defined in the previous section on [documenting software](/docs/Standards/Software/)
 
 
 ## Task/Issue Management

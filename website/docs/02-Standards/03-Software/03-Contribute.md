@@ -1,5 +1,5 @@
 ---
-sidebar_label: 3. Contribution
+sidebar_label: 3.3 Contribution
 ---
 
 # `CONTRIBUTING.md`

@@ -1,10 +1,10 @@
 ---
-sidebar_label: 1. ReadMe
+sidebar_label: 3.1 ReadMe
 ---
 
 # `ReadMe.md`
 
-All Overture repositories have a `README.md` file stored in the root directory of the project. This standardized README template serves several important purposes:
+All Overture repositories have a `README.md` file stored in the root directory of the project. This standardized README template is broken down as follows:
 
 1. **Project Overview**: High-level summary of what the project does, its relationship to the broader Overture platform, and any relevant software components or related projects.
 

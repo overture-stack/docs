@@ -1,10 +1,10 @@
 ---
-sidebar_label: 2.2 Setup
+sidebar_label: Setup
 ---
 
 # `setup.md`
 
-[Place a brief description here]
+How to set up the development environment.
 
 <details>
   <summary><b>Click here for a copy of the markdown used for this page</b></summary>
@@ -271,6 +271,9 @@ For more detailed usage instructions, run:
 ```bash
 [help-command]
 ```
+
+## Integration
+Provide examples of integrating the application with other tools or services:
 
 ## Configuration
 

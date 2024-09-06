@@ -4,6 +4,8 @@ sidebar_label: 1. Documenting Code
 
 # Code Documentation
 
+Guidelines for documenting code effectively.
+
 ### Inline comments
 
 - Use inline comments sparingly to explain complex logic or non-obvious decisions

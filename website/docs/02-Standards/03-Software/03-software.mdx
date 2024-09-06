@@ -1,33 +1,65 @@
 ---
-sidebar_position: 1
-sidebar_label: Standards
+sidebar_label: 3. Documenting Software
 ---
 
-# Standards
+# Documenting Software 
 
-The following pages are an aggregate of fundamental principles and established precedents that constitute the formal basis of our Overture documentation and developement practices.
+The following pages define the minimum standard of developer documentation required within an Overture project, which include:
 
-## User Profiles
+1. A **`Readme.md`** file.
+2. A **`/docs`** folder with the following basic structure:
 
-Overture has three primary audiences:
+    ```
+    .
+    └── docs/
+        ├── 01-Overview/
+        │   └── 01-Overview.md
+        ├── 02-Setup.md
+        ├── 03-Guides/
+        │   ├── 01-Usage.md
+        │   ├── 02-Development.md
+        │   └── 03-Deployment.md
+        └── 04-Glossary.md
+    ```
 
-- **Software Engineers**: They build and customize Overture components for their software stack.
+    :::tip
 
-- **IT specialist**: Deploying and configuring Overture platforms.
+    To ensure your folders and files are ordered correctly in the sidebar use the numbered naming convention seen above.
 
-- **Informaticians**: Use Overture platforms to gather, organize, explore and share data.
+    :::
 
-| Documentation | User Profile | Description
-|---|---|---|
-| Developer Documentation | Software Engineers & Developers | Technical resources for those working with or contributing to the project. |
-| Product Documentation | IT Specialists & Informaticians | Covering features and functionalities with a production focus. Ideal for developers and administrators who want to understand how to operate and configure each indvidual component. |
-| Platform Guides | IT Specialists & Informaticians | Providing information on platform setup, maintenance and usage. Ideal for end-users and administrators. |
+3. A **`CONTRIBUTING.md`** file
+4. A **`code_of_conduct`** file
+5. A **`license.md`** file
 
-## Language
+## Markdown formatting 
+
+When adding and editing markdown files within the project repository there are a few considerations to be made to ensure your files get rendered correctly by docusaurus:
+
+- The top level heading (ex. # Top Title) will be used by docusaurus for the sidebar label
+
+- Docusaurus supports [tabs](https://docusaurus.io/docs/markdown-features/tabs), [dropdowns](https://docusaurus.io/docs/markdown-features#details) and [admonitions](https://docusaurus.io/docs/markdown-features/admonitions) however to maintain portability and readability of the raw markdown **we do not recommend using them**.
+
+## Images & Diagrams
+
+Images and diagrams can be valuable, but they can take lots of time and require maintenance. When using images or diagrams, consider how beneficial the visualization will be and how frequently you need to update it. 
+
+- Both Docusaurus and GitHub supports [rendering of Mermaid](https://docusaurus.io/docs/markdown-features/diagrams), feel free to use this for any diagrams. For more information, see the official [GitHub Docs on creating Mermaid diagrams](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams).
+
+
+## GitHub Templates
+
+If you are creating a repository from scratch you can use a pre-configured repository template on github.
+
+Insert Instructions for github templates
+
+## Writing Guidelines
+
+### Language
 
 We use Canadian English (en-CA) as our standard language for all written and verbal communication.
 
-### Use an Active Voice
+#### Use an Active Voice
 
 The active voice is concise and more accessible for readers to comprehend. Active voice is naturally used in conversation and therefore, readers understand and engage more with writing in the active voice.
 
@@ -36,7 +68,7 @@ The active voice is concise and more accessible for readers to comprehend. Activ
 |The developer environment has been set up successfully.|We have successfully set up the developer environment.|
 |The necessary tools and dependencies are being installed.|We are installing the necessary tools and dependencies.|
 
-### Put Conditional Clauses First
+#### Put Conditional Clauses First
 
 Put conditional clauses up front in sentences. With conditional clauses upfront, readers can skim or skip information they do not require. If done consistently, this saves significant time reading irrelevant information.
 
@@ -45,7 +77,7 @@ Put conditional clauses up front in sentences. With conditional clauses upfront,
 |See How to Use the Score Client for more information | For more information, see How to Use the Score Client.|
 | Set the analysis state to published, this will enable the analysis to be indexed| To index the analysis, set the analysis state to published |
 
-### Write Accessibly
+#### Write Accessibly
 
 Take note of how you describe software behaviours or user actions. Each reader will have a unique background and familiarity with the content, so avoid using language that assumes knowledge.
 
@@ -56,9 +88,9 @@ Take note of how you describe software behaviours or user actions. Each reader w
 
 Whenever possible, also include descriptive links to prerequisite or contextual material. Our services benefit a variety of people and data; therefore, experience levels and fields of expertise can vary significantly from user to user. 
 
-## Formatting & Punctuation
+### Formatting & Punctuation
 
-### Headers
+#### Headers
 
 Use level 1 headers at the top of the page and divide your document using the lower level headers for subsections.
 
@@ -67,12 +99,12 @@ Use level 1 headers at the top of the page and divide your document using the lo
 - Capitalize words of four letters or more (e.g., "With," "Between," and "From").
 - Except for the above rules, lowercase minor words that are three letters or fewer in a title or subtitle.
 
-### Numbered lists vs bulleted points
+#### Numbered lists vs bulleted points
 
 - Numbered lists for sequential items
 - Bulleted points for all other lists
 
-### Commas
+#### Commas
 
 Use an Oxford comma for a list of three or more items.
 
@@ -80,17 +112,16 @@ Use an Oxford comma for a list of three or more items.
 |---|---|
 |I had eggs, toast and orange juice for breakfast.|I had eggs, toast, and orange juice for breakfast.|
 
-## UI/Navigation Elements
+###UI/Navigation Elements
 
 When referencing UI elements, have them in **Bold**  
 
 1. Click **Documentation** > **Get Started**.
 2. Select **Pre-Configuration Setup**.
 
-## Images & Diagrams
 
-Images and diagrams can be valuable, but they can take lots of time and require maintenance. When using images or diagrams, consider how beneficial the visualization will be and how frequently you need to update it. 
 
-For simple diagrams use Mermaid. For more information, see the official [GitHub Docs on creating Mermaid diagrams](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams).
+
+
 
 

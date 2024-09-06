@@ -1,14 +1,14 @@
 ---
-sidebar_label: 2.1 Overview
+sidebar_label: Overview
 ---
 
 # `overview.md`
 
-[Place a brief description here]
+Either a single technical overview page or a folder containing multiple organized pages.
 
 <details>
   <summary><b>Click here for a copy of the markdown used for this page</b></summary>
-```
+``````
 # Technical Overview
 
 ## Table of Contents
@@ -49,7 +49,7 @@ Organize as appropriate for your projects stack
 
 ## Future Roadmap
 [Briefly describe planned future developments or improvements]
-```
+``````
 
 </details>
 

@@ -1,5 +1,5 @@
 ---
-sidebar_label: 5. License
+sidebar_label: 3.5 License
 ---
 
 # `license.md`
