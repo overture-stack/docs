@@ -1,7 +1,7 @@
 repo=.
-repo=arranger
-repo=maestro
-repo=score
-repo=song
-repo=stage
+repo=submodules/arranger
+repo=submodules/maestro
+repo=submodules/score
+repo=submodules/song
+repo=submodule/stage
 serial=True
