@@ -1,24 +1,14 @@
 ---
-sidebar_label: 3.3 Contribution
+sidebar_postion: 9998
 ---
 
-# `CONTRIBUTING.md`
-
-All Overture project repositories contain a `CONTRIBUTING.md` saved in the `/docs` directory. This file outlines the guidelines and expectations for contributing to the Overture project.
-
-Ensure all links correctly resolve and names and content are updated based on your project needs. Use the `CONTRIBUTING.md` copy here to get you started:
-
-<details>
-  <summary><b>Click here for a copy of our contributing.md</b></summary>
-
-```
 # Contributing
 
-We appreciate your interest in contributing to the Overture project. By participating in this project, you are expected to abide by our [Code of Conduct](../code_of_conduct.md). Please take the time to read it carefully before contributing.
+We appreciate your interest in contributing to the Overture project. By participating in this project, you are expected to abide by our Code of Conduct. Please take the time to read it carefully before contributing.
 
 - We use GitHub issues and pull requests for communication related to code changes. 
 - For general discussion, feel free to join our [Slack channel](http://slack.overture.bio/).
-- For detailed information on best practices see our [standards of practice documentation](link) 
+- For detailed information on best practices see our [standards of practice documentation](https://main--overturedev.netlify.app/docs/Standards/) 
 
 ## Issues and Feature Requests
 
@@ -30,8 +20,15 @@ We welcome and encourage pull requests from the community. To submit a pull requ
 
 1. **Fork the Repository**: Fork the Overture repository on GitHub.
 2. **Clone Your Fork**: Clone your forked repository to your local machine.
-3. **Create a New Branch**: Create a new branch for your changes.
-4. **Make Your Changes**: Implement your changes and commit them to your branch.
+3. **Create a New Branch**: Create a new branch for your changes. Use lowercase and hyphens (e.g., `feature/user-authentication`). Include ticket/issue numbers when applicable (e.g., `feature/PROJ-123-user-authentication`). The following is a list of our standard branches:
+
+   - `main` is for stable production code
+   - `develop` is the integration branch for new features
+   - `feature/<name>` for feature branches
+   - `release/v<version>` for release branches
+   - `hotfix/<name>` for hotfix branches 
+
+4. **Make Your Changes**: Implement your changes and commit them to your branch. Write clear, concise commit messages in present tense (e.g., "Add feature" not "Added feature"). Reference issue numbers in commits when applicable
 5. **Push Your Changes**: Push your changes to your forked repository.
 6. **Submit a Pull Request**: Open a pull request against the main repository.
 
@@ -78,5 +75,3 @@ Guidelines for Draft Pull Requests:
 - Obtain the required number of approvals
 - Use the project's specified merge strategy (Typically squash and merge)
 - Delete the source branch after merging if no longer needed
-```
-</details>

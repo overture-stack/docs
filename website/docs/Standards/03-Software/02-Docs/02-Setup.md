@@ -9,18 +9,7 @@ How to set up the development environment.
 <details>
   <summary><b>Click here for a copy of the markdown used for this page</b></summary>
 ``````
-# Setting up the Developer Environment
-
-**Note:** This guide is intended for development purposes only. For production deployment, please refer to our production setup documentation and adjust configurations accordingly.
-
-## Table of Contents
-
-- [Run from Source](#run-from-source)
-- [Run as a Container](#run-as-a-container)
-- [Run using npm (or pnpm)](#run-using-npm-or-pnpm)
-- [Configuration](#configuration)
-- [Troubleshooting](#troubleshooting)
-- [Additional Resources](#additional-resources)
+# Setup
 
 ## Run from Source
 
@@ -54,6 +43,8 @@ cd [project-directory]
 ```bash
 [start-server-command]
 ```
+
+**Note:** This guide is intended for development purposes only. For production deployment, please refer to our production setup documentation and adjust configurations accordingly.
 
 ## Run as a Container
 
@@ -160,18 +151,7 @@ The application accepts the following command-line arguments:
 ``````
 </details>
 
-# Setting up the Developer Environment
-
-**Note:** This guide is intended for development purposes only. For production deployment, please refer to our production setup documentation and adjust configurations accordingly.
-
-## Table of Contents
-
-- [Run from Source](#run-from-source)
-- [Run as a Container](#run-as-a-container)
-- [Run using npm (or pnpm)](#run-using-npm-or-pnpm)
-- [Configuration](#configuration)
-- [Troubleshooting](#troubleshooting)
-- [Additional Resources](#additional-resources)
+# Setup
 
 ## Run from Source
 
@@ -205,6 +185,8 @@ cd [project-directory]
 ```bash
 [start-server-command]
 ```
+
+**Note:** This guide is intended for development purposes only. For production deployment, please refer to our production setup documentation and adjust configurations accordingly.
 
 ## Run as a Container
 
@@ -271,9 +253,6 @@ For more detailed usage instructions, run:
 ```bash
 [help-command]
 ```
-
-## Integration
-Provide examples of integrating the application with other tools or services:
 
 ## Configuration
 

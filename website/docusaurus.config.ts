@@ -29,7 +29,14 @@ const config: Config = {
     locales: ['en'],
   },
 
-  plugins: ['./docsPlugin.ts'],
+  plugins: [
+    './docsPlugin.ts',
+  ],
+
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
 
   presets: [
     [
@@ -56,7 +63,7 @@ const config: Config = {
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
-        },
+        }, 
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -96,7 +103,7 @@ const config: Config = {
           items: [
             {
               label: 'Developer Documentation',
-              to: '/docs/introduction',
+              to: '/docs/Introduction',
             },
             {
               label: 'Product Documentation',

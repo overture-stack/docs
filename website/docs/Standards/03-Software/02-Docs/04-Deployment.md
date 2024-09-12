@@ -4,7 +4,7 @@ sidebar_label: Deployment
 
 # `deployment.md`
 
-[Place a brief description here]
+Covers deployment environments, processes, and configuration management.
 
 <details>
   <summary><b>Click here for a copy of the markdown used for this page</b></summary>

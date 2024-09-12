@@ -1,5 +1,5 @@
 ---
-sidebar_label: 3.1 ReadMe
+sidebar_label: ReadMe
 ---
 
 # `ReadMe.md`

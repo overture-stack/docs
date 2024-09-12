@@ -4,6 +4,8 @@ sidebar_label: Usage
 
 # `usage.md`
 
+Covers common usage of the software, allowing developers to see how the software can be used and tested.
+
 This is a template. Customize each section with specific details relevant to your project. For a multi-page structure, each main section could be a separate Markdown file, with a main page serving as an index with links to the individual pages.
 
 <details>
@@ -11,23 +13,6 @@ This is a template. Customize each section with specific details relevant to you
 ``````
 
 # Usage Guide
-
-## Table of Contents
-
-- [API Usage](#api-usage)
-  - [Authentication](#authentication)
-  - [Endpoints Overview](#endpoints-overview)
-  - [Request/Response Examples](#requestresponse-examples)
-    - [Common API Operation 1](#common-api-operation-1)
-- [Client Usage](#client-usage)
-  - [Installation](#installation)
-  - [Configuration](#configuration)
-  - [Basic Operations](#basic-operations)
-  - [Advanced Features](#advanced-features)
-- [Command Reference](#command-reference)
-  - [CLI Commands](#cli-commands)
-- [Integration Examples](#integration-examples)
-- [Troubleshooting](#troubleshooting)
 
 ## API Usage
 
@@ -102,23 +87,6 @@ List common issues and their solutions:
 </details>
 
 # Usage Guide
-
-## Table of Contents
-
-- [API Usage](#api-usage)
-  - [Authentication](#authentication)
-  - [Endpoints Overview](#endpoints-overview)
-  - [Request/Response Examples](#requestresponse-examples)
-    - [Common API Operation 1](#common-api-operation-1)
-- [Client Usage](#client-usage)
-  - [Installation](#installation)
-  - [Configuration](#configuration)
-  - [Basic Operations](#basic-operations)
-  - [Advanced Features](#advanced-features)
-- [Command Reference](#command-reference)
-  - [CLI Commands](#cli-commands)
-- [Integration Examples](#integration-examples)
-- [Troubleshooting](#troubleshooting)
 
 ## API Usage
 

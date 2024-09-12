@@ -5,6 +5,7 @@ import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 
 import styles from './index.module.css';
+import SiteMapCards from '../components/SiteMapCard';
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
@@ -18,8 +19,8 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/introduction">
-            What is going on here? - 15min ⏱️
+            to="/docs/Introduction">
+            Place Search Bar Component here
           </Link>
         </div>
       </div>
@@ -35,7 +36,7 @@ export default function Home(): JSX.Element {
       description="The Overture developer documentation hub">
       <HomepageHeader />
       <main>
-
+        <SiteMapCards />
       </main>
     </Layout>
   );

@@ -1,5 +1,5 @@
 ---
-sidebar_label: 3.4 Code of Conduct
+sidebar_label: Code of Conduct
 ---
 
 # `code_of_conduct.md`
