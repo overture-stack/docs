@@ -5,7 +5,7 @@ import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 
 import styles from './index.module.css';
-import SiteMapCards from '../components/SiteMapCard';
+import SiteMap from '../components/SiteMap';
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
@@ -36,7 +36,7 @@ export default function Home(): JSX.Element {
       description="The Overture developer documentation hub">
       <HomepageHeader />
       <main>
-        <SiteMapCards />
+        <SiteMap />
       </main>
     </Layout>
   );

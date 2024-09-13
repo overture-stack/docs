@@ -15,6 +15,16 @@
   --ifm-color-primary-lightest: #0669b6;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --siteMap-cube-color: #708090;
+
+  /* Cube face colors */
+  --cube-face-front: #04518c;
+  --cube-face-left: #05599a;
+  --cube-face-top: #0669b6;
+  --cube-face-right: #03497e;
+  --cube-face-bottom: #034577;
+  --cube-face-back: #023962;
+  --cube-text-color: #ffffff;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -27,4 +37,14 @@
   --ifm-color-primary-lighter: #9bd5f2;
   --ifm-color-primary-lightest: #c7e9f8;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --siteMap-cube-color: rgba(255, 255, 255, 0.8);
+
+  /* Cube face colors for dark mode */
+  --cube-face-front: #6fc3ec;
+  --cube-face-left: #8ccff0;
+  --cube-face-top: #9bd5f2;
+  --cube-face-right: #52b7e8;
+  --cube-face-bottom: #43b1e6;
+  --cube-face-back: #1c9ddd;
+  --cube-text-color: #023962;
 }
