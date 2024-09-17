@@ -10,6 +10,7 @@ import SiteMap from '../components/SiteMap';
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
   return (
+
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
         <Heading as="h1" className="hero__title">
@@ -20,8 +21,10 @@ function HomepageHeader() {
           <Link
             className="button button--secondary button--lg"
             to="/docs/Introduction">
-            Place Search Bar Component here
+            Put search bar here
           </Link>
+        </div>
+        <div className={styles.searchBarContainer}>
         </div>
       </div>
     </header>

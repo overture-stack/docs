@@ -15,16 +15,22 @@
   --ifm-color-primary-lightest: #0669b6;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
-  --siteMap-cube-color: #708090;
+
 
   /* Cube face colors */
-  --cube-face-front: #04518c;
-  --cube-face-left: #05599a;
-  --cube-face-top: #0669b6;
-  --cube-face-right: #03497e;
-  --cube-face-bottom: #034577;
-  --cube-face-back: #023962;
+  --cube-face-front: #04518c4e;
+  --cube-face-left: #05599a4e;
+  --cube-face-top: #0669b64e;
+  --cube-face-right: #03497e4e;
+  --cube-face-bottom: #0345774e;
+  --cube-face-back: #0239624e;
   --cube-text-color: #ffffff;
+
+
+  /* Front Page category blocks */
+  --category-title-color: #282A35;
+  --category-block-color: #F2F5F8;
+  --category-block-shadow: 2px 2px 10px #282a3563;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -37,14 +43,18 @@
   --ifm-color-primary-lighter: #9bd5f2;
   --ifm-color-primary-lightest: #c7e9f8;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-  --siteMap-cube-color: rgba(255, 255, 255, 0.8);
 
   /* Cube face colors for dark mode */
-  --cube-face-front: #6fc3ec;
-  --cube-face-left: #8ccff0;
-  --cube-face-top: #9bd5f2;
-  --cube-face-right: #52b7e8;
-  --cube-face-bottom: #43b1e6;
-  --cube-face-back: #1c9ddd;
-  --cube-text-color: #023962;
+  --cube-face-front: #6fc2ecac;
+  --cube-face-left: #8ccff0ac;
+  --cube-face-top: #9bd5f2ac;
+  --cube-face-right: #52b7e8ac;
+  --cube-face-bottom: #43b1e6ac;
+  --cube-face-back: #1c9dddac;
+  --cube-text-color: #023962ac;
+
+  /* Front Page category blocks */
+  --category-title-color: #F2F5F8;
+  --category-block-color: #5E6068;
+  --category-block-shadow: 2px 2px 10px #ffffff63;
 }

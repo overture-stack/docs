@@ -19,7 +19,7 @@ interface SiteMap {
 
 const categoryDescriptions = {
   'Core Services': 'Forming the foundation of our genomics data management platform.',
-  'In Development': 'New components not quite ready for production.',
+  'Under Development': 'New components not quite ready for production.',
   'Platform Documentation': 'Bringing it all together into one cohesive platform.',
 };
 
@@ -64,14 +64,14 @@ const siteMapList: SiteMap[] = [
     link: '/docs/Lectern/Overview',
     image: iconStage,
     description: 'Tabular Data Schema Manager',
-    category: 'In Development',
+    category: 'Under Development',
   },
   {
     title: 'Lyric Docs',
     link: '/docs/Lyric/Overview',
     image: iconStage,
     description: 'Tabular Data Submission System',
-    category: 'In Development',
+    category: 'Under Development',
   },
   {
     title: 'Deployment Docs',
@@ -130,8 +130,8 @@ export default function SiteMap(): JSX.Element {
       <div className="container">
         {Object.entries(categorizedSiteMap).map(([category, items]) => (
           <div key={category} className={styles.categorySection}>
-            <Heading as="h2">{category}</Heading>
-            <Heading as="h4">{categoryDescriptions[category]}</Heading>
+              <Heading as="h2" className={styles.categoryHeader}>{category}</Heading>
+              <Heading as="h4" className={styles.categorySubheader}>{categoryDescriptions[category]}</Heading>
             <div className={styles.cubeRow}>
               {items.map((props, idx) => (
                 <CubeCard key={idx} {...props} />
