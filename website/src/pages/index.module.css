@@ -5,14 +5,31 @@
 
 .heroBanner {
   padding: 4rem 0;
-  text-align: center;
+  text-align: left;
   position: relative;
   overflow: hidden;
+  background-image: url('../../static/img/cube-hero-desktop.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
 }
 
-@media screen and (max-width: 996px) {
+@media screen and (max-width: 1800px) {
   .heroBanner {
+    transition: 1s;
     padding: 2rem;
+    background-image: url('../../static/img/cube-hero-mobile.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+@media screen and (max-width: 918px) {
+  .heroBanner {
+    transition: 0.5s;
+    padding: 2rem;
+    background-image: none;
   }
 }
 

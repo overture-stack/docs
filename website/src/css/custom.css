@@ -35,22 +35,23 @@
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #6fc3ec;
-  --ifm-color-primary-dark: #52b7e8;
-  --ifm-color-primary-darker: #43b1e6;
-  --ifm-color-primary-darkest: #1c9ddd;
-  --ifm-color-primary-light: #8ccff0;
-  --ifm-color-primary-lighter: #9bd5f2;
-  --ifm-color-primary-lightest: #c7e9f8;
+  --ifm-color-primary: #04518c;
+  --ifm-color-primary-dark: #03497e;
+  --ifm-color-primary-darker: #034577;
+  --ifm-color-primary-darkest: #023962;
+  --ifm-color-primary-light: #05599a;
+  --ifm-color-primary-lighter: #055da1;
+  --ifm-color-primary-lightest: #0669b6;
+  --ifm-background-color: #111111;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-
+  
   /* Cube face colors for dark mode */
-  --cube-face-front: #6fc2ecac;
-  --cube-face-left: #8ccff0ac;
-  --cube-face-top: #9bd5f2ac;
-  --cube-face-right: #52b7e8ac;
-  --cube-face-bottom: #43b1e6ac;
-  --cube-face-back: #1c9dddac;
+  --cube-face-front: #04518c4e;
+  --cube-face-left: #05599a4e;
+  --cube-face-top: #0669b64e;
+  --cube-face-right: #03497e4e;
+  --cube-face-bottom: #0345774e;
+  --cube-face-back: #0239624e;
   --cube-text-color: #023962ac;
 
   /* Front Page category blocks */

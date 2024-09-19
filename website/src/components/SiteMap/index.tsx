@@ -17,75 +17,84 @@ interface SiteMap {
   category: string;
 }
 
-const categoryDescriptions = {
-  'Core Services': 'Forming the foundation of our genomics data management platform.',
-  'Under Development': 'New components not quite ready for production.',
-  'Platform Documentation': 'Bringing it all together into one cohesive platform.',
+const categoriesDict = {
+  core: {
+    title: 'Core Products',
+    description: 'The building blocks of the Overture genomics data platform.'
+  },
+  development: {
+    title: 'Under Development',
+    description: 'New components not quite ready for production.'
+  },
+  platform: {
+    title: 'Platform Documentation',
+    description: 'Bringing it all together into one cohesive platform.'
+  },
 };
 
-const siteMapList: SiteMap[] = [
+const products: SiteMap[] = [
   {
     title: 'Song Docs',
-    link: '/docs/Song/Overview',
+    link: '/docs/Song',
     image: iconSong,
     description: 'Metadata Management',
-    category: 'Core Services',
+    category: 'core',
   },
   {
     title: 'Score Docs',
-    link: '/docs/Score/Overview',
+    link: '/docs/Score',
     image: iconScore,
     description: 'File Data Transfers',
-    category: 'Core Services',
+    category: 'core',
   },
   {
     title: 'Maestro Docs',
-    link: '/docs/Maestro/Overview',
+    link: '/docs/Maestro',
     image: iconMaestro,
     description: 'Metadata Indexing',
-    category: 'Core Services',
+    category: 'core',
   },
   {
     title: 'Arranger Docs',
-    link: '/docs/Arranger/Overview',
+    link: '/docs/Arranger',
     image: iconArranger,
     description: 'Search API and UI generation',
-    category: 'Core Services',
+    category: 'core',
   },
   {
     title: 'Stage Docs',
-    link: '/docs/Stage/Overview',
+    link: '/docs/Stage',
     image: iconStage,
     description: 'Front-end Data Portal UI',
-    category: 'Core Services',
+    category: 'core',
   },
   {
     title: 'Lectern Docs',
-    link: '/docs/Lectern/Overview',
+    link: '/docs/Lectern',
     image: iconStage,
     description: 'Tabular Data Schema Manager',
-    category: 'Under Development',
+    category: 'development',
   },
   {
     title: 'Lyric Docs',
-    link: '/docs/Lyric/Overview',
+    link: '/docs/Lyric',
     image: iconStage,
     description: 'Tabular Data Submission System',
-    category: 'Under Development',
+    category: 'development',
   },
   {
     title: 'Deployment Docs',
-    link: '/docs/Lyric/Overview',
+    link: '/docs/Lyric',
     image: iconStage,
     description: 'Server Deployment',
-    category: 'Platform Documentation',
+    category: 'platform',
   },
   {
     title: 'QuickStart Docs',
-    link: '/docs/Lyric/Overview',
+    link: '/docs/Lyric',
     image: iconStage,
     description: 'Overture QuickStart',
-    category: 'Platform Documentation',
+    category: 'platform',
   },
 ];
 
@@ -97,7 +106,7 @@ function groupByCategory(items: SiteMap[]) {
   }, {} as Record<string, SiteMap[]>);
 }
 
-const categorizedSiteMap = groupByCategory(siteMapList);
+const categorizedSiteMap = groupByCategory(products);
 
 
 function CubeCard({ title, description, link, image }: SiteMap) {
@@ -123,15 +132,15 @@ function CubeCard({ title, description, link, image }: SiteMap) {
   );
 }
 export default function SiteMap(): JSX.Element {
-  const categorizedSiteMap = groupByCategory(siteMapList);
+  const categorizedSiteMap = groupByCategory(products);
 
   return (
     <section className={styles.cards}>
       <div className="container">
         {Object.entries(categorizedSiteMap).map(([category, items]) => (
           <div key={category} className={styles.categorySection}>
-              <Heading as="h2" className={styles.categoryHeader}>{category}</Heading>
-              <Heading as="h4" className={styles.categorySubheader}>{categoryDescriptions[category]}</Heading>
+              <Heading as="h2" className={styles.categoryHeader}>{categoriesDict[category].title}</Heading>
+              <Heading as="h4" className={styles.categorySubheader}>{categoriesDict[category].description}</Heading>
             <div className={styles.cubeRow}>
               {items.map((props, idx) => (
                 <CubeCard key={idx} {...props} />
