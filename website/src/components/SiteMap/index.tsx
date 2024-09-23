@@ -128,17 +128,17 @@ function CubeCard({ title, description, link, image }) {
     <div className={styles.cubeContainer}>
       <a href={link}>
         <div className={styles.cube}>
-          <div className={`${styles.face} ${styles.front} ${styles.iconTitle}`}>
+          <div className={clsx(styles.face, styles.front, styles.iconTitle)}>
             <img src={image} alt={`${title} icon`} className={styles.cubeImage} />
             <Heading as="h4">{description}</Heading>
           </div>
-          <div className={`${styles.face} ${styles.back}`}></div>
-          <div className={`${styles.face} ${styles.right}`}></div>
-          <div className={`${styles.face} ${styles.left}`}>
+          <div className={clsx(styles.face, styles.back)}></div>
+          <div className={clsx(styles.face, styles.right)}></div>
+          <div className={clsx(styles.face, styles.left)}>
             <Heading as="h2" className={styles.serviceTitle}>{title}</Heading>
           </div>
-          <div className={`${styles.face} ${styles.top}`}></div>
-          <div className={`${styles.face} ${styles.bottom}`}></div>
+          <div className={clsx(styles.face, styles.top)}></div>
+          <div className={clsx(styles.face, styles.bottom)}></div>
         </div>
       </a>
     </div>
@@ -153,7 +153,7 @@ export default function SiteMap() {
       <div className={styles.container}>
         <div className={styles.categoryWrapper}>
           {Object.entries(categorizedSiteMap).map(([category, items]) => (
-            <div key={category} className={`${styles.categorySection} ${items.length < 3 ? styles.smallCategory : ''}`}>
+            <div key={category} className={clsx(styles.categorySection, items.length < 3 && styles.smallCategory)}>
               <Heading as="h2" className={styles.categoryHeader}>{categoriesDict[category].title}</Heading>
               <Heading as="h4" className={styles.categorySubheader}>{categoriesDict[category].description}</Heading>
               <div className={styles.cubeRow}>
