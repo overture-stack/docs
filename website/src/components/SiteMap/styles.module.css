@@ -58,7 +58,10 @@
   padding: 15px;
   box-sizing: border-box;
   color: var(--cube-text-color);
+  border-radius: 8px;
 }
+
+
 
 .cubeImage {
   width: 80px;
