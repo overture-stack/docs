@@ -102,14 +102,14 @@ const products: SiteMap[] = [
   },
   {
     title: 'Bridge Docs',
-    link: '/docs/Bridge',
+    link: '/docs/Supplemental-Services/Bridge',
     image: iconStage,
     description: 'Documentation Site Generation',
     category: 'misc',
   },
   {
     title: 'Conductor Docs',
-    link: '/docs/Conductor',
+    link: '/docs/Supplemental-Services/Conductor',
     image: iconStage,
     description: 'Software Setup Automation',
     category: 'misc',
