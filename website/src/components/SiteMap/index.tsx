@@ -30,6 +30,10 @@ const categoriesDict = {
     title: 'Platform Documentation',
     description: 'Bringing it all together into one cohesive platform.'
   },
+  misc: {
+    title: 'Supporting Software',
+    description: 'Miscellaneous software packages created to support Overture development.'
+  },
 };
 
 const products: SiteMap[] = [
@@ -96,58 +100,70 @@ const products: SiteMap[] = [
     description: 'Overture QuickStart',
     category: 'platform',
   },
+  {
+    title: 'Bridge Docs',
+    link: '/docs/Bridge',
+    image: iconStage,
+    description: 'Documentation Site Generation',
+    category: 'misc',
+  },
+  {
+    title: 'Conductor Docs',
+    link: '/docs/Conductor',
+    image: iconStage,
+    description: 'Software Setup Automation',
+    category: 'misc',
+  },
 ];
 
-
-function groupByCategory(items: SiteMap[]) {
+function groupByCategory(items) {
   return items.reduce((acc, item) => {
     (acc[item.category] = acc[item.category] || []).push(item);
     return acc;
-  }, {} as Record<string, SiteMap[]>);
+  }, {});
 }
 
-const categorizedSiteMap = groupByCategory(products);
-
-
-function CubeCard({ title, description, link, image }: SiteMap) {
+function CubeCard({ title, description, link, image }) {
   return (
-
     <div className={styles.cubeContainer}>
       <a href={link}>
         <div className={styles.cube}>
-          <div className={clsx(styles.face, styles.front, styles.iconTitle)}>
+          <div className={`${styles.face} ${styles.front} ${styles.iconTitle}`}>
             <img src={image} alt={`${title} icon`} className={styles.cubeImage} />
             <Heading as="h4">{description}</Heading>
           </div>
-          <div className={clsx(styles.face, styles.back)}></div>
-          <div className={clsx(styles.face, styles.right)}></div>
-          <div className={clsx(styles.face, styles.left)}>
-          <Heading as="h2" className={styles.serviceTitle}>{title}</Heading>
+          <div className={`${styles.face} ${styles.back}`}></div>
+          <div className={`${styles.face} ${styles.right}`}></div>
+          <div className={`${styles.face} ${styles.left}`}>
+            <Heading as="h2" className={styles.serviceTitle}>{title}</Heading>
           </div>
-          <div className={clsx(styles.face, styles.top)}></div>
-          <div className={clsx(styles.face, styles.bottom)}></div></div>
-        </a>
+          <div className={`${styles.face} ${styles.top}`}></div>
+          <div className={`${styles.face} ${styles.bottom}`}></div>
+        </div>
+      </a>
     </div>
-
   );
 }
-export default function SiteMap(): JSX.Element {
+
+export default function SiteMap() {
   const categorizedSiteMap = groupByCategory(products);
 
   return (
     <section className={styles.cards}>
-      <div className="container">
-        {Object.entries(categorizedSiteMap).map(([category, items]) => (
-          <div key={category} className={styles.categorySection}>
+      <div className={styles.container}>
+        <div className={styles.categoryWrapper}>
+          {Object.entries(categorizedSiteMap).map(([category, items]) => (
+            <div key={category} className={`${styles.categorySection} ${items.length < 3 ? styles.smallCategory : ''}`}>
               <Heading as="h2" className={styles.categoryHeader}>{categoriesDict[category].title}</Heading>
               <Heading as="h4" className={styles.categorySubheader}>{categoriesDict[category].description}</Heading>
-            <div className={styles.cubeRow}>
-              {items.map((props, idx) => (
-                <CubeCard key={idx} {...props} />
-              ))}
+              <div className={styles.cubeRow}>
+                {items.map((props, idx) => (
+                  <CubeCard key={idx} {...props} />
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );
