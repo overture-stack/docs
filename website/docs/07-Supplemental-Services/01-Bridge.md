@@ -24,7 +24,7 @@ Our documentation is split up as follows:
 
 - **Docusaurus**: We use Docusaurus to render the site, providing a sleek and navigable interface for our documentation.
 
-- **Markdown Files**: All documentation content is stored as markdown files in the `/website/docs` directory.
+- **Markdown Files**: All documentation content is stored as markdown files in the `/website/docs` directory. 
 
 - **Git Submodules**: We use Git submodules to store and track all our GitHub repositories within one main repository. All submodules can be found in the `submodule` folder.
 
