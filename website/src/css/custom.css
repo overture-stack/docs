@@ -21,7 +21,8 @@
 
   /* Front Page category blocks */
   --category-title-color: #282A35;
-  --category-block-color: #F2F5F8;
+  --category-category-color: #f5f5f5;
+  --category-card-color: #fefefe;
   --category-block-shadow: 2px 2px 10px #282a3563;
 }
 
@@ -42,7 +43,7 @@
 
   /* Front Page category blocks */
   --category-title-color: #F2F5F8;
-  --category-block-color: #2425262f;
-  --category-card-color: #313845;
-  --category-block-shadow: 2px 2px 10px #ffffff63;
+  --category-category-color: #1e1e1f;
+  --category-card-color: #151515;
+  --category-block-shadow: 2px 2px 10px #0a0a0a;
 }

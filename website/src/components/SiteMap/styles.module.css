@@ -18,7 +18,7 @@
 
 .categorySection {
   flex: 1 1 calc(50% - 1rem);
-  background-color: var(--category-block-color);
+  background-color: var(--category-category-color);
   border-radius: 15px;
   padding: 2rem;
   box-shadow: var(--category-block-shadow);
