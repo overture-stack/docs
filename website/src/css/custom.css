@@ -16,16 +16,8 @@
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 
-
-  /* Cube face colors */
+  /* Cube face color */
   --cube-face-front: #04518c4e;
-  --cube-face-left: #05599a4e;
-  --cube-face-top: #0669b64e;
-  --cube-face-right: #03497e4e;
-  --cube-face-bottom: #0345774e;
-  --cube-face-back: #0239624e;
-  --cube-text-color: #ffffff;
-
 
   /* Front Page category blocks */
   --category-title-color: #282A35;
@@ -35,27 +27,22 @@
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #04518c;
-  --ifm-color-primary-dark: #03497e;
+  --ifm-color-primary: #0767b1;
+  --ifm-color-primary-dark: #2a2d2f;
   --ifm-color-primary-darker: #034577;
   --ifm-color-primary-darkest: #023962;
   --ifm-color-primary-light: #05599a;
   --ifm-color-primary-lighter: #055da1;
   --ifm-color-primary-lightest: #0669b6;
-  --ifm-background-color: #111111;
+  --ifm-background-color: #585858;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
   
-  /* Cube face colors for dark mode */
+  /* Cube face color for dark mode */
   --cube-face-front: #04518c4e;
-  --cube-face-left: #05599a4e;
-  --cube-face-top: #0669b64e;
-  --cube-face-right: #03497e4e;
-  --cube-face-bottom: #0345774e;
-  --cube-face-back: #0239624e;
-  --cube-text-color: #023962ac;
 
   /* Front Page category blocks */
   --category-title-color: #F2F5F8;
-  --category-block-color: #5E6068;
+  --category-block-color: #2425262f;
+  --category-card-color: #313845;
   --category-block-shadow: 2px 2px 10px #ffffff63;
 }

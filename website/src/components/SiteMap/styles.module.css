@@ -1,222 +1,114 @@
+.siteMap {
+  padding: 2rem 0;
+  background-color: var(--ifm-background-color);
+}
+
 .container {
   width: 100%;
   max-width: 1300px;
   margin: 0 auto;
-  padding: 0 10px;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  padding: 0 1rem;
 }
 
 .categoryWrapper {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  gap: 2rem;
 }
 
 .categorySection {
-  text-align: center;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-  border-radius: 15px;
-  padding: 25px;
+  flex: 1 1 calc(50% - 1rem);
   background-color: var(--category-block-color);
+  border-radius: 15px;
+  padding: 2rem;
   box-shadow: var(--category-block-shadow);
-  width: 100%;
+}
+
+.categorySection.fullWidth {
+  flex-basis: 100%;
 }
 
 .categoryHeader {
   color: var(--category-title-color);
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  font-weight: 700;
 }
 
 .categorySubheader {
   color: var(--category-title-color);
   margin-bottom: 1.5rem;
-  font-weight: normal;
+  font-size: 1.1rem;
+  opacity: 0.8;
 }
 
-.smallCategory {
-  width: calc(50% - 1rem);
-}
-
-.cubeRow {
+.cardGrid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 1rem;
 }
 
-.cube {
-  width: 200px;
-  height: 200px;
-  position: relative;
-  transform-style: preserve-3d;
-  transform: rotateY(0deg) rotateX(0deg) rotateZ(0deg);
-  transition: transform 0.5s;
-  margin: 0 auto;
-}
-
-.cube:hover {
-  transform: rotateX(-90deg) rotateZ(90deg);
-}
-
-.face {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border: 2px solid var(--ifm-color-primary-darkest);
+.card {
+  flex: 1 1 calc(50% - 0.5rem);
+  min-width: 100px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 15px;
-  box-sizing: border-box;
-  color: var(--cube-text-color);
-  border-radius: 8px;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+  background-color: var(--category-card-color);
 }
 
-.cubeImage {
+.card:hover, .card:focus {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  outline: none;
+}
+
+.cardImage {
   width: 80px;
-  height: 80px; 
-  margin-bottom: 15px; 
-  object-fit: contain; 
+  height: 80px;
+  margin-bottom: 1rem;
+  object-fit: contain;
 }
 
-.serviceTitle {
-  transform: rotate(-90deg) translateX(50%);
-  transform-origin: center right;
+.cardTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
   text-align: center;
-  width: 200px;
-  position: absolute;
-  left: -100px;
-  top: 43%;
-  font-size: 1.2em;
-  color: #fff
+  color: var(--category-title-color)
 }
 
-.iconTitle {
-  display: flex;
-  flex-direction: column; 
-  align-items: center; 
-  justify-content: center; 
-  text-align: center; 
-  padding: 30px;
-  color: #fff
+.cardDescription {
+  font-size: 0.9rem;
+  text-align: center;
+  color: var(--ifm-color-emphasis-700);
 }
 
-.front { 
-  transform: translateZ(100px); 
-  background-color: var(--cube-face-front);
-}
-
-.back { 
-  transform: translateZ(-100px) rotateY(180deg);
-  background-color: var(--cube-face-back);
-}
-
-.right { 
-  transform: translateX(100px) rotateY(90deg);
-  background-color: var(--cube-face-right);
-}
-
-.bottom { 
-  transform: translateY(100px) rotateX(-90deg);
-  background-color: var(--cube-face-bottom);
-}
-
-.left {
-  transform: translateX(-100px) rotateY(-90deg);
-  background-color: var(--cube-face-left);
-}
-
-.top { 
-  transform: translateY(-100px) rotateX(90deg); 
-  background-color: var(--cube-face-top);
-}
-
-.cube:hover .front {
-  background-color: var(--cube-face-left);
-  transition: background-color 0.5s;
-}
-
-.cube:hover .left {
-  background-color: var(--cube-face-top);
-  transition: background-color 0.5s;
+@media (max-width: 1200px) {
+  .categorySection {
+    flex: 1 1 100%;
+  }
 }
 
 @media (max-width: 768px) {
-  .categorySection,
-  .smallCategory {
-    width:100%;
+  .card {
+    flex: 1 1 100%;
   }
 
-
-  .cubeRow {
-    justify-content: center;
+  .cardImage {
+    width: 50px;
+    height: 50px;
   }
 
-  .cubeContainer {
-    display: flex;
-    justify-content: center;
+  .cardTitle {
+    font-size: 1rem;
   }
 
-  .cube {
-    width: 180px;
-    height: 180px;
-  }
-
-  .serviceTitle {
-    width: 180px;
-    left: -90px;
-    font-size: 1.1em;
-  }
-
-  .face {
-    padding: 10px;
-  }
-
-  .front { transform: translateZ(90px); }
-  .back { transform: translateZ(-90px) rotateY(180deg); }
-  .right { transform: translateX(90px) rotateY(90deg); }
-  .bottom { transform: translateY(90px) rotateX(-90deg); }
-  .left { transform: translateX(-90px) rotateY(-90deg); }
-  .top { transform: translateY(-90px) rotateX(90deg); }
-
-  .cubeImage {
-    width: 70px;
-    height: 70px;
-    margin-bottom: 10px;
-  }
-
-  .iconTitle {
-    padding: 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  .cube {
-    width: 160px;
-    height: 160px;
-  }
-
-  .serviceTitle {
-    width: 160px;
-    left: -80px;
-    font-size: 1em;
-  }
-
-  .front { transform: translateZ(80px); }
-  .back { transform: translateZ(-80px) rotateY(180deg); }
-  .right { transform: translateX(80px) rotateY(90deg); }
-  .bottom { transform: translateY(80px) rotateX(-90deg); }
-  .left { transform: translateX(-80px) rotateY(-90deg); }
-  .top { transform: translateY(-80px) rotateX(90deg); }
-
-  .cubeImage {
-    width: 60px;
-    height: 60px;
-  }
-
-  .iconTitle {
-    padding: 15px;
+  .cardDescription {
+    font-size: 0.8rem;
   }
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 
@@ -9,15 +8,20 @@ import iconMaestro from './icons/icon-maestro.png';
 import iconArranger from './icons/icon-arranger.png';
 import iconStage from './icons/icon-stage.png';
 
-interface SiteMap {
+interface Product {
   title: string;
   link: string;
-  image: string; 
-  description: React.ReactNode;
+  image: string;
+  description: string;
   category: string;
 }
 
-const categoriesDict = {
+interface Category {
+  title: string;
+  description: string;
+}
+
+const categories: Record<string, Category> = {
   core: {
     title: 'Core Products',
     description: 'The building blocks of the Overture genomics data platform.'
@@ -36,135 +40,62 @@ const categoriesDict = {
   },
 };
 
-const products: SiteMap[] = [
-  {
-    title: 'Song Docs',
-    link: '/docs/Song',
-    image: iconSong,
-    description: 'Metadata Management',
-    category: 'core',
-  },
-  {
-    title: 'Score Docs',
-    link: '/docs/Score',
-    image: iconScore,
-    description: 'File Data Transfers',
-    category: 'core',
-  },
-  {
-    title: 'Maestro Docs',
-    link: '/docs/Maestro',
-    image: iconMaestro,
-    description: 'Metadata Indexing',
-    category: 'core',
-  },
-  {
-    title: 'Arranger Docs',
-    link: '/docs/Arranger',
-    image: iconArranger,
-    description: 'Search API and UI generation',
-    category: 'core',
-  },
-  {
-    title: 'Stage Docs',
-    link: '/docs/Stage',
-    image: iconStage,
-    description: 'Front-end Data Portal UI',
-    category: 'core',
-  },
-  {
-    title: 'Lectern Docs',
-    link: '/docs/Lectern',
-    image: iconStage,
-    description: 'Tabular Data Schema Manager',
-    category: 'development',
-  },
-  {
-    title: 'Lyric Docs',
-    link: '/docs/Lyric',
-    image: iconStage,
-    description: 'Tabular Data Submission System',
-    category: 'development',
-  },
-  {
-    title: 'Deployment Docs',
-    link: '/docs/Lyric',
-    image: iconStage,
-    description: 'Server Deployment',
-    category: 'platform',
-  },
-  {
-    title: 'QuickStart Docs',
-    link: '/docs/Lyric',
-    image: iconStage,
-    description: 'Overture QuickStart',
-    category: 'platform',
-  },
-  {
-    title: 'Bridge Docs',
-    link: '/docs/Supplemental-Services/Bridge',
-    image: iconStage,
-    description: 'Documentation Site Generation',
-    category: 'misc',
-  },
-  {
-    title: 'Conductor Docs',
-    link: '/docs/Supplemental-Services/Conductor',
-    image: iconStage,
-    description: 'Software Setup Automation',
-    category: 'misc',
-  },
+const products: Product[] = [
+  { title: 'Song', link: '/docs/Song', image: iconSong, description: 'Metadata Management', category: 'core' },
+  { title: 'Score', link: '/docs/Score', image: iconScore, description: 'File Data Transfers', category: 'core' },
+  { title: 'Maestro', link: '/docs/Maestro', image: iconMaestro, description: 'Metadata Indexing', category: 'core' },
+  { title: 'Arranger', link: '/docs/Arranger', image: iconArranger, description: 'Search API and UI generation', category: 'core' },
+  { title: 'Stage', link: '/docs/Stage', image: iconStage, description: 'Front-end Data Portal UI', category: 'core' },
+  { title: 'Lectern', link: '/docs/Lectern', image: iconStage, description: 'Tabular Data Schema Manager', category: 'development' },
+  { title: 'Lyric', link: '/docs/Lyric', image: iconStage, description: 'Tabular Data Submission System', category: 'development' },
+  { title: 'Deployment', link: '/docs/Deployment', image: iconStage, description: 'Server Deployment', category: 'platform' },
+  { title: 'QuickStart', link: '/docs/QuickStart', image: iconStage, description: 'Overture QuickStart', category: 'platform' },
+  { title: 'Bridge', link: '/docs/Supplemental-Services/Bridge', image: iconStage, description: 'Documentation Site Generation', category: 'misc' },
+  { title: 'Conductor', link: '/docs/Supplemental-Services/Conductor', image: iconStage, description: 'Software Setup Automation', category: 'misc' },
 ];
 
-function groupByCategory(items) {
-  return items.reduce((acc, item) => {
-    (acc[item.category] = acc[item.category] || []).push(item);
-    return acc;
-  }, {});
-}
+const Card: React.FC<Product> = ({ title, description, link, image }) => (
+  <a href={link} className={styles.card}>
+    <img src={image} alt={`${title} icon`} className={styles.cardImage} />
+    <Heading as="h4" className={styles.cardTitle}>{title}</Heading>
+    <p className={styles.cardDescription}>{description}</p>
+  </a>
+);
 
-function CubeCard({ title, description, link, image }) {
-  return (
-    <div className={styles.cubeContainer}>
-      <a href={link}>
-        <div className={styles.cube}>
-          <div className={clsx(styles.face, styles.front, styles.iconTitle)}>
-            <img src={image} alt={`${title} icon`} className={styles.cubeImage} />
-            <Heading as="h4">{description}</Heading>
-          </div>
-          <div className={clsx(styles.face, styles.back)}></div>
-          <div className={clsx(styles.face, styles.right)}></div>
-          <div className={clsx(styles.face, styles.left)}>
-            <Heading as="h2" className={styles.serviceTitle}>{title}</Heading>
-          </div>
-          <div className={clsx(styles.face, styles.top)}></div>
-          <div className={clsx(styles.face, styles.bottom)}></div>
-        </div>
-      </a>
+const CategorySection: React.FC<{ category: string, items: Product[], isFullWidth: boolean }> = ({ category, items, isFullWidth }) => (
+  <div className={`${styles.categorySection} ${isFullWidth ? styles.fullWidth : ''}`}>
+    <Heading as="h2" className={styles.categoryHeader}>{categories[category].title}</Heading>
+    <p className={styles.categorySubheader}>{categories[category].description}</p>
+    <div className={styles.cardGrid}>
+      {items.map((props, idx) => (
+        <Card key={idx} {...props} />
+      ))}
     </div>
-  );
-}
+  </div>
+);
 
-export default function SiteMap() {
-  const categorizedSiteMap = groupByCategory(products);
+const SiteMap: React.FC = () => {
+  const categorizedProducts = products.reduce((acc, product) => {
+    (acc[product.category] = acc[product.category] || []).push(product);
+    return acc;
+  }, {} as Record<string, Product[]>);
 
   return (
-    <section className={styles.cards}>
+    <section className={styles.siteMap}>
       <div className={styles.container}>
         <div className={styles.categoryWrapper}>
-          {Object.entries(categorizedSiteMap).map(([category, items]) => (
-            <div key={category} className={clsx(styles.categorySection, items.length < 3 && styles.smallCategory)}>
-              <Heading as="h2" className={styles.categoryHeader}>{categoriesDict[category].title}</Heading>
-              <Heading as="h4" className={styles.categorySubheader}>{categoriesDict[category].description}</Heading>
-              <div className={styles.cubeRow}>
-                {items.map((props, idx) => (
-                  <CubeCard key={idx} {...props} />
-                ))}
-              </div>
-            </div>
+          {Object.entries(categorizedProducts).map(([category, items]) => (
+            <CategorySection 
+              key={category} 
+              category={category} 
+              items={items} 
+              isFullWidth={category === 'core' || items.length > 3}
+            />
           ))}
         </div>
       </div>
     </section>
   );
-}
+};
+
+export default SiteMap;
