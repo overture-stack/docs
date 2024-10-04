@@ -41,17 +41,17 @@ const categories: Record<string, Category> = {
 };
 
 const products: Product[] = [
-  { title: 'Song', link: '/docs/Song', image: iconSong, description: 'Metadata Management', category: 'core' },
-  { title: 'Score', link: '/docs/Score', image: iconScore, description: 'File Data Transfers', category: 'core' },
-  { title: 'Maestro', link: '/docs/Maestro', image: iconMaestro, description: 'Metadata Indexing', category: 'core' },
-  { title: 'Arranger', link: '/docs/Arranger', image: iconArranger, description: 'Search API and UI generation', category: 'core' },
-  { title: 'Stage', link: '/docs/Stage', image: iconStage, description: 'Front-end Data Portal UI', category: 'core' },
-  { title: 'Lectern', link: '/docs/Lectern', image: iconStage, description: 'Tabular Data Schema Manager', category: 'development' },
-  { title: 'Lyric', link: '/docs/Lyric', image: iconStage, description: 'Tabular Data Submission System', category: 'development' },
-  { title: 'Deployment', link: '/docs/Deployment', image: iconStage, description: 'Server Deployment', category: 'platform' },
-  { title: 'QuickStart', link: '/docs/QuickStart', image: iconStage, description: 'Overture QuickStart', category: 'platform' },
-  { title: 'Bridge', link: '/docs/Supplemental-Services/Bridge', image: iconStage, description: 'Documentation Site Generation', category: 'misc' },
-  { title: 'Conductor', link: '/docs/Supplemental-Services/Conductor', image: iconStage, description: 'Software Setup Automation', category: 'misc' },
+  { title: 'Song', link: 'docs/Core-Software/Song', image: iconSong, description: 'Metadata Management', category: 'core' },
+  { title: 'Score', link: '/docs/Core-Software/Score', image: iconScore, description: 'File Data Transfers', category: 'core' },
+  { title: 'Maestro', link: '/docs/Core-Software/Maestro', image: iconMaestro, description: 'Metadata Indexing', category: 'core' },
+  { title: 'Arranger', link: '/docs/Core-Software/Arranger', image: iconArranger, description: 'Search API and UI generation', category: 'core' },
+  { title: 'Stage', link: '/docs/Core-Software/Stage', image: iconStage, description: 'Front-end Data Portal UI', category: 'core' },
+  { title: 'Lectern', link: '/docs/Core-Software/Lectern', image: iconStage, description: 'Tabular Data Schema Manager', category: 'development' },
+  { title: 'Lyric', link: '/docs/Core-Software/Lyric', image: iconStage, description: 'Tabular Data Submission System', category: 'development' },
+  { title: 'Deployment', link: '/docs/Core-Software/Deployment', image: iconStage, description: 'Server Deployment', category: 'platform' },
+  { title: 'QuickStart', link: '/docs/Core-Software/QuickStart', image: iconStage, description: 'Overture QuickStart', category: 'platform' },
+  { title: 'Bridge', link: '/docs/Core-Software/Supplemental-Services/Bridge', image: iconStage, description: 'Documentation Site Generation', category: 'misc' },
+  { title: 'Conductor', link: '/docs/Core-Software/Supplemental-Services/Conductor', image: iconStage, description: 'Software Setup Automation', category: 'misc' },
 ];
 
 const Card: React.FC<Product> = ({ title, description, link, image }) => (
