@@ -33,6 +33,7 @@
   margin-bottom: 0.5rem;
   font-size: 2rem;
   font-weight: 700;
+  text-align: left; /* Left-align category header */
 }
 
 .categorySubheader {
@@ -40,12 +41,14 @@
   margin-bottom: 1.5rem;
   font-size: 1.1rem;
   opacity: 0.8;
+  text-align: left; 
 }
 
 .cardGrid {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  justify-content: flex-start;
 }
 
 .card {
@@ -60,6 +63,7 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-decoration: none;
   background-color: var(--category-card-color);
+  text-align: center;
 }
 
 .card:hover, .card:focus {
@@ -79,7 +83,8 @@
   font-size: 1.2rem;
   font-weight: 600;
   text-align: center;
-  color: var(--category-title-color)
+  color: var(--category-title-color);
+  margin-bottom: 0.5rem;
 }
 
 .cardDescription {

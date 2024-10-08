@@ -11,7 +11,7 @@ import iconStage from './icons/icon-stage.png';
 interface Product {
   title: string;
   link: string;
-  image: string;
+  image?: string;
   description: string;
   category: string;
 }
@@ -22,41 +22,49 @@ interface Category {
 }
 
 const categories: Record<string, Category> = {
+  platform: {
+    title: 'Platform Guides',
+    description: 'Bringing it all together into one cohesive platform'
+  },
   core: {
-    title: 'Core Products',
-    description: 'The building blocks of the Overture genomics data platform.'
+    title: 'Developer Documentation',
+    description: 'Using our software microservices in a development context'
   },
   development: {
     title: 'Under Development',
-    description: 'New components not quite ready for production.'
-  },
-  platform: {
-    title: 'Platform Documentation',
-    description: 'Bringing it all together into one cohesive platform.'
+    description: 'New components not quite ready for production'
   },
   misc: {
     title: 'Supporting Software',
-    description: 'Miscellaneous software packages created to support Overture development.'
+    description: 'Supporting tools in the Overture project'
+  },
+  standards: {
+    title: 'Documentation Standards',
+    description: 'Fundamental principles that form the foundation of our documentation and development practices'
   },
 };
 
 const products: Product[] = [
-  { title: 'Song', link: 'docs/core-software/song/overview', image: iconSong, description: 'Metadata Management', category: 'core' },
-  { title: 'Score', link: '/docs/core-software/score/overview', image: iconScore, description: 'File Data Transfers', category: 'core' },
-  { title: 'Maestro', link: '/docs/core-software/maestro/overview', image: iconMaestro, description: 'Metadata Indexing', category: 'core' },
-  { title: 'Arranger', link: '/docs/core-software/arranger/overview', image: iconArranger, description: 'Search API and UI generation', category: 'core' },
-  { title: 'Stage', link: '/docs/core-software/stage/overview', image: iconStage, description: 'Front-end Data Portal UI', category: 'core' },
-  { title: 'Lectern', link: '/docs/core-software/lectern/overview', image: iconStage, description: 'Tabular Data Schema Manager', category: 'development' },
-  { title: 'Lyric', link: '/docs/core-software/lyric/overview', image: iconStage, description: 'Tabular Data Submission System', category: 'development' },
-  { title: 'Deployment', link: '/docs/other-software/Bridge', image: iconStage, description: 'Server Deployment', category: 'platform' },
-  { title: 'QuickStart', link: '/docs/other-software/Bridge', image: iconStage, description: 'Overture QuickStart', category: 'platform' },
-  { title: 'Bridge', link: '/docs/other-software/Bridge', image: iconStage, description: 'Documentation Site Generation', category: 'misc' },
-  { title: 'Conductor', link: '/docs/other-software/Conductor', image: iconStage, description: 'Software Setup Automation', category: 'misc' },
+  { title: 'Deployment Guides', link: '/guides/deployment', description: 'Launching your Overture platform into production', category: 'platform' },
+  { title: 'Administration Guides', link: '/docs/other-software/Bridge', description: 'Managing and customizing Overture Data Platforms', category: 'platform' },
+  { title: 'User Guides', link: '/docs/other-software/Bridge', description: 'Using Overture Data Platforms', category: 'platform' },
+  { title: 'Song', link: 'docs/core-software/song/overview', image: iconSong, description: 'Metadata Management Service', category: 'core' },
+  { title: 'Score', link: '/docs/core-software/score/overview', image: iconScore, description: 'File Transfer Service', category: 'core' },
+  { title: 'Maestro', link: '/docs/core-software/maestro/overview', image: iconMaestro, description: 'Metadata Indexing Service', category: 'core' },
+  { title: 'Arranger', link: '/docs/core-software/arranger/overview', image: iconArranger, description: 'Search API', category: 'core' },
+  { title: 'Stage', link: '/docs/core-software/stage/overview', image: iconStage, description: 'Web Portal Scaffolding', category: 'core' },
+  { title: 'Lectern', link: '/docs/core-software/lectern/overview', description: 'Tabular Data Schema Management Service', category: 'development' },
+  { title: 'Lyric', link: '/docs/core-software/lyric/overview', description: 'Tabular Data Submission Service', category: 'development' },
+  { title: 'Bridge', link: '/docs/other-software/Bridge', description: 'Documentation Site Generation', category: 'misc' },
+  { title: 'Conductor', link: '/docs/other-software/Conductor', description: 'Software Setup Automation', category: 'misc' },
+  { title: 'Documenting Software', link: '/docs/Standards/Software/', description: 'Software Setup Automation', category: 'standards' },
+  { title: 'Documenting APIs', link: '/docs/Standards/api/', description: 'Software Setup Automation', category: 'standards' },
+  { title: 'Documenting Code', link: '/docs/Standards/code/', description: 'Software Setup Automation', category: 'standards' },
 ];
 
 const Card: React.FC<Product> = ({ title, description, link, image }) => (
   <a href={link} className={styles.card}>
-    <img src={image} alt={`${title} icon`} className={styles.cardImage} />
+    {image && <img src={image} alt={`${title} icon`} className={styles.cardImage} />}
     <Heading as="h4" className={styles.cardTitle}>{title}</Heading>
     <p className={styles.cardDescription}>{description}</p>
   </a>
@@ -89,7 +97,7 @@ const SiteMap: React.FC = () => {
               key={category} 
               category={category} 
               items={items} 
-              isFullWidth={category === 'core' || items.length > 3}
+              isFullWidth={category === 'core' || category === 'platform' || items.length > 3}
             />
           ))}
         </div>
