@@ -113,7 +113,7 @@ const config: Config = {
           items: [
             {
               label: 'Developer Documentation',
-              to: '/docs/Introduction',
+              to: '/docs/getting-started',
             },
             {
               label: 'Product Documentation',

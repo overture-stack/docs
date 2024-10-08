@@ -1,7 +1,0 @@
-repo=.
-repo=submodules/arranger
-repo=submodules/maestro
-repo=submodules/score
-repo=submodules/song
-repo=submodule/stage
-serial=True
