@@ -3,8 +3,8 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'OvertureDev',
-  tagline: 'Gathering all our developer documentation into one organized, easy-to-read site',
+  title: 'Overture Docs',
+  tagline: 'All our documentation in one unified, easy-to-read site',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -31,6 +31,15 @@ const config: Config = {
 
   plugins: [
     './docsPlugin.ts',
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'guides',
+        path: 'guides',
+        routeBasePath: 'guides',
+        sidebarPath: require.resolve('./guidesSidebars.js'),
+      },
+    ],
   ],
 
   markdown: {
@@ -81,11 +90,12 @@ const config: Config = {
         src: 'img/Overture-logo.png',
       },
       items: [
+        {to: '/guides/getting-started', label: 'Platform Guides', position: 'left'},
         {
           type: 'docSidebar',
           sidebarId: 'docsSidebar',
           position: 'left',
-          label: 'Documentation',
+          label: 'Developer Documentation',
         },
         {to: '/blog', label: 'Blog', position: 'left'},
         {

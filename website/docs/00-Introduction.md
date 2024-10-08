@@ -41,7 +41,7 @@ Our documentation is organized to help you find the information you need quickly
 Keep up with the latest developments and connect with the Overture community:
 
 - [GitHub Organization](https://github.com/overture-stack)
-- [Slack]()
+- Slack
 - [Blog](https://www.overture.bio/blog)
 
 ## Contributing
