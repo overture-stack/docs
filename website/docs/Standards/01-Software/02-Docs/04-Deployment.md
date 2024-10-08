@@ -1,8 +1,5 @@
----
-sidebar_label: Deployment
----
 
-# `deployment.md`
+# Deployment (WIP)
 
 Covers deployment environments, processes, and configuration management.
 

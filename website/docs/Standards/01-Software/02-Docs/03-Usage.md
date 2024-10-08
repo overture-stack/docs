@@ -1,8 +1,4 @@
----
-sidebar_label: Usage
----
-
-# `usage.md`
+# Usage (WIP)
 
 Covers common usage of the software, allowing developers to see how the software can be used and tested.
 
