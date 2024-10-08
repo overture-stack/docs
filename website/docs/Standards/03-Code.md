@@ -1,8 +1,4 @@
----
-sidebar_label: 1. Documenting Code
----
-
-# Code Documentation
+# Documenting Code
 
 Guidelines for documenting code effectively.
 

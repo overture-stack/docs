@@ -1,8 +1,4 @@
----
-sidebar_label: 2. Documenting APIs
----
-
-# API Documentation
+# Documenting APIs
 
 Expectations and best practices for API documentation. 
 

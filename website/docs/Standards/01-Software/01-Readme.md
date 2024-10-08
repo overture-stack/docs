@@ -1,22 +1,6 @@
----
-sidebar_label: ReadMe
----
+# ReadMe
 
-# `ReadMe.md`
-
-All Overture repositories have a `README.md` file stored in the root directory of the project. This standardized README template is broken down as follows:
-
-1. **Project Overview**: High-level summary of what the project does, its relationship to the broader Overture platform, and any relevant software components or related projects.
-
-2. **Repository Structure**: An explanation of the repository's structure, using a diagram to illustrate the organization of directories and files (see https://tree.nathanfriend.io/).
-
-3. **Local Development**: Information on development tools, system dependencies, setup instructions, and links to relevant information not suitable for the conciseness of a readme but needed for local development.
-
-4. **Documentation**: Links our more detailed developer docs, platform guides, and other resources to help users understand how to work with and configure the software.
-
-5. **Support & Contribution**: Encourages users to get involved by reporting issues, making contributions, and connecting on the Overture Slack channel.
-
-6. **Related Software**: A table about related Overture components and their descriptions.
+All Overture repositories have a `README.md` file stored in the root directory of the project. 
 
 <details>
   <summary><b>Click here for our templated readme.md</b></summary>
@@ -104,3 +88,17 @@ The Overture Platform includes the following Overture Components:
 ``````
 
 </details>
+
+This standardized README template is broken down as follows:
+
+1. **Project Overview**: High-level summary of what the project does, its relationship to the broader Overture platform, and any relevant software components or related projects.
+
+2. **Repository Structure**: An explanation of the repository's structure, using a diagram to illustrate the organization of directories and files (see https://tree.nathanfriend.io/).
+
+3. **Local Development**: Information on development tools, system dependencies, setup instructions, and links to relevant information not suitable for the conciseness of a readme but needed for local development.
+
+4. **Documentation**: Links our more detailed developer docs, platform guides, and other resources to help users understand how to work with and configure the software.
+
+5. **Support & Contribution**: Encourages users to get involved by reporting issues, making contributions, and connecting on the Overture Slack channel.
+
+6. **Related Software**: A table about related Overture components and their descriptions.
