@@ -246,7 +246,7 @@ Setting up your data portal involves configuring and running Elasticsearch, Maes
     </details>
 
     :::info Configuring Arranger
-    If you want to learn more about configuring Arranger see our administration guide on [customizing the search portal](/administration-guides/customizing-the-data-portal).
+    If you want to learn more about configuring Arranger see our administration guide on [customizing the search portal](../02-administration-guides/03-customizing-the-data-portal.md).
     :::
 
 ## Setting up Stage
