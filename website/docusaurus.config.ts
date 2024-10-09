@@ -159,7 +159,7 @@ const config: Config = {
       appId: 'E70KV3D0W2',
       // Public API key
       apiKey: '296266a1c98ef42e60e0d9cb2f0c48a7',
-      indexName: 'OvertureDev',
+      indexName: 'overtureDev',
     },
   } satisfies Preset.ThemeConfig,
 };
