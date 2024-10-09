@@ -3,8 +3,8 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'Overture Docs',
-  tagline: 'All our documentation in one unified, easy-to-read site',
+  title: 'Overture Dev',
+  tagline: 'Docs for Developers & Informaticians',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -95,7 +95,7 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'docsSidebar',
           position: 'left',
-          label: 'Dev Docs',
+          label: 'Documentation',
         },
         {to: '/blog', label: 'Blog', position: 'left'},
         {

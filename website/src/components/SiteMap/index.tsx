@@ -45,17 +45,17 @@ const categories: Record<string, Category> = {
 };
 
 const products: Product[] = [
-  { title: 'Deployment Guides', link: '/guides/deployment', description: 'Launching your Overture platform into production', category: 'platform' },
-  { title: 'Administration Guides', link: '/docs/other-software/Bridge', description: 'Managing and customizing Overture Data Platforms', category: 'platform' },
-  { title: 'User Guides', link: '/docs/other-software/Bridge', description: 'Using Overture Data Platforms', category: 'platform' },
+  { title: 'Deployment Guides', link: '/guides/deployment-guide/', description: 'Launching your Overture platform into production', category: 'platform' },
+  { title: 'Administration Guides', link: '/guides/administration-guides/', description: 'Managing and customizing Overture Data Platforms', category: 'platform' },
+  { title: 'User Guides', link: '/guides/user-guides/', description: 'Using Overture Data Platforms', category: 'platform' },
   { title: 'Song', link: 'docs/core-software/song/overview', image: iconSong, description: 'Metadata Management Service', category: 'core' },
   { title: 'Score', link: '/docs/core-software/score/overview', image: iconScore, description: 'File Transfer Service', category: 'core' },
   { title: 'Maestro', link: '/docs/core-software/maestro/overview', image: iconMaestro, description: 'Metadata Indexing Service', category: 'core' },
   { title: 'Arranger', link: '/docs/core-software/arranger/overview', image: iconArranger, description: 'Search API', category: 'core' },
   { title: 'Stage', link: '/docs/core-software/stage/overview', image: iconStage, description: 'Web Portal Scaffolding', category: 'core' },
-  { title: 'Lectern', link: '/docs/core-software/lectern/overview', description: 'Tabular Data Schema Management Service', category: 'development' },
+  { title: 'Lectern', link: '/docs/core-software/lectern/overview', description: 'Schema Management Service', category: 'development' },
   { title: 'Lyric', link: '/docs/core-software/lyric/overview', description: 'Tabular Data Submission Service', category: 'development' },
-  { title: 'Bridge', link: '/docs/other-software/Bridge', description: 'Documentation Site Generation', category: 'misc' },
+  { title: 'Bridge', link: '/docs/other-software/Bridge', description: 'Documentation Site', category: 'misc' },
   { title: 'Conductor', link: '/docs/other-software/Conductor', description: 'Software Setup Automation', category: 'misc' },
   { title: 'Documenting Software', link: '/docs/Standards/Software/', description: 'Software Setup Automation', category: 'standards' },
   { title: 'Documenting APIs', link: '/docs/Standards/api/', description: 'Software Setup Automation', category: 'standards' },
