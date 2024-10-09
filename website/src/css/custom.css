@@ -45,5 +45,5 @@
   --category-title-color: #F2F5F8;
   --category-category-color: #1B1B1D;
   --category-card-color: #323845;
-  --category-block-shadow: none;
+  --category-block-shadow: 0px 0px 0px 2px #323845;
 }
