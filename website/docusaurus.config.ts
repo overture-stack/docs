@@ -90,7 +90,7 @@ const config: Config = {
         src: 'img/Overture-logo.png',
       },
       items: [
-        {to: '/guides/getting-started', label: 'Platform Guides', position: 'left'},
+        {to: '/guides/getting-started', label: 'Guides', position: 'left'},
         {
           type: 'docSidebar',
           sidebarId: 'docsSidebar',
