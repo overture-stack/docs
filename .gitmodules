@@ -13,3 +13,6 @@
 [submodule "submodules/maestro"]
 	path = submodules/maestro
 	url = https://github.com/overture-stack/maestro.git
+[submodule "submodules/.github"]
+	path = submodules/.github
+	url = https://github.com/overture-stack/.github.git

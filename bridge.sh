@@ -7,3 +7,7 @@ ln -s ../../../submodules/score/docs/ 02-score
 ln -s ../../../submodules/maestro/docs/ 03-maestro
 ln -s ../../../submodules/arranger/docs/ 04-arranger
 ln -s ../../../submodules/stage/docs/ 05-stage
+
+ln -s ../../submodules/.github/standards 03-Standards
+
+
