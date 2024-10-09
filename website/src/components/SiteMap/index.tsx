@@ -36,18 +36,18 @@ const categories: Record<string, Category> = {
   },
   misc: {
     title: 'Supporting Software',
-    description: 'Supporting tools in the Overture project'
+    description: 'Supporting tools within the Overture project'
   },
   standards: {
     title: 'Documentation Standards',
-    description: 'Fundamental principles that form the foundation of our documentation and development practices'
+    description: 'Forming the foundation of documentation and development practice'
   },
 };
 
 const products: Product[] = [
-  { title: 'Deployment Guides', link: '/guides/deployment-guide/', description: 'Launching your Overture platform into production', category: 'platform' },
-  { title: 'Administration Guides', link: '/guides/administration-guides/', description: 'Managing and customizing Overture Data Platforms', category: 'platform' },
-  { title: 'User Guides', link: '/guides/user-guides/', description: 'Using Overture Data Platforms', category: 'platform' },
+  { title: 'Deployment Guides', link: '/guides/deployment-guide/', description: 'Deploying to Production', category: 'platform' },
+  { title: 'Administration Guides', link: '/guides/administration-guides/', description: 'Management and Customization', category: 'platform' },
+  { title: 'User Guides', link: '/guides/user-guides/', description: 'Interacting with the Platorm', category: 'platform' },
   { title: 'Song', link: 'docs/core-software/song/overview', image: iconSong, description: 'Metadata Management Service', category: 'core' },
   { title: 'Score', link: '/docs/core-software/score/overview', image: iconScore, description: 'File Transfer Service', category: 'core' },
   { title: 'Maestro', link: '/docs/core-software/maestro/overview', image: iconMaestro, description: 'Metadata Indexing Service', category: 'core' },
@@ -57,12 +57,13 @@ const products: Product[] = [
   { title: 'Lyric', link: '/docs/core-software/lyric/overview', description: 'Tabular Data Submission Service', category: 'development' },
   { title: 'Bridge', link: '/docs/other-software/Bridge', description: 'Documentation Site', category: 'misc' },
   { title: 'Conductor', link: '/docs/other-software/Conductor', description: 'Software Setup Automation', category: 'misc' },
-  { title: 'Documenting Software', link: '/docs/Standards/Software/', description: 'Software Setup Automation', category: 'standards' },
-  { title: 'Documenting APIs', link: '/docs/Standards/api/', description: 'Software Setup Automation', category: 'standards' },
-  { title: 'Documenting Code', link: '/docs/Standards/code/', description: 'Software Setup Automation', category: 'standards' },
+  { title: 'Documenting Projects', link: '/docs/Standards/github', description: 'Organization Standards', category: 'standards' },
+  { title: 'Documenting Software', link: '/docs/Standards/Software/', description: 'Software Standards', category: 'standards' },
+  { title: 'Documenting APIs', link: '/docs/Standards/api/', description: 'API Standards', category: 'standards' },
+  { title: 'Documenting Code', link: '/docs/Standards/code/', description: 'Coding Standards', category: 'standards' },
 ];
 
-const Card: React.FC<Product> = ({ title, description, link, image }) => (
+const Card = ({ title, description, link, image }) => (
   <a href={link} className={styles.card}>
     {image && <img src={image} alt={`${title} icon`} className={styles.cardImage} />}
     <Heading as="h4" className={styles.cardTitle}>{title}</Heading>
@@ -70,8 +71,8 @@ const Card: React.FC<Product> = ({ title, description, link, image }) => (
   </a>
 );
 
-const CategorySection: React.FC<{ category: string, items: Product[], isFullWidth: boolean }> = ({ category, items, isFullWidth }) => (
-  <div className={`${styles.categorySection} ${isFullWidth ? styles.fullWidth : ''}`}>
+const CategorySection = ({ category, items }) => (
+  <div className={`${styles.categorySection} ${styles[category]}`}>
     <Heading as="h2" className={styles.categoryHeader}>{categories[category].title}</Heading>
     <p className={styles.categorySubheader}>{categories[category].description}</p>
     <div className={styles.cardGrid}>
@@ -82,24 +83,29 @@ const CategorySection: React.FC<{ category: string, items: Product[], isFullWidt
   </div>
 );
 
-const SiteMap: React.FC = () => {
+const SiteMap = () => {
   const categorizedProducts = products.reduce((acc, product) => {
     (acc[product.category] = acc[product.category] || []).push(product);
     return acc;
-  }, {} as Record<string, Product[]>);
+  }, {});
+
+  const rightColumnCategories = ['platform','misc','standards'];
+  const leftColumnCategories = [ 'core','development'];
 
   return (
     <section className={styles.siteMap}>
       <div className={styles.container}>
-        <div className={styles.categoryWrapper}>
-          {Object.entries(categorizedProducts).map(([category, items]) => (
-            <CategorySection 
-              key={category} 
-              category={category} 
-              items={items} 
-              isFullWidth={category === 'core' || category === 'platform' || items.length > 3}
-            />
-          ))}
+        <div className={styles.mosaicLayout}>
+          <div className={styles.leftColumn}>
+            {leftColumnCategories.map(category => (
+              <CategorySection key={category} category={category} items={categorizedProducts[category] || []} />
+            ))}
+          </div>
+          <div className={styles.rightColumn}>
+            {rightColumnCategories.map(category => (
+              <CategorySection key={category} category={category} items={categorizedProducts[category] || []} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

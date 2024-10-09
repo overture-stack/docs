@@ -35,12 +35,6 @@
   }
 }
 
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .searchBarContainer {
   margin-top: 2rem;
   width: 100%;
