@@ -4,10 +4,10 @@ Welcome to the Overture platform guides. Here you'll find comprehensive informat
 
 Our guides currently cover the following key areas:
 
-- **[Deployment](./01-deployment-guide/)**: Step-by-step instructions for deploying our platform from start to finish.
-- **[Administration](./02-administration-guides/)**: Detailed guides for customizing and managing your platform.
-- **[Data Submission](./03-user-guides/01-cli-submissions.md)**: Instructions for submitting data to the platform.
-- **[Data Download](./03-user-guides/02-cli-downloads.md)**: Guidelines for retrieving data from the platform.
+- **[Deployment](./deployment-guide/)**: Step-by-step instructions for deploying our platform from start to finish.
+- **[Administration](./administration-guides/)**: Detailed guides for customizing and managing your platform.
+- **[Data Submission](./user-guides/cli-submissions)**: Instructions for submitting data to the platform.
+- **[Data Download](./user-guides/cli-downloads)**: Guidelines for retrieving data from the platform.
 
 :::tip Help us make our guides better
 If you can't find what you're looking for please reach out to us on our Slack channel linked on the top right of your screen or by email at contact@overture.bio

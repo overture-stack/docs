@@ -1,4 +1,4 @@
-# Data Management and Storage
+# Data Management & Storage
 
 Song, Score, and the services they depend on (Postgres, MinIO, and Kafka) will be set up next. These Overture services will manage, track, and store all our data on the backend. 
 

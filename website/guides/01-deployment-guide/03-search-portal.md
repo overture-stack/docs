@@ -44,7 +44,7 @@ Setting up your data portal involves configuring and running Elasticsearch, Maes
    Download and place the following **[quickstart_index_template.json](https://raw.githubusercontent.com/overture-stack/composer/develop/configurationFiles/elasticsearchConfigs/quickstart_index_template.json)** within your `elasticsearchConfigs` folder. This file specifies settings, mappings, and configurations that will be applied automatically to new indices that match the template's pattern
 
     :::info Learn More
-    If you'd like to learn more about creating an index mapping for your own data see our [administration guide on configuring the index mapping](/documentation/guides/administration/indexmapping/).
+    If you'd like to learn more about creating an index mapping for your own data see our [administration guide on configuring the index mapping](/guides/administration-guides/index-mappings).
     :::
 
 3. **Initialize your index:** Run the following scripts to set up your Elasticsearch cluster
@@ -246,7 +246,7 @@ Setting up your data portal involves configuring and running Elasticsearch, Maes
     </details>
 
     :::info Configuring Arranger
-    If you want to learn more about configuring Arranger see our administration guide on [customizing the search portal](/).
+    If you want to learn more about configuring Arranger see our administration guide on [customizing the search portal](/administration-guides/customizing-the-data-portal).
     :::
 
 ## Setting up Stage
@@ -360,5 +360,5 @@ API Keys are brokered by Keycloak and accessible when logged in to the Stage UI 
     ```
 
     :::tip Next Steps
-    Now that you have the end-to-end portal setup we recommend you check out our [administration guide on updating the data model](/).
+    Now that you have the end-to-end portal setup we recommend you check out our [administration guide on updating the data model](/guides/administration-guides/updating-the-data-model).
     :::
