@@ -1,7 +1,7 @@
 ---
 slug: long-blog-post
-title: Long Blog Post
-authors: yangshun
+title: Overture Blog
+authors: justinrichardsson
 tags: [hello, docusaurus]
 ---
 

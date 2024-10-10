@@ -3,7 +3,7 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'Overture Dev',
+  title: 'OvertureDev',
   tagline: 'Docs for Developers & Informaticians',
   favicon: 'img/favicon.ico',
 
@@ -37,8 +37,26 @@ const config: Config = {
         id: 'guides',
         path: 'guides',
         routeBasePath: 'guides',
-        sidebarPath: require.resolve('./guidesSidebars.js'),
+        sidebarPath: require.resolve('./guidesSidebars.ts'),
       },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+    {
+      id: 'community',
+      path: 'community',
+      routeBasePath: 'community',
+      sidebarPath: require.resolve('./communitySidebars.ts'),
+    },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+    {
+      id: 'casestudies',
+      path: 'casestudies',
+      routeBasePath: 'casestudies',
+      sidebarPath: require.resolve('./casestudiesSidebars.ts'),
+    },
     ],
   ],
 
@@ -58,13 +76,13 @@ const config: Config = {
           editUrl:
             'https://github.com/overture-stack/OvertureDev',
         },
+        // Please change this to your repo.
         blog: {
           showReadingTime: true,
           feedOptions: {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/overture-stack/tree/main/packages/create-docusaurus/templates/shared/',
@@ -97,6 +115,8 @@ const config: Config = {
           position: 'left',
           label: 'Documentation',
         },
+        {to: '/casestudies/introduction', label: 'Case Studies', position: 'left'},
+        {to: '/community/support', label: 'Community', position: 'left'},
         {to: '/blog', label: 'Blog', position: 'left'},
         {
           href: 'https://github.com/overture-stack',
@@ -112,26 +132,26 @@ const config: Config = {
           title: 'Docs',
           items: [
             {
+              label: 'Platform Guides',
+              to: 'https://www.overture.bio/documentation/guides/',
+            },
+            {
               label: 'Developer Documentation',
               to: '/docs/getting-started',
             },
-            {
-              label: 'Product Documentation',
-              to: 'https://www.overture.bio/getting-started/',
-            },
-            {
-              label: 'Platform Guides',
-              to: 'https://www.overture.bio/documentation/guides/',
-            }
           ],
         },
         {
           title: 'Community',
           items: [
             {
-              label: 'Slack',
-              href: 'https://join.slack.com/t/overture-bio/shared_invite/zt-21tdumtdh-9fP1TFeLepK4~Lc377rOYw',
-            }
+              label: 'Support',
+              href: '/community/support',
+            },
+            {
+              label: 'Contributing',
+              href: '/community/contribution',
+            },
           ],
         },
         {
@@ -140,6 +160,10 @@ const config: Config = {
             {
               label: 'Blog',
               to: '/blog',
+            },
+            {
+              label: 'Case Studies',
+              href: '/casestudies/introduction',
             },
             {
               label: 'GitHub',

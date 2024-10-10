@@ -16,9 +16,6 @@
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 
-  /* Cube face color */
-  --cube-face-front: #04518c4e;
-
   /* Front Page category blocks */
   --category-title-color: #282A35;
   --category-category-color: #f5f5f5;
@@ -37,13 +34,10 @@
   --ifm-color-primary-lightest: #0669b6;
   --ifm-background-color: #585858;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-  
-  /* Cube face color for dark mode */
-  --cube-face-front: #04518c4e;
 
   /* Front Page category blocks */
   --category-title-color: #F2F5F8;
   --category-category-color: #1B1B1D;
-  --category-card-color: #323845;
+  --category-card-color: #4e5055;
   --category-block-shadow: 0px 0px 0px 2px #323845;
 }

@@ -1,23 +1,40 @@
-yangshun:
-  name: Yangshun Tay
-  title: Front End Engineer @ Facebook
-  url: https://github.com/yangshun
-  image_url: https://github.com/yangshun.png
+mitchellshiell:
+  name: Mitchell Shiell
+  title: Outreach Lead @ OICR
+  url: https://github.com/mitchellshiell
+  image_url: https://github.com/mitchellshiell.png
   page: true
   socials:
-    x: yangshunz
-    github: yangshun
+    github: mitchellshiell
 
-slorber:
-  name: Sébastien Lorber
-  title: Docusaurus maintainer
-  url: https://sebastienlorber.com
-  image_url: https://github.com/slorber.png
-  page:
-    # customize the url of the author page at /blog/authors/<permalink>
-    permalink: '/all-sebastien-lorber-articles'
+joneubank:
+  name: Jon Eubank
+  title: Associate Technical Director @ OICR
+  url: https://github.com/joneubank
+  image_url: https://github.com/joneubank.png
+  page: true
   socials:
-    x: sebastienlorber
-    linkedin: sebastienlorber
-    github: slorber
-    newsletter: https://thisweekinreact.com
+    github: joneubank
+
+justinrichardsson:
+  name: Justin Richardsson
+  title: Associate Technical Director @ OICR
+  url: https://github.com/justincorrigible
+  image_url: https://github.com/justincorrigible.png
+  page: true
+  socials:
+    github: justincorrigible
+    x: yangshunz
+
+
+melaniecourtot:
+  name: Melanie Courtot
+  title: Director & Principle Investigators  @ OICR
+  url: https://github.com/mcourtot
+  image_url: https://github.com/mcourtot.png
+  page: true
+  socials:
+    github: mcourtot
+    linkedin: mcourtot
+    newsletter: https://courtotlab.genomeinformatics.org/
+
