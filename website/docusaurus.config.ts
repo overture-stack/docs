@@ -49,15 +49,6 @@ const config: Config = {
       sidebarPath: require.resolve('./communitySidebars.ts'),
     },
     ],
-    [
-      '@docusaurus/plugin-content-docs',
-    {
-      id: 'casestudies',
-      path: 'casestudies',
-      routeBasePath: 'casestudies',
-      sidebarPath: require.resolve('./casestudiesSidebars.ts'),
-    },
-    ],
   ],
 
   markdown: {
@@ -115,9 +106,7 @@ const config: Config = {
           position: 'left',
           label: 'Documentation',
         },
-        {to: '/casestudies/introduction', label: 'Case Studies', position: 'left'},
         {to: '/community/support', label: 'Community', position: 'left'},
-        {to: '/blog', label: 'Blog', position: 'left'},
         {
           href: 'https://github.com/overture-stack',
           label: 'GitHub',
@@ -157,14 +146,6 @@ const config: Config = {
         {
           title: 'More',
           items: [
-            {
-              label: 'Blog',
-              to: '/blog',
-            },
-            {
-              label: 'Case Studies',
-              href: '/casestudies/introduction',
-            },
             {
               label: 'GitHub',
               href: 'https://github.com/overture-stack',

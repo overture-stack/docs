@@ -48,6 +48,7 @@ const products: Product[] = [
   { title: 'Deployment Guides', link: '/guides/deployment-guide/', description: 'Deploying to Production', category: 'platform' },
   { title: 'Administration Guides', link: '/guides/administration-guides/', description: 'Management and Customization', category: 'platform' },
   { title: 'User Guides', link: '/guides/user-guides/', description: 'Interacting with the Platorm', category: 'platform' },
+  { title: 'API Guides', link: '/guides/user-guides/', description: 'Interacting with the Platorms APIs', category: 'platform' },
   { title: 'Song', link: 'docs/core-software/song/overview', image: iconSong, description: 'Metadata Management Service', category: 'core' },
   { title: 'Score', link: '/docs/core-software/score/overview', image: iconScore, description: 'File Transfer Service', category: 'core' },
   { title: 'Maestro', link: '/docs/core-software/maestro/overview', image: iconMaestro, description: 'Metadata Indexing Service', category: 'core' },
@@ -59,8 +60,6 @@ const products: Product[] = [
   { title: 'Conductor', link: '/docs/other-software/Conductor', description: 'Software Setup Automation', category: 'misc' },
   { title: 'Documenting Projects', link: '/docs/Standards/github', description: 'Organization Standards', category: 'standards' },
   { title: 'Documenting Software', link: '/docs/Standards/Software/', description: 'Software Standards', category: 'standards' },
-  { title: 'Documenting APIs', link: '/docs/Standards/api/', description: 'API Standards', category: 'standards' },
-  { title: 'Documenting Code', link: '/docs/Standards/code/', description: 'Coding Standards', category: 'standards' },
 ];
 
 const Card = ({ title, description, link, image }) => (
@@ -83,6 +82,18 @@ const CategorySection = ({ category, items }) => (
   </div>
 );
 
+const FundingBadge = () => (
+  <div className={styles.fundingBadge}>
+    <div className={styles.fundingContent}>
+      <Heading as="h3" className={styles.fundingTitle}>Funding Contributors</Heading>
+      <p className={styles.fundingDescription}>
+      Overture is supported by grant #U24CA253529 from the National Cancer Institute at the US National Institutes of Health, and additional funding from Genome Canada, the Canada Foundation for Innovation, the Canadian Institutes of Health Research, Canarie, and the Ontario Institute for Cancer Research.
+      </p>
+      <a href="community/funding" className={styles.fundingLink}>Learn More</a>
+    </div>
+  </div>
+);
+
 const SiteMap = () => {
   const categorizedProducts = products.reduce((acc, product) => {
     (acc[product.category] = acc[product.category] || []).push(product);
@@ -90,7 +101,7 @@ const SiteMap = () => {
   }, {});
 
   const rightColumnCategories = ['platform','misc','standards'];
-  const leftColumnCategories = [ 'core','development'];
+  const leftColumnCategories = ['core','development'];
 
   return (
     <section className={styles.siteMap}>
@@ -107,6 +118,7 @@ const SiteMap = () => {
             ))}
           </div>
         </div>
+        <FundingBadge />
       </div>
     </section>
   );
