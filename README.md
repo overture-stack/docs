@@ -1,12 +1,48 @@
+
 # Bridge
 
-Proof of concept work for a developer hub using submodules from external repos to render a unified documentation site using the markdown files pulled from each submodule. 
+Bridge is a single, easy-to-navigate hub that beautifully renders all our product documentation from the `/docs` folder of all our GitHub repositories. 
 
-The developer hub website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+## Documentation Framework
 
-![Preview](preview.png)
+Overture has three user profiles:
+
+- **Software Engineers**: They build and customize Overture components for their software stack.
+
+- **IT specialist**: Deploying and configuring Overture platforms.
+
+- **Informaticians**: Use Overture platforms to gather, organize, explore and share data.
+
+Our documentation is split up as follows:
+
+| Documentation | User Profile | Description
+|---|---|---|
+| Developer/Product Documentation | Software Engineers & Developers | Technical resources for those working on or contributing to the project. | 
+| Platform Guides | IT Specialists & Informaticians | Instructive guides covering platform setup, maintenance and usage for end-users and administrators. |
+
+## How OvertureDev Works
+
+- **Docusaurus**: We use Docusaurus to render the site, providing a sleek and navigable interface for our documentation.
+
+- **Markdown Files**: All documentation content is stored as markdown files in the `/website/docs` directory. 
+
+- **Git Submodules**: We use Git submodules to store and track all our GitHub repositories within one main repository. All submodules can be found in the `submodule` folder.
+
+- **Symlinks**: Only the necessary documentation files are symlinked from the submodules in the `submodule` folder to the `/website/docs` directory. This allows us to import only the required markdown content that Docusaurus needs.
+
+## Benefits of this Setup
+
+- **A Centralized Resource for Decentralized Documentation**: A single, easy-to-navigate hub displaying all our developer documentation while keeping all documentation markdown files within their respective repositories.
+
+- **Consistent**: Enables us to easily ensure all documentation follows the same standards across different projects.
+
+- **Easy to Maintain**: Updates to any of the individual project repositories `/docs` folders are automatically reflected here.
+
+- **Robust Error Handling**: Docusaurus has excellent error catching, particularly for broken and missing links, reducing the need for manual testing.
 
 ## Getting Started
+
+### Running it Locally
 
 To clone the repository with the files in the submodules:
 
@@ -14,74 +50,76 @@ To clone the repository with the files in the submodules:
 git clone --recurse-submodules https://github.com/MitchellShiell/bridge.git
 ```
 
-After cloning, you may wish to fetch and update the submodules:
-
-```bash
-git fetch --recurse-submodules
-```
-
-To fire up the local development server first install all the required dependencies
+Install required dependencies:
 
 ```
 npm ci
 ```
 
-Then run the following command: 
+Start the server
 
 ```
-yarn start
+npm start
 ```
 
-> [!IMPORTANT]  
-> Docusaurus requires node version 18 or higher
+> **Note:** Docusaurus requires node version 18 or higher
 
-## Managing Git Submodules
+### Adding Submodules
 
-### Fetching Latest Changes
+Use the following command to add a new submodule:
 
-To fetch the latest changes for all submodules:
+   ```bash
+   git submodule add -b <branchName> <GitHub repository URL> module_name
+   ```
 
-```bash
-git fetch --recurse-submodules
+This will automatically update the `.gitmodules` file located in the root directory.
+
+### Updating Submodules
+
+To pull the latest changes for all submodules, including any newly added ones run:
+
+   ```bash
+   git submodule update --remote
+   ```
+
+### Using Symlinks
+
+All documentation content is stored in markdown files located within `/website/docs` while the original repositories for these markdown files are in the `submodule` folder.
+
+Symlinks are used here to link only the necessary folders containing markdown files from the submodule directories.
+
+The script for this is in the root directory, titled `bridge.sh`:
+
+   ```bash
+   ln -s ../../submodules/song/docs website/docs/Song
+   ln -s ../../submodules/score/docs website/docs/Score
+   ```
+
+   This allows us to import only the necessary markdown files that Docusaurus needs. Changes to either directory are linked and reflected in both.
+
+#### Getting it to run with Docusaurus
+
+To run this without errors, I needed to create a plugin found in `website/docsPlugin.ts`:
+
+```typescript
+module.exports = function(context, options) {
+  return {
+    name: "custom-docusaurus-plugin",
+    configureWebpack(config, isServer, utils) {
+      return {
+        resolve: {
+          symlinks: false
+        }
+      };
+    }
+  };
+};
 ```
 
-### Adding New Submodules
+This plugin is imported on line 32 of the `docusaurus.config.ts`:
 
-There are two ways to add new submodules:
-
-1. Update the `.gitmodules` file manually  then run:
-
-```bash
-git submodule update --recursive --remote
+```typescript
+plugins: ['./docsPlugin.ts'],
 ```
 
-Or
-
-2. Run the following command:
-
-```bash
-git submodule add -b <branchName> <GitHub repository URL> module_name
-```
-
-> [!NOTE]  
-> You can also define a specific branch you would like to pull either from the command line or updating the .gitmodules with an `branch = branchName` entry
-
-### Pulling Latest Changes for All Submodules
-
-To pull the latest changes for all submodules, including any new ones:
-
-```bash
-git submodule update --recursive --remote
-```
-
-### Updating Submodule Repos Remotely
-
-When working within a submodule:
-- `cd`ing into any submodule treats it as if you cloned the repo independently
-- Git operations like branching, adding, and pushing will push to the external repo
-- The root directory works within the root project (e.g., the bridge repo)
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
-
-## SymLink fix 
-
-Fix found from here: https://github.com/facebook/docusaurus/issues/3272#issuecomment-688409489
+The source of this fix can be found [here](https://github.com/facebook/docusaurus/issues/3272#issuecomment-688409489).
