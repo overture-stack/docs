@@ -1,0 +1,659 @@
+{
+  "openapi": "3.0.1",
+  "paths": {
+    "/index/repository/{repositoryCode}/study/{studyId}/analysis/{analysisId}": {
+      "post": {
+        "tags": [
+          "Indexing"
+        ],
+        "summary": "Index Single Analysis",
+        "description": "Indexes single analysis on demand ",
+        "operationId": "indexAnalysis",
+        "parameters": [
+          {
+            "name": "analysisId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "studyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "repositoryCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDetails"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IndexResult"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "management-controller"
+        ],
+        "operationId": "removeAnalysis",
+        "parameters": [
+          {
+            "name": "analysisId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "studyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "repositoryCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IndexResult"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/index/repository/{repositoryCode}/study/{studyId}": {
+      "post": {
+        "tags": [
+          "management-controller"
+        ],
+        "operationId": "indexStudy",
+        "parameters": [
+          {
+            "name": "studyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "repositoryCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDetails"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IndexResult"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/convert": {
+      "post": {
+        "tags": [
+          "Conversion"
+        ],
+        "summary": "Convert Analyses to file centric documents",
+        "description": "Converts the passed array of analyses to a map of analysis Id -\u003E Array of files of that analysis",
+        "operationId": "convertAnalyses",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConvertAnalysisCommand"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDetails"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/FileCentricDocument"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/index/repository/{repositoryCode}": {
+      "post": {
+        "tags": [
+          "management-controller"
+        ],
+        "operationId": "indexRepository",
+        "parameters": [
+          {
+            "name": "repositoryCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDetails"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "$ref": "#/components/schemas/IndexResult"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorDetails": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "string"
+          }
+        }
+      },
+      "FailureData": {
+        "type": "object",
+        "properties": {
+          "failingIds": {
+            "type": "object",
+            "additionalProperties": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "IndexResult": {
+        "type": "object",
+        "properties": {
+          "indexName": {
+            "type": "string"
+          },
+          "failureData": {
+            "$ref": "#/components/schemas/FailureData"
+          },
+          "successful": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Analysis": {
+        "type": "object",
+        "properties": {
+          "analysisId": {
+            "type": "string"
+          },
+          "analysisType": {
+            "$ref": "#/components/schemas/AnalysisTypeId"
+          },
+          "analysisState": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "songServerId": {
+            "type": "string"
+          },
+          "publishedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "firstPublishedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "studyId": {
+            "type": "string"
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/File"
+            }
+          },
+          "samples": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Sample"
+            }
+          },
+          "experiment": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "AnalysisTypeId": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ConvertAnalysisCommand": {
+        "type": "object",
+        "properties": {
+          "analyses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Analysis"
+            }
+          },
+          "repoCode": {
+            "type": "string"
+          }
+        }
+      },
+      "Donor": {
+        "type": "object",
+        "properties": {
+          "donorId": {
+            "type": "string"
+          },
+          "submitterDonorId": {
+            "type": "string"
+          },
+          "studyId": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "info": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "File": {
+        "type": "object",
+        "properties": {
+          "objectId": {
+            "type": "string"
+          },
+          "studyId": {
+            "type": "string"
+          },
+          "analysisId": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "fileType": {
+            "type": "string"
+          },
+          "fileMd5sum": {
+            "type": "string"
+          },
+          "fileAccess": {
+            "type": "string"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "info": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "Sample": {
+        "type": "object",
+        "properties": {
+          "sampleId": {
+            "type": "string"
+          },
+          "specimenId": {
+            "type": "string"
+          },
+          "submitterSampleId": {
+            "type": "string"
+          },
+          "matchedNormalSubmitterSampleId": {
+            "type": "string"
+          },
+          "sampleType": {
+            "type": "string"
+          },
+          "donor": {
+            "$ref": "#/components/schemas/Donor"
+          },
+          "specimen": {
+            "$ref": "#/components/schemas/Specimen"
+          },
+          "info": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "Specimen": {
+        "type": "object",
+        "properties": {
+          "specimenId": {
+            "type": "string"
+          },
+          "donorId": {
+            "type": "string"
+          },
+          "submitterSpecimenId": {
+            "type": "string"
+          },
+          "tumourNormalDesignation": {
+            "type": "string"
+          },
+          "specimenTissueSource": {
+            "type": "string"
+          },
+          "specimenType": {
+            "type": "string"
+          },
+          "info": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "FileCentricAnalysis": {
+        "type": "object",
+        "properties": {
+          "analysisId": {
+            "type": "string"
+          },
+          "analysisType": {
+            "type": "string"
+          },
+          "analysisVersion": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "analysisState": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "firstPublishedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "publishedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "experiment": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "FileCentricDocument": {
+        "type": "object",
+        "properties": {
+          "objectId": {
+            "type": "string"
+          },
+          "studyId": {
+            "type": "string"
+          },
+          "dataType": {
+            "type": "string"
+          },
+          "fileType": {
+            "type": "string"
+          },
+          "fileAccess": {
+            "type": "string"
+          },
+          "analysis": {
+            "$ref": "#/components/schemas/FileCentricAnalysis"
+          },
+          "file": {
+            "$ref": "#/components/schemas/File"
+          },
+          "repositories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Repository"
+            }
+          },
+          "donors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Donor"
+            }
+          }
+        }
+      },
+      "Repository": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "organization": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
