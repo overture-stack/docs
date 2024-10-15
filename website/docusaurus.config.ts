@@ -122,7 +122,7 @@ const config: Config = {
           items: [
             {
               label: 'Platform Guides',
-              to: 'https://www.overture.bio/documentation/guides/',
+              to: '/guides/getting-started',
             },
             {
               label: 'Developer Documentation',
