@@ -33,29 +33,28 @@ The Setup section runs you through the process of getting each service setup in 
 
 <Tabs>
   <TabItem value="platform" label="Platform" default>
-  ![Platform](./02-other-software/images/platform.svg 'Overture Platform')
+  ![Platform](./03-other-software/images/platform.svg 'Overture Platform')
   </TabItem>
   <TabItem value="songDev" label="SongDev">
-     ![Song Dev](./02-other-software/images/songDev.svg 'Song Dev Environment')
+     ![Song Dev](./03-other-software/images/songDev.svg 'Song Dev Environment')
   </TabItem>
   <TabItem value="scoreDev" label="ScoreDev">
-     ![Score Dev](./02-other-software/images/scoreDev.svg 'Score Dev Environment')
+     ![Score Dev](./03-other-software/images/scoreDev.svg 'Score Dev Environment')
   </TabItem>
   <TabItem value="maestroDev" label="MaestroDev">
-     ![Maestro Dev](./02-other-software/images/maestroDev.svg 'Maestro Dev Environment')
+     ![Maestro Dev](./03-other-software/images/maestroDev.svg 'Maestro Dev Environment')
   </TabItem>
   <TabItem value="arrangerDev" label="ArrangerDev">
-     ![Arranger Dev](./02-other-software/images/arrangerDev.svg 'Arranger Dev Environment')
+     ![Arranger Dev](./03-other-software/images/arrangerDev.svg 'Arranger Dev Environment')
   </TabItem>
   <TabItem value="stageDev" label="StageDev">
-    ![Stage Dev](./02-other-software/images/stageDev.svg 'Stage Dev Environment')
+    ![Stage Dev](./03-other-software/images/stageDev.svg 'Stage Dev Environment')
   </TabItem>
 </Tabs>
 
 :::info
 For newcomers to Overture, we recommend starting with our Platform Quickstart and Platform Guides. Combined resources provide a comprehensive overview and hands-on experience with the Overture ecosystem. To begin your journey, [visit our Platform Guides](/guides/getting-started).
 :::
-
 
 ### Usage
 
@@ -66,6 +65,23 @@ The Usage section provides detailed information on how to effectively use each s
 - Integration tips with other Overture services
 - Performance optimization suggestions
 
+## Under Development
+
+Here we provide an overview of software currently under development and soon to be integrated into the Overture platform. 
+
+- We are currently working on a new data submission system to better
+support tabular (clinical) data. This new system will see two new components integrated into the Overture Platform:
+
+   - [**Lectern**](docs/under-development/lectern/): A Data Dictionary Schema Manager, providing a system for defining Schemas that will validate the structured data collected by an application. 
+   - [**Lyric**](/docs/under-development/lyric/): Validate, store, query, and re-validate tabular data against evolving Lectern Dictionary schemas.
+
+- Additionally, we are updating our Indexing service Maestro to be compatible with our new submission system:
+
+   - [**Maestro v2**](/): Index Song file metadata and Lyric tabular data into one elasticsearch index.
+
+:::info Overture Tabular Data Submission System Update
+To learn more about our updated submission system, check out our [**under development information here**](/docs/under-development/). 
+:::
 
 ## Other Software
 

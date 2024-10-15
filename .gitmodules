@@ -16,3 +16,9 @@
 [submodule "submodules/.github"]
 	path = submodules/.github
 	url = https://github.com/overture-stack/.github.git
+[submodule "submodules/lectern"]
+	path = submodules/lectern
+	url = https://github.com/overture-stack/lectern
+[submodule "submodules/lyric"]
+	path = submodules/lyric
+	url = https://github.com/overture-stack/lyric
