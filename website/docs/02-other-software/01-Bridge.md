@@ -66,7 +66,7 @@ npm start
 
 ### Adding Submodules
 
-Use the following command to add a new submodule:
+Use the following command from the submodules directory to add a new submodule:
 
    ```bash
    git submodule add -b <branchName> <GitHub repository URL> module_name
