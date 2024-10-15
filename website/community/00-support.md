@@ -1,6 +1,6 @@
 # Support
 
-Overture is managed by the Genome Informatics team at the Ontario Institute of Cancer Research. We take pride in our software and are passionate about helping others use them. If you are looking for help or collaboration, here is how you can get in touch.
+We take pride in our software and are passionate about helping others use them. If you are looking for help or collaboration, here is how you can get in touch.
 
 ## GitHub Discussions
 
