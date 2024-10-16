@@ -20,3 +20,6 @@ Combined together the new Overture Platfrom architecture will look as follows:
 
 
 ## Maestro V5
+
+- Written in typescript
+-  
