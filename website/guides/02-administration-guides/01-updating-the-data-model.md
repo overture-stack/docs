@@ -369,6 +369,19 @@ curl -X POST "https://localhost:8080/schemas" -H "accept: */*" -H "Authorization
 
     - `-d {...} ` is the data to be sent with the POST request. This is the JSON payload defining the schema.
 
+## Useful Links
+
+Here are some resources to help with the creation of new schemas for your projects:
+
+- [Understanding JSON Schema guide](https://json-schema.org/understanding-json-schema): This comprehensive guide provides detailed information on JSON Schema formatting.
+
+- [Example schema](https://raw.githubusercontent.com/cancogen-virus-seq/metadata-schemas/main/schemas/consensus_sequence.json): For a practical reference, you can examine this sample schema used in CanCOGeN's VirusSeq Portal. 
+
+- [Base schema reference](https://github.com/overture-stack/SONG/blob/develop/song-server/src/main/resources/schemas/analysis/analysisBase.json): Song incorporates a base schema that combines with all user schemas. When developing your schemas, it's crucial to reference this base schema to avoid conflicting properties and ensure compatibility with Song's base schema structure.
+
+There's no need to write your JSON Schema manually. Several existing tools can help you format your data efficiently:
+
+- For basic schemas, [JSONschema.net](https://jsonschema.net) or [Liquid Technologies' Online JSON to Schema Converter](https://www.liquid-technologies.com/online-json-to-schema-converter) are excellent resources. These tools allow you to easily convert JSON to JSON Schema.
 
 :::info What's Next?
 With your data model updated, we next need to ensure we configure an accurate index mapping to help enable our downstream search and portal UI components
