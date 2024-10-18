@@ -14,12 +14,4 @@ Additionally, we are updating our indexing service:
 
 Combined together the new Overture Platfrom architecture will look as follows:
 
-[Insert System Architecture Diagram]
-
-[description of diagram]
-
-
-## Maestro V5
-
-- Written in typescript
--  
+![Submission System Architecture](./images/submission-system.svg 'Updated Overture Submission System')
