@@ -24,7 +24,7 @@ This guide provides a step-by-step deployment of an Overture platform, including
 
 3. **Search Portal setup** using Maestro, Arranger and Stage
 
-    ![Portal Overview](./assets/guideOverview.webp 'Guide Overview')
+    ![Platform Overview](../images/platform.svg 'Platform Overview')
 
     A summary of each Overture and third-party service used in this guide is detailed below:
 

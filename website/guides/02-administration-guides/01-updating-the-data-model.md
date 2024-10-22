@@ -332,7 +332,7 @@ To update the schema using the Swagger UI:
 
 1. **Locate the Schema API endpoints** From the schema dropdown, find the `POST` **RegisterAnalysisType** endpoint.
 
-    ![Entity](./assets/swagger_register_schema.png 'register new schema')
+    ![Entity](../images/swagger_register_schema.png 'register new schema')
 
 2. **Select *Try it out* and input your API key and Schema:** enter your authorization token in the authorization field (`Bearer {API-Key}`), and place your new schema inside the request field.
 
@@ -342,7 +342,7 @@ To update the schema using the Swagger UI:
 
     - **Generate a new API token** by selecting **Profile and Token** from your user drop down found on the top right of the Stage UI, select **Generate New Token**. 
 
-        ![Accessing an API Key](./assets/apikeys.png 'Accessing an API Key')
+        ![Accessing an API Key](../images/apikeys.png 'Accessing an API Key')
 
 3. **Select Execute:** expected responses as well as response codes and descriptions, are conveniently documented within Swagger-UI. 
 

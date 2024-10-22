@@ -346,7 +346,7 @@ API Keys are brokered by Keycloak and accessible when logged in to the Stage UI 
 
 2. **Generate a new API token** by selecting **Profile and Token** from your user dropdown menu at the top right of the Stage UI and selecting **Generate New Token**. 
 
-    ![Accessing an API Key](./assets/apikeys.png 'Accessing an API Key')
+    ![Accessing an API Key](../images/apikeys.png 'Accessing an API Key')
 
 3. **Update the `SCORE_ACCESSTOKEN` variable within your `.env.song`** and once updated, remove the existing Song container and re-run Song with your updated `.env.song`
 

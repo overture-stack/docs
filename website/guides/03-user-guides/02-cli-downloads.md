@@ -4,7 +4,7 @@
 
 - **You will need** docker installed. We recommend using Docker Desktop; for more information, visit [Dockers website](https://www.docker.com/products/docker-desktop/)
 
-![Retrieval Overview](./assets/dataRetrieval.png 'End Goal')
+![Retrieval Overview](../images/dataRetrieval.png 'End Goal')
 
 ## Getting Started
 
@@ -30,7 +30,7 @@ docker compose up --attach conductor
 
 1. **Build your Query:** From the portal exploration page (`localhost:3000/explorer`), build your query using the search facets panel and data table.
 
-![Build Query](./assets/buildQueries.png 'Build Query')
+![Build Query](../images/buildQueries.png 'Build Query')
 
 2. **Download your manifest:** With your data of interest selected, click the download dropdown and select file manifest
 
@@ -48,7 +48,7 @@ API Keys are brokered by Keycloak and accessible when logged in to the Stage UI.
 
 **2. Generate a new API token** by selecting **Profile and Token** from your user dropdown menu at the top right of the Stage UI and selecting **Generate New Token**. 
 
-![Accessing an API Key](./assets/apikeys.png 'Accessing an API Key')
+![Accessing an API Key](../images/apikeys.png 'Accessing an API Key')
 
 ### Run the Score Client
 

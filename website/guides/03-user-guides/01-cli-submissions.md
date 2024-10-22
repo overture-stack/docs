@@ -6,7 +6,7 @@
 
 - **Background:** Submitting data to an Overture platform typically includes data files (BAMS, CRAMS, VCFs, etc.) along with associated metadata that provides context including donor information and descriptions of the data files. This guide focuses on submitting data to Song & Score using their Command Line Clients (CLIs).
 
-![Submission Overview](./assets/submissionOverview.webp 'End Goal')
+![Submission Overview](../images/submissionOverview.webp 'End Goal')
 
 The Song and Score clients work together to upload raw data files to object storage and track all related metadata stored in the Song metadata repository.
 
@@ -38,7 +38,7 @@ API Keys are brokered by Keycloak and accessible when logged in to the Stage UI.
 
 2. **Once logged in, it's time to generate a new API token:** To do this, click on **Profile and Token** from your user drop down menu, located on the top right of the Stage UI. Then, select **Generate New Token**.
 
-![Accessing an API Key](./assets/apikeys.png 'Accessing an API Key')
+![Accessing an API Key](../images/apikeys.png 'Accessing an API Key')
 
 ### Run the Song & Score Clients
 
@@ -996,7 +996,7 @@ To address our second error we will have to take a look at the resources data mo
     2. Select **Schema** and the **GET /schemas** endpoint
     3. Click try it out and execute
 
-    ![Song Swagger](./assets/song-swagger.png 'Song Swagger')
+    ![Song Swagger](../images/song-swagger.png 'Song Swagger')
 
     The response body will provide you a JSON document outlining Songs data model. In this case we are interested in the `quickStartSchema` as it was the `analysisType` used for validation of our payload.
 
@@ -1106,7 +1106,7 @@ The final step in data submission is to set the state of the analysis to `PUBLIS
 
 You should now be able to find you uploaded data on the front-end portal found at `localhost:3000/explorer`
 
-![Success](./assets/success.png 'Success')
+![Success](../images/success.png 'Success')
 
 :::tip
 **Help us make our guides better**

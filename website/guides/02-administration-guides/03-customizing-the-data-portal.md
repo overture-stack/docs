@@ -2,7 +2,7 @@
 
 Arranger simplifies GraphQL queries over Elasticsearch indices with its front-end library of reusable search components. The primary configurable components for this guide are the left-hand search facets and the central data table seen below.
 
-![Portal](./assets/portal.png 'Portal')
+![Portal](../images/portal.png 'Portal')
 
 :::info Arranger Configuration Files
 All configurations for these components are made through four configuration files: `base.json`, `extended.json`, `table.json` and `facets.json`. We will cover each in the following sections.
@@ -31,7 +31,7 @@ Indices in Elasticsearch are a collection of related documents with similar char
 
 From the elasticvue dashboard's top navigation, select **search**.
 
-![Elasticvue](./assets/elasticvue.png 'Elasticvue')
+![Elasticvue](../images/elasticvue.png 'Elasticvue')
 
 This page displays all indexed Elasticsearch documents created by Maestro from published Song analyses and used by Arranger. Clicking any of the `_index` rows will give you a direct view of the JSON documents that populate the index.
 
