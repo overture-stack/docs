@@ -2,9 +2,7 @@ import DocCardList from '@theme/DocCardList';
 
 # Getting Started
 
-Welcome to the Overture platform guides. Here you'll find comprehensive information on deploying and using Overture microservices as an integrated platform.
-
-Our guides currently cover the following key areas:
+Welcome to the Overture platform guides. Here you'll find comprehensive information on deploying and using Overture microservices as an integrated platform. Our guides currently cover the following key areas:
 
 <DocCardList items={[
 
@@ -39,7 +37,9 @@ Our guides currently cover the following key areas:
 If you can't find what you're looking for please reach out to us on our Slack channel linked on the top right of your screen or by email at contact@overture.bio
 :::
 
-## Quick Start Guide
+## Overture Platform Quick Start
+
+![Overture Platform Quickstart](./images/core-software.webp 'Overture Platform Quickstart')
 
 For a rapid, hassle-free setup of the Overture data platform on your local machine, follow these steps:
 
@@ -64,11 +64,14 @@ For a rapid, hassle-free setup of the Overture data platform on your local machi
 
 3. **Launch the Platform:** Run the appropriate command for your operating system:
 
-   | OS | Command |
-   |----|---------|
-   | Unix/macOS | `make platform` |
-   | Windows | `make.bat platform` |
 
-    This will deploy the following services in Docker:
+   - For Unix/macOS run `make platform`
+   - For Windows run`make.bat platform`
 
-    ![Overture Platform Architecture](./images/platform.svg 'Overture Platform')
+This will deploy the following services in Docker:
+
+   ![Overture Platform Architecture](./images/platform.svg 'Overture Platform')
+
+   :::info Get Started with Our Platform Guides
+   Check out our [**administration**](/guides/administration-guides/) and [**user guides**](/guides/user-guides/) for detailed guidance on using the platform.
+   :::

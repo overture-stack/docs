@@ -1,14 +1,14 @@
 # CLI Submission
 
-- **This guide is for** anyone seeking guidance on submitting data to an Overture platform. By the end of this guide you will have completed a full data submission workflow, including updating the submitted data to conform to the data model enforced by Song.
+**This guide is for** anyone seeking guidance on submitting data to an Overture platform. By the end of this guide you will have completed a full data submission workflow, including updating the submitted data to conform to the data model enforced by Song.
 
-- **You will need** docker installed. We recommend using Docker Desktop; for more information, visit [Dockers website](https://www.docker.com/products/docker-desktop/)
+**You will need** docker installed. We recommend using Docker Desktop; for more information, visit [Dockers website](https://www.docker.com/products/docker-desktop/)
 
-- **Background:** Submitting data to an Overture platform typically includes data files (BAMS, CRAMS, VCFs, etc.) along with associated metadata that provides context including donor information and descriptions of the data files. This guide focuses on submitting data to Song & Score using their Command Line Clients (CLIs).
+**Background:** Submitting data to an Overture platform typically includes data files (BAMS, CRAMS, VCFs, etc.) along with associated metadata that provides context including donor information and descriptions of the data files. This guide focuses on submitting data to Song & Score using their Command Line Clients (CLIs).
 
-![Submission Overview](../images/submissionOverview.webp 'End Goal')
+#### Visual Summary:
 
-The Song and Score clients work together to upload raw data files to object storage and track all related metadata stored in the Song metadata repository.
+![Submission Overview](../images/dataSubmission.webp 'End Goal')
 
 ### Getting Started
 
