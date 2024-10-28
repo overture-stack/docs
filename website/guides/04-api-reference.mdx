@@ -1,0 +1,69 @@
+# API Reference
+
+Welcome to our API reference documentation. This page provides detailed information about our available APIs. 
+You can explore the endpoints, request parameters and response schemas directly from this page. 
+
+The Overture Platform has four APIs:
+
+1. [**Song:**](/guides/api-guides/rest-apis#song-api) A RESTful (Swagger) API for file metadata stored in Song.
+2. [**Score:**](http://localhost:3000/guides/api-guides/rest-apis#score-api) RESTful (Swagger) API for communicating with the Score Server.
+3. [**Maestro:**](/guides/api-guides/rest-apis#maestro-api) RESTful (Swagger) API for managing Song data indexing operations.
+4. [**Arranger:**](/guides/api-guides/gql-api) GraphQL API for querying Indexed data within elasticsearch.
+
+:::info Important Note
+Arranger API Reference documentation is currently under development and will be available soon. If you encounter any issues or have questions about our API, please don't hesitate to reach out through our relevant [**community support channels**](/community/support).
+:::
+
+## RESTful APIs
+
+import SwaggerAPIDoc from '/src/components/SwaggerAPIDoc';
+
+All our available RESTful APIs use Swagger to help document endpoint usage and expected outcomes. Here are some tips for using the Swagger UI:
+
+1. **Expand Operations**: Click on an endpoint to expand its details.
+2. **Read Descriptions**: Each endpoint has a description explaining its purpose and usage.
+3. **Check Parameters**: Review the required and optional parameters for each endpoint.
+4. **Examine Responses**: Look at the possible response codes and schemas to understand what to expect from each endpoint.
+
+### Song API
+
+The Song API allows you to manage and query file metadata in your system.
+
+#### Key Features
+
+- Manage study, analysis, donor, specimen, and sample metadata
+- Validate and submit analysis metadata with schema versioning and publication controls (published/unpublished/suppressed)
+- Manage schemas used for validations
+- Check the health of the Song-server
+
+<SwaggerAPIDoc specName="song" />
+
+### Score API
+
+The Score API provides endpoints that allow to to query the Score server and programmatically transfer files to and from object storage.
+
+#### Key Features
+
+- Manage file uploads and downloads with multipart support and recovery mechanisms
+- Track and verify file integrity using MD5 checksums and progress monitoring
+- Control object storage with flexible listing, partial content handling, and secure access controls
+
+<SwaggerAPIDoc specName="score" />
+
+### Maestro API
+
+The Maestro API provides you with endpoints for data indexing.
+
+#### Key Features
+
+- Index Song repositories by analysis or study ID
+- Convert analysis-centric data to file-centric document format
+- Manage index operations at repository, study, and analysis levels with failure tracking
+
+<SwaggerAPIDoc specName="maestro" />
+
+<br></br>
+
+:::info Need Help?
+If you encounter any issues or have questions about our API, please don't hesitate to reach out through our relevant [**community support channels**](/community/support).
+:::

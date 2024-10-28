@@ -14,6 +14,13 @@ Depending on how Maestro is configured it can index data into documents in one o
 
 The index mapping can be defined within an index template supplied to Elasticsearch on startup. In the next section we will break down the structure of an index template.
 
+    :::warning We use Elasticsearch 7 
+
+    Our search platform is built on and compatible with version 7.x of Elasticsearch. Applications and queries need to follow Elasticsearch 7 syntax and conventions.
+
+    :::
+
+
 # Breaking Down Index Templates
 
 When broken down the index template has four components, `index_patterns`, `aliases`, `mappings`, and `settings`

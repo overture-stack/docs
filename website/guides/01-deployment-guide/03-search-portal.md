@@ -39,6 +39,15 @@ Setting up your data portal involves configuring and running Elasticsearch, Maes
 
     </details>
 
+
+    :::warning We use Elasticsearch 7 
+
+    Our search platform is built on and compatible with version 7.x of Elasticsearch. Applications and queries need to follow Elasticsearch 7 syntax and conventions.
+
+    :::
+
+Would you like me to explain any specific Elasticsearch 7 features or compatibility considerations in more detail?
+
 2. **Supply an index template:** Create a folder titled `elasticsearchConfigs`
 
    Download and place the following **[quickstart_index_template.json](https://raw.githubusercontent.com/overture-stack/composer/develop/configurationFiles/elasticsearchConfigs/quickstart_index_template.json)** within your `elasticsearchConfigs` folder. This file specifies settings, mappings, and configurations that will be applied automatically to new indices that match the template's pattern
