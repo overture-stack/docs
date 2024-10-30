@@ -82,33 +82,107 @@ The file transfer service Score is compatible with any S3 storage provider; for 
 
 ## Running Kafka
 
-1. **Run Kafka:** Use the following command to pull and run the Kafka docker container
+Kafka serves as a distributed streaming platform, enabling high-throughput, fault-tolerant, and scalable messaging between Song and Maestro.
 
-    ```bash
-    docker run -d --name kafka \
-    --platform linux/amd64 \
-    -p 9092:9092 -p 29092:29092 \
-    -e KAFKA_PROCESS_ROLES="broker,controller" \
-    -e KAFKA_NODE_ID=1 \
-    -e KAFKA_LISTENERS="PLAINTEXT://kafka:9092,CONTROLLER://kafka:9093" \
-    -e KAFKA_ADVERTISED_LISTENERS="PLAINTEXT://kafka:9092" \
-    -e KAFKA_LISTENER_SECURITY_PROTOCOL_MAP="PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT" \
-    -e KAFKA_INTER_BROKER_LISTENER_NAME="PLAINTEXT" \
-    -e KAFKA_CONTROLLER_QUORUM_VOTERS="1@kafka:9093" \
-    -e KAFKA_CONTROLLER_LISTENER_NAMES="CONTROLLER" \
-    -e KAFKA_LOG_DIRS="/var/lib/kafka/data" \
-    -e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 \
-    -e KAFKA_AUTO_CREATE_TOPICS_ENABLE=false \
-    -e KAFKA_NUM_PARTITIONS=1 \
-    -e CLUSTER_ID="q1Sh-9_ISia_zwGINzRvyQ" \
-    confluentinc/cp-kafka:7.6.1
-    ```
-
-    :::info What is this for?
-    Kafka serves as a distributed streaming platform, enabling high-throughput, fault-tolerant, and scalable messaging between Song and Maestro. Kafka acts as the backbone messaging system for Song and Maestro, facilitating asynchronous communication ensuring efficient and reliable job execution, queuing, and processing.
+    :::info Why Kafka?
+    Kafka serves as a message broker between Song and Maestro, enabling asynchronous communication between services. Kafka provides reliable message delivery and persistence, handling message queuing and processing at scale. This ensures fault tolerance when processing multiple indexing requests between Song and Maestro.
     :::
 
-    For more detailed information on Kafka configurations, please refer to the [official Confluent Kafka documentation](https://docs.confluent.io/platform/current/installation/docker/config-reference.html#confluent-ak-configuration).
+    The following configuration creates a single-node Kafka broker for development use:
+
+1. **Create an env file:** Create a file named `.env.kafka` with the following content:
+
+    ```bash
+    # ==============================
+    # Kafka Environment Variables
+    # ==============================
+
+    # Core Kafka Configuration
+    KAFKA_PROCESS_ROLES=broker,controller
+    KAFKA_NODE_ID=1
+    KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:29092
+    KAFKA_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://0.0.0.0:29092,CONTROLLER://kafka:9093
+    KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+    KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+    KAFKA_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
+    KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER
+
+    # Storage Configuration
+    KAFKA_LOG_DIRS=/var/lib/kafka/data
+    KAFKA_LOG_RETENTION_HOURS=168
+    KAFKA_LOG_RETENTION_BYTES=-1
+
+    # Topic Configuration
+    KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+    KAFKA_AUTO_CREATE_TOPICS_ENABLE=false
+    KAFKA_NUM_PARTITIONS=1
+    KAFKA_DEFAULT_REPLICATION_FACTOR=1
+    KAFKA_MIN_INSYNC_REPLICAS=1
+
+    # Performance Tuning
+    KAFKA_MESSAGE_MAX_BYTES=5242880
+    KAFKA_REPLICA_FETCH_MAX_BYTES=5242880
+
+    # Logging Configuration
+    KAFKA_LOG4J_LOGGERS=kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO
+    KAFKA_LOG4J_ROOT_LOGLEVEL=INFO
+
+    # Cluster Configuration
+    CLUSTER_ID=q1Sh-9_ISia_zwGINzRvyQ
+    ```
+
+    <details>
+    <summary><b>Click here for a detailed breakdown</b></summary>
+
+    #### Core Kafka Configuration
+    - `KAFKA_PROCESS_ROLES`: Defines the roles this broker will fulfill (broker and controller)
+    - `KAFKA_NODE_ID`: Unique identifier for this broker in the cluster
+    - `KAFKA_ADVERTISED_LISTENERS`: External connection points other clients will use to connect
+    - `KAFKA_LISTENERS`: Internal connection points for broker communication
+    - `KAFKA_LISTENER_SECURITY_PROTOCOL_MAP`: Maps listener names to security protocols
+    - `KAFKA_INTER_BROKER_LISTENER_NAME`: Listener used for inter-broker communication
+    - `KAFKA_CONTROLLER_QUORUM_VOTERS`: List of controller nodes in the cluster
+    - `KAFKA_CONTROLLER_LISTENER_NAMES`: Names of listeners used for controller connections
+
+    #### Storage Configuration
+    - `KAFKA_LOG_DIRS`: Directory where Kafka stores its log files
+    - `KAFKA_LOG_RETENTION_HOURS`: How long to keep messages (7 days)
+    - `KAFKA_LOG_RETENTION_BYTES`: Maximum size of the log before deletion (-1 means unlimited)
+
+    #### Topic Configuration
+    - `KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR`: Replication factor for the offsets topic
+    - `KAFKA_AUTO_CREATE_TOPICS_ENABLE`: Whether to allow automatic topic creation
+    - `KAFKA_NUM_PARTITIONS`: Default number of partitions for new topics
+    - `KAFKA_DEFAULT_REPLICATION_FACTOR`: Default replication factor for new topics
+    - `KAFKA_MIN_INSYNC_REPLICAS`: Minimum number of replicas that must acknowledge writes
+
+    #### Performance Tuning
+    - `KAFKA_MESSAGE_MAX_BYTES`: Maximum message size (5MB)
+    - `KAFKA_REPLICA_FETCH_MAX_BYTES`: Maximum size of messages that can be fetched
+
+    #### Logging Configuration
+    - `KAFKA_LOG4J_LOGGERS`: Specific logger levels for Kafka components
+    - `KAFKA_LOG4J_ROOT_LOGLEVEL`: Default logging level for all components
+
+    </details>
+
+    :::tip For more detailed information about Kafka refer to:
+    - [Confluent Kafka Documentation](https://docs.confluent.io/platform/current/installation/docker/config-reference.html#confluent-ak-configuration)
+    - [Spring Cloud Stream Documentation](https://docs.spring.io/spring-cloud-stream/docs/current/reference/html/)
+    - [Apache Kafka Documentation](https://kafka.apache.org/documentation/)
+    :::
+
+2. **Run Kafka:** Use the docker run command with your `.env.kafka` file:
+
+    ```bash
+    docker run -d \
+    --name kafka \
+    --platform linux/amd64 \
+    -p 9092:9092 \
+    -p 29092:29092 \
+    --env-file .env.kafka \
+    confluentinc/cp-kafka:7.6.1
+    ```
 
 ## Running Song
 
