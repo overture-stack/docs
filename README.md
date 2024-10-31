@@ -20,7 +20,7 @@ Our documentation is split up as follows:
 | Developer/Product Documentation | Software Engineers & Developers | Technical resources for those working on or contributing to the project. | 
 | Platform Guides | IT Specialists & Informaticians | Instructive guides covering platform setup, maintenance and usage for end-users and administrators. |
 
-## How OvertureDev Works
+## How OvertureDocs Works
 
 - **Docusaurus**: We use Docusaurus to render the site, providing a sleek and navigable interface for our documentation.
 
@@ -47,7 +47,7 @@ Our documentation is split up as follows:
 To clone the repository with the files in the submodules:
 
 ```bash
-git clone --recurse-submodules https://github.com/MitchellShiell/bridge.git
+git clone --recurse-submodules https://github.com/overture-stack/docs.git
 ```
 
 Install required dependencies:

@@ -3,7 +3,7 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'OvertureDev',
+  title: 'Overture Docs',
   tagline: 'Docs for Developers & Informaticians',
   favicon: 'img/favicon.ico',
 
@@ -16,7 +16,7 @@ const config: Config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'overture-stack', // Usually your GitHub org/user name.
-  projectName: 'OvertureDev', // Usually your repo name.
+  projectName: 'Overture Docs', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -93,9 +93,9 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'OvertureDev',
+      title: 'Overture Docs',
       logo: {
-        alt: 'Overture Dev Logo',
+        alt: 'Overture Docs Logo',
         src: 'img/Overture-logo.png',
       },
       items: [
@@ -164,7 +164,7 @@ const config: Config = {
       appId: 'E70KV3D0W2',
       // Public API key
       apiKey: '296266a1c98ef42e60e0d9cb2f0c48a7',
-      indexName: 'overtureDev',
+      indexName: 'overtureDocs',
     },
   } satisfies Preset.ThemeConfig,
 };

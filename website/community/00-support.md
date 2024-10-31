@@ -8,7 +8,7 @@ Our primary platform for community support, feature requests, and general discus
 
 ### Getting Help
 
-- [**Create a Support Discussion**](https://github.com/MitchellShiell/bridge/discussions/categories/support)
+- [**Create a Support Discussion**](https://github.com/overture-stack/docs/discussions/categories/support)
     - If you need assistance with Overture, please create a new discussion in our support category.
     - Before creating a new discussion, please search existing discussions to see if your question has already been answered.
 
@@ -20,7 +20,7 @@ We love hearing your ideas for improving Overture! Before making a feature reque
 
 If your idea isn't on the roadmap, feel free to create a new discussion in our Ideas category:
 
-- [**Submit a Feature Request**](https://github.com/MitchellShiell/bridge/discussions/categories/ideas)
+- [**Submit a Feature Request**](https://github.com/overture-stack/docs/discussions/categories/ideas)
 
 ## GitHub Issues
 
@@ -30,7 +30,7 @@ We use GitHub Issues primarily for tracking confirmed bugs and ticketing develop
 
 If you come across a potential bug or issue, please post it as a GitHub support discussion first:
 
-- [**Report a Potential Bug**](https://github.com/MitchellShiell/bridge/discussions/categories/support)
+- [**Report a Potential Bug**](https://github.com/overture-stack/docs/discussions/categories/support)
 
 This allows us to confirm the issue and gather more information if needed. If we determine that further development is required, we will create a GitHub Issue from your discussion post.
 
@@ -38,7 +38,7 @@ This allows us to confirm the issue and gather more information if needed. If we
 
 ### Release Announcements
 
-- [**Release Announcements**](https://github.com/MitchellShiell/bridge/discussions/categories/announcements)
+- [**Release Announcements**](https://github.com/overture-stack/docs/discussions/categories/announcements)
     - To stay up-to-date with the latest Overture releases and updates, keep an eye on our Announcements category in our GitHub Discussions
 
 ## Community Guidelines

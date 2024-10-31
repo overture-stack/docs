@@ -24,11 +24,11 @@ interface Category {
 const categories: Record<string, Category> = {
   platform: {
     title: 'Platform Guides',
-    description: 'Bringing it all together into one cohesive platform'
+    description: 'Bringing it all together with platform focused guides'
   },
   core: {
     title: 'Developer Documentation',
-    description: 'Using our software microservices in a development context'
+    description: 'Using our software in a development context'
   },
   development: {
     title: 'Under Development',
