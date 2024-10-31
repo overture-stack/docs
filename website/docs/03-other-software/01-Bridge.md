@@ -159,6 +159,7 @@ const components: typeof MDXComponents & {
 export default components;
 ```
 
+
 ## Custom Components 
 
 There are three custom components built for this site all located in the components directory as follows:
@@ -174,8 +175,62 @@ There are three custom components built for this site all located in the compone
 
 ### Site Map
 
+- The sitemap component renders the frontpage navigation of the website, organized in a mosaic layout with left and right columns
+- Categories can be added by extending the `const categories:` object (lines 24-45) with new entries containing:
+  - `title`: Category display name
+  - `description`: Brief category description
+- Products are defined in `const products:` array (lines 47-61) with each product requiring:
+  - `title`: Product name
+  - `link`: URL path
+  - `description`: Brief description 
+  - `category`: Must match a category key
+  - `image`: Optional icon path
+
+The layout groups products into their respective categories and automatically distributes them between the left column (`core`, `development`) and right column (`platform`, `misc`, `standards`).
+
+This component also includes our funding statement, the copy used can be updated directly from the component on line 90.
+
+:::tip Improvement Consideration
+The current implementation uses hardcoded arrays (leftColumnCategories and rightColumnCategories) for column distribution. This is not ideal however it is the simplest method to organize our site content in its ideal layout. 
+:::
+
 ### Sidebar Funding Statement
+
+A simple React component that displays funding attribution information on the bottom left of all sidebars. It uses CSS Modules for scoped styling (styles.module.css). 
+
+:::tip Improvement Consideration
+Consider making the content configurable by accepting props rather than hardcoding the grant information, allowing reuse for different funding sources.
+:::
 
 ### Swagger API Embed
 
+The `SwaggerAPIDoc` component renders API documentation completely client-side by:
 
+1. Importing local JSON specification files (`songAPI.json`, `scoreAPI.json`, `maestroAPI.json`)
+2. Using these static JSON files to generate the documentation UI, meaning:
+   - No actual API calls are made
+   - Documentation works offline
+   - No backend connectivity required
+   - Safe for internal/private API documentation
+   - Specifications can be version controlled alongside the code
+
+Usage example with local JSON:
+```jsx
+// Your JSON spec file (e.g., songAPI.json)
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Song API",
+    // ... rest of your API specification
+  }
+}
+
+// Component usage remains the same
+<SwaggerAPIDoc specName="song" />
+```
+
+The `tryItOutEnabled={false}` setting further reinforces this by preventing any attempts to make actual API calls from the documentation interface.
+
+:::tip Improvement Consideration
+Consider making the content configurable by accepting a path prop rather than having to add the spec to the component itself.
+:::
