@@ -172,8 +172,6 @@ There are three custom components built for this site all located in the compone
 
 ### Site Map
 
-### Site Map
-
 - The sitemap component renders the frontpage navigation of the website, organized in a mosaic layout with left and right columns
 - Categories can be added by extending the `const categories:` object (lines 24-45) with new entries containing:
   - `title`: Category display name
