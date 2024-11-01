@@ -1,6 +1,5 @@
 {
   "swagger": "2.0",
-  "host": "score.demo.overture.bio",
   "basePath": "/",
   "tags": [
     {

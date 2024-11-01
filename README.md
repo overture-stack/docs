@@ -1,4 +1,3 @@
-
 # Overture Docs
 
 Overture Docs is a centralized documentation site built with [Docusaurus](https://docusaurus.io/) that aggregates and renders Markdown content from `/docs` directories across our GitHub repositories. It transforms distributed documentation into a cohesive and easy to navigate knowledge base.
@@ -12,13 +11,16 @@ Overture Docs is a centralized documentation site built with [Docusaurus](https:
 
 ### Running it Locally
 
-To clone the repository with the files in the submodules:
+1. clone the repository with the submodules:
 
 ```bash
 git clone --recurse-submodules https://github.com/overture-stack/docs.git
 ```
 
-Install required dependencies:
+> [!TIP]
+> Already cloned the repo? You can still get the submodules by running: `git submodule update --init --recursive`
+
+2. Install required dependencies:
 
 ```
 npm ci
