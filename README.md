@@ -6,7 +6,7 @@ Overture Docs is a centralized documentation site built with [Docusaurus](https:
 ![Overture Docs](./preview.png 'Docs for developers and informaticians')
 
 > [!NOTE]
-> Detailed information on this repository see it relevant documentation page linked here 
+> This repository is documented in detail on the Overture Docs site linked here (to be linked once live)
 
 ## Getting Started
 
