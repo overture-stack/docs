@@ -159,13 +159,13 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
-    algolia: {
+    // algolia: {
       // application ID provided by Algolia
-      appId: 'E70KV3D0W2',
+     // appId: 'E70KV3D0W2',
       // Public API key
-      apiKey: '296266a1c98ef42e60e0d9cb2f0c48a7',
-      indexName: 'overtureDocs',
-    },
+     // apiKey: '296266a1c98ef42e60e0d9cb2f0c48a7',
+     // indexName: 'overtureDocs',
+   // },
   } satisfies Preset.ThemeConfig,
 };
 
