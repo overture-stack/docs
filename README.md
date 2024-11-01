@@ -1,7 +1,7 @@
 
 # Overture Docs
 
-Overture Docs is a single, easy-to-navigate hub that beautifully renders all our product documentation from the `/docs` folder of all our GitHub repositories.
+Overture Docs is a centralized documentation site built with [Docusaurus](https://docusaurus.io/) that aggregates and renders Markdown content from `/docs` directories across our GitHub repositories. It transforms distributed documentation into a cohesive, easily navigable knowledge base.
 
 ![Overture Docs](./preview.png 'Docs for developers and informaticians')
 
