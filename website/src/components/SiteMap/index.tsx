@@ -7,6 +7,8 @@ import iconScore from './icons/icon-score.png';
 import iconMaestro from './icons/icon-maestro.png';
 import iconArranger from './icons/icon-arranger.png';
 import iconStage from './icons/icon-stage.png';
+import iconLyric from './icons/icon-lyric.png';
+import iconLectern from './icons/icon-lectern.png';
 
 interface Product {
   title: string;
@@ -34,7 +36,7 @@ const categories: Record<string, Category> = {
     title: 'Under Development',
     description: 'New components not quite ready for production'
   },
-  misc: {
+  supporting: {
     title: 'Supporting Software',
     description: 'Supporting tools within the Overture project'
   },
@@ -54,10 +56,10 @@ const products: Product[] = [
   { title: 'Maestro', link: '/docs/core-software/maestro/overview', image: iconMaestro, description: 'Metadata Indexing Service', category: 'core' },
   { title: 'Arranger', link: '/docs/core-software/arranger/overview', image: iconArranger, description: 'Search API', category: 'core' },
   { title: 'Stage', link: '/docs/core-software/stage/overview', image: iconStage, description: 'Web Portal Scaffolding', category: 'core' },
-  { title: 'Lectern', link: '/docs/under-development/lectern/', description: 'Schema Management Service', category: 'development' },
-  { title: 'Lyric', link: '/docs/under-development/lyric/', description: 'Tabular Data Submission Service', category: 'development' },
-  { title: 'Bridge', link: '/docs/other-software/Bridge', description: 'Documentation Site', category: 'misc' },
-  { title: 'Conductor', link: '/docs/other-software/Conductor', description: 'Software Setup Automation', category: 'misc' },
+  { title: 'Lectern', link: '/docs/under-development/lectern/', image: iconLectern ,description: 'Schema Management Service', category: 'development' },
+  { title: 'Lyric', link: '/docs/under-development/lyric/', image: iconLyric, description: 'Tabular Data Submission Service', category: 'development' },
+  { title: 'Bridge', link: '/docs/other-software/Bridge', description: 'Documentation Site', category: 'supporting' },
+  { title: 'Conductor', link: '/docs/other-software/Conductor', description: 'Software Setup Automation', category: 'supporting' },
   { title: 'Documenting Projects', link: '/docs/Standards/github', description: 'Organization Standards', category: 'standards' },
   { title: 'Documenting Software', link: '/docs/Standards/Software/', description: 'Software Standards', category: 'standards' },
 ];
@@ -100,8 +102,8 @@ const SiteMap = () => {
     return acc;
   }, {});
 
-  const rightColumnCategories = ['platform','misc','standards'];
-  const leftColumnCategories = ['core','development'];
+  const rightColumnCategories = ['platform', 'supporting', 'standards'];
+  const leftColumnCategories = ['core', 'development'];
 
   return (
     <section className={styles.siteMap}>

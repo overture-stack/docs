@@ -1,3 +1,4 @@
+/* Base layout */
 .siteMap {
   padding: 2rem 0;
   background-color: var(--ifm-background-color);
@@ -10,18 +11,7 @@
   padding: 0 1rem;
 }
 
-.mosaicLayout {
-  display: flex;
-  gap: 2rem;
-}
-
-.leftColumn, .rightColumn {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
+/* Category sections */
 .categorySection {
   background-color: var(--category-category-color);
   border-radius: 15px;
@@ -29,26 +19,34 @@
   box-shadow: var(--category-block-shadow);
 }
 
-.categoryHeader {
+.categoryHeader,
+.categorySubheader {
   color: var(--category-title-color);
+}
+
+.categoryHeader {
   margin-bottom: 0.5rem;
   font-size: 1.5rem;
   font-weight: 700;
 }
 
 .categorySubheader {
-  color: var(--category-title-color);
   font-size: 1rem;
   opacity: 0.8;
 }
 
+/* Card grid */
 .cardGrid {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
 }
 
+/* Card styles */
 .card {
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --card-shadow-hover: 0 1px 2px rgba(0, 0, 0, 0.15);
+  
   flex: 1 1 calc(50% - 0.5rem);
   min-width: 100px;
   display: flex;
@@ -56,16 +54,17 @@
   align-items: center;
   padding: 1rem;
   border-radius: 10px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   background-color: var(--category-card-color);
-}
+  box-shadow: var(--card-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 
-.card:hover, .card:focus {
-  transform: translateY(-2px);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
-  text-decoration: none;
-  outline: none;
+  &:hover,
+  &:focus {
+    transform: translateY(-2px);
+    box-shadow: var(--card-shadow-hover);
+    text-decoration: none;
+    outline: none;
+  }
 }
 
 .cardImage {
@@ -90,11 +89,42 @@
   margin-bottom: 0;
 }
 
+/* Mosaic grid layout */
+.mosaicLayout {
+  display: flex;
+  gap: 2rem;
+
+  .leftColumn,
+  .rightColumn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .leftColumn {
+    gap: 2rem;
+  }
+
+  .rightColumn {
+    gap: 2rem;
+        /* Different card sizing for right column */
+        .card {
+          height: 5.86rem;
+        }
+        .cardTitle {
+          padding-top: .5rem;
+        }
+  }
+
+}
+
+
+/* Funding section */
 .fundingBadge {
   margin-top: 2rem;
   padding: 2rem;
   background-color: var(--funding-block-color);
-  box-shadow: var(--category-block-shadow); 
+  box-shadow: var(--category-block-shadow);
   border-radius: 12px;
   position: relative;
   overflow: hidden;
@@ -122,21 +152,37 @@
   padding: 0.75rem 1.5rem;
   background-color: var(--category-card-color);
   color: var(--category-title-color);
-  text-decoration: none;
   border-radius: 6px;
   font-weight: bold;
+  box-shadow: var(--card-shadow);
   transition: all 0.3s ease;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    color: var(--category-title-color);
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: var(--card-shadow-hover);
+  }
 }
 
-.fundingLink:hover {
-  color: var(--category-title-color);
-  text-decoration: none;
-  transform: translateY(-2px);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+/* Responsive styles */
+@media (max-width: 1200px) {
+  .mosaicLayout {
+    flex-direction: column;
+  }
 }
+
 
 @media (max-width: 768px) {
+  .card {
+    flex: 1 1 100%;
+  }
+
+  .cardImage {
+    width: 50px;
+    height: 50px;
+  }
+
   .fundingBadge {
     padding: 1.5rem;
   }
@@ -148,21 +194,9 @@
   .fundingDescription {
     font-size: 1rem;
   }
-}
-
-@media (max-width: 1200px) {
-  .mosaicLayout {
-    flex-direction: column;
-  }
-}
-
-@media (max-width: 768px) {
-  .card {
-    flex: 1 1 100%;
-  }
-
-  .cardImage {
-    width: 50px;
-    height: 50px;
+  .mosaicLayout .rightColumn .card {
+    flex-direction: row;
+    text-align: left;
+    align-items: flex-start;
   }
 }
