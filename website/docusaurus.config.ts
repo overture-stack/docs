@@ -65,7 +65,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/overture-stack/OvertureDev',
+            'https://github.com/overture-stack/docs',
         },
         // Please change this to your repo.
         blog: {
@@ -76,7 +76,7 @@ const config: Config = {
           },
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/overture-stack/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/overture-stack/docs/tree/main/packages/create-docusaurus/templates/shared/',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -159,13 +159,13 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
-    // algolia: {
-      // application ID provided by Algolia
-     // appId: 'E70KV3D0W2',
-      // Public API key
-     // apiKey: '296266a1c98ef42e60e0d9cb2f0c48a7',
-     // indexName: 'overtureDocs',
-   // },
+    algolia: {
+     // application ID provided by Algolia
+     appId: 'E70KV3D0W2',
+     // Public API key
+     apiKey: '296266a1c98ef42e60e0d9cb2f0c48a7',
+     indexName: 'overtureDocs',
+   },
   } satisfies Preset.ThemeConfig,
 };
 
