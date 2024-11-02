@@ -6,6 +6,10 @@ We take pride in our software and are passionate about helping others use them. 
 
 Our primary platform for community support, feature requests, and general discussions is GitHub Discussions. This allows us to keep all conversations in one place and make them easily searchable for future reference.
 
+:::info Contacting by email
+If you have a collaboration or business enquiry you can reach us by email at **contact@overture.bio**
+:::
+
 ### Getting Help
 
 - [**Create a Support Discussion**](https://github.com/overture-stack/docs/discussions/categories/support)
@@ -16,7 +20,7 @@ Our primary platform for community support, feature requests, and general discus
 
 We love hearing your ideas for improving Overture! Before making a feature request, please check our current roadmap to see if your idea is already planned:
 
-- [**Overture Roadmap**](https://github.com/users/MitchellShiell/projects/2/views/4)
+- [**Overture feature roadmap](https://github.com/orgs/overture-stack/projects/11/views/1)
 
 If your idea isn't on the roadmap, feel free to create a new discussion in our Ideas category:
 
@@ -50,3 +54,4 @@ When participating in our community, please adhere to the following guidelines:
 3. Use clear and descriptive titles for your discussions and issues.
 4. Search existing discussions before creating a new one to avoid duplicates.
 5. Follow the GitHub Community Guidelines and abide by our [code of conduct](/community/code-of-conduct).
+
