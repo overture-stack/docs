@@ -57,14 +57,14 @@
   background-color: var(--category-card-color);
   box-shadow: var(--card-shadow);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-  &:hover,
-  &:focus {
-    transform: translateY(-2px);
-    box-shadow: var(--card-shadow-hover);
-    text-decoration: none;
-    outline: none;
-  }
+.card:hover,
+.card:focus {
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow-hover);
+  text-decoration: none;
+  outline: none;
 }
 
 .cardImage {
@@ -93,31 +93,30 @@
 .mosaicLayout {
   display: flex;
   gap: 2rem;
-
-  .leftColumn,
-  .rightColumn {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .leftColumn {
-    gap: 2rem;
-  }
-
-  .rightColumn {
-    gap: 2rem;
-        /* Different card sizing for right column */
-        .card {
-          height: 5.86rem;
-        }
-        .cardTitle {
-          padding-top: .5rem;
-        }
-  }
-
 }
 
+.mosaicLayout .leftColumn,
+.mosaicLayout .rightColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.mosaicLayout .leftColumn {
+  gap: 2rem;
+}
+
+.mosaicLayout .rightColumn {
+  gap: 2rem;
+}
+
+.mosaicLayout .rightColumn .card {
+  height: 5.86rem;
+}
+
+.mosaicLayout .rightColumn .cardTitle {
+  padding-top: 0.5rem;
+}
 
 /* Funding section */
 .fundingBadge {
@@ -156,13 +155,13 @@
   font-weight: bold;
   box-shadow: var(--card-shadow);
   transition: all 0.3s ease;
+}
 
-  &:hover {
-    color: var(--category-title-color);
-    text-decoration: none;
-    transform: translateY(-2px);
-    box-shadow: var(--card-shadow-hover);
-  }
+.fundingLink:hover {
+  color: var(--category-title-color);
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow-hover);
 }
 
 /* Responsive styles */
@@ -171,7 +170,6 @@
     flex-direction: column;
   }
 }
-
 
 @media (max-width: 768px) {
   .card {
@@ -194,6 +192,7 @@
   .fundingDescription {
     font-size: 1rem;
   }
+
   .mosaicLayout .rightColumn .card {
     flex-direction: row;
     text-align: left;
