@@ -46,12 +46,12 @@ git clone https://github.com/overture-stack/conductor.git && cd conductor
 
 | Environment | Unix/macOS | Windows |
 |-------------|------------|---------|
-| Overture Platform | `make platform` | `make.bat platform` |
-| Stage Dev | `make stageDev` | `make.bat stageDev` |
-| Arranger Dev | `make arrangerDev` | `make.bat arrangerDev` |
-| Maestro Dev | `make maestroDev` | `make.bat maestroDev` |
-| Song Dev | `make songDev` | `make.bat songDev` |
-| Score Dev | `make scoreDev` | `make.bat scoreDev` |
+| Overture Platform | `make platform` | `./make.bat platform` |
+| Stage Dev | `make stageDev` | `./make.bat stageDev` |
+| Arranger Dev | `make arrangerDev` | `./make.bat arrangerDev` |
+| Maestro Dev | `make maestroDev` | `./make.bat maestroDev` |
+| Song Dev | `make songDev` | `./make.bat songDev` |
+| Score Dev | `make scoreDev` | `./make.bat scoreDev` |
 
 Each command spins up complementary services for the specified development environment.
 
@@ -72,7 +72,7 @@ Each command spins up complementary services for the specified development envir
 │   ├── data-minio
 │   └── data-song-db
 ├── Makefile
-└── make.bat
+└── ./make.bat
 ```
 
 - **`conductorScripts/`** Contains scripts for orchestrating the deployment process.
@@ -93,4 +93,4 @@ Each command spins up complementary services for the specified development envir
 
 - **`Makefile`** Contains make commands for Unix-based systems (macOS, Linux) to streamline Docker operations.
 
-- **`make.bat`** Windows equivalent of the Makefile, featuring batch commands tailored for Windows systems.
+- **`./make.bat`** Windows equivalent of the Makefile, featuring batch commands tailored for Windows systems.

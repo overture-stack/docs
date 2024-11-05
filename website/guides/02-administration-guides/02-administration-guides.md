@@ -48,7 +48,7 @@ For a rapid, hassle-free setup of an Overture data platform on your local machin
    | OS | Command |
    |----|---------|
    | Unix/macOS | `make platform` |
-   | Windows | `make.bat platform` |
+   | Windows | `./make.bat platform` |
 
     This will deploy the following services in Docker:
 
