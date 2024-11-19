@@ -2,61 +2,38 @@
 
 We gratefully acknowledge the financial support that has made this project possible. Our work has been funded by the following organizations and grants:
 
-### National Cancer Institute at the US National Institutes of Health
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-
-  - Grant Number: [#U24CA253529]
-  - Project Title: "Overture"
-  - Funding Period: [YYYY-YYYY]
-
 ### Canadian Institutes of Health Research
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+As working group 2, we are developing a federated framework for genomic data access and analysis, specifically building an enhanced Overture data submission system to facilitate the ingestion, validation, and tracking of clinical and molecular data into the PCGL platform.
 
-  - Grant Number: [XXX-XXXX]
-  - Project Title: "Pan-Canadian Genome Library (PCGL)"
-  - Funding Period: [YYYY-YYYY]
+  - **Project Title:** Pan-Canadian Genome Library (PCGL)
+  - **Funding Period:** 2023-2028
 
+### National Cancer Institute at the US National Institutes of Health
 
-### Genome Canada
+Under this grant we are making the Overture platform more accessible by breaking down barriers to adoption, integrating existing analysis tools and adding federated search functionality between distributed Overture instances using standardized data governance frameworks ([GA4GH](https://www.ga4gh.org/)).
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+  - **Grant Number:** #U24CA253529
+  - **Funding Period:** 2021-2026
 
-  - Grant Number: [XXX-XXXX]
-  - Project Title: "VirusSeq" 
-  - Funding Period: [YYYY-YYYY]
+### Canadian COVID-19 Genomic Data Infrastructure 
 
-### Canada Foundation for Innovation
+The [VirusSeq Data Portal](https://virusseq-dataportal.ca/) demonstrates Overture's successful expansion beyond oncology data management. This funding facilitated the platform's adaptation to support viral genomic data, while enabling the development, deployment, and ongoing maintenance of Canada's central SARS-CoV-2 sequence repository.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+  - **Project Title:** VirusSeq Data Portal
+  - **Funding Period:** 2020-2024
 
-  - Grant Number: [XXX-XXXX]
-  - Project Title: "" 
-  - Funding Period: [YYYY-YYYY]
+### The Government of Ontario
 
-### CANARIE
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-
-  - Grant Number: [XXX-XXXX]
-  - Project Title: "The Overture DMS" 
-  - Funding Period: [YYYY-YYYY]
-
-### The Goverment of Ontario
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-
-   - Funding Period: [YYYY-YYYY]
+The Overture platform is developed and maintained by the Genome Informatics Software Engineering group at the Ontario Institute for Cancer Research (OICR). Our team is partly supported through operational funding from the Government of Ontario via OICR. OICR receives core funding from the Government of Ontario through the Ministry of Colleges and Universities.
 
 ## Additional Support
 
 We also thank the following organizations for their contributions:
 
-- [Supporting Organization 1] - [Type of Support]
-- [Supporting Organization 2] - [Type of Support]
-- [Supporting Organization 3] - [Type of Support]
+- [**EMBL's European Bioinformatics Institute**](https://www.ebi.ac.uk/) - For contributions to Lectern
+- [**Ferretti Lab**](https://ferlab.bio/a-propos) - For contributions to Arranger
 
 For more information about our funding or to discuss potential collaborations, please email us at contact@overture.bio.
 
-**Last updated:** 10-15-24
+**Last updated:** 11-19-24
