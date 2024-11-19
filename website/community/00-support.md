@@ -20,7 +20,7 @@ If you have a collaboration or business enquiry you can reach us by email at **c
 
 We love hearing your ideas for improving Overture! Before making a feature request, please check our current roadmap to see if your idea is already planned:
 
-- [**Overture feature roadmap](https://github.com/orgs/overture-stack/projects/11/views/1)
+- [**Overture feature roadmap**](https://github.com/orgs/overture-stack/projects/11/views/1)
 
 If your idea isn't on the roadmap, feel free to create a new discussion in our Ideas category:
 
