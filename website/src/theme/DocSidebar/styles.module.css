@@ -1,5 +1,6 @@
 .sidebarWrapper {
   display: flex;
+  background-color: var(--doc-sidebar-background);
   flex-direction: column;
   height: 100%;
 }

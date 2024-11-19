@@ -7,6 +7,7 @@ import SearchBar from '@theme/SearchBar';  // Import the SearchBar component
 
 import styles from './index.module.css';
 import SiteMap from '../components/SiteMap';
+import Button from '../components/OvertureButton';
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
@@ -17,8 +18,23 @@ function HomepageHeader() {
           {siteConfig.title}
         </Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
+      <Button 
+        to="https://demo.overture.bio/" 
+        variant="primary" 
+        className={styles.button}
+      >
+        Demo Platform
+      </Button>
+      <Button 
+        to="/guides/getting-started"
+        variant="primary"
+        className={styles.button}
+      >
+        Introductory Tutorial
+      </Button>
+
         <div className={styles.searchBarContainer}>
-          <SearchBar />  {/* Add the SearchBar component here */}
+          <SearchBar /> 
         </div>
       </div>
     </header>
