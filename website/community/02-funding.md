@@ -32,7 +32,8 @@ The Overture platform is developed and maintained by the Genome Informatics Soft
 We also thank the following organizations for their contributions:
 
 - [**EMBL's European Bioinformatics Institute**](https://www.ebi.ac.uk/) - For contributions to Lectern
-- [**Ferretti Lab**](https://ferlab.bio/a-propos) - For contributions to Arranger
+- [**The Ferretti Lab at the Research Center of the CHU Sainte-Justine**](https://ferlab.bio/a-propos) - For contributions to Arranger
+- [**The South African National Bioinformatics Institute (SANBI)**](https://www.sanbi.ac.za/) - Provided valuable feedback on documentation gaps and identified improvements that significantly enhanced the Overture's platform and user experience.
 
 For more information about our funding or to discuss potential collaborations, please email us at contact@overture.bio.
 
