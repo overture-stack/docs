@@ -19,18 +19,18 @@ function HomepageHeader() {
         </Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
       <Button 
+        to="/guides/getting-started"
+        variant="primary"
+        className={styles.button}
+      >
+      Video Tutorial
+      </Button>
+      <Button 
         to="https://demo.overture.bio/" 
         variant="primary" 
         className={styles.button}
       >
         Demo Platform
-      </Button>
-      <Button 
-        to="/guides/getting-started"
-        variant="primary"
-        className={styles.button}
-      >
-        Introductory Tutorial
       </Button>
 
         <div className={styles.searchBarContainer}>

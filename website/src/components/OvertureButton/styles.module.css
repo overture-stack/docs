@@ -14,11 +14,12 @@
 }
 
 .primary {
+  border: 2px solid var(--ifm-color-primary-dark);
   background: var(--ifm-color-primary-dark);
 }
 
 .primary:hover {
-  background: var(--ifm-color-primary-darkest);
+  border: 2px solid #4BC6F0;
   text-decoration: none;
   color: white;
 }
@@ -28,7 +29,7 @@
 }
 
 .secondary:hover {
-  background: var(--ifm-color-primary-darkest);
+  border: 2px solid #4BC6F0;
   text-decoration: none;
   color: white;
 }
@@ -42,3 +43,4 @@
   padding: 0.75rem 1.5rem;
   font-size: 1.125rem;
 }
+
