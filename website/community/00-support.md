@@ -53,5 +53,5 @@ When participating in our community, please adhere to the following guidelines:
 2. Provide as much relevant information as possible when asking for help.
 3. Use clear and descriptive titles for your discussions and issues.
 4. Search existing discussions before creating a new one to avoid duplicates.
-5. Follow the GitHub Community Guidelines and abide by our [code of conduct](/community/code-of-conduct).
+5. Follow the GitHub Community Guidelines and abide by our [code of conduct](https://docs.overture.bio/community/code-of-conduct).
 

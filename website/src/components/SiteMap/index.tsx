@@ -59,7 +59,7 @@ const products: Product[] = [
   { title: 'Lectern', link: '/docs/under-development/lectern/', image: iconLectern ,description: 'Schema Management Service', category: 'development' },
   { title: 'Lyric', link: '/docs/under-development/lyric/', image: iconLyric, description: 'Tabular Data Submission Service', category: 'development' },
   { title: 'Bridge', link: '/docs/other-software/Bridge', description: 'Documentation Site', category: 'supporting' },
-  { title: 'Conductor', link: '/docs/other-software/Conductor', description: 'Software Setup Automation', category: 'supporting' },
+  { title: 'Conductor', link: 'https://docs.overture.bio/docs/other-software/Conductor', description: 'Software Setup Automation', category: 'supporting' },
   { title: 'Documenting Projects', link: '/docs/Standards/github', description: 'Organization Standards', category: 'standards' },
   { title: 'Documenting Software', link: '/docs/Standards/Software/', description: 'Software Standards', category: 'standards' },
 ];

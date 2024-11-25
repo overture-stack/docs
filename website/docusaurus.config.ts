@@ -106,7 +106,7 @@ const config: Config = {
           position: 'left',
           label: 'Documentation',
         },
-        {to: '/community/support', label: 'Community', position: 'left'},
+        {to: 'https://docs.overture.bio/community/support', label: 'Community', position: 'left'},
         {
           href: 'https://github.com/overture-stack',
           label: 'GitHub',
@@ -135,7 +135,7 @@ const config: Config = {
           items: [
             {
               label: 'Support',
-              href: '/community/support',
+              href: 'https://docs.overture.bio/community/support',
             },
             {
               label: 'Contributing',
