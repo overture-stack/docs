@@ -8,7 +8,7 @@ const config: Config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://overture-dev.com',
+  url: 'https://docs.overture.bio/',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
@@ -106,7 +106,7 @@ const config: Config = {
           position: 'left',
           label: 'Documentation',
         },
-        {to: 'https://docs.overture.bio/community/support', label: 'Community', position: 'left'},
+        {to: '/community/support', label: 'Community', position: 'left'},
         {
           href: 'https://github.com/overture-stack',
           label: 'GitHub',
