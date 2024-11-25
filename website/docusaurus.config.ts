@@ -161,10 +161,10 @@ const config: Config = {
     },
     algolia: {
      // application ID provided by Algolia
-     appId: 'APP_ID',
+     appId: '3Y4T1NN3P4',
      // Public API key
-     apiKey: 'API_KEY',
-     indexName: 'overtureDocs',
+     apiKey: '4fd7bf617c615c6714537dda13d900dd',
+     indexName: 'overture',
    },
   } satisfies Preset.ThemeConfig,
 };
