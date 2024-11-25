@@ -18,7 +18,7 @@ function HomepageHeader() {
           {siteConfig.title}
         </Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
-      <Button 
+      {/* <Button 
         to="/guides/getting-started"
         variant="primary"
         className={styles.button}
@@ -31,8 +31,7 @@ function HomepageHeader() {
         className={styles.button}
       >
         Demo Platform
-      </Button>
-
+      </Button> */}
         <div className={styles.searchBarContainer}>
           <SearchBar /> 
         </div>
