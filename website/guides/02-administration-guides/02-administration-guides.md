@@ -17,7 +17,7 @@
    - **[Search Portal Customization](/guides/administration-guides/updating-the-data-model):** Learn how to customize how data is displayed in your front-end data facets and table components
 
     :::tip Help us make our guides better
-    If you can't find what you're looking for please reach out to us on our Slack channel linked on the top right of your screen or by email at contact@overture.bio
+    If you can't find what you're looking for please don't hesitate to reach out through our relevant [**community support channels**](https://docs.overture.bio/community/support).
     :::
 
 # Getting Started

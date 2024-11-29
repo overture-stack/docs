@@ -1110,5 +1110,5 @@ You should now be able to find you uploaded data on the front-end portal found a
 
 :::tip
 **Help us make our guides better**
-If you can't find what you're looking for please reach out to us on our Slack channel linked on the top right of your screen or by email at contact@overture.bio
+If you can't find what you're looking for please don't hesitate to reach out through our relevant [**community support channels**](https://docs.overture.bio/community/support).
 :::

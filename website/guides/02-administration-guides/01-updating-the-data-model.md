@@ -9,7 +9,7 @@ Data administrators can configure custom data submission validations for Song by
 Song merges all admin-defined schemas with its pre-existing [base schema](https://github.com/overture-stack/SONG/blob/develop/song-server/src/main/resources/schemas/analysis/analysisBase.json). Therefore, when creating your schemas, it is important to reference the base schema to avoid specifying conflicting properties.
 
 :::info Song Base Schema
-The Song base schema can be restrictive for data models outside of cancer research contexts, as it requires tumor and normal samples. We are aware of this limitation and are currently working on a new data-agnostic submission system. For more information, contact us on Slack or email us at contact@overture.bio.
+The Song base schema can be restrictive for data models outside of cancer research contexts, as it requires tumor and normal samples. We are aware of this limitation and are currently working on a new data-agnostic submission system. For more information, check out our [**software currently under development section**](/docs/under-development/)
 :::
 
 ## Building Schemas
