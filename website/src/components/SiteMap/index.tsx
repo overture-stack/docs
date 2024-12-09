@@ -50,7 +50,7 @@ const products: Product[] = [
   { title: 'Deployment Guides', link: '/guides/deployment-guide/', description: 'Deploying to Production', category: 'platform' },
   { title: 'Administration Guides', link: '/guides/administration-guides/', description: 'Management and Customization', category: 'platform' },
   { title: 'User Guides', link: '/guides/user-guides/', description: 'Interacting with the platform', category: 'platform' },
-  { title: 'API Reference', link: '/guides/api-reference', description: 'Interacting with the platforms APIs', category: 'platform' },
+  { title: 'API Reference', link: '/guides/api-reference', description: 'Interacting with the platform\'s APIs', category: 'platform' },
   { title: 'Song', link: 'docs/core-software/song/overview', image: iconSong, description: 'Metadata Management Service', category: 'core' },
   { title: 'Score', link: '/docs/core-software/score/overview', image: iconScore, description: 'File Transfer Service', category: 'core' },
   { title: 'Maestro', link: '/docs/core-software/maestro/overview', image: iconMaestro, description: 'Metadata Indexing Service', category: 'core' },

@@ -43,7 +43,7 @@ This allows us to confirm the issue and gather more information if needed. If we
 ### Release Announcements
 
 - [**Release Announcements**](https://github.com/overture-stack/docs/discussions/categories/announcements)
-    - To stay up-to-date with the latest Overture releases and updates, keep an eye on our Announcements category in our GitHub Discussions
+    - To stay up-to-date with the latest Overture releases and updates, keep an eye on our Announcements category in our GitHub Discussions.
 
 ## Community Guidelines
 

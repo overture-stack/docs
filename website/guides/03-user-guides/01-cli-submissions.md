@@ -2,7 +2,7 @@
 
 **This guide is for** anyone seeking guidance on submitting data to an Overture platform. By the end of this guide you will have completed a full data submission workflow, including updating the submitted data to conform to the data model enforced by Song.
 
-**You will need** docker installed. We recommend using Docker Desktop; for more information, visit [Dockers website](https://www.docker.com/products/docker-desktop/)
+**You will need** docker installed. We recommend using Docker Desktop; for more information, visit [Docker's website](https://www.docker.com/products/docker-desktop/).
 
 **Background:** Submitting data to an Overture platform typically includes data files (BAMS, CRAMS, VCFs, etc.) along with associated metadata that provides context including donor information and descriptions of the data files. This guide focuses on submitting data to Song & Score using their Command Line Clients (CLIs).
 
@@ -300,7 +300,7 @@ We will address our first error by updating our metadata payload with a collabor
     ],
     ```
 
-Feel free to provide any name value you like, in this example we are submitting from the Imaginary Instituite for Cancer Researcher (IIRC).
+Feel free to provide any name value you like, in this example we are submitting from the Imaginary Institute for Cancer Research (IICR).
 
 **Addressing the invalid value:**
 

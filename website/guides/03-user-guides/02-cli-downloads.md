@@ -2,7 +2,7 @@
 
 **This guide is for** anyone seeking guidance on how to download data from an Overture platform. 
 
-**You will need** docker installed. We recommend using Docker Desktop; for more information, visit [Dockers website](https://www.docker.com/products/docker-desktop/)
+**You will need** docker installed. We recommend using Docker Desktop; for more information, visit [Docker's website](https://www.docker.com/products/docker-desktop/).
 
 #### Visual Summary:
 
