@@ -128,6 +128,10 @@ const config: Config = {
               label: 'Developer Documentation',
               to: '/docs/getting-started',
             },
+            {
+              label: 'Under Development',
+              to: '/docs/under-development/',
+            },
           ],
         },
         {
@@ -135,12 +139,16 @@ const config: Config = {
           items: [
             {
               label: 'Support',
-              href: 'https://docs.overture.bio/community/support',
+              href: '/community/support',
             },
             {
               label: 'Contributing',
               href: '/community/contribution',
             },
+            {
+              label: 'Funding',
+              href: '/community/funding',
+            }
           ],
         },
         {
@@ -149,6 +157,14 @@ const config: Config = {
             {
               label: 'GitHub',
               href: 'https://github.com/overture-stack',
+            },
+            {
+              label: 'Privacy Statement',
+              href: 'https://www.overture.bio/privacy/',
+            },
+            {
+              label: 'Terms & Conditions',
+              href: 'https://www.overture.bio/terms-conditions/',
             },
           ],
         },
