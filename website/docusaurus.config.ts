@@ -21,23 +21,22 @@ const config: Config = {
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
+  headTags: [
+    {
+      tagName: 'meta',
+      attributes: {
+        name: 'referrer',
+        content: 'same-origin'
+      },
+    },
+  ],
+
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
-  },
-
-  scripts: [
-    {
-      src: process.env.MATOMO_URL ? `${process.env.MATOMO_URL}/matomo.js` : undefined,
-      async: true,
-    }
-  ],
-  customFields: {
-    matomoUrl: process.env.MATOMO_URL,
-    matomoSiteId: process.env.MATOMO_SITE_ID
   },
 
   plugins: [
