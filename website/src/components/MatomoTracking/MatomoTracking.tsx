@@ -3,10 +3,6 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 
 // See https://developer.matomo.org/guides/spa-tracking
-interface CustomFields {
-  matomoUrl: string;
-  matomoSiteId: string;
-}
 
 declare global {
   interface Window {
@@ -25,14 +21,16 @@ export default function MatomoTracking(): JSX.Element | null {
     }
 
     var _paq = window._paq = window._paq || [];
-    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
     _paq.push(["setCookieDomain", "*.overture.bio"]);
     _paq.push(['trackPageView']);
     _paq.push(['enableLinkTracking']);
 
-    const u = customFields.matomoUrl;
+    const u = "https://webstats.oicr.on.ca/piwik/";
+   
+    // const u = window.location.protocol + "//webstats.oicr.on.ca/piwik/";
+
     _paq.push(['setTrackerUrl', u + 'matomo.php']);
-    _paq.push(['setSiteId', customFields.matomoSiteId]);
+    _paq.push(['setSiteId', '76']);
 
     const d = document;
     const g = d.createElement('script');
