@@ -29,6 +29,17 @@ const config: Config = {
     locales: ['en'],
   },
 
+  scripts: [
+    {
+      src: '//webstats.oicr.on.ca/piwik/matomo.js',
+      async: true
+    }
+  ],
+  customFields: {
+    matomoUrl: process.env.MATOMO_URL,
+    matomoSiteId: process.env.MATOMO_SITE_ID
+  },
+
   plugins: [
     './docsPlugin.ts',
     [
