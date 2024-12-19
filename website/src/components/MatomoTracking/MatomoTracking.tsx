@@ -23,10 +23,10 @@ export default function piwikiTracking(): JSX.Element | null {
     
         (function() {
           var u="//webstats.oicr.on.ca/piwik/";
-          _paq.push(['setTrackerUrl', u+'piwiki.php']);
+          _paq.push(['setTrackerUrl', u+'piwik.php']);
           _paq.push(['setSiteId', '76']);
           var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-          g.async=true; g.src=u+'piwiki.js'; s.parentNode.insertBefore(g,s);
+          g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
         })();
     
         // Track route changes
