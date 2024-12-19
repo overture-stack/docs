@@ -21,10 +21,10 @@ export default function MatomoTracking(): JSX.Element | null {
 
     (function() {
       var u="//webstats.oicr.on.ca/piwik/";
-      _paq.push(['setTrackerUrl', u+'matomo.php']);
+      _paq.push(['setTrackerUrl', u+'piwik.php']);
       _paq.push(['setSiteId', '76']);
       var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-      g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+      g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
     })();
 
   }, []);
