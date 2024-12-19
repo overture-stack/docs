@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import { useEffect } from 'react';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 
 declare global {
