@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 
+// See https://developer.matomo.org/guides/spa-tracking
 interface CustomFields {
   matomoUrl: string;
   matomoSiteId: string;
@@ -9,7 +10,7 @@ interface CustomFields {
 
 declare global {
   interface Window {
-    _paq: Array<unknown>;
+    _paq: Array<any>;
   }
 }
 
@@ -23,18 +24,24 @@ export default function MatomoTracking(): JSX.Element | null {
       return;
     }
 
-    // Type assertion to handle the customFields
-    const matomoConfig = {
-      matomoUrl: (customFields as { matomoUrl: string }).matomoUrl,
-      matomoSiteId: (customFields as { matomoSiteId: string }).matomoSiteId,
-    };
+    var _paq = window._paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(["setCookieDomain", "*.overture.bio"]);
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
 
-    window._paq = window._paq || [];
-    window._paq.push(["setCookieDomain", "*.overture.bio"]);
-    window._paq.push(['trackPageView']);
-    window._paq.push(['enableLinkTracking']);
-    window._paq.push(['setTrackerUrl', `${matomoConfig.matomoUrl}/matomo.php`]);
-    window._paq.push(['setSiteId', matomoConfig.matomoSiteId]);
+    const u = customFields.matomoUrl;
+    _paq.push(['setTrackerUrl', u + 'matomo.php']);
+    _paq.push(['setSiteId', customFields.matomoSiteId]);
+
+    const d = document;
+    const g = d.createElement('script');
+    const s = d.getElementsByTagName('script')[0];
+    g.async = true;
+    g.src = u + 'matomo.js';
+    if (s.parentNode) {
+      s.parentNode.insertBefore(g, s);
+    }
   }, []);
 
   return null;

@@ -31,8 +31,8 @@ const config: Config = {
 
   scripts: [
     {
-      src: '//webstats.oicr.on.ca/piwik/matomo.js',
-      async: true
+      src: process.env.MATOMO_URL ? `${process.env.MATOMO_URL}/matomo.js` : undefined,
+      async: true,
     }
   ],
   customFields: {
