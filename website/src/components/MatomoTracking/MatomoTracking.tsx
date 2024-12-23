@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
+import { useLocation } from '@docusaurus/router';
 
 declare global {
   interface Window {
@@ -7,37 +8,54 @@ declare global {
   }
 }
 
-export default function piwikiTracking(): JSX.Element | null {
-    useEffect(() => {
-        if (!ExecutionEnvironment.canUseDOM) {
-          return;
-        }
+export default function MatomoTracking(): JSX.Element | null {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!ExecutionEnvironment.canUseDOM) {
+      return;
+    }
+
+    const _paq = (window._paq = window._paq || []);
     
-        var _paq = window._paq = window._paq || [];
-        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-        _paq.push(["setCookieDomain", "*.overture.bio"]);
-        _paq.push(['setDocumentTitle', document.title]); 
-        _paq.push(['setCustomUrl', window.location.pathname]); 
-        _paq.push(['trackPageView']);
-        _paq.push(['enableLinkTracking']);
-    
-        (function() {
-          var u="//webstats.oicr.on.ca/piwik/";
-          _paq.push(['setTrackerUrl', u+'piwik.php']);
-          _paq.push(['setSiteId', '76']);
-          var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-          g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-        })();
-    
-        // Track route changes
-        const router = require('@docusaurus/router').default;
-        router.events.on('routeDidUpdate', () => {
-          _paq.push(['setDocumentTitle', document.title]);
-          _paq.push(['setCustomUrl', window.location.pathname]);
-          _paq.push(['trackPageView']);
-        });
-    
-    }, []);
+    // Initialize Matomo tracking
+    const initializeMatomo = () => {
+      const u = "//piwik-prod-www.oicr.on.ca/piwik/";
+      _paq.push(['setTrackerUrl', u + 'matomo.php']);
+      _paq.push(['setSiteId', '76']);
+      
+      const d = document;
+      const g = d.createElement('script');
+      const s = d.getElementsByTagName('script')[0];
+      g.async = true;
+      g.src = u + 'matomo.js';
+      if (s.parentNode) {
+        s.parentNode.insertBefore(g, s);
+      }
+    };
+
+    // Track page view
+    const trackPageView = () => {
+      _paq.push(["setCookieDomain", "*.overture.bio"]);
+      _paq.push(['setDocumentTitle', document.title]);
+      _paq.push(['setCustomUrl', location.pathname + location.search]); // Include search parameters
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+    };
+
+    // Initialize Matomo if it hasn't been initialized yet
+    if (!window._paq.length) {
+      initializeMatomo();
+    }
+
+    // Track the current page
+    trackPageView();
+
+    // Cleanup function
+    return () => {
+      // Clean up any necessary listeners
+    };
+  }, [location]); // Re-run effect when location changes
 
   return null;
 }
