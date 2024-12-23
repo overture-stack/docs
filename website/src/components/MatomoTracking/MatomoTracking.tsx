@@ -20,15 +20,18 @@ export default function MatomoTracking(): JSX.Element | null {
     
     // Initialize Matomo tracking
     const initializeMatomo = () => {
-      const u = "//piwik-prod-www.oicr.on.ca/piwik/";
-      _paq.push(['setTrackerUrl', u + 'matomo.php']);
+      const u = "https://webstats.oicr.on.ca/piwik/";
+      _paq.push(['setTrackerUrl', u + 'piwik.php']); // Using piwik.php instead of matomo.php
       _paq.push(['setSiteId', '76']);
       
       const d = document;
       const g = d.createElement('script');
       const s = d.getElementsByTagName('script')[0];
       g.async = true;
-      g.src = u + 'matomo.js';
+      g.src = u + 'piwik.js'; // Using piwik.js instead of matomo.js
+      g.onerror = () => {
+        console.error('Failed to load Matomo tracking script');
+      };
       if (s.parentNode) {
         s.parentNode.insertBefore(g, s);
       }
@@ -38,7 +41,7 @@ export default function MatomoTracking(): JSX.Element | null {
     const trackPageView = () => {
       _paq.push(["setCookieDomain", "*.overture.bio"]);
       _paq.push(['setDocumentTitle', document.title]);
-      _paq.push(['setCustomUrl', location.pathname + location.search]); // Include search parameters
+      _paq.push(['setCustomUrl', location.pathname + location.search]);
       _paq.push(['trackPageView']);
       _paq.push(['enableLinkTracking']);
     };
@@ -51,11 +54,7 @@ export default function MatomoTracking(): JSX.Element | null {
     // Track the current page
     trackPageView();
 
-    // Cleanup function
-    return () => {
-      // Clean up any necessary listeners
-    };
-  }, [location]); // Re-run effect when location changes
+  }, [location]);
 
   return null;
 }
