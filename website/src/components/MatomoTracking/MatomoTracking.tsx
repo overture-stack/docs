@@ -21,14 +21,14 @@ export default function MatomoTracking(): JSX.Element | null {
     // Initialize Matomo tracking
     const initializeMatomo = () => {
       const u = "//piwik-prod-www.oicr.on.ca/piwik/";
-      _paq.push(['setTrackerUrl', u + 'matomo.php']);
+      _paq.push(['setTrackerUrl', u + 'piwik.php']);
       _paq.push(['setSiteId', '76']);
       
       const d = document;
       const g = d.createElement('script');
       const s = d.getElementsByTagName('script')[0];
       g.async = true;
-      g.src = u + 'matomo.js';
+      g.src = u + 'piwik.js';
       if (s.parentNode) {
         s.parentNode.insertBefore(g, s);
       }
