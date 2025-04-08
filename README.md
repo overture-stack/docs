@@ -2,7 +2,7 @@
 
 Overture Docs is a centralized documentation site built with [Docusaurus](https://docusaurus.io/) that aggregates and renders Markdown content from `/docs` directories across our GitHub repositories. It transforms distributed documentation into a cohesive and easy to navigate knowledge base.
 
-![Overture Docs](./preview.png 'Docs for developers and informaticians')
+![Overture Docs](./preview.png "Docs for developers and informaticians")
 
 > [!NOTE]
 > This repository is documented in detail on the Overture Docs site linked here (to be linked once live)
@@ -39,12 +39,11 @@ npm start
 
 - **Docusaurus**: We use Docusaurus to render the site, providing a sleek and navigable interface for our documentation.
 
-- **Markdown Files**: All documentation content is stored as markdown files in the `/website/docs` directory. 
+- **Markdown Files**: All documentation content is stored as markdown files in the `/website/docs` directory.
 
 - **Git Submodules**: We use Git submodules to store and track all our GitHub repositories within one main repository. All submodules can be found in the `submodule` folder.
 
 - **Symlinks**: Only the necessary documentation files are symlinked from the submodules in the `submodule` folder to the `/website/docs` directory. This allows us to import only the required markdown content that Docusaurus needs.
-
 
 ## Repository structure
 
@@ -91,8 +90,7 @@ npm start
 
 - **Robust Error Handling**: Docusaurus has excellent error catching, particularly for broken and missing links, reducing the need for manual testing.
 
-![Pro Tip](./website/docs/03-other-software/images/proTip.png 'Use Overture Docs repo to search across all Overture repos')
+![Pro Tip](./website/docs/03-other-software/images/proTip.png "Use Overture Docs repo to search across all Overture repos")
 
 > [!TIP]  
 > The Overture Docs repo contains everything, therefore finding & tracking links and content across all our repos has never been easier.
-
