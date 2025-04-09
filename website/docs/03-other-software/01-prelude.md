@@ -66,7 +66,7 @@ _If you’re reading from the Prelude documentation page, this section may be re
 ### 1. Clone the repository
 
 ```sh
-git clone -b prelude https://github.com/overture-stack/conductor.git
+git clone https://github.com/overture-stack/prelude.git
 cd conductor
 ```
 
