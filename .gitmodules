@@ -10,7 +10,6 @@
 [submodule "submodules/stage"]
 	path = submodules/stage
 	url = https://github.com/overture-stack/stage.git
-	branch = main
 [submodule "submodules/maestro"]
 	path = submodules/maestro
 	url = https://github.com/overture-stack/maestro.git
