@@ -37,6 +37,7 @@ We use the following standard branches:
 - `feature/<name>` for feature branches
 - `release/v<version>` for release branches
 - `hotfix/<name>` for hotfix branches
+- `docs/<name>` for documentation branches
 
 ## Pull Requests
 
