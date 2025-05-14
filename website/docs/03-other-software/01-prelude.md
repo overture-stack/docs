@@ -2,9 +2,9 @@
 
 **Prelude** is a toolkit designed for the **planning and development stages** of Overture data platform implementation. It helps teams incrementally build and validate platform requirements, enabling them to:
 
-- Systematically verify requirements
-- Minimize technical overhead
-- Build a foundation for production deployment
+-   Systematically verify requirements
+-   Minimize technical overhead
+-   Build a foundation for production deployment
 
 :::important
 Prelude is **not intended for production environments**. It serves as a preparatory tool to ensure successful production deployments. We will be actively improving resources to support teams transitioning from Prelude to production.
@@ -57,7 +57,7 @@ As summary of command line client interactions is provided in the table below:
 
 ### Additional Information
 
-- Relevant API swagger docs can be found from the API dropdown. These swagger APIs are only available when running phases that include the respective service
+-   Relevant API swagger docs can be found from the API dropdown. These swagger APIs are only available when running phases that include the respective service
 
 ## Getting Started
 
@@ -75,17 +75,17 @@ cd conductor
 Run a pre-deployment check:
 
 ```sh
-make Phase0
+make phase0
 ```
 
 **Requirements:**
 
-- **Docker Desktop 4.39.0+** with:
-  - 8-core CPU minimum
-  - 8 GB memory
-  - 2 GB swap
-  - 64 GB virtual disk
-- **Node.js 18+ and npm 9+**
+-   **Docker Desktop 4.39.0+** with:
+    -   8-core CPU minimum
+    -   8 GB memory
+    -   2 GB swap
+    -   64 GB virtual disk
+-   **Node.js 18+ and npm 9+**
 
 ### 3. Build the local Stage UI image
 
@@ -112,7 +112,7 @@ All Prelude documentation is available in the **Documentation** tab here or on o
 
 For assistance, reach out via our [community support channels](https://docs.overture.bio/community/support):
 
-- **Public support:** Use GitHub issues
-- **Private inquiries:** Contact us via OICR Slack or [contact@overture.bio](mailto:contact@overture.bio)
+-   **Public support:** Use GitHub issues
+-   **Private inquiries:** Contact us via OICR Slack or [contact@overture.bio](mailto:contact@overture.bio)
 
 We’re actively working on resources to help teams transition to production. If you have suggestions, post them on our [GitHub discussion forum](https://github.com/overture-stack/docs/discussions/categories/ideas).
