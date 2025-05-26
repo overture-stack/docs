@@ -75,7 +75,7 @@ cd conductor
 Run a pre-deployment check:
 
 ```sh
-make Phase0
+make phase0
 ```
 
 **Requirements:**
@@ -106,7 +106,7 @@ make phase1
 
 Once running, access the portal at: [http://localhost:3000](http://localhost:3000).
 
-All Prelude documentation is available in the **Documentation** tab here or on our [documentation site](https://docs.overture.bio/other-software/prelude).
+All Prelude documentation will be available in the **Documentation** tab
 
 ## Support
 
