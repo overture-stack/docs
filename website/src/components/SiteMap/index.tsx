@@ -25,8 +25,12 @@ interface Category {
 
 const categories: Record<string, Category> = {
   platform: {
-    title: "Platform Guides",
-    description: "Bringing it all together with platform focused guides",
+    title: "Platform Tools",
+    description: "Bringing it all together",
+  },
+  guides: {
+    title: "Platform Documentation",
+    description: "Platform focused guides",
   },
   core: {
     title: "Developer Documentation",
@@ -35,10 +39,6 @@ const categories: Record<string, Category> = {
   development: {
     title: "Under Development",
     description: "New components not quite ready for production",
-  },
-  supporting: {
-    title: "Supporting Software",
-    description: "Supporting tools within the Overture project",
   },
   standards: {
     title: "Documentation Standards",
@@ -49,28 +49,47 @@ const categories: Record<string, Category> = {
 
 const products: Product[] = [
   {
-    title: "Deployment Guides",
+    title: "Prelude",
+    link: "https://docs.overture.bio/docs/other-software/Prelude",
+    description: "Platform Development Toolkit",
+    category: "platform",
+  },
+  {
+    title: "Quickstart",
+    link: "https://docs.overture.bio/docs/other-software/Quickstart",
+    description: "Locally Deployed Demo Portal",
+    category: "platform",
+  },
+  {
+    title: "Deployment Docs",
     link: "/guides/deployment-guide/",
     description: "Deploying to Production",
-    category: "platform",
+    category: "guides",
   },
   {
     title: "Administration Guides",
     link: "/guides/administration-guides/",
-    description: "Management and Customization",
-    category: "platform",
+    description: "Management & Customization",
+    category: "guides",
   },
   {
     title: "User Guides",
     link: "/guides/user-guides/",
     description: "Interacting with the platform",
-    category: "platform",
+    category: "guides",
   },
   {
     title: "API Reference",
     link: "/guides/api-reference",
     description: "Interacting with the platform's APIs",
-    category: "platform",
+    category: "guides",
+  },
+  {
+    title: "Lectern",
+    link: "/docs/core-software/lectern/overview",
+    image: iconLectern,
+    description: "Dictionary Management Service",
+    category: "core",
   },
   {
     title: "Song",
@@ -108,36 +127,31 @@ const products: Product[] = [
     category: "core",
   },
   {
-    title: "Lectern",
-    link: "/docs/under-development/lectern/",
-    image: iconLectern,
-    description: "Schema Management Service",
-    category: "development",
-  },
-  {
     title: "Lyric",
     link: "/docs/under-development/lyric/",
     image: iconLyric,
     description: "Tabular Data Submission Service",
     category: "development",
   },
+  // {
+  //   title: "Lectern-UI",
+  //   link: "/docs/under-development/lyric/",
+  //   image: iconLectern,
+  //   description: "Data Dictionary Viewers",
+  //   category: "development",
+  // },
+  // {
+  //   title: "Arranger Charts",
+  //   link: "/docs/under-development/lyric/",
+  //   image: iconArranger,
+  //   description: "Filterable Charting Visualizations",
+  //   category: "development",
+  // },
   {
-    title: "Quickstart",
-    link: "https://docs.overture.bio/docs/other-software/Quickstart",
-    description: "Locally Deployed Demo Portal",
-    category: "supporting",
-  },
-  {
-    title: "Libretto",
+    title: "Docs Setup",
     link: "/docs/other-software/Libretto",
     description: "Documentation Site",
-    category: "supporting",
-  },
-  {
-    title: "Prelude",
-    link: "https://docs.overture.bio/docs/other-software/Prelude",
-    description: "Platform planning & development toolkit.",
-    category: "supporting",
+    category: "standards",
   },
   {
     title: "Documenting Projects",
@@ -207,8 +221,8 @@ const SiteMap = () => {
     return acc;
   }, {});
 
-  const rightColumnCategories = ["platform", "supporting", "standards"];
-  const leftColumnCategories = ["core", "development"];
+  const rightColumnCategories = ["core", "development"];
+  const leftColumnCategories = ["platform", "guides", "standards"];
 
   return (
     <section className={styles.siteMap}>
