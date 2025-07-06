@@ -15,3 +15,8 @@ Additionally, we are updating our indexing service:
 Combined together the new Overture Platfrom architecture will look as follows:
 
 ![Submission System Architecture](./images/submission-system.svg "Updated Overture Submission System")
+
+We have also began development on a series of user interfaces to help communicate data in human readable formats:
+
+- [Lectern UI](./02-lecternViewer.md)
+- Arranger Charts

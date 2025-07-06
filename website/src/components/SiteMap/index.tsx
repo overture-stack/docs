@@ -50,13 +50,13 @@ const categories: Record<string, Category> = {
 const products: Product[] = [
   {
     title: "Prelude",
-    link: "https://docs.overture.bio/docs/other-software/Prelude",
+    link: "/docs/platform-tools/Prelude",
     description: "Platform Development Toolkit",
     category: "platform",
   },
   {
     title: "Quickstart",
-    link: "https://docs.overture.bio/docs/other-software/Quickstart",
+    link: "/docs/platform-tools/Quickstart",
     description: "Locally Deployed Demo Portal",
     category: "platform",
   },
@@ -127,41 +127,38 @@ const products: Product[] = [
     category: "core",
   },
   {
+    title: "Lectern Viewer",
+    link: "/docs/under-development/lecternViewer/",
+    description: "Data Dictionary Viewers",
+    category: "development",
+  },
+  {
+    title: "Arranger Charts",
+    link: "/docs/development/arrangercharts/",
+    description: "Visualized Cohort Browsing",
+    category: "development",
+  },
+  {
     title: "Lyric",
-    link: "/docs/under-development/lyric/",
-    image: iconLyric,
+    link: "/docs/development/lyric/",
     description: "Tabular Data Submission Service",
     category: "development",
   },
-  // {
-  //   title: "Lectern-UI",
-  //   link: "/docs/under-development/lyric/",
-  //   image: iconLectern,
-  //   description: "Data Dictionary Viewers",
-  //   category: "development",
-  // },
-  // {
-  //   title: "Arranger Charts",
-  //   link: "/docs/under-development/lyric/",
-  //   image: iconArranger,
-  //   description: "Filterable Charting Visualizations",
-  //   category: "development",
-  // },
   {
-    title: "Docs Setup",
-    link: "/docs/other-software/Libretto",
-    description: "Documentation Site",
+    title: "Docs Site",
+    link: "/docs/documentation-standards/docsSite",
+    description: "Documentation website info",
     category: "standards",
   },
   {
     title: "Documenting Projects",
-    link: "/docs/Standards/github",
+    link: "/docs/documentation-standards/github",
     description: "Organization Standards",
     category: "standards",
   },
   {
     title: "Documenting Software",
-    link: "/docs/Standards/Software/",
+    link: "/docs/documentation-standards/Software/",
     description: "Software Standards",
     category: "standards",
   },
@@ -221,8 +218,8 @@ const SiteMap = () => {
     return acc;
   }, {});
 
-  const rightColumnCategories = ["core", "development"];
-  const leftColumnCategories = ["platform", "guides", "standards"];
+  const rightColumnCategories = ["core", "standards"];
+  const leftColumnCategories = ["platform", "guides", "development"];
 
   return (
     <section className={styles.siteMap}>

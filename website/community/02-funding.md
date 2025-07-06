@@ -6,22 +6,22 @@ We gratefully acknowledge the financial support that has made this project possi
 
 As working group 2, we are developing a federated framework for genomic data access and analysis, specifically building an enhanced Overture data submission system to facilitate the ingestion, validation, and tracking of clinical and molecular data into the PCGL platform.
 
-  - **Project Title:** Pan-Canadian Genome Library (PCGL)
-  - **Funding Period:** 2023-2028
+- **Project Title:** [Pan-Canadian Genome Library (PCGL)](https://genomelibrary.ca/)
+- **Funding Period:** 2023-2028
 
 ### National Cancer Institute at the US National Institutes of Health
 
 Under this grant we are making the Overture platform more accessible by breaking down barriers to adoption, integrating existing analysis tools and adding federated search functionality between distributed Overture instances using standardized data governance frameworks ([GA4GH](https://www.ga4gh.org/)).
 
-  - **Grant Number:** #U24CA253529
-  - **Funding Period:** 2021-2026
+- **Grant Number:** #U24CA253529
+- **Funding Period:** 2021-2026
 
-### Canadian COVID-19 Genomic Data Infrastructure 
+### Canadian COVID-19 Genomic Data Infrastructure
 
 The [VirusSeq Data Portal](https://virusseq-dataportal.ca/) demonstrates Overture's successful expansion beyond oncology data management. This funding facilitated the platform's adaptation to support viral genomic data, while enabling the development, deployment, and ongoing maintenance of Canada's central SARS-CoV-2 sequence repository.
 
-  - **Project Title:** VirusSeq Data Portal
-  - **Funding Period:** 2020-2024
+- **Project Title:** VirusSeq Data Portal
+- **Funding Period:** 2020-2024
 
 ### The Government of Ontario
 
