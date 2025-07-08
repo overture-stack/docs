@@ -6,7 +6,7 @@ support tabular (clinical) data.
 This new system will see two new components integrated into the Overture Platform:
 
 - [**Lectern**](https://docs.overtue.bio/docs/core-software/lectern/overview): A version-controlled Data Dictionary Schema Manager that defines, validates, and manages schemas used for data submissions, supporting data integrity across evolving data management systems.
-- [**Lyric**](/docs/under-development/lyric/): Validate, store, query, and re-validate tabular data against evolving Lectern Dictionary schemas.
+- [**Lyric**](https://docs.overture.bio/docs/under-development/lyric/): Validate, store, query, and re-validate tabular data against evolving Lectern Dictionary schemas.
 
 Additionally, we are updating our indexing service:
 
