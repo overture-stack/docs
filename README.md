@@ -90,7 +90,7 @@ npm start
 
 - **Robust Error Handling**: Docusaurus has excellent error catching, particularly for broken and missing links, reducing the need for manual testing.
 
-![Pro Tip](./website/docs/03-other-software/images/proTip.png "Use Overture Docs repo to search across all Overture repos")
+![Pro Tip](./website/docs/02-platform-tools/images/proTip.png "Use Overture Docs repo to search across all Overture repos")
 
 > [!TIP]  
 > The Overture Docs repo contains everything, therefore finding & tracking links and content across all our repos has never been easier.

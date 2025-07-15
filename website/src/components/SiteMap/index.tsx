@@ -25,8 +25,12 @@ interface Category {
 
 const categories: Record<string, Category> = {
   platform: {
-    title: "Platform Guides",
-    description: "Bringing it all together with platform focused guides",
+    title: "Platform Tools",
+    description: "Bringing it all together",
+  },
+  guides: {
+    title: "Platform Documentation",
+    description: "Platform focused guides",
   },
   core: {
     title: "Developer Documentation",
@@ -35,10 +39,6 @@ const categories: Record<string, Category> = {
   development: {
     title: "Under Development",
     description: "New components not quite ready for production",
-  },
-  supporting: {
-    title: "Supporting Software",
-    description: "Supporting tools within the Overture project",
   },
   standards: {
     title: "Documentation Standards",
@@ -49,105 +49,116 @@ const categories: Record<string, Category> = {
 
 const products: Product[] = [
   {
-    title: "Deployment Guides",
+    title: "Platform Development Toolkit",
+    link: "/docs/platform-tools/Prelude",
+    description: "Prelude",
+    category: "platform",
+  },
+  {
+    title: "Local Demo Portal",
+    link: "/docs/platform-tools/Quickstart",
+    description: "Quickstart",
+    category: "platform",
+  },
+  {
+    title: "Deployment Docs",
     link: "/guides/deployment-guide/",
     description: "Deploying to Production",
-    category: "platform",
+    category: "guides",
   },
   {
     title: "Administration Guides",
     link: "/guides/administration-guides/",
-    description: "Management and Customization",
-    category: "platform",
+    description: "Management & Customization",
+    category: "guides",
   },
   {
     title: "User Guides",
     link: "/guides/user-guides/",
     description: "Interacting with the platform",
-    category: "platform",
+    category: "guides",
   },
   {
     title: "API Reference",
     link: "/guides/api-reference",
     description: "Interacting with the platform's APIs",
-    category: "platform",
+    category: "guides",
   },
   {
-    title: "Song",
+    title: "Dictionary Management",
+    link: "/docs/core-software/lectern/overview",
+    image: iconLectern,
+    description: "Lectern",
+    category: "core",
+  },
+  {
+    title: "File Management",
     link: "docs/core-software/song/overview",
     image: iconSong,
-    description: "Metadata Management Service",
+    description: "Song",
     category: "core",
   },
   {
-    title: "Score",
+    title: "File Transfer",
     link: "/docs/core-software/score/overview",
     image: iconScore,
-    description: "File Transfer Service",
+    description: "Score",
     category: "core",
   },
   {
-    title: "Maestro",
+    title: "Indexing Service",
     link: "/docs/core-software/maestro/overview",
     image: iconMaestro,
-    description: "Metadata Indexing Service",
+    description: "Maestro",
     category: "core",
   },
   {
-    title: "Arranger",
+    title: "Search API",
     link: "/docs/core-software/arranger/overview",
     image: iconArranger,
-    description: "Search API",
+    description: "Arranger",
     category: "core",
   },
   {
-    title: "Stage",
+    title: "Web Portal",
     link: "/docs/core-software/stage/overview",
     image: iconStage,
-    description: "Web Portal Scaffolding",
+    description: "Stage",
     category: "core",
   },
   {
-    title: "Lectern",
-    link: "/docs/under-development/lectern/",
-    image: iconLectern,
-    description: "Schema Management Service",
+    title: "Dictionary Viewers",
+    link: "/docs/under-development/lecternViewer/",
+    description: "Lectern Viewer",
+    category: "development",
+  },
+  // {
+  //   title: "Arranger Charts",
+  //   link: "/docs/development/arrangercharts/",
+  //   description: "Visualized Cohort Browsing",
+  //   category: "development",
+  // },
+  {
+    title: "Tabular Data Submission",
+    link: "/docs/development/lyric/",
+    description: "Lyric",
     category: "development",
   },
   {
-    title: "Lyric",
-    link: "/docs/under-development/lyric/",
-    image: iconLyric,
-    description: "Tabular Data Submission Service",
-    category: "development",
-  },
-  {
-    title: "Quickstart",
-    link: "https://docs.overture.bio/docs/other-software/Quickstart",
-    description: "Locally Deployed Demo Portal",
-    category: "supporting",
-  },
-  {
-    title: "Libretto",
-    link: "/docs/other-software/Libretto",
-    description: "Documentation Site",
-    category: "supporting",
-  },
-  {
-    title: "Prelude",
-    link: "https://docs.overture.bio/docs/other-software/Prelude",
-    description: "Platform planning & development toolkit.",
-    category: "supporting",
+    title: "Docs Site",
+    link: "/docs/documentation-standards/docsSite",
+    description: "Documentation website info",
+    category: "standards",
   },
   {
     title: "Documenting Projects",
-    link: "/docs/Standards/github",
+    link: "/docs/documentation-standards/github",
     description: "Organization Standards",
     category: "standards",
   },
   {
     title: "Documenting Software",
-    link: "/docs/Standards/Software/",
+    link: "/docs/documentation-standards/Software/",
     description: "Software Standards",
     category: "standards",
   },
@@ -207,7 +218,7 @@ const SiteMap = () => {
     return acc;
   }, {});
 
-  const rightColumnCategories = ["platform", "supporting", "standards"];
+  const rightColumnCategories = ["platform", "guides"];
   const leftColumnCategories = ["core", "development"];
 
   return (
