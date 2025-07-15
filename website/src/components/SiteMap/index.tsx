@@ -49,15 +49,15 @@ const categories: Record<string, Category> = {
 
 const products: Product[] = [
   {
-    title: "Prelude",
+    title: "Platform Development Toolkit",
     link: "/docs/platform-tools/Prelude",
-    description: "Platform Development Toolkit",
+    description: "Prelude",
     category: "platform",
   },
   {
-    title: "Quickstart",
+    title: "Local Demo Portal",
     link: "/docs/platform-tools/Quickstart",
-    description: "Locally Deployed Demo Portal",
+    description: "Quickstart",
     category: "platform",
   },
   {
@@ -85,63 +85,63 @@ const products: Product[] = [
     category: "guides",
   },
   {
-    title: "Lectern",
+    title: "Dictionary Management",
     link: "/docs/core-software/lectern/overview",
     image: iconLectern,
-    description: "Dictionary Management Service",
+    description: "Lectern",
     category: "core",
   },
   {
-    title: "Song",
+    title: "File Management",
     link: "docs/core-software/song/overview",
     image: iconSong,
-    description: "Metadata Management Service",
+    description: "Song",
     category: "core",
   },
   {
-    title: "Score",
+    title: "File Transfer",
     link: "/docs/core-software/score/overview",
     image: iconScore,
-    description: "File Transfer Service",
+    description: "Score",
     category: "core",
   },
   {
-    title: "Maestro",
+    title: "Indexing Service",
     link: "/docs/core-software/maestro/overview",
     image: iconMaestro,
-    description: "Metadata Indexing Service",
+    description: "Maestro",
     category: "core",
   },
   {
-    title: "Arranger",
+    title: "Search API",
     link: "/docs/core-software/arranger/overview",
     image: iconArranger,
-    description: "Search API",
+    description: "Arranger",
     category: "core",
   },
   {
-    title: "Stage",
+    title: "Web Portal",
     link: "/docs/core-software/stage/overview",
     image: iconStage,
-    description: "Web Portal Scaffolding",
+    description: "Stage",
     category: "core",
   },
   {
-    title: "Lectern Viewer",
+    title: "Dictionary Viewers",
     link: "/docs/under-development/lecternViewer/",
-    description: "Data Dictionary Viewers",
+    description: "Lectern Viewer",
     category: "development",
   },
+  // {
+  //   title: "Arranger Charts",
+  //   link: "/docs/development/arrangercharts/",
+  //   description: "Visualized Cohort Browsing",
+  //   category: "development",
+  // },
   {
-    title: "Arranger Charts",
-    link: "/docs/development/arrangercharts/",
-    description: "Visualized Cohort Browsing",
-    category: "development",
-  },
-  {
-    title: "Lyric",
+    title: "Tabular Data Submission",
     link: "/docs/development/lyric/",
-    description: "Tabular Data Submission Service",
+    description: "Lyric",
     category: "development",
   },
   {
@@ -218,8 +218,8 @@ const SiteMap = () => {
     return acc;
   }, {});
 
-  const rightColumnCategories = ["core", "standards"];
-  const leftColumnCategories = ["platform", "guides", "development"];
+  const rightColumnCategories = ["platform", "guides"];
+  const leftColumnCategories = ["core", "development"];
 
   return (
     <section className={styles.siteMap}>
