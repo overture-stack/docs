@@ -67,7 +67,7 @@ _If you’re reading from the Prelude documentation page, this section may be re
 
 ```sh
 git clone https://github.com/overture-stack/prelude.git
-cd conductor
+cd prelude
 ```
 
 ### 2. Pre-deployment Check
