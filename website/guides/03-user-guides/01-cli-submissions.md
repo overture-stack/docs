@@ -90,7 +90,7 @@ API Keys are brokered by Keycloak and accessible when logged in to the Stage UI.
        --network="host" \
        --platform="linux/amd64" \
        --mount type=bind,source=./guideMaterials/dataSubmission,target=/output \
-       ghcr.io/overture-stack/score:latest
+       ghcr.io/overture-stack/score-client:latest
    ```
 
    <details>
