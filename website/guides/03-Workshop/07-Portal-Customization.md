@@ -60,7 +60,42 @@ NEXT_PUBLIC_LAB_NAME: ISB Workshop 2026
 
 Change this to your lab or project name.
 
-### Adding Multiple Data Tables
+### Running Stage in Development Mode
+
+When iterating on UI changes, rebuilding the Docker image each time is slow. You can run Stage locally against the Dockerised backend services instead, which gives you hot-reloading so changes to components, themes, and styles are reflected immediately.
+
+Make sure the backend services are running first:
+
+```bash
+make platform
+```
+
+Then in a separate terminal, start the Stage dev server:
+
+```bash
+cd apps/stage
+npm ci
+npm run dev
+```
+
+Stage will start at **http://localhost:3001**. Create a `.env.local` file in `apps/stage/` to point it at your running Docker services:
+
+```bash
+NEXT_PUBLIC_ARRANGER_DATATABLE_1_API=http://localhost:5050
+NEXT_PUBLIC_ARRANGER_DATATABLE_1_DOCUMENT_TYPE=file
+NEXT_PUBLIC_ARRANGER_DATATABLE_1_INDEX=datatable1_centric
+NEXT_PUBLIC_DATATABLE_1_EXPORT_ROW_ID_FIELD=submission_metadata.submission_id
+NEXT_PUBLIC_LAB_NAME=My Data Portal
+NEXT_PUBLIC_ADMIN_EMAIL=admin@example.org
+NEXTAUTH_SECRET=any-local-secret
+NEXTAUTH_URL=http://localhost:3001
+```
+
+:::info
+The dockerised Stage at http://localhost:3000 and the dev server at http://localhost:3001 run independently. Both can be up at the same time. When you're done iterating, stop the dev server and use `make restart` to rebuild the Docker image with your final changes.
+:::
+
+### Multiple Data Tables
 
 Stage supports up to 5 independent data exploration pages. Each data table corresponds to a separate CSV file, Elasticsearch index, and Arranger instance.
 
@@ -137,21 +172,6 @@ docs/
 To add a new documentation page, create a Markdown file with the next number in sequence. To remove a page, delete the file. The navigation sidebar updates automatically.
 
 <details>
-<summary>**Local development**</summary>
-
-For iterating on UI changes without rebuilding the Docker image each time, you can run Stage locally against the Dockerised services:
-
-```bash
-cd apps/stage
-npm ci
-npm run dev
-```
-
-This starts a local development server (typically at http://localhost:3001) with hot-reloading. Changes to components, themes, and styles are reflected immediately. You will need to set the relevant `NEXT_PUBLIC_*` environment variables in a local `.env` file pointing to the running Docker services.
-
-</details>
-
-<details>
 <summary>**Additional component directories**</summary>
 
 For deeper customization:
@@ -167,6 +187,16 @@ For deeper customization:
 The application uses `@emotion/react` for CSS-in-JS styling. Component-specific styles are located within each component file.
 
 </details>
+
+### Further Customization
+
+The platform is considerably more flexible than what this workshop covers. Two capabilities worth highlighting for those working with more complex datasets:
+
+**QuickSearch** adds a type-ahead search input to a data table that lets users find records by typing a field value directly, rather than browsing facet filters. It works by adding edge n-gram tokenization to the Elasticsearch mapping and enabling the feature in Arranger's `extended.json` and `facets.json`. It's well-suited to datasets where users already know the identifier they're looking for (a gene name, sample ID, etc.).
+
+**Cross-table search** allows a selection made in one data table to propagate as a filter in another, using a shared identifier across heterogeneous datasets. For example, selecting a gene in one table can automatically filter a second table to show only records that share that gene. This is particularly useful for multi-omics or linked clinical and molecular datasets.
+
+Both features require configuration beyond the scope of this workshop. Reach out via [contact@overture.bio](mailto:contact@overture.bio) if you'd like guidance on either.
 
 ### Checkpoint
 

@@ -206,6 +206,6 @@ Before proceeding, confirm:
 - [ ] You ran `make reset` followed by `make platform` to clear demo data and start fresh
 - [ ] The portal is accessible at http://localhost:3000
 
-> **Stuck?** Run `docker ps` to check which containers are running. If a container exited, run `docker logs <container-name>` to see why.
+**Stuck?** Run `docker ps` to check which containers are running. If a container exited, run `docker logs <container-name>` to see why.
 
 **Next:** With the infrastructure configured, let's load data into the portal.
