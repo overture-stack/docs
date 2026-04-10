@@ -24,6 +24,21 @@ From the root of the cloned repository, run:
 make demo
 ```
 
+<details>
+<summary><strong>Running on Windows?</strong></summary>
+
+| Platform | Command |
+|---|---|
+| WSL2 (recommended) | `make demo` (in an Ubuntu terminal) |
+| Native PowerShell | `.\run.ps1 demo` |
+
+**One-time setup for native PowerShell:** allow local scripts to run by executing this once:
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+</details>
+
 The portal will be available at **http://localhost:3000** once deployment completes.
 
 <details>
@@ -163,5 +178,11 @@ We'll keep the demo running as a reference while we walk through the architectur
 ```bash
 make reset
 ```
+
+:::tip Windows (PowerShell)
+```powershell
+.\run.ps1 reset
+```
+:::
 
 **Next:** Now that you've seen the working portal, let's understand how the pieces fit together.

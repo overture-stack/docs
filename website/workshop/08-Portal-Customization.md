@@ -70,6 +70,12 @@ Make sure the backend services are running first:
 make platform
 ```
 
+:::tip Windows (PowerShell)
+```powershell
+.\run.ps1 platform
+```
+:::
+
 Then in a separate terminal, start the Stage dev server:
 
 ```bash
@@ -140,6 +146,12 @@ Since Stage is a compiled Next.js application, UI changes require a rebuild:
 ```bash
 make restart
 ```
+
+:::tip Windows (PowerShell)
+```powershell
+.\run.ps1 restart
+```
+:::
 
 The new data table will automatically appear in the navigation menu and homepage.
 

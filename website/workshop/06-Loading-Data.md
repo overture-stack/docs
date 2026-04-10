@@ -207,6 +207,12 @@ If you updated the Elasticsearch mapping but your CSV data is unchanged, use `in
    make restart
    ```
 
+   :::tip Windows (PowerShell)
+   ```powershell
+   .\run.ps1 restart
+   ```
+   :::
+
 3. Re-index from PostgreSQL:
 
    ```bash
@@ -237,6 +243,12 @@ If you fixed errors in the CSV itself, you need to clear both PostgreSQL and Ela
    ```bash
    make restart
    ```
+
+   :::tip Windows (PowerShell)
+   ```powershell
+   .\run.ps1 restart
+   ```
+   :::
 
 4. Re-upload from the corrected CSV:
 

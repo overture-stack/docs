@@ -166,11 +166,23 @@ Since you previously ran `make demo`, the environment contains demo data that ne
 make reset
 ```
 
+:::tip Windows (PowerShell)
+```powershell
+.\run.ps1 reset
+```
+:::
+
 This wipes all Elasticsearch and PostgreSQL data, stops all containers, and returns the environment to a clean state. Then bring the platform back up with:
 
 ```bash
 make platform
 ```
+
+:::tip Windows (PowerShell)
+```powershell
+.\run.ps1 platform
+```
+:::
 
 :::info
 For future configuration changes (once your own data is loaded), `make restart` is sufficient, it reloads configs without wiping data. If you wish to wipe the data as-well run `make reset`
@@ -196,6 +208,12 @@ curl -u elastic:myelasticpassword http://localhost:9200/_cluster/health?pretty
 # Full reset (caution: deletes all data)
 make reset
 ```
+
+:::tip Windows (PowerShell) — full reset
+```powershell
+.\run.ps1 reset
+```
+:::
 
 ## Checkpoint
 
