@@ -77,7 +77,7 @@ You should see all seven images listed.
 <details>
 <summary><strong>4. Repository cloned: `git clone https://github.com/overture-stack/prelude.git`</strong></summary>
 
-The `prelude` repository contains everything needed for this workshop: Docker Compose configuration, the Conductor CLI tool, and sample data. Clone it once before the workshop and you won't need internet access for the hands-on portion.
+The `prelude` repository contains everything needed for this workshop: Docker Compose configuration, the Conductor wrapper script, and sample data. Clone it once before the workshop and you won't need internet access for the hands-on portion.
 
 ```bash
 git clone https://github.com/overture-stack/prelude.git
