@@ -9,82 +9,44 @@ description: Use the Conductor CLI to load CSV data into PostgreSQL and index it
 
 With the infrastructure configured, it's time to load data into the portal. Conductor is a CLI tool that reads CSV files, loads each row into PostgreSQL (persistent storage), then indexes them into Elasticsearch as structured documents for search.
 
-### Installing Conductor
-
-Navigate to the Conductor directory and install it:
-
-```bash
-cd apps/conductor
-npm install
-npm run build
-chmod +x dist/main.js
-npm install -g .
-```
-
-Verify the installation from the project root:
-
-```bash
-cd ../..
-conductor -h
-```
-
-You should see help text listing the available commands, including `upload`.
-
-<details>
-<summary>**Alternative:** running Conductor without global installation</summary>
-
-Use this if you don't have permission to install npm packages globally (e.g. on a managed or shared machine), or if you prefer not to modify your global npm environment:
-
-```bash
-cd apps/conductor
-npm install
-npm run build
-chmod +x dist/main.js
-npm start -- help
-```
-
-</details>
-
-<details>
-<summary>**Troubleshooting:** conflicting conductor alias</summary>
-
-If `conductor` resolves to an unexpected path, check for an existing alias:
-
-```bash
-alias | grep conductor
-```
-
-To remove it for the current session:
-
-```bash
-unalias conductor
-```
-
-To remove it permanently, delete the `alias conductor=...` line from your `~/.bashrc` or `~/.zshrc` and reload:
-
-```bash
-source ~/.bashrc  # or source ~/.zshrc
-```
-
-</details>
+Conductor runs as a Docker container — no Node.js installation required. A wrapper script at the root of the repository handles the Docker details for you.
 
 :::info
-Run all `conductor` commands from the **root of the `prelude` repository** (i.e. where `docker-compose.yml` lives), unless you are using the alternate path commands which must be run from `apps/conductor/`.
+Run all `./conductor` commands from the **root of the `prelude` repository** (i.e. where `docker-compose.yml` lives).
 :::
+
+<details>
+<summary><strong>Optional: run conductor from any directory</strong></summary>
+
+By default `./conductor` must be called from the repo root. If you'd prefer to run `conductor` from anywhere on your system, add the repo to your shell's `PATH`:
+
+```bash
+export PATH="$PATH:/path/to/prelude"
+```
+
+Add that line to your `~/.zshrc` (Zsh) or `~/.bashrc` (Bash) and reload:
+
+```bash
+source ~/.zshrc   # or source ~/.bashrc
+```
+
+You can then run `conductor upload ...` from any directory. The script resolves the `data/` folder relative to its own location in the repo, so paths like `./data/datatable1.csv` still refer to the repo's `data/` directory — run the command from the repo root or use an absolute path to a file outside it.
+
+</details>
 
 ### Uploading Data
 
 Run the upload command to load your data:
 
 ```bash
-conductor upload -f ./data/datatable1.csv -t datatable1 -i datatable1-index
+./conductor upload -f ./data/datatable1.csv -t datatable1 -i datatable1-index
 ```
 
 <details>
-<summary>**Command breakdown**</summary>
+<summary><strong>Command breakdown</strong></summary>
 
 - `upload`: the Conductor command for the full CSV → PostgreSQL → Elasticsearch pipeline
-- `-f ./data/datatable1.csv`: path to the input CSV file
+- `-f ./data/datatable1.csv`: path to the input CSV file (relative to the repo root)
 - `-t datatable1`: target PostgreSQL table name (must match the table created by your SQL schema)
 - `-i datatable1-index`: target Elasticsearch index name (must match the index created by the setup service)
 
@@ -93,26 +55,13 @@ Additional options:
 - `-b, --batch-size <n>`: records per batch (default: `5000`)
 - `--delimiter <char>`: CSV delimiter character (default: `,`)
 - `--statement-timeout <ms>`: max time allowed per database statement in milliseconds (default: `120000`)
-- `--db-host <host:port>`: PostgreSQL connection (default: `localhost:5435`)
-- `--db-name <name>`: database name (default: `overtureDb`)
-- `--db-user <username>`: database username (default: `admin`)
-- `--db-pass <password>`: database password (default: `admin123`)
-- `--es-host <host:port>`: Elasticsearch connection (default: `localhost:9200`)
-- `--es-user <username>`: Elasticsearch username (default: `elastic`)
-- `--es-pass <password>`: Elasticsearch password (default: `myelasticpassword`)
 
-**Alternate path (no global install):**
-
-```bash
-cd apps/conductor && npm start -- upload -f ../../data/datatable1.csv -t datatable1 -i datatable1-index
-```
-
-For a full reference run: `conductor upload -h`
+For a full reference run: `./conductor upload -h`
 
 </details>
 
 <details>
-<summary>**What happens during upload**</summary>
+<summary><strong>What happens during upload</strong></summary>
 
 Conductor processes each CSV row in two stages. First, it inserts the raw records into the PostgreSQL table (providing persistent, queryable storage). Then it reads from PostgreSQL, wraps each record in a structured JSON document, and bulk-indexes it into Elasticsearch:
 
@@ -139,7 +88,7 @@ Your CSV fields go into the `data` object. Conductor adds `submission_metadata` 
 </details>
 
 <details>
-<summary>**Upload behaviour: re-runs, interruptions, and partial failures**</summary>
+<summary><strong>Upload behaviour: re-runs, interruptions, and partial failures</strong></summary>
 
 **Re-uploading the same file:** Re-running `upload` against an already-loaded file is safe. Records that already exist in PostgreSQL are skipped automatically, nothing is duplicated in either PostgreSQL or Elasticsearch.
 
@@ -152,7 +101,7 @@ Some records were inserted into "<table>" but not indexed. Re-run indexing with:
    conductor index-db -t <table> -i <index>
 ```
 
-Run `conductor index-db` to re-index from PostgreSQL without re-parsing the CSV.
+Run `./conductor index-db` to re-index from PostgreSQL without re-parsing the CSV.
 
 </details>
 
@@ -166,7 +115,7 @@ Open **http://localhost:3000** in your browser:
 4. Try sorting columns
 
 <details>
-<summary>**Verify directly via Elasticsearch**</summary>
+<summary><strong>Verify directly via Elasticsearch</strong></summary>
 
 Check the document count:
 
@@ -191,7 +140,7 @@ If you installed Elasticvue, connect to `http://localhost:9200` with credentials
 The right approach depends on what changed, expand the relevant scenario below for more information.
 
 <details>
-<summary>**Mapping changed (data already in PostgreSQL)**</summary>
+<summary><strong>Mapping changed (data already in PostgreSQL)</strong></summary>
 
 If you updated the Elasticsearch mapping but your CSV data is unchanged, use `index-db` to re-index directly from PostgreSQL, no need to re-parse the CSV:
 
@@ -208,21 +157,23 @@ If you updated the Elasticsearch mapping but your CSV data is unchanged, use `in
    ```
 
    :::tip Windows (PowerShell)
+
    ```powershell
    .\run.ps1 restart
    ```
+
    :::
 
 3. Re-index from PostgreSQL:
 
    ```bash
-   conductor index-db -t datatable1 -i datatable1-index
+   ./conductor index-db -t datatable1 -i datatable1-index
    ```
 
 </details>
 
 <details>
-<summary>**CSV corrected (data needs to be re-uploaded)**</summary>
+<summary><strong>CSV corrected (data needs to be re-uploaded)</strong></summary>
 
 If you fixed errors in the CSV itself, you need to clear both PostgreSQL and Elasticsearch. The existing table already contains the old records and re-uploading would cause duplicates:
 
@@ -245,35 +196,43 @@ If you fixed errors in the CSV itself, you need to clear both PostgreSQL and Ela
    ```
 
    :::tip Windows (PowerShell)
+
    ```powershell
    .\run.ps1 restart
    ```
+
    :::
 
 4. Re-upload from the corrected CSV:
 
    ```bash
-   conductor upload -f ./data/datatable1.csv -t datatable1 -i datatable1-index
+   ./conductor upload -f ./data/datatable1.csv -t datatable1 -i datatable1-index
    ```
 
 </details>
 
 <details>
-<summary>**Other Conductor commands**</summary>
+<summary><strong>Other Conductor commands</strong></summary>
 
 The standard `upload` command runs the full CSV → PostgreSQL → Elasticsearch pipeline in one pass, which is what you need for the workshop. Conductor also exposes two targeted commands that operate on only one destination, useful when the two stages need to happen separately, for example if PostgreSQL and Elasticsearch are being managed independently, or if you need to debug one layer in isolation:
 
 - **`upload-db`:** loads CSV data into PostgreSQL only, without indexing to Elasticsearch:
 
   ```bash
-  conductor upload-db -f ./data/datatable1.csv -t datatable1
+  ./conductor upload-db -f ./data/datatable1.csv -t datatable1
   ```
 
 - **`upload-es`:** uploads CSV data directly to Elasticsearch, bypassing PostgreSQL. The index must already exist and the CSV headers must match the index mapping:
 
   ```bash
-  conductor upload-es -f ./data/datatable1.csv -i datatable1-index
+  ./conductor upload-es -f ./data/datatable1.csv -i datatable1-index
   ```
+
+For a full list of available commands and options:
+
+```bash
+./conductor -h
+```
 
 </details>
 
@@ -281,7 +240,7 @@ The standard `upload` command runs the full CSV → PostgreSQL → Elasticsearch
 
 Before proceeding, confirm:
 
-1. `conductor -h` runs without errors
+1. `./conductor -h` runs without errors
 2. The upload command completed successfully (check terminal output for record count)
 3. `curl -u elastic:myelasticpassword http://localhost:9200/datatable1_centric/_count?pretty` returns a count matching your CSV row count
 4. The portal at http://localhost:3000 shows data in the table

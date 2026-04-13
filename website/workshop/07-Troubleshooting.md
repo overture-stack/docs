@@ -76,10 +76,10 @@ curl -u elastic:myelasticpassword http://localhost:9200/_cluster/health?pretty
 curl -u elastic:myelasticpassword http://localhost:9200/datatable1_centric/_count?pretty
 ```
 
-If the count is zero but PostgreSQL has records, run `conductor index-db` to re-index:
+If the count is zero but PostgreSQL has records, run `./conductor index-db` to re-index:
 
 ```bash
-conductor index-db -t datatable1 -i datatable1-index
+./conductor index-db -t datatable1 -i datatable1-index
 ```
 
 If the index doesn't exist at all, run `make restart` to recreate it from the mapping template.

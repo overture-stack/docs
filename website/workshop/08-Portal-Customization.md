@@ -71,12 +71,18 @@ make platform
 ```
 
 :::tip Windows (PowerShell)
+
 ```powershell
 .\run.ps1 platform
 ```
+
 :::
 
 Then in a separate terminal, start the Stage dev server:
+
+:::note
+This step requires Node.js `v22` or later. Install it from [nodejs.org](https://nodejs.org/) if needed.
+:::
 
 ```bash
 cd apps/stage
@@ -148,9 +154,11 @@ make restart
 ```
 
 :::tip Windows (PowerShell)
+
 ```powershell
 .\run.ps1 restart
 ```
+
 :::
 
 The new data table will automatically appear in the navigation menu and homepage.

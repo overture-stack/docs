@@ -27,14 +27,14 @@ Downloading Docker images on conference Wi-Fi is slow and unreliable. Complete t
 The following software must be installed and verified before the workshop:
 
 <details>
-<summary><strong>**1. Git**, `git --version` returns a version number</strong></summary>
+<summary><strong>1. Git `git --version` returns a version number</strong></summary>
 
 Download from [git-scm.com](https://git-scm.com/downloads) if the command is not recognised.
 
 </details>
 
 <details>
-<summary><strong>**2. Docker Desktop** (`28.0.0` or later)</strong></summary>
+<summary><strong>2. Docker Desktop (`28.0.0` or later)</strong></summary>
 
 - **macOS / Windows:** Download from [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/)
 - **Linux:** Follow the [Docker Engine install guide](https://docs.docker.com/engine/install/)
@@ -50,21 +50,7 @@ Please ensure `docker --version` and `docker compose version` both return versio
 </details>
 
 <details>
-<summary><strong>**3. Node.js** (`v22` or later), `node --version` returns a version number</strong></summary>
-
-Download the LTS version from [nodejs.org](https://nodejs.org/).
-
-Verify both Node.js and npm are installed:
-
-```bash
-node --version
-npm --version
-```
-
-</details>
-
-<details>
-<summary><strong>**4. Docker images pre-downloaded:** run the pulls below before the workshop</strong></summary>
+<summary><strong>3. Docker images pre-downloaded: run the pulls below before the workshop</strong></summary>
 
 Pull the required Docker images now to avoid slow downloads during the workshop:
 
@@ -72,25 +58,26 @@ Pull the required Docker images now to avoid slow downloads during the workshop:
 docker pull alpine/curl:8.8.0
 docker pull postgres:15-alpine
 docker pull docker.elastic.co/elasticsearch/elasticsearch:7.17.27
-docker pull ghcr.io/overture-stack/arranger-server:3.0.0-beta.36
-docker pull node:lts-alpine
-docker pull node:22-slim
+docker pull ghcr.io/overture-stack/arranger-server:4919f736
+docker pull ghcr.io/overture-stack/conductor:171d9ce
+docker pull node:18-alpine
+docker pull nginx:alpine
 ```
 
-Verify all six downloaded:
+Verify all seven downloaded:
 
 ```bash
-docker images | grep -E "alpine/curl|postgres|elasticsearch|arranger-server|node"
+docker images | grep -E "alpine/curl|postgres|elasticsearch|arranger-server|conductor|node|nginx"
 ```
 
-You should see all six images listed.
+You should see all seven images listed.
 
 </details>
 
 <details>
-<summary><strong>**5. Repository cloned:** `git clone https://github.com/overture-stack/prelude.git`</strong></summary>
+<summary><strong>4. Repository cloned: `git clone https://github.com/overture-stack/prelude.git`</strong></summary>
 
-The `prelude` repository contains everything needed for this workshop: Docker Compose configuration, the Composer and Conductor CLI tools, and sample data. Clone it once before the workshop and you won't need internet access for the hands-on portion.
+The `prelude` repository contains everything needed for this workshop: Docker Compose configuration, the Conductor CLI tool, and sample data. Clone it once before the workshop and you won't need internet access for the hands-on portion.
 
 ```bash
 git clone https://github.com/overture-stack/prelude.git
@@ -100,7 +87,7 @@ cd prelude
 </details>
 
 <details>
-<summary><strong>**6. _(Windows only)_ WSL2 configured** with Docker Desktop integration enabled</strong></summary>
+<summary><strong>5. _(Windows only)_ WSL2 configured with Docker Desktop integration enabled</strong></summary>
 
 1. Install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install)
 2. Use Ubuntu or another Linux distribution within WSL2
@@ -110,7 +97,7 @@ cd prelude
 </details>
 
 <details>
-<summary><strong>7. (Optional) Elasticvue: browser-based Elasticsearch GUI</strong></summary>
+<summary><strong>6. (Optional) Elasticvue: browser-based Elasticsearch GUI</strong></summary>
 
 [Elasticvue](https://elasticvue.com/installation) is a browser-based Elasticsearch GUI useful for inspecting indices, browsing documents, and troubleshooting. It is not required but helpful for understanding what's happening inside Elasticsearch during the workshop.
 
@@ -119,7 +106,7 @@ Install it as a browser extension or standalone app.
 </details>
 
 <details>
-<summary><strong>8. (Optional) PostgreSQL GUI client</strong></summary>
+<summary><strong>7. (Optional) PostgreSQL GUI client</strong></summary>
 
 A PostgreSQL GUI client is useful for browsing the database during the workshop. It is not required but helpful if you want to inspect the Postgres data directly.
 
@@ -132,7 +119,7 @@ A PostgreSQL GUI client is useful for browsing the database during the workshop.
 </details>
 
 <details>
-<summary><strong>9. (Optional) Bring your own data: CSV file</strong></summary>
+<summary><strong>8. (Optional) Bring your own data: CSV file</strong></summary>
 
 If you have a tabular dataset you'd like to use during or after the workshop, bring it as a CSV file. During the workshop we will use demo data, but the final section covers adapting the portal to your own dataset.
 
@@ -145,11 +132,10 @@ Before the workshop, confirm:
 1. `git --version` returns a version number
 2. `docker --version` returns 28.0.0 or later
 3. `docker compose version` returns a version number
-4. Docker Desktop is running
-5. `node --version` returns v18 or later
-6. All six Docker images are downloaded (`docker images`)
-7. The repository is cloned and you can `cd` into it
-8. _(Windows only)_ WSL2 is configured and Docker integration is enabled
+4. Docker Desktop is running with 4+ CPUs and 8 GB+ memory allocated
+5. All seven Docker images are downloaded (`docker images`)
+6. The repository is cloned and you can `cd` into it
+7. _(Windows only)_ WSL2 is configured and Docker integration is enabled
 
 > **Troubleshooting:** If you run into issues before the workshop, reach out via the [community support channels](https://docs.overture.bio/community/support) or email [contact@overture.bio](mailto:contact@overture.bio).
 
