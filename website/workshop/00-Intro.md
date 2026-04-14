@@ -5,15 +5,19 @@ sidebar_position: 0
 description: Build a searchable, FAIR-compliant data discovery portal from tabular CSV data using Elasticsearch, Arranger, and Stage.
 ---
 
-# IBC Workshop Prerequisites
-
 :::caution Please complete the prerequisites below before arriving
-Downloading Docker images on the conference venue's Wi-Fi will be slow and unreliable, this should ideally be done before the session. The step-by-step workshop content will be released closer to the session date. Thank you and looking forward to meeting you - **Mitchell Shiell, Ontario Institute for Cancer Research, [mshiell@oicr.on.ca](mailto:mshiell@oicr.on.ca)**
+Most importantly downloading the Docker images; the conference venue's Wi-Fi may be slow and unreliable. Thank you and looking forward to meeting you - **Mitchell Shiell, Ontario Institute for Cancer Research, [mshiell@oicr.on.ca](mailto:mshiell@oicr.on.ca)**
 :::
+
+# IBC Workshop Prerequisites
 
 This workshop has been developed as part of the 19th Annual International Biocuration Conference, it will guide you through building a foundational data discovery portal for tabular CSV data using Elasticsearch, Arranger, and Stage.
 
-![Demo search and aggregation](/img/workshop-portal-preview.png)
+![Demo search and aggregation](/img/workshop-portal-preview.webp)
+
+:::info 👋 Say hello
+If you're attending, feel free to [**drop a quick introduction**](https://github.com/overture-stack/docs/discussions/new?category=new-deployments&title=%5BIBC+Workshop%5D+Hello+from+%5BName%2C+Institution%5D&body=%2A%2AName+%26+affiliation%3A%2A%2A+%0A%0A%2A%2AType+of+data+I+work+with%3A%2A%2A+%0A%0A%2A%2AWhat+I%27m+hoping+to+get+out+of+the+session%3A%2A%2A+%0A%0A%2A%2AData+management+challenges+%28optional%29%3A%2A%2A+) before the day, this helps tailor the session to the room. Entirely optional.
+:::
 
 **Objectives:**
 
@@ -22,7 +26,7 @@ This workshop has been developed as part of the 19th Annual International Biocur
 3. Gain familiarity with the tools needed to adapt this portal to your own data
 4. Understand deployment options for making portals accessible on institutional networks and beyond
 
-## Important Prerequisites
+## Prerequisites
 
 The following software should be installed and verified before the workshop:
 
@@ -51,8 +55,6 @@ Please ensure `docker --version` and `docker compose version` both return versio
 
 <details>
 <summary><strong>3. Docker images pre-downloaded</strong> Most time-consuming step, run these before the workshop</summary>
-
-> **This is the most important step to complete in advance.** Pulling all images can take 10–20 minutes on a fast connection and much longer on conference Wi-Fi.
 
 Pull the required Docker images now to avoid slow downloads during the workshop:
 
@@ -96,7 +98,7 @@ git clone https://github.com/overture-stack/prelude.git
 
 </details>
 
-## Optional Prerequisites
+#### Optional Prerequisites
 
 These are not required but will make the workshop easier to follow:
 
@@ -129,21 +131,9 @@ If you have a tabular dataset you'd like to use during or after the workshop, br
 
 </details>
 
-## Verification Checklist
-
-Before the workshop, confirm:
-
-1. `git --version` returns a version number
-2. `docker --version` returns 28.0.0 or later
-3. `docker compose version` returns a version number
-4. Docker Desktop is running with 4+ CPUs and 8 GB+ memory allocated
-5. **All six Docker images are downloaded** (`docker images`) — _this is the most time-consuming step, do it before the day_
-6. The repository is cloned and you can `cd` into it
-7. _(Windows only)_ WSL2 is configured and Docker integration is enabled
-
-> **Troubleshooting:** If you run into issues before the workshop, reach out via the [community support channels](https://docs.overture.bio/community/support) or email [mshiell@oicr.on.ca](mailto:mshiell@oicr.on.ca).
-
 ## Schedule
+
+**Venue:** Pacific 2
 
 | Time      | Section                 | Description                                                               |
 | --------- | ----------------------- | ------------------------------------------------------------------------- |
@@ -161,3 +151,17 @@ Before the workshop, confirm:
 | **Bug reports**         | [GitHub Issues](https://github.com/overture-stack/prelude/issues)                                                                |
 
 **Facilitator:** Mitchell Shiell, Ontario Institute for Cancer Research, [mshiell@oicr.on.ca](mailto:mshiell@oicr.on.ca)
+
+## Verification Checklist
+
+Before the workshop, confirm:
+
+1. `git --version` returns a version number
+2. `docker --version` returns 28.0.0 or later
+3. `docker compose version` returns a version number
+4. Docker Desktop is running with 4+ CPUs and 8 GB+ memory allocated
+5. **All six Docker images are downloaded** (`docker images`) — _this is the most time-consuming step, do it before the day_
+6. The repository is cloned and you can `cd` into it
+7. _(Windows only)_ WSL2 is configured and Docker integration is enabled
+
+> **Troubleshooting:** If you run into issues before the workshop, reach out via the [community support channels](https://docs.overture.bio/community/support) or email [mshiell@oicr.on.ca](mailto:mshiell@oicr.on.ca).
