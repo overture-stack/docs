@@ -53,6 +53,15 @@ const config: Config = {
     [
       "@docusaurus/plugin-content-docs",
       {
+        id: "workshop",
+        path: "workshop",
+        routeBasePath: "workshop",
+        sidebarPath: require.resolve("./workshopSidebars.ts"),
+      },
+    ],
+    [
+      "@docusaurus/plugin-content-docs",
+      {
         id: "community",
         path: "community",
         routeBasePath: "community",
@@ -116,6 +125,11 @@ const config: Config = {
           label: "Documentation",
         },
         {
+          to: "/workshop/prerequisites",
+          label: "Workshop",
+          position: "left",
+        },
+        {
           to: "/community/support",
           label: "Community & Support",
           position: "left",
@@ -144,6 +158,10 @@ const config: Config = {
             {
               label: "Under Development",
               to: "/docs/under-development/",
+            },
+            {
+              label: "Workshops",
+              to: "/workshop/prerequisites",
             },
           ],
         },
