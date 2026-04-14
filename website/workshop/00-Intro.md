@@ -78,12 +78,12 @@ You should see all six images listed.
 </details>
 
 <details>
-<summary><strong>4. Repository cloned:</strong> `git clone -b IBCWorkshop https://github.com/overture-stack/prelude.git`</summary>
+<summary><strong>4. Repository cloned:</strong> `git clone -b IBCworkshop https://github.com/overture-stack/prelude.git`</summary>
 
 The `prelude` repository contains everything needed for this workshop: Docker Compose configuration, the Conductor wrapper script, and sample data. Clone it once before the workshop and you won't need internet access for the hands-on portion.
 
 ```bash
-git clone -b IBCWorkshop https://github.com/overture-stack/prelude.git
+git clone -b IBCworkshop https://github.com/overture-stack/prelude.git
 ```
 
 </details>
