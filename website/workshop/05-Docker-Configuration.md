@@ -3,7 +3,6 @@ id: docker-configuration
 title: Docker Configuration
 sidebar_position: 5
 description: Walk through the docker-compose.yml service definitions and environment variables to wire configuration files into each container.
-draft: true
 ---
 
 # Docker Configuration
@@ -214,7 +213,7 @@ curl -u elastic:myelasticpassword http://localhost:9200/_cluster/health?pretty
 make reset
 ```
 
-:::tip Windows (PowerShell) — full reset
+:::tip Windows (PowerShell) - full reset
 
 ```powershell
 .\run.ps1 reset

@@ -3,7 +3,6 @@ id: generating-configurations
 title: Generating Configurations
 sidebar_position: 4
 description: Auto-generate PostgreSQL schemas, Elasticsearch mappings, and Arranger configuration files from your CSV data.
-draft: true
 ---
 
 # Generating Configurations

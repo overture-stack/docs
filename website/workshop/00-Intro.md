@@ -5,8 +5,8 @@ sidebar_position: 0
 description: Build a searchable, FAIR-compliant data discovery portal from tabular CSV data using Elasticsearch, Arranger, and Stage.
 ---
 
-:::caution Please complete the prerequisites below before arriving
-Most importantly downloading the Docker images; the conference venue's Wi-Fi may be slow and unreliable. Thank you and looking forward to meeting you - **Mitchell Shiell, Ontario Institute for Cancer Research, [mshiell@oicr.on.ca](mailto:mshiell@oicr.on.ca)**
+:::caution Please complete the prerequisites before arriving
+Most importantly, download the Docker images in advance, the conference venue's Wi-Fi may be slow and unreliable. Looking forward to meeting you — **Mitchell Shiell, Ontario Institute for Cancer Research, [mshiell@oicr.on.ca](mailto:mshiell@oicr.on.ca)**
 :::
 
 # IBC Workshop Prerequisites

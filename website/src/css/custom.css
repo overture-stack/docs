@@ -124,31 +124,3 @@
 .footer__link-item {
    color: var(--ifm-font-color);
 }
-
-.sidebar-coming-soon {
-  opacity: 0.4;
-  cursor: default;
-  padding: 0.25rem 0;
-  display: inline-block;
-  font-size: var(--ifm-font-size-base);
-}
-
-.sidebar-draft-badge {
-  display: inline-block;
-  font-size: 0.6rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 1px 5px;
-  border-radius: 3px;
-  background-color: #e8d5bf;
-  color: #7a4f1e;
-  vertical-align: middle;
-  margin-left: 4px;
-  opacity: 1;
-}
-
-[data-theme='dark'] .sidebar-draft-badge {
-  background-color: #3d2e1a;
-  color: #c9924a;
-}

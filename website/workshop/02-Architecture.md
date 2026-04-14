@@ -3,7 +3,6 @@ id: architecture
 title: Architecture
 sidebar_position: 2
 description: How data flows from a CSV file through PostgreSQL and Elasticsearch to the browser-based search portal.
-draft: true
 ---
 
 # Architecture

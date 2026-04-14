@@ -3,7 +3,6 @@ id: portal-customization
 title: Portal Customization
 sidebar_position: 8
 description: Customize the portal's branding, color theme, and navigation, and add multiple data exploration pages.
-draft: true
 ---
 
 # Portal Customization
@@ -230,4 +229,4 @@ At this point you should understand:
 3. Where theme colors and fonts are defined (`apps/stage/components/theme/`)
 4. That adding a new data table requires a component, a page route, environment variables, and an Arranger service
 
-**Extension Task:** If you have time or want to go further, the [Extension Task](./10-Extension-Task.md) introduces schema-validated data submission using Lectern and Lyric — useful if your data is hierarchical or requires enforced data quality before it reaches the portal.
+**Extension Task:** If you have time or want to go further, the [Extension Task](./10-Extension-Task.md) introduces schema-validated data submission using Lectern and Lyric, useful if your data is hierarchical or requires enforced data quality before it reaches the portal.
