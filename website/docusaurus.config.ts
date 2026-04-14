@@ -125,7 +125,7 @@ const config: Config = {
           label: "Documentation",
         },
         {
-          to: "/workshop/workshop",
+          to: "/workshop/prerequisites",
           label: "Workshop",
           position: "left",
         },
@@ -161,7 +161,7 @@ const config: Config = {
             },
             {
               label: "Workshops",
-              to: "/workshop/workshop",
+              to: "/workshop/prerequisites",
             },
           ],
         },

@@ -1,5 +1,5 @@
 ---
-id: workshop
+id: prerequisites
 title: Prerequisites
 sidebar_position: 0
 description: Build a searchable, FAIR-compliant data discovery portal from tabular CSV data using Elasticsearch, Arranger, and Stage.
