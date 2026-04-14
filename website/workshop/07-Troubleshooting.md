@@ -3,6 +3,7 @@ id: troubleshooting
 title: Troubleshooting
 sidebar_position: 7
 description: A layered approach to diagnosing issues in the portal stack, from Docker and databases through to the browser.
+draft: true
 ---
 
 # Troubleshooting

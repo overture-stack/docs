@@ -2,7 +2,8 @@
 id: generating-configurations
 title: Generating Configurations
 sidebar_position: 4
-description: Use the Composer CLI to auto-generate PostgreSQL schemas, Elasticsearch mappings, and Arranger configuration files from your CSV data.
+description: Auto-generate PostgreSQL schemas, Elasticsearch mappings, and Arranger configuration files from your CSV data.
+draft: true
 ---
 
 # Generating Configurations
@@ -21,10 +22,10 @@ Upload a `.csv` file using the **Upload .csv file** button, or paste CSV content
 
 ### Step 2: Configure Options
 
-| Field             | Description                                                                                                                                  |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Index name**    | The name of the Elasticsearch index. Auto-populated from the CSV filename; edit if needed (e.g. `datatable1`).                               |
-| **Table name**    | The name of the PostgreSQL table. Defaults to the same value as the index name.                                                              |
+| Field          | Description                                                                                                    |
+| -------------- | -------------------------------------------------------------------------------------------------------------- |
+| **Index name** | The name of the Elasticsearch index. Auto-populated from the CSV filename; edit if needed (e.g. `datatable1`). |
+| **Table name** | The name of the PostgreSQL table. Defaults to the same value as the index name.                                |
 
 <!-- IMAGE: screenshot of the Configure Options fields -->
 
@@ -102,13 +103,13 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_datatable1_submission_id
 ON datatable1 ((submission_metadata->>'submission_id'));
 ```
 
-| Element                         | What it means                                                                                                                                                                                                                                 |
-| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `VARCHAR(50)`                   | A variable-length text field with a max of 50 characters. Increase this if any values in your column are longer, otherwise PostgreSQL will truncate or reject them on insert.                                                                 |
-| `SMALLINT`                      | A 2-byte integer supporting values from −32,768 to 32,767. Change to `INTEGER` (up to ~2.1 billion) or `BIGINT` if your values can exceed that range.                                                                                         |
+| Element                         | What it means                                                                                                                                                                                                                                |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `VARCHAR(50)`                   | A variable-length text field with a max of 50 characters. Increase this if any values in your column are longer, otherwise PostgreSQL will truncate or reject them on insert.                                                                |
+| `SMALLINT`                      | A 2-byte integer supporting values from −32,768 to 32,767. Change to `INTEGER` (up to ~2.1 billion) or `BIGINT` if your values can exceed that range.                                                                                        |
 | `submission_metadata JSONB`     | A binary JSON column added by the generator and populated by Conductor with each record's tracking info: `submission_id`, `source_file_hash`, and `processed_at`. Do not remove; Conductor depends on it to ensure data is never duplicated. |
-| `CREATE TABLE IF NOT EXISTS`    | PostgreSQL skips creation if the table already exists, so it's safe to re-run the script without accidentally dropping data.                                                                                                                  |
-| Unique index on `submission_id` | Enforces that each uploaded record has a unique submission ID. If Conductor encounters a duplicate during re-upload, it silently skips the row instead of inserting a duplicate or throwing an error.                                         |
+| `CREATE TABLE IF NOT EXISTS`    | PostgreSQL skips creation if the table already exists, so it's safe to re-run the script without accidentally dropping data.                                                                                                                 |
+| Unique index on `submission_id` | Enforces that each uploaded record has a unique submission ID. If Conductor encounters a duplicate during re-upload, it silently skips the row instead of inserting a duplicate or throwing an error.                                        |
 
 </details>
 
@@ -184,17 +185,17 @@ Field types are inferred from your CSV data. Review and correct:
 }
 ```
 
-| Element                            | What it means                                                                                                                                                                     |
-| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `index_patterns: ["datatable1-*"]` | This template applies to any index whose name starts with `datatable1-`. Elasticsearch uses it automatically when a matching index is created.                                    |
+| Element                            | What it means                                                                                                                                                                    |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `index_patterns: ["datatable1-*"]` | This template applies to any index whose name starts with `datatable1-`. Elasticsearch uses it automatically when a matching index is created.                                   |
 | `aliases: { datatable1_centric }`  | A stable reference name that Arranger queries. Even if you version your indices, the alias always points to the right one; do not change this without also updating `base.json`. |
-| `data` object                      | All your CSV columns are nested here. This separation keeps your data fields distinct from system metadata.                                                                       |
-| `keyword` type                     | Exact-match text field, used for categorical values and faceted filtering. Cannot do range queries.                                                                               |
-| `integer` type                     | Whole number field, supports range queries and numeric aggregations.                                                                                                              |
-| `submission_metadata` object       | Added by the generator, populated by Conductor. Contains `submission_id`, `source_file_hash`, and `processed_at`; do not remove.                                                  |
-| `null_value: "No Data"`            | What Elasticsearch displays when a field has no value. Ensures missing data is visible in facets rather than silently absent.                                                     |
-| `number_of_shards: 1`              | Number of primary partitions. One is appropriate for local development; increase for multi-node production clusters.                                                              |
-| `number_of_replicas: 0`            | Number of copies of each shard. Zero is fine for local dev; set to 1+ in production for redundancy.                                                                               |
+| `data` object                      | All your CSV columns are nested here. This separation keeps your data fields distinct from system metadata.                                                                      |
+| `keyword` type                     | Exact-match text field, used for categorical values and faceted filtering. Cannot do range queries.                                                                              |
+| `integer` type                     | Whole number field, supports range queries and numeric aggregations.                                                                                                             |
+| `submission_metadata` object       | Added by the generator, populated by Conductor. Contains `submission_id`, `source_file_hash`, and `processed_at`; do not remove.                                                 |
+| `null_value: "No Data"`            | What Elasticsearch displays when a field has no value. Ensures missing data is visible in facets rather than silently absent.                                                    |
+| `number_of_shards: 1`              | Number of primary partitions. One is appropriate for local development; increase for multi-node production clusters.                                                             |
+| `number_of_replicas: 0`            | Number of copies of each shard. Zero is fine for local dev; set to 1+ in production for redundancy.                                                                              |
 
 </details>
 
@@ -255,9 +256,9 @@ Display names are auto-generated by converting `snake_case` to Title Case. Revie
 }
 ```
 
-| Field         | What it means                                                                                                             |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `fieldName`   | The full dot-notation path to the field in Elasticsearch (e.g. `data.donor_id`). Must match the mapping exactly.          |
+| Field         | What it means                                                                                                            |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `fieldName`   | The full dot-notation path to the field in Elasticsearch (e.g. `data.donor_id`). Must match the mapping exactly.         |
 | `displayName` | The label shown to users in the portal UI for this field. Edit these freely; they have no effect on the underlying data. |
 
 </details>
@@ -299,15 +300,15 @@ Consider hiding metadata columns (e.g. `submission_metadata.*`) by setting `"sho
 }
 ```
 
-| Field            | What it means                                                                                               |
-| ---------------- | ----------------------------------------------------------------------------------------------------------- |
+| Field            | What it means                                                                                              |
+| ---------------- | ---------------------------------------------------------------------------------------------------------- |
 | `rowIdFieldName` | The field used as a unique row identifier. Defaults to `submission_metadata.submission_id`; do not change. |
-| `fieldName`      | Dot-notation path to the field in Elasticsearch. Must match the mapping.                                    |
-| `show`           | Whether the column is visible in the table by default.                                                      |
-| `canChangeShow`  | Whether users can toggle this column's visibility using the column selector.                                |
-| `sortable`       | Whether clicking the column header sorts the table. Disable for high-cardinality text fields.               |
-| `jsonPath`       | JSONPath expression used to extract the value from the response. Matches the field structure.               |
-| `query`          | The GraphQL sub-selection used to fetch this field. Must reflect the nested structure in your mapping.      |
+| `fieldName`      | Dot-notation path to the field in Elasticsearch. Must match the mapping.                                   |
+| `show`           | Whether the column is visible in the table by default.                                                     |
+| `canChangeShow`  | Whether users can toggle this column's visibility using the column selector.                               |
+| `sortable`       | Whether clicking the column header sorts the table. Disable for high-cardinality text fields.              |
+| `jsonPath`       | JSONPath expression used to extract the value from the response. Matches the field structure.              |
+| `query`          | The GraphQL sub-selection used to fetch this field. Must reflect the nested structure in your mapping.     |
 
 </details>
 

@@ -3,6 +3,7 @@ id: extension-task
 title: Extension Task
 sidebar_position: 10
 description: Extend the portal with structured data submission using Lectern data dictionaries and the Lyric tabular submission service.
+draft: true
 ---
 
 # Data Submission

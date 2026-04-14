@@ -3,6 +3,7 @@ id: running-the-demo
 title: Running the Demo
 sidebar_position: 1
 description: Deploy the pre-configured demo portal to see the finished result before building from scratch.
+draft: true
 ---
 
 # Running the Demo

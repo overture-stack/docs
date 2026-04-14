@@ -3,6 +3,7 @@ id: data-preparation
 title: Data Preparation
 sidebar_position: 3
 description: How to structure and format your CSV data to meet the requirements for loading into the portal.
+draft: true
 ---
 
 # Data Preparation

@@ -3,6 +3,7 @@ id: next-steps
 title: Next Steps
 sidebar_position: 9
 description: Resources, commands reference, and guidance for adapting the portal to your own data and extending the platform.
+draft: true
 ---
 
 # Next Steps
