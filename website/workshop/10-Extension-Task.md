@@ -85,7 +85,7 @@ Key features of the viewer:
 - **Interactive schema tables:** field-by-field documentation with types, restrictions, and examples
 - **Version switching:** compare dictionary versions and see what changed between releases
 - **Template downloads:** generate CSV templates from the current schema to guide submitters
-- **Relationship diagrams:** visualise how schemas connect through shared identifiers
+- **Relationship diagrams:** visualize how schemas connect through shared identifiers
 
 #### Adding Lectern to Your Stack
 
