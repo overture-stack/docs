@@ -5,12 +5,14 @@ sidebar_position: 1
 description: Deploy the pre-configured demo portal to see the finished result before building from scratch.
 ---
 
+import demoVideo from './images/demo-search-and-aggregation.webm';
+
 # Running the Demo
 
 Before building anything from scratch, let's deploy the pre-configured demo portal and see what the end result looks like. This gives you a mental model of what each component does before we dive into configuration details.
 
 <video autoPlay loop muted playsInline style={{width: '100%', height: 'auto'}}>
-  <source src="/img/demo-search-and-aggregation.webm" type="video/webm" />
+  <source src={demoVideo} type="video/webm" />
 </video>
 
 If you have not done so yet clone the following repository.
@@ -69,13 +71,13 @@ Once the portal loads, take a few minutes to explore:
 
 The landing page provides an overview and navigation to available data tables. Note the navigation bar, branding, and layout, all of which are configurable.
 
-![Portal home page](/img/homepage.webp)
+![Portal home page](./images/homepage.webp)
 
 #### Data Exploration Page
 
 Navigate to the data exploration page from the top navigation. This is where Arranger's components are at work:
 
-![exploration page](/img/basicPortal.webp)
+![exploration page](./images/basicPortal.webp)
 
 - **Facet Panel (left sidebar):** Filter data by clicking on field values. Each facet corresponds to a field in the Elasticsearch index. The fields shown, their order, and their display names are all controlled by Arranger configuration files.
 
@@ -89,7 +91,7 @@ Navigate to the data exploration page from the top navigation. This is where Arr
 
 The portal includes built-in documentation pages rendered from markdown files in the `docs/` directory. The content you are reading right now may be served through this same mechanism.
 
-![documentation page](/img/documentation.webp)
+![documentation page](./images/documentation.webp)
 
 ### What's Running
 

@@ -9,7 +9,7 @@ description: How data flows from a CSV file through PostgreSQL and Elasticsearch
 
 Now that you've seen the running portal, let's walk through how data flows from a CSV file to the search interface.
 
-![Architecture Diagram](/img/workshop-architecture-diagram.webp "Architecture Diagram")
+![Architecture Diagram](./images/workshop-architecture-diagram.webp "Architecture Diagram")
 
 | Component                                                                                                  | Type                  | Description                                                                                                                                                    |
 | ---------------------------------------------------------------------------------------------------------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -87,7 +87,7 @@ Services start in dependency order: PostgreSQL and Elasticsearch must be healthy
 
 The components used in this workshop are part of the broader [Overture](https://overture.bio) open-source platform for research data management. The search and exploration stack we're using can be extended with additional services:
 
-![Platform Integration](/img/overture-platform-overview.webp)
+![Platform Integration](./images/overture-platform-overview.webp)
 
 - **Lectern:** Data dictionary management (define and enforce data schemas)
 - **Lyric:** Tabular data submission with validation
@@ -103,7 +103,7 @@ Structuring data through a search API like Arranger makes it **machine-accessibl
 
 The platform connects to Arranger via the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) and is designed around four core principles: data minimisation by default, no action without explicit researcher consent, sandboxed code execution, and fully reproducible sessions. Because research data is often sensitive, the platform runs on sovereign infrastructure rather than routing queries through commercial AI providers.
 
-![CDD Conceptual Mock](/img/conversational-data-discovery-mockup.webp)
+![CDD Conceptual Mock](./images/conversational-data-discovery-mockup.webp)
 
 :::info
 **The interface shown above is a conceptual mock-up**. CDD is under active development and is not covered in this workshop.
