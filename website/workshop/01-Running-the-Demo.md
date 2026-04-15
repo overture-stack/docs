@@ -18,7 +18,7 @@ Before building anything from scratch, let's deploy the pre-configured demo port
 If you have not done so yet clone the following repository.
 
 ```
-git clone https://github.com/overture-stack/prelude.git
+git clone -b IBCworkshop https://github.com/overture-stack/prelude.git
 cd prelude
 ```
 
