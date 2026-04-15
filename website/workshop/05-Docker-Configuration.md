@@ -189,7 +189,7 @@ make platform
 :::
 
 :::info
-For future configuration changes (once your own data is loaded), `make restart` is sufficient, it reloads configs without wiping data. If you wish to wipe the data as-well run `make reset`
+For future configuration changes (once your own data is loaded), `make restart` is sufficient, it reloads configs without wiping data. If you wish to wipe the data as well, run `make reset`
 :::
 
 #### Troubleshooting

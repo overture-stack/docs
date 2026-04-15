@@ -12,10 +12,11 @@ import demoVideo from './images/demo-search-and-aggregation.webm';
 Before building anything from scratch, let's deploy the pre-configured demo portal and see what the end result looks like. This gives you a mental model of what each component does before we dive into configuration details.
 
 <video autoPlay loop muted playsInline style={{width: '100%', height: 'auto'}}>
+
   <source src={demoVideo} type="video/webm" />
 </video>
 
-If you have not done so yet clone the following repository.
+If you have not done so yet, clone the following repository.
 
 ```
 git clone -b IBCworkshop https://github.com/overture-stack/prelude.git
@@ -31,12 +32,13 @@ make demo
 <details>
 <summary><strong>Running on Windows?</strong></summary>
 
-| Platform | Command |
-|---|---|
+| Platform           | Command                             |
+| ------------------ | ----------------------------------- |
 | WSL2 (recommended) | `make demo` (in an Ubuntu terminal) |
-| Native PowerShell | `.\run.ps1 demo` |
+| Native PowerShell  | `.\run.ps1 demo`                    |
 
 **One-time setup for native PowerShell:** allow local scripts to run by executing this once:
+
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
@@ -177,16 +179,18 @@ Before moving on, confirm:
 
 ### Stopping the Demo
 
-We'll keep the demo running as a reference while we walk through the architecture. When your ready to remove it run:
+We'll keep the demo running as a reference while we walk through the architecture. When your ready to remove it, run:
 
 ```bash
 make reset
 ```
 
 :::tip Windows (PowerShell)
+
 ```powershell
 .\run.ps1 reset
 ```
+
 :::
 
 **Next:** Now that you've seen the working portal, let's understand how the pieces fit together.

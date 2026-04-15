@@ -103,7 +103,7 @@ git clone -b IBCworkshop https://github.com/overture-stack/prelude.git
 These are not required but will make the workshop easier to follow:
 
 <details>
-<summary><strong>6. (Optional) Elasticvue:</strong>browser-based Elasticsearch GUI</summary>
+<summary><strong>6. (Optional) Elasticvue:</strong> browser-based Elasticsearch GUI</summary>
 
 [Elasticvue](https://elasticvue.com/installation) is a browser-based Elasticsearch GUI useful for inspecting indices, browsing documents, and troubleshooting. It is not required but helpful for understanding what's happening inside Elasticsearch during the workshop.
 
