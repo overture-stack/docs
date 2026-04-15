@@ -62,7 +62,7 @@ In addition to this our team is building a **Conversational Data Discovery (CDD)
 - **Understanding what data is available** without being hardcoded to a specific schema.
 - **Translating natural language questions into validated queries.** A researcher asks "how many samples have a TP53 mutation?" and the model constructs the correct filter against your specific field names.
 - **Grounding its responses in your actual data** rather than hallucinating field names or value ranges, it reads the schema before generating any query.
-- **Executing analysis code in a sandboxed workspace.** Once a query is confirmed, the model can generate Python to analyse and visualise results, running it in an isolated container where the researcher approves every step.
+- **Executing analysis code in a sandboxed workspace.** Once a query is confirmed, the model can generate Python to analyse and visualize results, running it in an isolated container where the researcher approves every step.
 
 :::info
 **Why self-hosted models:** Research data is often sensitive. Routing queries through commercial AI providers is not viable for many research contexts. The CDD platform can be used to run capable models, adjacent to the data, with full control over the stack.
