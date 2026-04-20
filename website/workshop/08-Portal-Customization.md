@@ -3,7 +3,6 @@ id: portal-customization
 title: Portal Customization
 sidebar_position: 8
 description: Customize the portal's branding, color theme, and navigation, and add multiple data exploration pages.
-draft: true
 ---
 
 # Portal Customization
@@ -215,7 +214,7 @@ The platform is considerably more flexible than what this workshop covers. Two c
 
 **QuickSearch (purple box)** adds a type-ahead search input to a data table that lets users find records by typing a field value directly, rather than browsing facet filters. It works by adding edge n-gram tokenization to the Elasticsearch mapping and enabling the feature in Arranger's `extended.json` and `facets.json`. It's well-suited to datasets where users already know the identifier they're looking for (a gene name, sample ID, etc.).
 
-![](/img/demo-portal-cross-table.webp)
+![](./images/demo-portal-cross-table.webp)
 
 **Cross-table search (green box)** allows a selection made in one data table to propagate as a filter in another, using a shared identifier across heterogeneous datasets. For example, selecting a gene in one table can automatically filter a second table to show only records that share that gene. This is particularly useful for multi-omics or linked clinical and molecular datasets.
 
@@ -230,4 +229,4 @@ At this point you should understand:
 3. Where theme colors and fonts are defined (`apps/stage/components/theme/`)
 4. That adding a new data table requires a component, a page route, environment variables, and an Arranger service
 
-**Extension Task:** If you have time or want to go further, the [Extension Task](./10-Extension-Task.md) introduces schema-validated data submission using Lectern and Lyric — useful if your data is hierarchical or requires enforced data quality before it reaches the portal.
+**Extension Task:** If you have time or want to go further, the [Extension Task](./10-Extension-Task.md) introduces schema-validated data submission using Lectern and Lyric, useful if your data is hierarchical or requires enforced data quality before it reaches the portal.

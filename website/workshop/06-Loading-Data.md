@@ -3,14 +3,13 @@ id: loading-data
 title: Loading Data
 sidebar_position: 6
 description: Use the Conductor CLI to load CSV data into PostgreSQL and index it into Elasticsearch for search.
-draft: true
 ---
 
 # Loading Data
 
 With the infrastructure configured, it's time to load data into the portal. Conductor is a CLI tool that reads CSV files, loads each row into PostgreSQL (persistent storage), then indexes them into Elasticsearch as structured documents for search.
 
-Conductor runs as a Docker container — no Node.js installation required. A wrapper script at the root of the repository handles the Docker details for you.
+Conductor runs as a Docker container, no Node.js installation required. A wrapper script at the root of the repository handles the Docker details for you.
 
 :::info
 Run all `./conductor` commands from the **root of the `prelude` repository** (i.e. where `docker-compose.yml` lives).
@@ -31,7 +30,7 @@ Add that line to your `~/.zshrc` (Zsh) or `~/.bashrc` (Bash) and reload:
 source ~/.zshrc   # or source ~/.bashrc
 ```
 
-You can then run `conductor upload ...` from any directory. The script resolves the `data/` folder relative to its own location in the repo, so paths like `./data/datatable1.csv` still refer to the repo's `data/` directory — run the command from the repo root or use an absolute path to a file outside it.
+You can then run `conductor upload ...` from any directory. The script resolves the `data/` folder relative to its own location in the repo, so paths like `./data/datatable1.csv` still refer to the repo's `data/` directory, run the command from the repo root or use an absolute path to a file outside it.
 
 </details>
 

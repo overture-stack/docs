@@ -3,7 +3,6 @@ id: data-preparation
 title: Data Preparation
 sidebar_position: 3
 description: How to structure and format your CSV data to meet the requirements for loading into the portal.
-draft: true
 ---
 
 # Data Preparation
@@ -33,7 +32,7 @@ Your CSV column headers become field names in PostgreSQL, Elasticsearch, and Gra
 | **Format**                | CSV (comma-separated); other delimiters supported via `--delimiter` but for simplicity we recommend using comma-separated files.                                                                                                                                                                             |
 | **Header row**            | Required as the first line                                                                                                                                                                                                                                                                                   |
 | **Prohibited characters** | `: > < . [space] , / \ ? # [ ] { } " * \| + @ & ( ) ! ^`                                                                                                                                                                                                                                                     |
-| **Max length**            | A maximum 63 characters per header name, PostgreSQL silently truncates longer identifiers, which can cause mismatches between your schema and index                                                                                                                                                          |
+| **Max length**            | A maximum of 63 characters per header name, PostgreSQL silently truncates longer identifiers, which can cause mismatches between your schema and index                                                                                                                                                       |
 | **Reserved words**        | These are internal field names used by Elasticsearch and GraphQL. Using them will conflict with system internals and cause indexing or query errors: `_type` `_id` `_source` `_all` `_parent` `_field_names` `_routing` `_index` `_size` `_timestamp` `_ttl` `_meta` `_doc` `__typename` `__schema` `__type` |
 | **Best practices**        | Use `snake_case` or `camelCase`, lowercase, descriptive but concise, no special characters or spaces                                                                                                                                                                                                         |
 
@@ -103,7 +102,7 @@ If you're working with data that has any access restrictions, use anonymized or 
 
 #### Recommended Data Size
 
-There are no strict size limits beyond Docker and Elasticsearch resource constraints. In fact we've scaled this resource to hundreds millions of records. However, for development and testing, a representative sample of approximately **500 records** works well. You can start small and load larger datasets once your configuration is working.
+There are no strict size limits beyond Docker and Elasticsearch resource constraints. In fact we've scaled this resource to hundreds of millions of records. However, for development and testing, a representative sample of approximately **500 records** works well. You can start small and load larger datasets once your configuration is working.
 
 ### Checkpoint
 

@@ -5,15 +5,15 @@ sidebar_position: 0
 description: Build a searchable, FAIR-compliant data discovery portal from tabular CSV data using Elasticsearch, Arranger, and Stage.
 ---
 
-:::caution Please complete the prerequisites below before arriving
-Most importantly downloading the Docker images; the conference venue's Wi-Fi may be slow and unreliable. Thank you and looking forward to meeting you - **Mitchell Shiell, Ontario Institute for Cancer Research, [mshiell@oicr.on.ca](mailto:mshiell@oicr.on.ca)**
+:::caution Please complete the prerequisites before arriving
+Most importantly, download the Docker images in advance, the conference venue's Wi-Fi may be slow and unreliable. Looking forward to meeting you — **Mitchell Shiell, Ontario Institute for Cancer Research, [mshiell@oicr.on.ca](mailto:mshiell@oicr.on.ca)**
 :::
 
 # IBC Workshop Prerequisites
 
 This workshop has been developed as part of the 19th Annual International Biocuration Conference, it will guide you through building a foundational data discovery portal for tabular CSV data using Elasticsearch, Arranger, and Stage.
 
-![Demo search and aggregation](/img/workshop-portal-preview.webp)
+![Demo search and aggregation](./images/workshop-portal-preview.webp)
 
 :::info 👋 Say hello
 If you're attending, feel free to [**drop a quick introduction**](https://github.com/overture-stack/docs/discussions/new?category=new-deployments&title=%5BIBC+Workshop%5D+Hello+from+%5BName%2C+Institution%5D&body=%2A%2AName+%26+affiliation%3A%2A%2A+%0A%0A%2A%2AType+of+data+I+work+with%3A%2A%2A+%0A%0A%2A%2AWhat+I%27m+hoping+to+get+out+of+the+session%3A%2A%2A+%0A%0A%2A%2AData+management+challenges+%28optional%29%3A%2A%2A+) before the day, this helps tailor the session to the room. Entirely optional.
@@ -103,7 +103,7 @@ git clone -b IBCworkshop https://github.com/overture-stack/prelude.git
 These are not required but will make the workshop easier to follow:
 
 <details>
-<summary><strong>6. (Optional) Elasticvue:</strong>browser-based Elasticsearch GUI</summary>
+<summary><strong>6. (Optional) Elasticvue:</strong> browser-based Elasticsearch GUI</summary>
 
 [Elasticvue](https://elasticvue.com/installation) is a browser-based Elasticsearch GUI useful for inspecting indices, browsing documents, and troubleshooting. It is not required but helpful for understanding what's happening inside Elasticsearch during the workshop.
 
@@ -144,11 +144,11 @@ If you have a tabular dataset you'd like to use during or after the workshop, br
 
 ## Support
 
-|                         |                                                                                                                                  |
-| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| **During the workshop** | A link with Slack Channel support will be provided                                                                               |
-| **Before or after**     | [community support channels](https://docs.overture.bio/community/support) or [contact@overture.bio](mailto:contact@overture.bio) |
-| **Bug reports**         | [GitHub Issues](https://github.com/overture-stack/prelude/issues)                                                                |
+|                         |                                                                                                                                               |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| **During the workshop** | [You can use this slack link for additional support](https://join.slack.com/t/overture-bio/shared_invite/zt-21tdumtdh-9fP1TFeLepK4~Lc377rOYw) |
+| **Before or after**     | [community support channels](https://docs.overture.bio/community/support) or [contact@overture.bio](mailto:contact@overture.bio)              |
+| **Bug reports**         | [GitHub Issues](https://github.com/overture-stack/prelude/issues)                                                                             |
 
 **Facilitator:** Mitchell Shiell, Ontario Institute for Cancer Research, [mshiell@oicr.on.ca](mailto:mshiell@oicr.on.ca)
 

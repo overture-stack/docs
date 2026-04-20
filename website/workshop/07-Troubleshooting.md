@@ -3,7 +3,6 @@ id: troubleshooting
 title: Troubleshooting
 sidebar_position: 7
 description: A layered approach to diagnosing issues in the portal stack, from Docker and databases through to the browser.
-draft: true
 ---
 
 # Troubleshooting
@@ -115,7 +114,7 @@ If Arranger responds to the GraphQL query above but the data table or facet pane
 | `extended.json` | Dot notation              | `data.field_name`    |
 | `base.json`     | Alias name (`esIndex`)    | `datatable1_centric` |
 
-Another common `table.json` issue is the `query` field, which must use the correct GraphQL traversal path (`hits`, `edges`, `nodes`) to reach the field value. An incorrect path here will cause columns to render empty even when data is present. See the [Arranger table configuration docs](https://docs.overture.bio/docs/core-software/Arranger/usage/arranger-components#table-configuration-tablejson) for the expected structure.
+Another common `table.json` issue is the `query` field, which must use the correct GraphQL traversal path (`hits`, `edges`, `nodes`) to reach the field value. An incorrect path here will cause columns to render empty even when data is present. See the [Arranger table configuration docs](https://docs.overture.bio/docs/core-software/arranger/usage/arranger-components#table-configuration-tablejson) for the expected structure.
 
 ### Step 5: Check Stage and the Browser
 
