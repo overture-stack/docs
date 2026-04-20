@@ -79,10 +79,6 @@ postgres:
 
 The `postgres-data` volume ensures your data persists across container restarts. Credentials use `${VARIABLE:-default}` syntax, Docker Compose reads actual values from the `.env` file if it exists, falling back to the workshop defaults. For production, create a `.env` file with strong passwords (see `.env.example`).
 
-:::info
-PostgreSQL's port is bound to `127.0.0.1:5435`, accessible from your local machine for debugging but not from the network. Other containers reach it over the Docker network by service name (`postgres:5432`). For full production lockdown, remove the `ports:` line entirely.
-:::
-
 :::tip
 Adding a second dataset only requires a new SQL file in `setup/configs/postgresConfigs/`, the setup service discovers and executes all `.sql` files automatically, no changes to `docker-compose.yml` are needed. This is beyond the scope of this workshop, but reach out via [contact@overture.bio](mailto:contact@overture.bio) if you'd like guidance afterwards.
 :::
@@ -114,10 +110,6 @@ arranger-datatable1:
 | Volume mount path       | Which Arranger config directory is loaded, the `datatable1` segment matches your table name |
 | `ES_USER` / `ES_PASS`   | Credentials used to connect to Elasticsearch                                                |
 | `ES_ARRANGER_SET_INDEX` | Internal Arranger bookmarks index, must be unique per Arranger instance                     |
-
-:::info
-Arranger's port is bound to `127.0.0.1:5050`, accessible locally for debugging but not from the network. Stage reaches it over the Docker network (`http://arranger-datatable1:5050`).
-:::
 
 :::tip
 Adding a second Arranger instance requires a new service block with a unique port, container name, config directory, and `ES_ARRANGER_SET_INDEX`. This is beyond the scope of this workshop, but reach out via [contact@overture.bio](mailto:contact@overture.bio) if you'd like guidance afterwards.

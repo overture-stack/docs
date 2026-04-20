@@ -144,11 +144,11 @@ If you have a tabular dataset you'd like to use during or after the workshop, br
 
 ## Support
 
-|                         |                                                                                                                                  |
-| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| **During the workshop** | A link with Slack Channel support will be provided                                                                               |
-| **Before or after**     | [community support channels](https://docs.overture.bio/community/support) or [contact@overture.bio](mailto:contact@overture.bio) |
-| **Bug reports**         | [GitHub Issues](https://github.com/overture-stack/prelude/issues)                                                                |
+|                         |                                                                                                                                               |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| **During the workshop** | [You can use this slack link for additional support](https://join.slack.com/t/overture-bio/shared_invite/zt-21tdumtdh-9fP1TFeLepK4~Lc377rOYw) |
+| **Before or after**     | [community support channels](https://docs.overture.bio/community/support) or [contact@overture.bio](mailto:contact@overture.bio)              |
+| **Bug reports**         | [GitHub Issues](https://github.com/overture-stack/prelude/issues)                                                                             |
 
 **Facilitator:** Mitchell Shiell, Ontario Institute for Cancer Research, [mshiell@oicr.on.ca](mailto:mshiell@oicr.on.ca)
 
