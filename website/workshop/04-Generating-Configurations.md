@@ -26,8 +26,6 @@ Upload a `.csv` file using the **Upload .csv file** button, or paste CSV content
 | **Index name** | The name of the Elasticsearch index. Auto-populated from the CSV filename; edit if needed (e.g. `datatable1`). |
 | **Table name** | The name of the PostgreSQL table. Defaults to the same value as the index name.                                |
 
-<!-- IMAGE: screenshot of the Configure Options fields (no image provided) -->
-
 ### Step 3: Generate and Copy
 
 Click **Generate Configs**. Once complete, the output panel shows a tabbed view with seven files:

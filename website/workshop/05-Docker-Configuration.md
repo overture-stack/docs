@@ -5,6 +5,8 @@ sidebar_position: 5
 description: Walk through the docker-compose.yml service definitions and environment variables to wire configuration files into each container.
 ---
 
+# Docker Configuration
+
 In the previous steps you generated three sets of configuration files: a PostgreSQL schema, an Elasticsearch mapping, and Arranger configs. This section covers what to update in `docker-compose.yml` to wire those files into the platform for your dataset, then how to apply the changes.
 
 ## Step 1: Update for Your Dataset

@@ -76,7 +76,7 @@ Whether you're adapting the platform to your own data, running into issues after
 
 If you have a few minutes, we'd appreciate your feedback on the workshop. Your responses help us improve the content, pacing, and hands-on exercises for future sessions.
 
-**[Fill in the post-workshop survey →](https://docs.google.com/forms/d/1iPKthD-jZRd3CN5ZFV_55mAPhNWSSzjN40qq-9zbnDM/edit)**
+**[Fill in the post-workshop survey →](https://docs.google.com/forms/d/e/1FAIpQLSc2lbZdaxW55SRgxw8f6NColoWIUm8299WU6DfkvsRnh6WQNA/viewform?usp=dialog)**
 
 ### Resources
 
