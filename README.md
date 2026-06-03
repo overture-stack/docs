@@ -2,7 +2,7 @@
 
 Overture Docs is a centralized documentation site built with [Docusaurus](https://docusaurus.io/) that aggregates and renders Markdown content from `/docs` directories across our GitHub repositories. It transforms distributed documentation into a cohesive and easy to navigate knowledge base.
 
-![Overture Docs](./preview.png "Docs for developers and informaticians")
+![Overture Docs](./preview.png 'Docs for developers and informaticians')
 
 > [!NOTE]
 > This repository is documented in detail on the Overture Docs site linked here (to be linked once live)
@@ -75,10 +75,10 @@ npm start
 
 - **/submodules/**: Contains all Overture core repositories as Git submodules
 - **/website/**: Houses the Docusaurus-powered documentation website
-  - **/community/**: Community-focused content and resources
-  - **/docs/**: Central location for all documentation, automatically linked from repository submodules
-  - **/guides/**: Comprehensive platform guides and tutorials
-  - **/src/**: Website implementation files including custom components, styling, and page content
+    - **/community/**: Community-focused content and resources
+    - **/docs/**: Central location for all documentation, automatically linked from repository submodules
+    - **/guides/**: Comprehensive platform guides and tutorials
+    - **/src/**: Website implementation files including custom components, styling, and page content
 
 ## Benefits of this Setup
 
@@ -90,7 +90,7 @@ npm start
 
 - **Robust Error Handling**: Docusaurus has excellent error catching, particularly for broken and missing links, reducing the need for manual testing.
 
-![Pro Tip](./website/docs/02-platform-tools/images/proTip.png "Use Overture Docs repo to search across all Overture repos")
+![Pro Tip](./website/docs/02-platform-tools/images/proTip.png 'Use Overture Docs repo to search across all Overture repos')
 
-> [!TIP]  
+> [!TIP]
 > The Overture Docs repo contains everything, therefore finding & tracking links and content across all our repos has never been easier.
