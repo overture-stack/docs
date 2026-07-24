@@ -4,7 +4,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
   title: "Overture Docs",
-  tagline: "Resources for Developers & Informaticians",
+  tagline: "Resources for Developers, Operators & Informaticians",
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here

@@ -7,7 +7,7 @@ sidebar_position: 0
 
 # Deploy Overture
 
-**For platform teams standing up and operating an Overture instance.**
+**For platform, DevOps, and operations teams standing up and operating an Overture instance.**
 
 This journey covers deploying the Overture stack and trying it locally with
 **Prelude** before committing to a full deployment — start locally, then scale
