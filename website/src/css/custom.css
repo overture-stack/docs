@@ -6,123 +6,201 @@
 
 /* You can override the default Infima variables here. */
 :root {
- --ifm-color-primary: #9E005D;
- --ifm-color-primary-hero: #71bde8;
- --ifm-color-primary-dark: #03497e;
- --ifm-color-primary-darker: #034577;
- --ifm-color-primary-darkest: #023962;
- --ifm-color-primary-light: #05599a;
- --ifm-color-primary-lighter: #055da1;
- --ifm-color-primary-lightest: #0669b6;
- --ifm-code-font-size: 95%;
- --ifm-font-color: #003055;
- --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
- --ifm-color-primary-search: #fefefe;
- --doc-sidebar-background: #f5f6f7;
- --ifm-color-footer: #f0f1f3; 
+  --ifm-color-primary: #9e005d;
+  --ifm-color-primary-hero: #71bde8;
+  --ifm-color-primary-dark: #03497e;
+  --ifm-color-primary-darker: #034577;
+  --ifm-color-primary-darkest: #023962;
+  --ifm-color-primary-light: #05599a;
+  --ifm-color-primary-lighter: #055da1;
+  --ifm-color-primary-lightest: #0669b6;
+  --ifm-code-font-size: 95%;
+  --ifm-font-family-base:
+    "Lato", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  --ifm-font-color: #003055;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --ifm-color-primary-search: #fefefe;
+  --doc-sidebar-background: #f5f6f7;
+  --ifm-color-footer: #f0f1f3;
 
- 
- /* Top NavBar */
- --ifm-navbar-height: 64px;
- --ifm-navbar-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.1), 0 1px 5px 0 rgba(0, 0, 0, 0.08);
- --navbar-item-hover-light: rgba(0, 0, 0, 0.05);
- --navbar-item-hover-dark: rgba(255, 255, 255, 0.1);
+  /* Top NavBar */
+  --ifm-navbar-height: 64px;
+  --ifm-navbar-shadow:
+    0 1px 6px 0 rgba(0, 0, 0, 0.1), 0 1px 5px 0 rgba(0, 0, 0, 0.08);
+  --navbar-item-hover-light: rgba(0, 0, 0, 0.05);
+  --navbar-item-hover-dark: rgba(255, 255, 255, 0.1);
 
- /* Front Page category blocks */
- --category-title-color: #282A35;
- --category-category-color: #f7f7f7;
- --category-card-color: #fefefe;
- --category-block-shadow: 2px 2px 6px #282a3525;
- --category-block-funding: none;
- --funding-block-color: #edf9fd;
+  /* Front Page category blocks */
+  --category-title-color: #282a35;
+  --category-category-color: #f7f7f7;
+  --category-card-color: #fefefe;
+  --category-block-shadow: 2px 2px 6px #282a3525;
+  --category-block-funding: none;
+  --funding-block-color: #edf9fd;
+
+  /* Front page journey tags (Develop/Deploy/Use) — Develop reuses the brand
+     primary; Deploy and Use get their own hue so the shared guide index can
+     be scanned by journey at a glance. */
+  --journey-develop-color: var(--ifm-color-primary);
+  --journey-deploy-color: #0b7285;
+  --journey-use-color: #a86b00;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme='dark'] {
- --ifm-color-primary: #4BC6F0;
- --ifm-color-primary-hero: #0767b1;
- --ifm-color-primary-dark: #2a2d2f;
- --ifm-color-primary-darker: #034577;
- --ifm-color-primary-darkest: #023962;
- --ifm-color-primary-light: #05599a;
- --ifm-color-primary-lighter: #055da1;
- --ifm-color-primary-lightest: #0669b6;
- --ifm-background-color: #585858;
- --ifm-font-color: #ffffff;
- --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
- --ifm-color-primary-search: #2a2d2f;
- --doc-sidebar-background: #0d0d0d;
- --ifm-color-footer: #0d0d0d; 
+[data-theme="dark"] {
+  --ifm-color-primary: #4bc6f0;
+  --ifm-color-primary-hero: #0767b1;
+  --ifm-color-primary-dark: #2a2d2f;
+  --ifm-color-primary-darker: #034577;
+  --ifm-color-primary-darkest: #023962;
+  --ifm-color-primary-light: #05599a;
+  --ifm-color-primary-lighter: #055da1;
+  --ifm-color-primary-lightest: #0669b6;
+  --ifm-background-color: #585858;
+  --ifm-font-color: #ffffff;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-color-primary-search: #2a2d2f;
+  --doc-sidebar-background: #0d0d0d;
+  --ifm-color-footer: #0d0d0d;
 
- /* Front Page category blocks */
- --category-title-color: #F2F5F8;
- --category-category-color: #1B1B1D;
- --category-card-color: #4e5055;
- --category-block-shadow: 0px 0px 0px 2px #323845;
- --category-block-shadow-funding: 0px 0px 0px 2px #323845;
- --funding-block-color: #232324;
+  /* Front Page category blocks */
+  --category-title-color: #f2f5f8;
+  --category-category-color: #1b1b1d;
+  --category-card-color: #4e5055;
+  --category-block-shadow: 0px 0px 0px 2px #323845;
+  --category-block-shadow-funding: 0px 0px 0px 2px #323845;
+  --funding-block-color: #232324;
+
+  /* Front page journey tags (Develop/Deploy/Use) */
+  --journey-develop-color: var(--ifm-color-primary);
+  --journey-deploy-color: #a78bfa;
+  --journey-use-color: #e2a03f;
 }
 
 /* Custom styles for Docusaurus sidebar */
 :root {
- --sidebar-item-height: 1.5rem;
- --sidebar-border-width: 3px;
+  --sidebar-item-height: 1.5rem;
+  --sidebar-border-width: 3px;
 }
 
 .theme-doc-sidebar-menu {
- padding: 0.5rem;
+  padding: 0.5rem;
 }
 
 /* Links styling */
 .menu__link {
- line-height: var(--sidebar-item-height);
- border-radius: 0;
- transition: background-color 200ms ease;
- border-left: var(--sidebar-border-width) solid transparent;
+  font-size: 0.85rem;
+  line-height: var(--sidebar-item-height);
+  border-radius: 0;
+  transition: background-color 200ms ease;
+  border-left: var(--sidebar-border-width) solid transparent;
 }
 
 .menu__link--active {
- border-left: var(--sidebar-border-width) solid;
- border-left-color: var(--ifm-color-primary);
+  border-left: var(--sidebar-border-width) solid;
+  border-left-color: var(--ifm-color-primary);
 }
 
 /* Nested levels */
 .menu__list .menu__list {
- border-left: 1px solid var(--ifm-color-emphasis-200);
+  border-left: 1px solid var(--ifm-color-emphasis-200);
 }
 
 .navbar__items .navbar__item:hover {
- background-color: var(--navbar-item-hover-light);
- border-radius: 4px;
+  background-color: var(--navbar-item-hover-light);
+  border-radius: 4px;
 }
 
-[data-theme='dark'] .navbar__items .navbar__item:hover {
- background-color: var(--navbar-item-hover-dark);
+[data-theme="dark"] .navbar__items .navbar__item:hover {
+  background-color: var(--navbar-item-hover-dark);
 }
 
 .tableOfContents_bqdL {
-    border-left: 1px solid var(--ifm-color-primary);
-    
+  border-left: 1px solid var(--ifm-color-primary);
 }
 
 .footer {
-    background-color: var(--ifm-color-footer);
-    border-top: 1px solid #d5d8dc;
-    color: var(--ifm-color-primary); 
-   }
+  background-color: var(--ifm-color-footer);
+  border-top: 1px solid #d5d8dc;
+  color: var(--ifm-color-primary);
+}
 
-[data-theme='dark'] .footer {
-    background-color: var(--ifm-color-footer);
-    border-top: 1px solid #44484f;
-    color: var(--ifm-color-primary); 
-    }
+[data-theme="dark"] .footer {
+  background-color: var(--ifm-color-footer);
+  border-top: 1px solid #44484f;
+  color: var(--ifm-color-primary);
+}
 
 .footer__title {
-    color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
 }
 
 .footer__link-item {
-   color: var(--ifm-font-color);
+  color: var(--ifm-font-color);
+}
+
+/* Build sidebar: components paired as "Overture name (functional name)"
+   (e.g. "Lectern (Dictionary Management)") can still wrap on narrow
+   viewports even at the site-wide sidebar font-size. Keep the expand caret
+   aligned to the top in that case instead of floating mid-block. */
+.sidebar-component-item > .menu__list-item-collapsible {
+  align-items: flex-start;
+}
+
+.sidebar-component-item > .menu__list-item-collapsible .menu__caret {
+  margin-top: 0.15rem;
+}
+
+/* Use sidebar: audience groups (Data Consumers, Data Submitters, Platform
+   Administrators) are non-collapsible categories with no link — used purely
+   as static section headings, not clickable nav items: no left border (the
+   active-page indicator reserved on regular links), no hover/focus state,
+   small/bold/primary-colored text so they read as section dividers. */
+.sidebar-section-heading {
+  margin-top: 1rem;
+}
+
+.sidebar-section-heading:first-child {
+  margin-top: 0;
+}
+
+/* Infima highlights the whole row div on hover (independent of the link's
+   own background) — neutralize that too so the heading is fully static. */
+.sidebar-section-heading > .menu__list-item-collapsible,
+.sidebar-section-heading > .menu__list-item-collapsible:hover {
+  background: transparent;
+  cursor: default;
+}
+
+/* Child items nest one level deeper by default (the standard indent, plus a
+   vertical rule, used to show hierarchy under a collapsible category). Since
+   the heading isn't a real category, cancel both so items align flush with
+   the label with no nesting line. */
+.sidebar-section-heading > .menu__list {
+  padding-left: 0;
+  border-left: none;
+}
+
+.sidebar-section-heading > .menu__list-item-collapsible > .menu__link {
+  cursor: default;
+  border-left: none;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  padding-bottom: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ifm-color-primary);
+  transition: none;
+}
+
+.sidebar-section-heading > .menu__list-item-collapsible > .menu__link:hover,
+.sidebar-section-heading > .menu__list-item-collapsible > .menu__link:focus,
+.sidebar-section-heading > .menu__list-item-collapsible > .menu__link:active {
+  background: transparent;
+  color: var(--ifm-color-primary);
+  border-left: none;
 }
 
 .sidebar-coming-soon {
@@ -148,7 +226,13 @@
   opacity: 1;
 }
 
-[data-theme='dark'] .sidebar-draft-badge {
+[data-theme="dark"] .sidebar-draft-badge {
   background-color: #3d2e1a;
   color: #c9924a;
+}
+
+/* Team page avatar cards: tighten the gap the default h3 margin leaves
+   between the name and the subtitle underneath it. */
+.avatar__name {
+  margin-bottom: 0.25rem;
 }

@@ -1,0 +1,108 @@
+# API Reference
+
+Welcome to our API reference documentation. This page provides detailed information about our available APIs. 
+You can explore the endpoints, request parameters and response schemas directly from this page. 
+
+The Overture Platform has six APIs:
+
+1. [**Song:**](/develop/api-reference#song-api) a RESTful (Swagger) API for file metadata stored in Song.
+2. [**Score:**](/develop/api-reference#score-api) a RESTful (Swagger) API for communicating with the Score Server.
+3. [**Maestro:**](/develop/api-reference#maestro-api) a RESTful (Swagger) API for managing Song data indexing operations.
+4. [**Lyric:**](/develop/api-reference#lyric-api) a RESTful (Swagger) API for tabular data submission, validation, and querying.
+5. [**Lectern:**](/develop/api-reference#lectern-api) a RESTful (Swagger) API for managing data dictionary schemas.
+6. [**Arranger:**](#arranger-graphql-api) a GraphQL search API, with a set of read-only introspection REST endpoints.
+
+Song, Score, Maestro, Lyric, and Lectern are documented with Swagger below. Arranger's API is GraphQL rather than REST, so it is documented in the [Arranger component reference](#arranger-graphql-api).
+
+## RESTful APIs
+
+import SwaggerAPIDoc from '/src/components/SwaggerAPIDoc';
+
+All our available RESTful APIs use Swagger to help document endpoint usage and expected outcomes. Here are some tips for using the Swagger UI:
+
+1. **Expand Operations**: Click on an endpoint to expand its details.
+2. **Read Descriptions**: Each endpoint has a description explaining its purpose and usage.
+3. **Check Parameters**: Review the required and optional parameters for each endpoint.
+4. **Examine Responses**: Look at the possible response codes and schemas to understand what to expect from each endpoint.
+
+### Song API
+
+The Song API allows you to manage and query file metadata in your system.
+
+#### Key Features
+
+- Manage study, analysis, and file-centric entity metadata
+- Validate and submit analysis metadata with schema versioning and publication controls (published/unpublished/suppressed)
+- Manage schemas used for validations
+- Check the health of the Song-server
+
+<SwaggerAPIDoc specName="song" />
+
+### Score API
+
+The Score API provides endpoints that allow to to query the Score server and programmatically transfer files to and from object storage.
+
+#### Key Features
+
+- Manage file uploads and downloads with multipart support and recovery mechanisms
+- Track and verify file integrity using MD5 checksums and progress monitoring
+- Control object storage with flexible listing, partial content handling, and secure access controls
+
+<SwaggerAPIDoc specName="score" />
+
+### Maestro API
+
+The Maestro API provides you with endpoints for data indexing.
+
+#### Key Features
+
+- Index an entire repository, a specific organization within it, or a single record by ID
+- Trigger indexing at the granularity you need, from full-repository re-indexing down to one record
+
+<SwaggerAPIDoc specName="maestro" />
+
+### Lyric API
+
+The Lyric API allows you to submit, validate, query, and manage tabular data against Lectern dictionary schemas.
+
+#### Key Features
+
+- Validate and submit tabular data files against Lectern dictionary schemas, with a staged submission workflow
+- Manage committed data with full CRUD operations
+- Query committed data, including SQON-based search
+- Track a complete audit history of data changes
+- Manage dictionary categories and register Lectern dictionaries for use
+
+<SwaggerAPIDoc specName="lyric" />
+
+### Lectern API
+
+The Lectern API allows you to manage and query data dictionary schemas.
+
+#### Key Features
+
+- List, create, and retrieve data dictionaries, and add or update the schemas within them
+- Look up an individual schema or field definition within a dictionary
+- Compute the difference between two dictionary versions
+- Download a dictionary schema template
+
+<SwaggerAPIDoc specName="lectern" />
+
+<br></br>
+
+## Arranger GraphQL API
+
+Arranger is Overture's search API. Unlike the services above it is a **GraphQL** API rather than REST/Swagger: a client sends a [SQON](/develop/Arranger/usage/building-sqon-queries) filter with field selections to a single `/graphql` endpoint, and Arranger translates it into an Elasticsearch query. It also exposes read-only **introspection** REST endpoints for discovering a server's catalogues and fields.
+
+Arranger's API is documented in the Arranger component reference:
+
+- [**Query processing**](/develop/Arranger/usage/query-processing) — how a search request flows from SQON through GraphQL to Elasticsearch.
+- [**Building SQON queries**](/develop/Arranger/usage/building-sqon-queries) and [**SQON in detail**](/develop/Arranger/usage/sqon-in-detail) — the filter language.
+- [**Introspection API**](/develop/Arranger/usage/introspection) — read-only REST endpoints describing a server's catalogues, fields, types, and operators.
+- [**AI & automation**](/develop/Arranger/usage/ai-and-automation) — the MCP server that wraps this API for AI-agent access.
+
+<br></br>
+
+:::info Need Help?
+If you encounter any issues or have questions about our API, please don't hesitate to reach out through our relevant [**community support channels**](https://docs.overture.bio/community/support).
+:::

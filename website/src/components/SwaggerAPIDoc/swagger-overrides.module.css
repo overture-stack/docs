@@ -1,0 +1,92 @@
+/*
+ * swagger-ui-react ships its own fully self-contained stylesheet (every rule
+ * prefixed with `.swagger-ui`), but it hardcodes a light-mode palette and
+ * assumes it owns bare element selectors (h1-h5, pre, table, a, ...). Docusaurus's
+ * Infima also styles those same bare elements, and switches their colors for
+ * dark mode via CSS variables. Depending on stylesheet load order the two
+ * fight over identical specificity, which is what breaks contrast here (e.g.
+ * white-on-white version badges even in light mode, gray-on-navy body text in
+ * dark mode). Rather than override every one of swagger-ui's ~200 selectors,
+ * pin the embed to its own light card that doesn't participate in the site's
+ * dark mode, and re-assert the handful of properties Infima actually clobbers.
+ */
+
+.swaggerCard {
+  color-scheme: light;
+  background: #ffffff;
+  border: 1px solid var(--ifm-toc-border-color);
+  border-radius: var(--ifm-global-radius);
+  padding: 1.5rem 1.5rem 0.5rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.swaggerCard :global(.swagger-ui) {
+  color: #3b4151;
+}
+
+.swaggerCard :global(.swagger-ui h1),
+.swaggerCard :global(.swagger-ui h2),
+.swaggerCard :global(.swagger-ui h3),
+.swaggerCard :global(.swagger-ui h4),
+.swaggerCard :global(.swagger-ui h5),
+.swaggerCard :global(.swagger-ui label),
+.swaggerCard :global(.swagger-ui p),
+.swaggerCard :global(.swagger-ui table),
+.swaggerCard :global(.swagger-ui .opblock-tag),
+.swaggerCard :global(.swagger-ui .opblock-tag-section h3),
+.swaggerCard :global(.swagger-ui .opblock .opblock-summary-description),
+.swaggerCard :global(.swagger-ui .opblock-description-wrapper),
+.swaggerCard :global(.swagger-ui .opblock-external-docs-wrapper),
+.swaggerCard :global(.swagger-ui .opblock-title_normal),
+.swaggerCard :global(.swagger-ui .parameter__name),
+.swaggerCard :global(.swagger-ui .parameter__type),
+.swaggerCard :global(.swagger-ui .parameter__in),
+.swaggerCard :global(.swagger-ui .response-col_status),
+.swaggerCard :global(.swagger-ui .response-col_description),
+.swaggerCard :global(.swagger-ui .renderedMarkdown p),
+.swaggerCard :global(.swagger-ui .model-title),
+.swaggerCard :global(.swagger-ui .model),
+.swaggerCard :global(.swagger-ui .prop-name),
+.swaggerCard :global(.swagger-ui .prop-type) {
+  color: #3b4151 !important;
+}
+
+.swaggerCard :global(.swagger-ui .opblock-tag small) {
+  color: #6b6b6b !important;
+}
+
+.swaggerCard :global(.swagger-ui pre),
+.swaggerCard :global(.swagger-ui code) {
+  background: #f6f7f8 !important;
+  color: #3b4151 !important;
+}
+
+/* The little version / OAS pills sit on a dark pill background (set on the
+ * parent .title small), not the code-block background applied above. */
+.swaggerCard :global(.swagger-ui .info .title small pre.version) {
+  background: transparent !important;
+  color: #ffffff !important;
+}
+
+/* swagger-ui's own title + description duplicate the heading and prose we
+ * already author directly above every <SwaggerAPIDoc/> embed in the MDX
+ * (and for specs whose info.title is a raw package name, it reads worse than
+ * just omitting it). Keep the base URL line, drop the rest. */
+.swaggerCard :global(.swagger-ui .info hgroup.main .title),
+.swaggerCard :global(.swagger-ui .info .description) {
+  display: none;
+}
+
+.swaggerCard :global(.swagger-ui .info) {
+  margin: 0 0 1rem;
+}
+
+.swaggerCard :global(.swagger-ui .scheme-container) {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.swaggerCard :global(.swagger-ui .wrapper) {
+  padding: 0;
+}

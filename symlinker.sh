@@ -1,16 +1,43 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#
+# Regenerates the documentation symlinks under website/docs/ that bring each
+# submodule's docs into the Docusaurus site. Run from the repository root:
+#
+#     ./symlinker.sh
+#
+# These links MUST match what is committed under website/docs/. If you change
+# what the site surfaces, change it here and regenerate — so the script and the
+# repo never disagree. (A drifted script silently rebuilds a *different* site.)
+#
+# Link targets are relative, never absolute: Netlify resolves them at build time
+# and absolute paths do not deploy correctly.
+#
+set -euo pipefail
+cd "$(dirname "$0")"
 
-# Do not use absolute paths, they will not deploy on netlify correctly
-# Run this from the directory you want the link to be made in 
-ln -s ../../../submodules/song/docs/ 01-song
-ln -s ../../../submodules/score/docs/ 02-score
-ln -s ../../../submodules/maestro/docs/ 03-maestro
-ln -s ../../../submodules/arranger/docs/ 04-arranger
-ln -s ../../../submodules/stage/docs/ 05-stage
+# --- Core software: each links the component's whole docs/ directory ---
+#     link path (under website/docs/)                 submodule
+core_links=(
+  "website/docs/develop-docs/01-Lectern     lectern"
+  "website/docs/develop-docs/02-Lyric       lyric"
+  "website/docs/develop-docs/03-Song        song"
+  "website/docs/develop-docs/04-Score       score"
+  "website/docs/develop-docs/05-Maestro     maestro"
+  "website/docs/develop-docs/06-Arranger    arranger"
+  "website/docs/develop-docs/07-Stage       stage"
+)
+for entry in "${core_links[@]}"; do
+  read -r link comp <<<"$entry"
+  rm -rf "$link"
+  ln -s "../../../submodules/${comp}/docs/" "$link"
+done
 
-# Linked into from bridge/website/docs/04-Standards
-ln -s ../../submodules/.github/standards 04-standards
+# --- Org-level documentation standards (from the .github submodule) ---
+#     Re-homed under the Community journey (website/docs/community-docs/) in
+#     the Deploy·Build·Use IA migration; the relative target has one fewer
+#     ../ than the core_links above because this symlink sits directly under
+#     docs/community-docs/, not nested a level deeper like 01-core-software/.
+rm -rf "website/docs/community-docs/07-documentation-standards"
+ln -s "../../../submodules/.github/standards" "website/docs/community-docs/07-documentation-standards"
 
-# Linked into from bridge/website/docs/03-under-development 
-ln -s ../../../submodules/lectern/docs/overview 01-lectern
-ln -s ../../../submodules/lyric/docs/ 02-lyric
+echo "Regenerated $(( ${#core_links[@]} + 1 )) doc symlinks under website/."

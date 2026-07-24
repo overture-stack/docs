@@ -1,194 +1,57 @@
 import React from "react";
+import clsx from "clsx";
 import Heading from "@theme/Heading";
 import styles from "./styles.module.css";
 
-import iconSong from "./icons/icon-song.png";
-import iconScore from "./icons/icon-score.png";
-import iconMaestro from "./icons/icon-maestro.png";
-import iconArranger from "./icons/icon-arranger.png";
-import iconStage from "./icons/icon-stage.png";
-import iconLyric from "./icons/icon-lyric.png";
-import iconLectern from "./icons/icon-lectern.png";
+type JourneyKey = "develop" | "deploy" | "use";
 
-interface Product {
+interface Journey {
   title: string;
+  description: string;
   link: string;
-  image?: string;
-  description: string;
-  category: string;
 }
 
-interface Category {
-  title: string;
-  description: string;
-}
-
-const categories: Record<string, Category> = {
-  platform: {
-    title: "Platform Tools",
-    description: "Bringing it all together",
+const journeys: Record<JourneyKey, Journey> = {
+  develop: {
+    title: "Develop",
+    description: "For developers building on, and extending Overture services.",
+    link: "/develop",
   },
-  guides: {
-    title: "Platform Documentation",
-    description: "Platform focused guides",
-  },
-  core: {
-    title: "Developer Documentation",
-    description: "Using our software in a development context",
-  },
-  development: {
-    title: "Under Development",
-    description: "New components not quite ready for production",
-  },
-  standards: {
-    title: "Documentation Standards",
+  deploy: {
+    title: "Deploy",
     description:
-      "Forming the foundation of documentation and development practice",
+      "For platform teams standing up and operating Overture platforms.",
+    link: "/deploy",
+  },
+  use: {
+    title: "Use",
+    description:
+      "For data consumers, submitters and administrators interacting with Overture platforms & services.",
+    link: "/use",
   },
 };
 
-const products: Product[] = [
-  {
-    title: "Platform Development Toolkit",
-    link: "/docs/platform-tools/Prelude",
-    description: "Prelude",
-    category: "platform",
-  },
-  {
-    title: "Local Demo Portal",
-    link: "/docs/platform-tools/Quickstart",
-    description: "Quickstart",
-    category: "platform",
-  },
-  {
-    title: "Deployment Docs",
-    link: "/guides/deployment-guide/",
-    description: "Deploying to Production",
-    category: "guides",
-  },
-  {
-    title: "Administration Guides",
-    link: "/guides/administration-guides/",
-    description: "Management & Customization",
-    category: "guides",
-  },
-  {
-    title: "User Guides",
-    link: "/guides/user-guides/",
-    description: "Interacting with the platform",
-    category: "guides",
-  },
-  {
-    title: "API Reference",
-    link: "/guides/api-reference",
-    description: "Interacting with the platform's APIs",
-    category: "guides",
-  },
-  {
-    title: "Dictionary Management",
-    link: "/docs/core-software/lectern/overview",
-    image: iconLectern,
-    description: "Lectern",
-    category: "core",
-  },
-  {
-    title: "File Management",
-    link: "docs/core-software/song/overview",
-    image: iconSong,
-    description: "Song",
-    category: "core",
-  },
-  {
-    title: "File Transfer",
-    link: "/docs/core-software/score/overview",
-    image: iconScore,
-    description: "Score",
-    category: "core",
-  },
-  {
-    title: "Indexing Service",
-    link: "/docs/core-software/maestro/overview",
-    image: iconMaestro,
-    description: "Maestro",
-    category: "core",
-  },
-  {
-    title: "Search API",
-    link: "/docs/core-software/arranger/overview",
-    image: iconArranger,
-    description: "Arranger",
-    category: "core",
-  },
-  {
-    title: "Web Portal",
-    link: "/docs/core-software/stage/overview",
-    image: iconStage,
-    description: "Stage",
-    category: "core",
-  },
-  {
-    title: "Dictionary Viewers",
-    link: "/docs/under-development/lecternViewer/",
-    description: "Lectern Viewer",
-    category: "development",
-  },
-  // {
-  //   title: "Arranger Charts",
-  //   link: "/docs/development/arrangercharts/",
-  //   description: "Visualized Cohort Browsing",
-  //   category: "development",
-  // },
-  {
-    title: "Tabular Data Submission",
-    link: "/docs/development/lyric/",
-    description: "Lyric",
-    category: "development",
-  },
-  {
-    title: "Docs Site",
-    link: "/docs/documentation-standards/docsSite",
-    description: "Documentation website info",
-    category: "standards",
-  },
-  {
-    title: "Documenting Projects",
-    link: "/docs/documentation-standards/github",
-    description: "Organization Standards",
-    category: "standards",
-  },
-  {
-    title: "Documenting Software",
-    link: "/docs/documentation-standards/Software/",
-    description: "Software Standards",
-    category: "standards",
-  },
-];
+const PickerTile = ({ journeyKey }: { journeyKey: JourneyKey }) => {
+  const journey = journeys[journeyKey];
+  return (
+    <a
+      href={journey.link}
+      className={clsx(styles.pickerTile, styles[journeyKey])}
+    >
+      <Heading as="h3" className={styles.pickerTitle}>
+        {journey.title}
+      </Heading>
+      <p className={styles.pickerDescription}>{journey.description}</p>
+      <span className={styles.pickerGo}>Browse {journey.title} →</span>
+    </a>
+  );
+};
 
-const Card = ({ title, description, link, image }) => (
-  <a href={link} className={styles.card}>
-    {image && (
-      <img src={image} alt={`${title} icon`} className={styles.cardImage} />
-    )}
-    <Heading as="h4" className={styles.cardTitle}>
-      {title}
-    </Heading>
-    <p className={styles.cardDescription}>{description}</p>
-  </a>
-);
-
-const CategorySection = ({ category, items }) => (
-  <div className={`${styles.categorySection} ${styles[category]}`}>
-    <Heading as="h2" className={styles.categoryHeader}>
-      {categories[category].title}
-    </Heading>
-    <p className={styles.categorySubheader}>
-      {categories[category].description}
-    </p>
-    <div className={styles.cardGrid}>
-      {items.map((props, idx) => (
-        <Card key={idx} {...props} />
-      ))}
-    </div>
+const PickerRow = () => (
+  <div className={styles.pickerRow}>
+    <PickerTile journeyKey="develop" />
+    <PickerTile journeyKey="deploy" />
+    <PickerTile journeyKey="use" />
   </div>
 );
 
@@ -201,9 +64,9 @@ const FundingBadge = () => (
       <p className={styles.fundingDescription}>
         Overture is supported by grant #U24CA253529 from the National Cancer
         Institute at the US National Institutes of Health, and additional
-        funding from Genome Canada, the Canada Foundation for Innovation, the
-        Canadian Institutes of Health Research, Canarie, and the Ontario
-        Institute for Cancer Research.
+        funding from the Digital Research Alliance of Canada, Genome Canada, the
+        Canada Foundation for Innovation, the Canadian Institutes of Health
+        Research, Canarie, and the Ontario Institute for Cancer Research.
       </p>
       <a href="community/funding" className={styles.fundingLink}>
         Learn More
@@ -212,42 +75,13 @@ const FundingBadge = () => (
   </div>
 );
 
-const SiteMap = () => {
-  const categorizedProducts = products.reduce((acc, product) => {
-    (acc[product.category] = acc[product.category] || []).push(product);
-    return acc;
-  }, {});
-
-  const rightColumnCategories = ["platform", "guides"];
-  const leftColumnCategories = ["core", "development"];
-
-  return (
-    <section className={styles.siteMap}>
-      <div className={styles.container}>
-        <div className={styles.mosaicLayout}>
-          <div className={styles.leftColumn}>
-            {leftColumnCategories.map((category) => (
-              <CategorySection
-                key={category}
-                category={category}
-                items={categorizedProducts[category] || []}
-              />
-            ))}
-          </div>
-          <div className={styles.rightColumn}>
-            {rightColumnCategories.map((category) => (
-              <CategorySection
-                key={category}
-                category={category}
-                items={categorizedProducts[category] || []}
-              />
-            ))}
-          </div>
-        </div>
-        <FundingBadge />
-      </div>
-    </section>
-  );
-};
+const SiteMap = () => (
+  <section className={styles.siteMap}>
+    <div className={styles.container}>
+      <PickerRow />
+      <FundingBadge />
+    </div>
+  </section>
+);
 
 export default SiteMap;
