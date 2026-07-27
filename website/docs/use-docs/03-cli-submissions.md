@@ -1,4 +1,4 @@
-# File Submission (Song & Score CLI)
+# File Submission
 
 **This guide is for** anyone seeking guidance on submitting data to an Overture platform. By the end of this guide you will have completed a full data submission workflow, including updating the submitted data to conform to the data model enforced by Song.
 
@@ -57,7 +57,6 @@ API Keys are brokered by Keycloak and accessible when logged in to the Stage UI.
 
    <details>
    <summary><b>Click here for a detailed breakdown</b></summary>
-
    - `-d` runs the container in detached mode, meaning it runs in the background and does not receive input or display output in the terminal
 
    - `-it` combines the `-i` (interactive) and `-t` (allocate a pseudo-TTY) options, allowing you to interact with the container via the terminal
@@ -95,7 +94,6 @@ API Keys are brokered by Keycloak and accessible when logged in to the Stage UI.
 
    <details>
    <summary><b>Click here for a detailed breakdown</b></summary>
-
    - `-d` runs the container in detached mode, meaning it runs in the background and does not receive input or display output in the terminal
 
    - `-it` combines the `-i` (interactive) and `-t` (allocate a pseudo-TTY) options, allowing you to interact with the container via the terminal
@@ -1110,5 +1108,5 @@ You should now be able to find you uploaded data on the front-end portal found a
 
 :::tip
 **Help us make our guides better**
-If you can't find what you're looking for please don't hesitate to reach out through our relevant [**community support channels**](https://docs.overture.bio/community/support).
+If you can't find what you're looking for please don't hesitate to reach out through our [**support page**](/community/support) or our [**discussion forum**](https://github.com/overture-stack/docs/discussions?discussions_q=).
 :::

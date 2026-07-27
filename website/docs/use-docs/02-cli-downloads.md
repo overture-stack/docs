@@ -1,4 +1,4 @@
-# File Download (Score CLI)
+# File Download
 
 **This guide is for** anyone seeking guidance on how to download data from an Overture platform.
 
@@ -132,5 +132,5 @@ For more information on using the Score-Client see our [Score-Client command ref
 
 :::tip
 **Help us make our guides better**
-If you can't find what you're looking for please don't hesitate to reach out through our relevant [**community support channels**](https://docs.overture.bio/community/support).
+If you can't find what you're looking for please don't hesitate to reach out through our [**support page**](/community/support) or our [**discussion forum**](https://github.com/overture-stack/docs/discussions?discussions_q=).
 :::
