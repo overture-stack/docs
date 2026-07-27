@@ -6,7 +6,7 @@ description: Build a searchable, FAIR-compliant data discovery portal from tabul
 ---
 
 :::caution Complete the prerequisites before you start
-Most importantly, download the Docker images in advance — depending on your connection, this can take a while.
+Most importantly, download the Docker images in advance; depending on your connection, this can take a while.
 :::
 
 # Prerequisites
@@ -142,7 +142,7 @@ Before starting, confirm:
 2. `docker --version` returns 28.0.0 or later
 3. `docker compose version` returns a version number
 4. Docker Desktop is running with 4+ CPUs and 8 GB+ memory allocated
-5. **All six Docker images are downloaded** (`docker images`) — _this is the most time-consuming step_
+5. **All six Docker images are downloaded** (`docker images`): _this is the most time-consuming step_
 6. The repository is cloned and you can `cd` into it
 7. _(Windows only)_ WSL2 is configured and Docker integration is enabled
 

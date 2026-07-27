@@ -54,7 +54,7 @@ These services compose together, letting you build from a simple search portal t
 One of the most compelling reasons to structure your data through Arranger is that it makes your data **machine-accessible in a way that modern AI tooling can reason over**. We are actively updating our search API so it can be consumed by a language model, enabling researchers to query and retrieve data in plain language.
 
 :::info
-This capability is a direct and natural extension of the infrastructure you are building here. It is not part of this tutorial, but you can read how it works — the workflow, the governing principles, and how to connect a client — in the [Conversational Data Discovery guide](/use/conversational-data-discovery).
+This capability is a direct and natural extension of the infrastructure you are building here. It is not part of this tutorial, but you can read how it works (the workflow, the governing principles, and how to connect a client) in the [AI-Assisted Data Discovery guide](/use/ai-assisted-data-discovery).
 :::
 
 In addition to this our team is building a **Conversational Data Discovery (CDD)** platform: an interactive research environment that connects a self-hosted LLM to Overture datasets and beyond. Because Arranger exposes a live description of your data, including field names, types, value distributions, and catalogue structure, a language model is capable of:

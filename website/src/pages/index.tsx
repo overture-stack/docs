@@ -30,7 +30,7 @@ export default function Home(): JSX.Element {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="Documentation for the Overture platform — deploy, build with, and use Overture's open-source data-management software.">
+      description="Documentation for the Overture platform: deploy, build with, and use Overture's open-source data-management software.">
       <HomepageHeader />
       <main>
         <SiteMap />

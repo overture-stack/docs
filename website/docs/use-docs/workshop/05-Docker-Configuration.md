@@ -57,7 +57,7 @@ make platform
 :::
 
 :::info
-For future configuration changes (once your own data is loaded), `make restart` is sufficient — it reloads configs without wiping data. Only use `make reset` when you need to start from scratch.
+For future configuration changes (once your own data is loaded), `make restart` is sufficient; it reloads configs without wiping data. Only use `make reset` when you need to start from scratch.
 :::
 
 #### Troubleshooting
@@ -81,7 +81,7 @@ curl -u elastic:myelasticpassword http://localhost:9200/_cluster/health?pretty
 make reset
 ```
 
-:::tip Windows (PowerShell) — full reset
+:::tip Windows (PowerShell): full reset
 
 ```powershell
 .\run.ps1 reset
@@ -103,7 +103,7 @@ Before proceeding, confirm:
 
 ## Reference: Service Configuration Details
 
-The following sections explain how each service in `docker-compose.yml` is wired up. This is supplemental — you don't need to modify these while following along, but it's useful context if you're adapting the platform for your own deployment.
+The following sections explain how each service in `docker-compose.yml` is wired up. This is supplemental; you don't need to modify these while following along, but it's useful context if you're adapting the platform for your own deployment.
 
 ### Setup
 

@@ -10,13 +10,13 @@ unlisted: true
 - Minimize technical overhead
 - Build a foundation for production deployment
 
-Prelude is developed in the open — see the [**overture-stack/prelude**](https://github.com/overture-stack/prelude) repository for the source, the latest demos, and full setup details.
+Prelude is developed in the open; see the [**overture-stack/prelude**](https://github.com/overture-stack/prelude) repository for the source, the latest demos, and full setup details.
 
 :::important
 Prelude is **not intended for production environments**. It serves as a preparatory tool to ensure successful production deployments. We will be actively improving resources to support teams transitioning from Prelude to production.
 :::
 
-We welcome feedback and suggestions—please share them via our [ideas forum](https://github.com/overture-stack/docs/discussions/categories/ideas).
+We welcome feedback and suggestions; please share them via our [ideas forum](https://github.com/overture-stack/docs/discussions/categories/ideas).
 
 ## Development Phases
 

@@ -2,7 +2,7 @@
 id: extension-task
 title: Extension Task
 sidebar_position: 10
-description: Use the Dictionary Playground to design a Lectern data dictionary with typed fields, controlled vocabularies, and multi-schema relationships — and see how it connects to submission validation and search indexing.
+description: Use the Dictionary Playground to design a Lectern data dictionary with typed fields, controlled vocabularies, and multi-schema relationships, then see how it connects to submission validation and search indexing.
 ---
 
 # Extension Task

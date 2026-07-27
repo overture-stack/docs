@@ -103,7 +103,7 @@ Structuring data through a search API like Arranger makes it **machine-accessibl
 
 The platform connects to Arranger via the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) and is designed around four core principles: data minimisation by default, no action without explicit researcher consent, sandboxed code execution, and fully reproducible sessions. Because research data is often sensitive, the platform runs on sovereign infrastructure rather than routing queries through commercial AI providers.
 
-See the [Conversational Data Discovery guide](/use/conversational-data-discovery) for the workflow, the governing principles, and how to connect a client today.
+See the [AI-Assisted Data Discovery guide](/use/ai-assisted-data-discovery) for the workflow, the governing principles, and how to connect a client today.
 
 ![CDD Conceptual Mock](./images/conversational-data-discovery-mockup.webp)
 
