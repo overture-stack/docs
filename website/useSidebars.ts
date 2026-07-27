@@ -13,7 +13,21 @@ const sidebars: SidebarsConfig = {
       label: "Data Consumers",
       collapsible: false,
       className: "sidebar-section-heading",
-      items: ["ai-assisted-data-discovery", "cli-downloads"],
+      items: [
+        {
+          type: "category",
+          label: "AI-Assisted Data Discovery",
+          link: { type: "doc", id: "ai-assisted-data-discovery/index" },
+          items: [
+            "ai-assisted-data-discovery/testing-environment",
+            "ai-assisted-data-discovery/connect-a-host",
+            "ai-assisted-data-discovery/configuration-templates",
+            "ai-assisted-data-discovery/use-cases",
+            "ai-assisted-data-discovery/deploy-your-own-mcp-server",
+          ],
+        },
+        "cli-downloads",
+      ],
     },
     {
       type: "category",

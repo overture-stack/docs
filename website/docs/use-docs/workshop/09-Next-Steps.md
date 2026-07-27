@@ -49,7 +49,7 @@ The search and exploration stack used in this tutorial is part of the broader Ov
 
 These services compose together, letting you build from a simple search portal to a full data management platform incrementally. For more information, see the [Overture documentation](https://docs.overture.bio).
 
-### Conversational Data Discovery
+### AI-Assisted Data Discovery
 
 One of the most compelling reasons to structure your data through Arranger is that it makes your data **machine-accessible in a way that modern AI tooling can reason over**. We are actively updating our search API so it can be consumed by a language model, enabling researchers to query and retrieve data in plain language.
 
@@ -57,7 +57,7 @@ One of the most compelling reasons to structure your data through Arranger is th
 This capability is a direct and natural extension of the infrastructure you are building here. It is not part of this tutorial, but you can read how it works (the workflow, the governing principles, and how to connect a client) in the [AI-Assisted Data Discovery guide](/use/ai-assisted-data-discovery).
 :::
 
-In addition to this our team is building a **Conversational Data Discovery (CDD)** platform: an interactive research environment that connects a self-hosted LLM to Overture datasets and beyond. Because Arranger exposes a live description of your data, including field names, types, value distributions, and catalogue structure, a language model is capable of:
+In addition to this our team is building an **AI-Assisted Data Discovery** platform: an interactive research environment that connects a self-hosted LLM to Overture datasets and beyond. Because Arranger exposes a live description of your data, including field names, types, value distributions, and catalogue structure, a language model is capable of:
 
 - **Understanding what data is available** without being hardcoded to a specific schema.
 - **Translating natural language questions into validated queries.** A researcher asks "how many samples have a TP53 mutation?" and the model constructs the correct filter against your specific field names.
@@ -65,7 +65,7 @@ In addition to this our team is building a **Conversational Data Discovery (CDD)
 - **Executing analysis code in a sandboxed workspace.** Once a query is confirmed, the model can generate Python to analyse and visualize results, running it in an isolated container where the researcher approves every step.
 
 :::info
-**Why self-hosted models:** Research data is often sensitive. Routing queries through commercial AI providers is not viable for many research contexts. The CDD platform can be used to run capable models, adjacent to the data, with full control over the stack.
+**Why self-hosted models:** Research data is often sensitive. Routing queries through commercial AI providers is not viable for many research contexts. This platform can be used to run capable models, adjacent to the data, with full control over the stack.
 :::
 
 ### Get in Touch

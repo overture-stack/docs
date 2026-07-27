@@ -97,21 +97,21 @@ The components used in this tutorial are part of the broader [Overture](https://
 
 These extensions are beyond the scope of this tutorial but represent the natural next steps for teams that need structured data submission workflows, file management, or multi-service integration.
 
-#### Conversational Data Discovery
+#### AI-Assisted Data Discovery
 
-Structuring data through a search API like Arranger makes it **machine-accessible in a way that modern AI tooling can reason over**. Arranger exposes a live, structured description of your data, including field names, types, value distributions, and schema, making it a natural foundation for AI-assisted discovery. Our team is building a **[Conversational Data Discovery (CDD)](https://www.alliancecan.ca/en/latest/news/the-alliance-invests-in-transforming-research-software-to-accelerate-discovery)** platform that wraps self-hosted language models around Arranger-indexed datasets, allowing researchers to query and analyse data in plain language rather than constructing filters manually.
+Structuring data through a search API like Arranger makes it **machine-accessible in a way that modern AI tooling can reason over**. Arranger exposes a live, structured description of your data, including field names, types, value distributions, and schema, making it a natural foundation for AI-assisted discovery. Our team is building an **[AI-Assisted Data Discovery](https://www.alliancecan.ca/en/latest/news/the-alliance-invests-in-transforming-research-software-to-accelerate-discovery)** platform that wraps self-hosted language models around Arranger-indexed datasets, allowing researchers to query and analyse data in plain language rather than constructing filters manually.
 
 The platform connects to Arranger via the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) and is designed around four core principles: data minimisation by default, no action without explicit researcher consent, sandboxed code execution, and fully reproducible sessions. Because research data is often sensitive, the platform runs on sovereign infrastructure rather than routing queries through commercial AI providers.
 
 See the [AI-Assisted Data Discovery guide](/use/ai-assisted-data-discovery) for the workflow, the governing principles, and how to connect a client today.
 
-![CDD Conceptual Mock](./images/conversational-data-discovery-mockup.webp)
+![AI-Assisted Data Discovery conceptual mock](./images/conversational-data-discovery-mockup.webp)
 
 :::info
-**The interface shown above is a conceptual mock-up**. CDD is under active development and is not covered in this tutorial.
+**The interface shown above is a conceptual mock-up**. AI-Assisted Data Discovery is under active development and is not covered in this tutorial.
 :::
 
-The infrastructure you are building today will be compatible when the CDD platform reaches production.
+The infrastructure you are building today will be compatible when the AI-Assisted Data Discovery platform reaches production.
 
 ### Checkpoint
 
