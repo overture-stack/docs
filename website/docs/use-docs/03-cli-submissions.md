@@ -1,1110 +1,228 @@
 # File Submission
 
-**This guide is for** anyone seeking guidance on submitting data to an Overture platform. By the end of this guide you will have completed a full data submission workflow, including updating the submitted data to conform to the data model enforced by Song.
+**This guide is for** anyone seeking guidance on submitting data to an Overture platform. By the end of this guide you will have completed a full data submission workflow: registering an analysis with Song and uploading its files with Score.
 
-**You will need** docker installed. We recommend using Docker Desktop; for more information, visit [Docker's website](https://www.docker.com/products/docker-desktop/).
+**You will need** Docker installed. We recommend using Docker Desktop; for more information, visit [Docker's website](https://www.docker.com/products/docker-desktop/).
 
-**Background:** Submitting data to an Overture platform typically includes data files (BAMS, CRAMS, VCFs, etc.) along with associated metadata that provides context including donor information and descriptions of the data files. This guide focuses on submitting data to Song & Score using their Command Line Clients (CLIs).
+**Background:** Submitting data to an Overture platform typically means data files (BAMs, CRAMs, VCFs, and similar) together with associated metadata that provides context, including donor information and descriptions of the data files. This guide focuses on submitting data to Song and Score using their command-line clients (CLIs).
 
 #### Visual Summary:
 
 ![Submission Overview](./images/dataSubmission.webp "End Goal")
 
-### Getting Started
+## Getting Started
 
-**1. Clone the Quickstart repository**
+This guide uses a dedicated demo environment: the `docs-demo/file-transfer` branch of the Overture Prelude repository. It is a self-contained Overture portal (Song, Score, Maestro, MinIO, Arranger, and Stage) preconfigured with a `demo` study and a `genomicVariants` analysis schema.
 
-    ```bash
-    git clone  https://github.com/overture-stack/composer.git
-    ```
+**1. Clone the demo branch**
 
-**2. With Docker open, run the docker-compose**
+```bash
+git clone -b docs-demo/file-transfer https://github.com/overture-stack/prelude.git
+cd prelude
+```
 
-    ```bash
-    docker compose up --attach conductor
-    ```
+**2. Start the platform**
 
-    :::caution
-    **Ensure enough resources get allocated to Docker** We recommend a minimum CPU limit of `8`, memory limit of `8 GB`, swap of `2 GB`, and virtual disk limit of `64 GB`. You can access these settings by selecting the **cog wheel** found on the top right of the Docker desktop app and selecting **resources** from the left panel. **If you already have docker desktop installed, ensure you are on version 4.39.0 or higher**
-    :::
+```bash
+make platform
+```
 
-## CLI Submission
+:::caution
+**Ensure enough resources are allocated to Docker.** We recommend a minimum CPU limit of `8`, memory limit of `8 GB`, swap of `2 GB`, and virtual disk limit of `64 GB`. You can access these settings by selecting the **cog wheel** at the top right of the Docker Desktop app and selecting **Resources** from the left panel. **Ensure you are on Docker Desktop version 4.39.0 or higher.**
+:::
 
-### Generate an API Key
+`make platform` starts the stack empty so you can submit your own data. The setup step creates the `demo` study and registers the `genomicVariants` schema automatically.
 
-API Keys are brokered by Keycloak and accessible when logged in to the Stage UI. For the Overture QuickStart, Stage can access from `localhost:3000`
+## What are we submitting?
 
-1. **Login through the Stage UI** by selecting login from the top right. The default credentials will be username `admin` and password `admin123` when using the Overture QuickStart.
+A **payload** is a JSON file describing an analysis: its clinical metadata and the list of files to upload. The demo ships three sample payloads in `data/payloads/` (`DO001.json`, `DO002.json`, `DO003.json`), each listing four small placeholder genomic files in `data/files/`.
 
-2. **Once logged in, it's time to generate a new API token:** To do this, click on **Profile and Token** from your user drop down menu, located on the top right of the Stage UI. Then, select **Generate New Token**.
+Below is the payload for donor `DO001`. Its `analysisType` is `genomicVariants`, the schema registered during setup.
 
-![Accessing an API Key](./images/apikeys.png "Accessing an API Key")
+<details>
+<summary><b>View the payload (DO001.json)</b></summary>
 
-### Run the Song & Score Clients
-
-1. **Running the Song Client:** Use the following command with your API token to pull and run a Song Client docker container
-
-   ```bash
-   docker run -d -it --name song-client \
-   -e CLIENT_ACCESS_TOKEN=68fb42b4-f1ed-4e8c-beab-3724b99fe528 \
-   -e CLIENT_STUDY_ID=demo \
-   -e CLIENT_SERVER_URL=http://localhost:8080 \
-   --network="host" \
-   --platform="linux/amd64" \
-   --mount type=bind,source=./guideMaterials/dataSubmission,target=/output \
-   ghcr.io/overture-stack/song-client:5.1.1
-   ```
-
-   <details>
-   <summary><b>Click here for a detailed breakdown</b></summary>
-   - `-d` runs the container in detached mode, meaning it runs in the background and does not receive input or display output in the terminal
-
-   - `-it` combines the `-i` (interactive) and `-t` (allocate a pseudo-TTY) options, allowing you to interact with the container via the terminal
-
-   - `-e CLIENT_ACCESS_TOKEN=68fb42b4-f1ed-4e8c-beab-3724b99fe528` sets up the song-client with a pre-configured system-wide access token. Alternatively, you can log in through Stage from `localhost:3000/login` with the username `admin` and password `admin123`. From the profile page, you can generate your API key and supply it here
-
-   - `-e CLIENT_STUDY_ID=demo` the quickstart is pre-configured with a `Study ID` named `demo`, we supply the `Study ID` value to the song-client on start-up
-
-   - `-e CLIENT_SERVER_URL=http://localhost:8080` is the url for the Song server which the Song-Client will interact with
-
-   - `--network="host"` Uses the host network stack inside the container, bypassing the usual network isolation. This means the container shares the network namespace with the host machine
-
-   - `--platform="linux/amd64"` Specifies the platform the container should emulate. In this case, it's set to linux/amd64, indicating the container is intended to run on a Linux system with an AMD64 architecture
-
-   - `--mount type=bind,source=./guideMaterials/dataSubmission,target=/output` mounts the directory and its contents (volume) from the host machine to the container. In this case, the mockData being used for our submission. It binds the directory ./guideMaterials/dataSubmission from the host to /output inside the container. Any changes made to the files in this directory will be reflected in both locations
-
-   </details>
-
-   :::caution
-   **Note:** Ensure you are running the following commands from the root directory of the quickstart folder. The values here reflect those compatible with the Overture QuickStart.
-   :::
-
-2. **Running the Score Client:** Use the following command with your API token to pull and run a Score Client docker container
-
-   ```bash
-   docker run -d -it --name score-client \
-       -e ACCESSTOKEN=68fb42b4-f1ed-4e8c-beab-3724b99fe528 \
-       -e STORAGE_URL=http://localhost:8087 \
-       -e METADATA_URL=http://localhost:8080 \
-       --network="host" \
-       --platform="linux/amd64" \
-       --mount type=bind,source=./guideMaterials/dataSubmission,target=/output \
-       ghcr.io/overture-stack/score:latest
-   ```
-
-   <details>
-   <summary><b>Click here for a detailed breakdown</b></summary>
-   - `-d` runs the container in detached mode, meaning it runs in the background and does not receive input or display output in the terminal
-
-   - `-it` combines the `-i` (interactive) and `-t` (allocate a pseudo-TTY) options, allowing you to interact with the container via the terminal
-
-   - `-e ACCESSTOKEN=68fb42b4-f1ed-4e8c-beab-3724b99fe528` sets up the score-client with a pre-configured system-wide access token. Alternatively, you can log in to Stage from `localhost:3000/login` with the username `admin` and password `admin123`. From the profile page, you can generate your API key and supply it here
-
-   - `-e STORAGE_URL=http://score:8087` is the url for the Score server that the Score-Client will interact with
-
-   - `-e METADATA_URL=http://song:8080` is the url for the song server that the score-client will interact with
-
-   - `--network="host"` Uses the host network stack inside the container, bypassing the usual network isolation. This means the container shares the network namespace with the host machine
-
-   - `--platform="linux/amd64"` Specifies the platform the container should emulate. In this case, it's set to linux/amd64, indicating the container is intended to run on a Linux system with an AMD64 architecture
-
-   - `--mount type=bind,source=./guideMaterials/dataSubmission,target=/output` mounts the directory and its contents (volume) from the host machine to the container. In this case, the mockData being used for our submission. It binds the directory ./guideMaterials/dataSubmission from the host to /output inside the container. Any changes made to the files in this directory will be reflected in both locations
-
-   </details>
-
-   :::caution
-   **Note:** Ensure you are running the following commands from the root directory of the quickstart folder. The values here reflect those compatible with the Overture QuickStart.
-   :::
-
-### Submit metadata to Song
-
-#### What are we submitting?
-
-We will now begin submitting our payload to the Overture platform. In this context a payload refers to a collection of related metadata and file data to be uploaded to the resource.
-
-- The mock data we will use can be found in the Overture Quickstart repository from the <a target="_blank" rel="noopener noreferrer" href="https://github.com/overture-stack/composer/blob/develop/guideMaterials/dataSubmission/">composer/guideMaterials/dataSubmission/</a> directory
-
-- The files included are two VCF data files (`SP059902.snv.vcf.gz` and `SP059902.snv.vcf.gz.tbi`) and a JSON file, `SP059902.vcf.json` that contains all the associated metadata
-
-    <details>
-    <summary><b>Click here to view the metadata file (SP059902.vcf.json)</b></summary>
-
-  ```JSON
-  {
+```json
+{
   "studyId": "demo",
-  "analysisType": {
-      "name": "quickStartSchema"
-  },
-  "collaborator": [
-      {
-      "name": "IICR",
-      "contactEmail": "dataSubmitter@example.com"
-      }
-  ],
+  "analysisType": { "name": "genomicVariants" },
   "samples": [
-      {
-      "submitterSampleId": "SP059902",
-      "sampleType": "Total DNA",
+    {
+      "submitterSampleId": "DO001-SA01",
       "matchedNormalSubmitterSampleId": null,
+      "sampleType": "Total DNA",
       "specimen": {
-          "submitterSpecimenId": "SP059902",
-          "specimenType": "Normal - tissue adjacent to primary tumour",
-          "tumourNormalDesignation": "Normal",
-          "specimenTissueSource": "Blood derived - bone marrow"
+        "submitterSpecimenId": "DO001-SP01",
+        "tumourNormalDesignation": "Tumour",
+        "specimenType": "Primary tumour",
+        "specimenTissueSource": "Breast"
       },
       "donor": {
-          "submitterDonorId": "DO0599",
-          "gender": "Female"
+        "submitterDonorId": "DO001",
+        "gender": "Female"
       }
-      }
+    }
   ],
   "files": [
-      {
-      "dataType": "Raw SV Calls",
-      "fileName": "SP059902.snv.vcf.gz",
-      "fileSize": 17246,
-      "fileMd5sum": "94b790078d8e98ad08ffc42389e2fa68",
-      "fileAccess": "open",
-      "fileType": "VCF",
-      "info": {
-          "dataCategory": "Simple Nucelotide Variation",
-          "jbrowseCoordinates": "hg38:chr1:100000-200000"
-      }
-      },
-      {
-      "dataType": "Raw SV Calls",
-      "fileName": "SP059902.snv.vcf.gz.tbi",
-      "fileSize": 141,
-      "fileMd5sum": "f5cca6ace25d076d1f76cebf4ce3defd",
-      "fileAccess": "open",
-      "fileType": "TBI",
-      "info": {
-          "dataCategory": "Simple Nucelotide Variation",
-          "jbrowseCoordinates": "hg38:chr1:100000-200000"
-      }
-      }
+    { "fileName": "DO001.snv.vcf.gz",   "fileSize": 0, "fileMd5sum": "00000000000000000000000000000000", "fileType": "VCF", "fileAccess": "open", "dataType": "SNV" },
+    { "fileName": "DO001.indel.vcf.gz", "fileSize": 0, "fileMd5sum": "00000000000000000000000000000000", "fileType": "VCF", "fileAccess": "open", "dataType": "INDEL" },
+    { "fileName": "DO001.cnv.txt.gz",   "fileSize": 0, "fileMd5sum": "00000000000000000000000000000000", "fileType": "TXT", "fileAccess": "open", "dataType": "CNV" },
+    { "fileName": "DO001.sv.vcf.gz",    "fileSize": 0, "fileMd5sum": "00000000000000000000000000000000", "fileType": "VCF", "fileAccess": "open", "dataType": "SV" }
   ],
-  "specimen": {
-      "submitterPrimaryDiagnosisId": "PD059901",
-      "submitterSpecimenId": "SP059902",
-      "specimenAnatomicLocation": "C31",
-      "tumourGradingSystem": "Nuclear grading system for DCIS",
-      "tumourGrade": "G1"
-  },
-  "donor": {
-      "submitterDonorId": "DO0599",
-      "primarySite": "Trachea",
-      "vitalStatus": "Alive",
-      "survivalTime": null,
-      "causeOfDeath": null,
-      "primaryDiagnosis": [
-      {
-          "submitterPrimaryDiagnosisId": "PD059901",
-          "ageAtDiagnosis": 50,
-          "cancerTypeCode": "C34.2",
-          "clinicalTumourStagingSystem": "Binet staging system",
-          "clinicalStageGroup": "Stage A",
-          "treatment": [
-          {
-              "submitterTreatmentId": "TR059901",
-              "treatmentType": [
-              "Chemotherapy"
-              ],
-              "treatmentStartInterval": 58,
-              "treatmentDuration": 52,
-              "responseToTreatment": "Complete response",
-              "chemotherapy": [
-              {
-                  "drugName": "Tamoxifen "
-              }
-              ]
-          }
-          ],
-          "followUp": [
-          {
-              "submitterFollowUpId": "FO059901",
-              "submitterTreatmentId": "TR059901",
-              "intervalOfFollowUp": 45,
-              "diseaseStatusAtFollowUp": "Stable",
-              "relapseType": null
-          }
-          ]
-      }
-      ]
-  },
   "experiment": {
-      "platform": "PacBio",
-      "experimentalStrategy": "WXS",
-      "model": "SEQUEL IIe",
-      "sequencingCenter": "CGTA",
-      "sequencingDate": "2021-03-08T19:00:00.000Z"
-  },
-  "workflow": {
-      "workflowName": "Mutect2 Variant Calling",
-      "workflowShortName": "Mutect2Variant",
-      "workflowVersion": "0.1.1.1",
-      "genomeBuild": "GRCh38_hla_decoy_ebv",
-      "inputs": [
-      {
-          "analysisType": "sequencing_alignment",
-          "tumourAnalysisId": "00000000-0000-0000-0000-0000000000599",
-          "normalAnalysisId": "00000000-0000-0000-0000-0000000000599"
-      }
-      ],
-      "runId": "RI0599",
-      "sessionId": "SI0599"
-  },
-  "publication": {
-      "publication": "NAR",
-      "doi": "10.1093/nar/gkae188"
+    "sex": "female",
+    "age_at_diagnosis": 55,
+    "vital_status": "alive",
+    "diagnosis_date": "2021-03-15",
+    "disease_stage": "Stage II",
+    "primary_diagnosis": "Breast Adenocarcinoma",
+    "treatment_type": "Surgery",
+    "treatment_response": "Complete Response"
   }
-  }
-  ```
+}
+```
 
-    </details>
+</details>
 
-#### The Submission Command
+:::info
+`fileSize` and `fileMd5sum` are placeholders in the committed payloads. The Song and Score clients compute the real values from disk at submission time; the payload files themselves are never modified.
+:::
 
-First we will submit the JSON metadta file to Song using the song-client `submit` command:
+## Run the Song and Score clients
 
-    ```bash
-    docker exec song-client sh -c "sing submit -f /output/SP059902.vcf.json"
-    ```
+The clients run as Docker containers joined to the platform's internal network (`overture-demo_platform-network`) so they can reach the services by hostname. Authentication is disabled in this demo, so a fixed placeholder access token is used throughout.
 
-#### Expected Error Response
+**1. Start the Song client**
 
-When submitting data, Song checks the metadata against the specified data model, identified by the analysisType field located on line 4 of the SP059902.vcf.json file. The error logs indicate that the submitted metadata does not conform to this data model:
+```bash
+docker run -d -it --name song-client \
+    -e CLIENT_ACCESS_TOKEN=68fb42b4-f1ed-4e8c-beab-3724b99fe528 \
+    -e CLIENT_STUDY_ID=demo \
+    -e CLIENT_SERVER_URL=http://song:8080 \
+    --network overture-demo_platform-network \
+    --platform linux/amd64 \
+    --mount type=bind,source="$(pwd)/data/payloads",target=/payloads \
+    --mount type=bind,source="$(pwd)/data",target=/data \
+    ghcr.io/overture-stack/song-client:5131f6f8
+```
 
-    ```bash
-    SONG_SERVER_ERROR[schema.violation @ 1719691299284]: [SubmitService::schema.violation] - ##/collaborator/0: required key [name] not found,##/donor/primarySite: Windpipe is not a valid enum value
-    ```
+<details>
+<summary><b>Click here for a detailed breakdown</b></summary>
 
-**The error log tells us the following:**
+- `-d` runs the container in detached mode, so it runs in the background
 
-- We are missing the required `collaborator.name` field
+- `-it` combines `-i` (interactive) and `-t` (allocate a pseudo-TTY), allowing you to interact with the container
 
-- The value `Windpipe` is not valid entry for the field `primarySite`
+- `-e CLIENT_ACCESS_TOKEN=...` supplies the access token. Auth is disabled in this demo, so the value is accepted without being checked
 
-**Addressing the missing field:**
+- `-e CLIENT_STUDY_ID=demo` sets the study the analysis is registered under; the demo study is named `demo`
 
-We will address our first error by updating our metadata payload with a collaborator `name`. To do this we will append lines 6 to 10 as follows:
+- `-e CLIENT_SERVER_URL=http://song:8080` is the Song server the client talks to, reachable by hostname on the platform network
 
-    ```JSON
-    "collaborator": [
-        {
-        "name": "IICR",
-        "contactEmail": "dataSubmitter@example.com"
-        }
-    ],
-    ```
+- `--network overture-demo_platform-network` joins the container to the platform's internal network so `song` and `score` resolve
 
-Feel free to provide any name value you like, in this example we are submitting from the Imaginary Institute for Cancer Research (IICR).
+- `--platform linux/amd64` selects the image architecture
 
-**Addressing the invalid value:**
+- `--mount ...data/payloads` and `--mount ...data` make the payload JSON files and the data directory (files plus the generated manifest) available inside the container
 
-To address our second error we will have to take a look at the resources data model. For convenience we are providing the relevant Song schema below however, if you're interested in learning how to access this information through Songs API, we've provided additional instructions below.
+</details>
 
-    <details>
-    <summary><b>View Song Schema</b></summary>
-        ```json
-            {
-        "name": "quickStartSchema",
-        "schema": {
-            "type": "object",
-            "required": ["donor", "specimen", "workflow", "experiment"],
-            "properties": {
-            "workflow": {
-                "propertyNames": {
-                "enum": ["workflowName", "workflowShortName", "workflowVersion", "genomeBuild", "inputs","sessionId","runId"]
-                },
-                "required": ["workflowName", "genomeBuild", "inputs"],
-                "type": "object",
-                "properties": {
-                "workflowName": {
-                    "type": "string",
-                    "pattern": "^[a-zA-Z][a-zA-Z0-9 _\\-]+[a-zA-Z0-9]+$"
-                },
-                "workflowShortName": {
-                    "type": "string",
-                    "pattern": "^[a-zA-Z][a-zA-Z0-9_\\-]+[a-zA-Z0-9]+$"
-                },
-                "workflowVersion": {
-                    "type": "string"
-                },
-                "genomeBuild": {
-                    "type": "string",
-                    "enum": ["GRCh37", "GRCh38_hla_decoy_ebv", "GRCh38_Verily_v1"]
-                },
-                "inputs": {
-                    "type": "array",
-                    "items": {
-                    "type": "object",
-                    "properties": {
-                        "tumourAnalysisId": {
-                        "type": "string",
-                        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{13}$"
-                        },
-                        "normalAnalysisId": {
-                        "type": "string",
-                        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{13}$"
-                        },
-                        "analysisType": {
-                        "type": "string"
-                        }
-                    }
-                    },
-                    "minItems": 1,
-                    "maxItems": 2
-                },
-                "runId": {
-                    "type": "string"
-                },
-                "sessionId": {
-                    "type": "string",
-                    "pattern": "SI[0-9]{4}"
-                }
-                }
-            },
-            "experiment": {
-                "propertyNames": {
-                "enum": [
-                    "platform",
-                    "experimentalStrategy",
-                    "model",
-                    "sequencingCenter",
-                    "sequencingDate"
-                ]
-                },
-                "required": ["platform", "experimentalStrategy"],
-                "type": "object",
-                "properties": {
-                "platform": {
-                    "type": ["string", "null"]
-                },
-                "experimentalStrategy": {
-                    "type": ["string", "null"]
-                },
-                "model": {
-                    "type": ["string", "null"]
-                },
-                "sequencingCenter": {
-                    "type": ["string", "null"]
-                },
-                "sequencingDate": {
-                    "type": ["string", "null"],
-                    "pattern": "^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$"
-                }
-                }
-            },
-            "donor": {
-                "type": "object",
-                "propertyNames": {
-                "enum": [
-                    "submitterDonorId",
-                    "primarySite",
-                    "vitalStatus",
-                    "survivalTime",
-                    "causeOfDeath",
-                    "primaryDiagnosis"
-                ]
-                },
-                "required": ["submitterDonorId", "primarySite", "vitalStatus", "primaryDiagnosis"],
-                "properties": {
-                "submitterDonorId": {
-                    "type": "string"
-                },
-                "primarySite": {
-                    "type": "string",
-                    "enum": [
-                    "Accessory sinuses",
-                    "Adrenal gland",
-                    "Base of tongue",
-                    "Bladder",
-                    "Bones, joints and articular cartilage of limbs",
-                    "Bones, joints and articular cartilage of other and unspecified sites",
-                    "Brain",
-                    "Breast",
-                    "Bronchus and lung",
-                    "Cervix uteri",
-                    "Colon",
-                    "Connective, subcutaneous and other soft tissues",
-                    "Corpus uteri",
-                    "Esophagus",
-                    "Eye and adnexa",
-                    "Floor of mouth",
-                    "Gallbladder",
-                    "Gum",
-                    "Heart, mediastinum, and pleura",
-                    "Hematopoietic and reticuloendothelial systems",
-                    "Hypopharynx",
-                    "Kidney",
-                    "Larynx",
-                    "Lip",
-                    "Liver and intrahepatic bile ducts",
-                    "Lymph nodes",
-                    "Meninges",
-                    "Nasal cavity and middle ear",
-                    "Nasopharynx",
-                    "Oropharynx",
-                    "Other and ill-defined digestive organs",
-                    "Other and ill-defined sites",
-                    "Other and ill-defined sites in lip, oral cavity and pharynx",
-                    "Other and ill-defined sites within respiratory system and intrathoracic organs",
-                    "Other and unspecified female genital organs",
-                    "Other and unspecified major salivary glands",
-                    "Other and unspecified male genital organs",
-                    "Other and unspecified parts of biliary tract",
-                    "Other and unspecified parts of mouth",
-                    "Other and unspecified parts of tongue",
-                    "Other and unspecified urinary organs",
-                    "Other endocrine glands and related structures",
-                    "Ovary",
-                    "Palate",
-                    "Pancreas",
-                    "Parotid gland",
-                    "Penis",
-                    "Peripheral nerves and autonomic nervous system",
-                    "Placenta",
-                    "Prostate gland",
-                    "Pyriform sinus",
-                    "Rectosigmoid junction",
-                    "Rectum",
-                    "Renal pelvis",
-                    "Retroperitoneum and peritoneum",
-                    "Skin",
-                    "Small intestine",
-                    "Spinal cord, cranial nerves, and other parts of central nervous system",
-                    "Stomach",
-                    "Testis",
-                    "Thymus",
-                    "Thyroid gland",
-                    "Tonsil",
-                    "Trachea",
-                    "Ureter",
-                    "Uterus, NOS",
-                    "Vagina",
-                    "Vulva"
-                    ]
-                },
-                "vitalStatus": {
-                    "type": "string",
-                    "enum": ["Alive", "Deceased"]
-                },
-                "survivalTime": {
-                    "type": ["null", "integer"],
-                    "minimum": 0
-                },
-                "causeOfDeath": {
-                    "type": ["null", "string"],
-                    "enum": ["Died of cancer", "Died of other reasons", "Unknown", null]
-                },
-                "primaryDiagnosis": {
-                    "type": "array",
-                    "minItems": 1,
-                    "items": {
-                    "type": "object",
-                    "propertyNames": {
-                        "enum": [
-                        "submitterPrimaryDiagnosisId",
-                        "ageAtDiagnosis",
-                        "cancerTypeCode",
-                        "clinicalTumourStagingSystem",
-                        "clinicalStageGroup",
-                        "treatment",
-                        "followUp"
-                        ]
-                    },
-                    "required": ["submitterPrimaryDiagnosisId", "ageAtDiagnosis", "cancerTypeCode"],
-                    "properties": {
-                        "submitterPrimaryDiagnosisId": {
-                        "type": "string"
-                        },
-                        "ageAtDiagnosis": {
-                        "type": "integer",
-                        "minimum": 0
-                        },
-                        "cancerTypeCode": {
-                        "type": "string",
-                        "pattern": "^[C|D][0-9]{2}(.[0-9]{1,3}[A-Z]{0,1})?$"
-                        },
-                        "clinicalTumourStagingSystem": {
-                        "type": "string",
-                        "enum": [
-                            "AJCC 8th edition",
-                            "AJCC 7th edition",
-                            "AJCC 6th edition",
-                            "Ann Arbor staging system",
-                            "Binet staging system",
-                            "Durie-Salmon staging system",
-                            "FIGO staging system",
-                            "Lugano staging system",
-                            "Rai staging system",
-                            "Revised International staging system (RISS)",
-                            "St Jude staging system"
-                        ]
-                        },
-                        "clinicalStageGroup": {
-                        "type": "string",
-                        "enum": [
-                            "Occult Carcinoma",
-                            "Stage 0",
-                            "Stage 0a",
-                            "Stage 0is",
-                            "Stage 1",
-                            "Stage 1A",
-                            "Stage 1B",
-                            "Stage A",
-                            "Stage B",
-                            "Stage C",
-                            "Stage I",
-                            "Stage IA",
-                            "Stage IA1",
-                            "Stage IA2",
-                            "Stage IA3",
-                            "Stage IAB",
-                            "Stage IAE",
-                            "Stage IAES",
-                            "Stage IAS",
-                            "Stage IB",
-                            "Stage IB1",
-                            "Stage IB2",
-                            "Stage IBE",
-                            "Stage IBES",
-                            "Stage IBS",
-                            "Stage IC",
-                            "Stage IE",
-                            "Stage IEA",
-                            "Stage IEB",
-                            "Stage IES",
-                            "Stage II",
-                            "Stage II bulky",
-                            "Stage IIA",
-                            "Stage IIA1",
-                            "Stage IIA2",
-                            "Stage IIAE",
-                            "Stage IIAES",
-                            "Stage IIAS",
-                            "Stage IIB",
-                            "Stage IIBE",
-                            "Stage IIBES",
-                            "Stage IIBS",
-                            "Stage IIC",
-                            "Stage IIE",
-                            "Stage IIEA",
-                            "Stage IIEB",
-                            "Stage IIES",
-                            "Stage III",
-                            "Stage IIIA",
-                            "Stage IIIA1",
-                            "Stage IIIA2",
-                            "Stage IIIAE",
-                            "Stage IIIAES",
-                            "Stage IIIAS",
-                            "Stage IIIB",
-                            "Stage IIIBE",
-                            "Stage IIIBES",
-                            "Stage IIIBS",
-                            "Stage IIIC",
-                            "Stage IIIC1",
-                            "Stage IIIC2",
-                            "Stage IIID",
-                            "Stage IIIE",
-                            "Stage IIIES",
-                            "Stage IIIS",
-                            "Stage IIS",
-                            "Stage IS",
-                            "Stage IV",
-                            "Stage IVA",
-                            "Stage IVA1",
-                            "Stage IVA2",
-                            "Stage IVAE",
-                            "Stage IVAES",
-                            "Stage IVAS",
-                            "Stage IVB",
-                            "Stage IVBE",
-                            "Stage IVBES",
-                            "Stage IVBS",
-                            "Stage IVC",
-                            "Stage IVE",
-                            "Stage IVES",
-                            "Stage IVS",
-                            "Cannot be assessed"
-                        ]
-                        },
-                        "followUp": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "propertyNames": {
-                            "enum": [
-                                "submitterFollowUpId",
-                                "intervalOfFollowUp",
-                                "diseaseStatusAtFollowUp",
-                                "relapseType",
-                                "submitterTreatmentId"
-                            ]
-                            },
-                            "required": [
-                            "submitterFollowUpId",
-                            "intervalOfFollowUp",
-                            "diseaseStatusAtFollowUp"
-                            ],
-                            "properties": {
-                            "submitterFollowUpId": {
-                                "type": "string"
-                            },
-                            "submitterTreatmentId": {
-                                "type": "string"
-                            },
-                            "intervalOfFollowUp": {
-                                "type": "integer",
-                                "minimum": 0
-                            },
-                            "diseaseStatusAtFollowUp": {
-                                "type": "string",
-                                "enum": [
-                                "Complete remission",
-                                "Distant progression",
-                                "Loco-regional progression",
-                                "No evidence of disease",
-                                "Partial remission",
-                                "Progression NOS",
-                                "Relapse or recurrence",
-                                "Stable"
-                                ]
-                            },
-                            "relapseType": {
-                                "type": ["string", "null"],
-                                "enum": [
-                                "Distant recurrence/metastasis",
-                                "Local recurrence",
-                                "Local recurrence and distant metastasis",
-                                "Progression (liquid tumours)",
-                                null
-                                ]
-                            }
-                            }
-                        }
-                        },
-                        "treatment": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "propertyNames": {
-                            "enum": [
-                                "submitterTreatmentId",
-                                "treatmentType",
-                                "treatmentStartInterval",
-                                "treatmentDuration",
-                                "responseToTreatment",
-                                "chemotherapy",
-                                "hormoneTherapy",
-                                "radiation"
-                            ]
-                            },
-                            "required": ["submitterTreatmentId", "treatmentType"],
-                            "properties": {
-                            "submitterTreatmentId": {
-                                "type": "string"
-                            },
-                            "treatmentType": {
-                                "type": "array",
-                                "items": {
-                                "type": "string",
-                                "enum": [
-                                    "Ablation",
-                                    "Bone marrow transplant",
-                                    "Chemotherapy",
-                                    "Endoscopic therapy",
-                                    "Hormonal therapy",
-                                    "No treatment",
-                                    "Other targeting molecular therapy",
-                                    "Photodynamic therapy",
-                                    "Radiation therapy",
-                                    "Stem cell transplant",
-                                    "Surgery"
-                                ]
-                                }
-                            },
-                            "treatmentStartInterval": {
-                                "type": "integer",
-                                "minimum": 0
-                            },
-                            "treatmentDuration": {
-                                "type": "integer",
-                                "minimum": 0
-                            },
-                            "responseToTreatment": {
-                                "type": "string",
-                                "enum": [
-                                "Complete response",
-                                "Disease progression",
-                                "NED",
-                                "Minor response",
-                                "Partial response",
-                                "Stable disease"
-                                ]
-                            },
-                            "chemotherapy": {
-                                "type": "array",
-                                "items": {
-                                "type": "object",
-                                "propertyNames": {
-                                    "enum": ["drugName"]
-                                },
-                                "required": ["drugName"],
-                                "properties": {
-                                    "drugName": {
-                                    "type": "string"
-                                    }
-                                }
-                                }
-                            },
-                            "hormoneTherapy": {
-                                "type": "array",
-                                "items": {
-                                "type": "object",
-                                "propertyNames": {
-                                    "enum": ["drugName"]
-                                },
-                                "required": ["drugName"],
-                                "properties": {
-                                    "drugName": {
-                                    "type": "string"
-                                    }
-                                }
-                                }
-                            },
-                            "radiation": {
-                                "type": "array",
-                                "items": {
-                                "type": "object",
-                                "propertyNames": {
-                                    "enum": ["radiationTherapyModality", "anatomicalSiteIrradiated"]
-                                },
-                                "required": ["radiationTherapyModality", "anatomicalSiteIrradiated"],
-                                "properties": {
-                                    "radiationTherapyModality": {
-                                    "type": "string",
-                                    "enum": ["Electron", "Heavy Ions", "Photon", "Proton"]
-                                    },
-                                    "anatomicalSiteIrradiated": {
-                                    "type": "string",
-                                    "enum": [
-                                        "Abdomen",
-                                        "Body",
-                                        "Brain",
-                                        "Chest",
-                                        "Head",
-                                        "Liver",
-                                        "Lower Limb",
-                                        "Lung",
-                                        "Neck",
-                                        "Pelvis",
-                                        "Skin",
-                                        "Spine",
-                                        "Thorax",
-                                        "Upper Limb"
-                                    ]
-                                    }
-                                }
-                                }
-                            }
-                            },
-                            "allOf": [
-                            {
-                                "if": {
-                                "properties": {
-                                    "treatmentType": {
-                                    "contains": {
-                                        "const": "Chemotherapy"
-                                    }
-                                    }
-                                }
-                                },
-                                "then": {
-                                "required": ["chemotherapy"]
-                                }
-                            },
-                            {
-                                "if": {
-                                "properties": {
-                                    "treatmentType": {
-                                    "contains": {
-                                        "const": "Radiation therapy"
-                                    }
-                                    }
-                                }
-                                },
-                                "then": {
-                                "required": ["radiation"]
-                                }
-                            },
-                            {
-                                "if": {
-                                "properties": {
-                                    "treatmentType": {
-                                    "contains": {
-                                        "const": "Hormonal therapy"
-                                    }
-                                    }
-                                }
-                                },
-                                "then": {
-                                "required": ["hormoneTherapy"]
-                                }
-                            }
-                            ]
-                        }
-                        }
-                    }
-                    }
-                }
-                },
-                "if": {
-                "properties": {
-                    "vitalStatus": {
-                    "const": "Deceased"
-                    }
-                }
-                },
-                "then": {
-                "required": ["causeOfDeath", "survivalTime"]
-                }
-            },
-            "specimen": {
-                "type": "object",
-                "propertyNames": {
-                "enum": [
-                    "submitterSpecimenId",
-                    "submitterPrimaryDiagnosisId",
-                    "specimenAnatomicLocation",
-                    "tumourGradingSystem",
-                    "tumourGrade"
-                ]
-                },
-                "required": [
-                "submitterSpecimenId",
-                "submitterPrimaryDiagnosisId",
-                "specimenAnatomicLocation"
-                ],
-                "properties": {
-                "submitterSpecimenId": {
-                    "type": "string"
-                },
-                "submitterPrimaryDiagnosisId": {
-                    "type": "string"
-                },
-                "specimenAnatomicLocation": {
-                    "type": "string",
-                    "pattern": "^[C][0-9]{2}(.[0-9]{1})?$"
-                },
-                "tumourGradingSystem": {
-                    "type": "string",
-                    "enum": [
-                    "FNCLCC grading system",
-                    "Four-tier grading system",
-                    "Gleason grade group system",
-                    "Grading system for GISTs",
-                    "Grading system for GNETs",
-                    "ISUP grading system",
-                    "Nuclear grading system for DCIS",
-                    "Scarff-Bloom-Richardson grading system",
-                    "Three-tier grading system",
-                    "Two-tier grading system",
-                    "WHO grading system for CNS tumours"
-                    ]
-                },
-                "tumourGrade": {
-                    "type": "string",
-                    "enum": [
-                    "Low grade",
-                    "High grade",
-                    "GX",
-                    "G1",
-                    "G2",
-                    "G3",
-                    "G4",
-                    "Low",
-                    "High",
-                    "Grade I",
-                    "Grade II",
-                    "Grade III",
-                    "Grade IV",
-                    "Grade Group 1",
-                    "Grade Group 2",
-                    "Grade Group 3",
-                    "Grade Group 4",
-                    "Grade Group 5"
-                    ]
-                }
-                }
-            },
-            "publication": {
-                "type": "object",
-                "propertyNames": {
-                "enum": ["publication", "doi"]
-                },
-                "properties": {
-                "publication": {
-                    "type": ["string", "null"]
-                },
-                "doi": {
-                    "type": ["string", "null"]
-                }
-                }
-            },
-            "collaborator": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "propertyNames": {
-                        "enum": [
-                            "name",
-                            "contactEmail"
-                        ]
-                    },
-                    "required": [
-                    "name"
-                    ],
-                    "properties": {
-                        "name": {
-                            "type": "string"
-                        },
-                        "contactEmail": {
-                            "type": [
-                                "string",
-                                "null"
-                            ],
-                            "pattern": "^\\S+@\\S+\\.\\S+$"
-                        }
-                    }
-                }
-                }
-            }
-        }
-        }
-        ```
-    </details>
+**2. Start the Score client**
 
-    <details>
-    <summary><b>Instructions on accessing the Schema using the Swagger UI click here</b></summary>
+```bash
+docker run -d -it --name score-client \
+    -e ACCESSTOKEN=68fb42b4-f1ed-4e8c-beab-3724b99fe528 \
+    -e STORAGE_URL=http://score:8087 \
+    -e METADATA_URL=http://song:8080 \
+    --network overture-demo_platform-network \
+    --platform linux/amd64 \
+    --mount type=bind,source="$(pwd)/data",target=/data \
+    ghcr.io/overture-stack/score-client:ee758b91
+```
 
-    1. Go to Songs swagger UI located at `localhost:8080/swagger-ui.html`
-    2. Select **Schema** and the **GET /schemas** endpoint
-    3. Click try it out and execute
+## Submit metadata to Song
 
-    ![Song Swagger](./images/song-swagger.png 'Song Swagger')
+Submit the payload with the Song client `submit` command:
 
-    The response body will provide you a JSON document outlining Songs data model. In this case we are interested in the `quickStartSchema` as it was the `analysisType` used for validation of our payload.
+```bash
+docker exec song-client sh -c "sing submit -f /payloads/DO001.json"
+```
 
-    </details>
+Song validates the payload against the `genomicVariants` schema. On success it returns an `analysisId`:
 
-By looking at the `primarySite` field found within the quickStartSchema, we can see an array of values that do not include `windpipe`; however, it does include the value `trachea`.
+```json
+{
+  "analysisId": "4d9ed1c5-1053-4377-9ed1-c51053f3771f",
+  "status": "OK"
+}
+```
 
-Therefore, we can simply append the `windpipe` value on line 64 of our `SP059902.vcf.json` to `trachea`.
-
-    ```JSON
-    "donor": {
-        "submitterDonorId": "DO0599",
-        "primarySite": "Trachea",
-        "vitalStatus": "Alive",
-    ```
-
-**Resubmission:**
-
-Save and resubmit the corrected metadata file:
-
-    ```bash
-    docker exec song-client sh -c "sing submit -f /output/SP059902.vcf.json"
-    ```
-
-Now that your metadata file is correctly formatted, you should recieve a status of `OK` and a Song generated `analysisId`
-
-    ```json
-    {
-    "analysisId": "4d9ed1c5-1053-4377-9ed1-c51053f3771f",
-    "status": "OK"
-    }
-    ```
-
-An analysis ID is a randomly generated UUID created by Song; as such, yours will differ. Please note your analysis ID and use it for all subsequent steps referencing its usage.
+An analysis ID is a randomly generated UUID, so yours will differ. Note it down; the next steps reference it.
 
 :::info
 **What is an analysis?**
-Since the metadata data has successfully been submitted and accepted by Song and provided an analysis ID, it is now considered part of a Song analysis. To complete the analysis, we will need to upload its associated file data.
+Once Song accepts and stores the metadata under an analysis ID, it is a Song analysis. To complete it, you upload its associated file data.
 :::
 
-### Generate a manifest
+:::tip
+If Song rejects the payload with a `schema.violation` error, the metadata does not match the `genomicVariants` schema. You can inspect the registered schema from Song's Swagger UI at `localhost:8080/swagger-ui.html` under **Schema**, then **GET /schemas**.
 
-With your `analysis_id`, we will now generate a manifest for file upload.
+![Song Swagger](./images/song-swagger.png 'Song Swagger')
+:::
 
-- The manifest establishes a link between the analysis ID that has been submitted and the data file(s) on your local system that is being uploaded.
+## Generate a manifest
 
-- This step also validates that all files being uploaded are in line with those documented in the metadata tagged with the corresponding analysis ID.
+With your analysis ID, generate a manifest for file upload. The manifest links the analysis ID to the data files on disk and validates that the files match those declared in the metadata.
 
-#### Manifest Command
+Replace `{AnalysisId}` with the ID returned above:
 
-Make sure to replace `{AnalysisId}` with your previously generated Song analysis ID
+```bash
+docker exec song-client sh -c "sing manifest -a {AnalysisId} -f /data/manifest.txt -d /data/files"
+```
 
-    ```bash
-    docker exec song-client sh -c "sing manifest -a {AnalysisId} -f /output/manifest.txt -d /output/"
-    ```
+Expected response:
 
-The `manifest.txt` file will be written out to a defined output file path. If the output directory does not exist, it will be automatically created.
+```bash
+Wrote manifest file '/data/manifest.txt' for analysisId '4d9ed1c5-1053-4377-9ed1-c51053f3771f'
+```
 
-#### Expected Response
+## Upload files with Score
 
-    ```bash
-    Wrote manifest file '/output/manifest.txt' for analysisId '4d9ed1c5-1053-4377-9ed1-c51053f3771f'
-    ```
+Use the Score client `upload` command to transfer the file data to object storage using the manifest:
 
-### Upload files with Score
+```bash
+docker exec score-client sh -c "score-client upload --manifest /data/manifest.txt"
+```
 
-Use the following score-client upload command to transfer your file data to object storage using your previously generated manifest.
+Score handles the multipart upload protocol (initiate, upload parts, verify, finalise) for each file.
 
-    ```bash
-    docker exec score-client sh -c "score-client  upload --manifest /output/manifest.txt"
-    ```
+## Publish the analysis
 
-#### Expected Response
+The final step sets the analysis state to `PUBLISHED`. Publishing signals Maestro to index the data, making it available in the portal.
 
-    ```bash
-    Uploading object: '/output/SP059902.snv.vcf.gz.tbi' using the object id d7442418-7d59-5063-91d4-2e083549c9b2
-    100% [#########################]  Parts: 1/1, Checksum: 100%, Write/sec: 2.0K/s, Read/sec: 0B/s
-    Finalizing...
-    Total execution time:         3.239 s
-    Total bytes read    :               0
-    Total bytes written :             141
-    Upload completed
-    Uploading object: '/output/SP059902.snv.vcf.gz' using the object id 0e3ed34d-8f4d-554e-a23e-59b1ae60b75b
-    100% [#########################]  Parts: 1/1, Checksum: 100%, Write/sec: 1.3M/s, Read/sec: 0B/s
-    Finalizing...
-    Total execution time:         3.139 s
-    Total bytes read    :               0
-    Total bytes written :          17,246
-    Upload completed
-    ```
+Replace `{AnalysisId}` with your analysis ID:
 
-## Publishing analyses
+```bash
+docker exec song-client sh -c "sing publish -a {AnalysisId}"
+```
 
-The final step in data submission is to set the state of the analysis to `PUBLISHED`. A published analysis signals Maestro to index the data making it available on the front end portal interface.
+Expected response:
 
-#### Publish Command
+```bash
+{"message":"AnalysisId 4d9ed1c5-1053-4377-9ed1-c51053f3771f successfully published"}
+```
 
-    ```bash
-    docker exec song-client sh -c "sing publish -a {AnalysisId}"
-    ```
-
-#### Expected Response
-
-    ```bash
-    {"message":"AnalysisId 4d9ed1c5-1053-4377-9ed1-c51053f3771f successfully published"}
-    ```
-
-You should now be able to find you uploaded data on the front-end portal found at `localhost:3000/explorer`
+Maestro indexes the published analysis within a few seconds. Your uploaded data now appears in the portal at `localhost:3000`.
 
 ![Success](./images/success.png "Success")
+
+## Clean up
+
+Remove the client containers when finished:
+
+```bash
+docker rm -f song-client score-client
+```
 
 :::tip
 **Help us make our guides better**
