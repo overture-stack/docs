@@ -1,0 +1,238 @@
+/*
+ * Styles for the embedded Config Generator.
+ * Ported from the Prelude IBCworkshop stage app (emotion) to Docusaurus CSS
+ * Modules. Chrome uses Infima variables so it adapts to light/dark themes.
+ */
+
+.generator {
+	margin: 1.5rem 0;
+	border: 1px solid var(--ifm-color-emphasis-300);
+	border-radius: 8px;
+	overflow: hidden;
+	background: var(--ifm-background-color);
+	font-size: 14px;
+}
+
+.header {
+	padding: 12px 16px;
+	border-bottom: 1px solid var(--ifm-color-emphasis-300);
+	background: var(--ifm-color-emphasis-100);
+}
+.title {
+	margin: 0;
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--ifm-heading-color);
+}
+.subtitle {
+	margin: 3px 0 0;
+	font-size: 12px;
+	color: var(--ifm-color-emphasis-600);
+}
+
+.body {
+	padding: 16px;
+}
+
+.section {
+	border: 1px solid var(--ifm-color-emphasis-200);
+	border-radius: 6px;
+	padding: 16px;
+	margin-bottom: 16px;
+	background: var(--ifm-background-surface-color);
+}
+.sectionHeading {
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--ifm-color-primary);
+	margin: 0 0 12px;
+}
+
+.fileRow {
+	display: flex;
+	gap: 12px;
+	margin-bottom: 12px;
+	align-items: center;
+	flex-wrap: wrap;
+}
+.fileName {
+	font-size: 12px;
+	color: var(--ifm-color-emphasis-600);
+}
+
+.label {
+	display: block;
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--ifm-color-emphasis-800);
+	margin-bottom: 4px;
+}
+
+.input,
+.textarea {
+	width: 100%;
+	box-sizing: border-box;
+	border: 1px solid var(--ifm-color-emphasis-300);
+	border-radius: 4px;
+	padding: 8px 10px;
+	font-size: 13px;
+	color: var(--ifm-font-color-base);
+	background: var(--ifm-background-color);
+	font-family: inherit;
+}
+.input:focus,
+.textarea:focus {
+	outline: none;
+	border-color: var(--ifm-color-primary);
+}
+.textarea {
+	font-family: var(--ifm-font-family-monospace);
+	font-size: 12px;
+	resize: vertical;
+}
+
+.previewWrap {
+	margin-top: 14px;
+	overflow-x: auto;
+}
+.previewCaption {
+	font-size: 12px;
+	color: var(--ifm-color-emphasis-600);
+	margin: 0 0 6px;
+}
+.previewTable {
+	border-collapse: collapse;
+	font-size: 12px;
+	width: 100%;
+	min-width: max-content;
+}
+.previewTable td {
+	border: 1px solid var(--ifm-color-emphasis-200);
+	padding: 4px 10px;
+	white-space: nowrap;
+}
+.previewHeaderRow td {
+	font-weight: 600;
+	color: var(--ifm-color-primary);
+	background: var(--ifm-color-emphasis-100);
+}
+
+.optionsGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 16px;
+}
+
+.btnPrimary {
+	border: 1px solid var(--ifm-color-primary);
+	background: var(--ifm-color-primary);
+	color: #fff;
+	border-radius: 4px;
+	cursor: pointer;
+	font-weight: 500;
+}
+.btnPrimary:hover:not(:disabled) {
+	background: var(--ifm-color-primary-dark);
+	border-color: var(--ifm-color-primary-dark);
+}
+.btnPrimary:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.uploadBtn {
+	padding: 6px 12px;
+	font-size: 12px;
+}
+
+.generateBtn {
+	width: 100%;
+	justify-content: center;
+	font-size: 14px;
+	padding: 11px;
+	margin-bottom: 16px;
+}
+
+.ghostButton {
+	padding: 5px 11px;
+	font-size: 12px;
+	border-radius: 4px;
+	border: 1px solid var(--ifm-color-emphasis-300);
+	background: var(--ifm-background-color);
+	color: var(--ifm-color-emphasis-700);
+	cursor: pointer;
+}
+.ghostButton:hover {
+	background: var(--ifm-color-emphasis-200);
+	color: var(--ifm-color-emphasis-900);
+}
+
+.error {
+	border: 1px solid var(--ifm-color-danger);
+	border-radius: 5px;
+	padding: 10px 14px;
+	font-size: 13px;
+	color: var(--ifm-color-danger-dark);
+	background: var(--ifm-color-danger-contrast-background);
+	margin-bottom: 16px;
+}
+
+/* ── Output ─────────────────────────────────────────────────────────────── */
+.output {
+	border: 1px solid var(--ifm-color-emphasis-300);
+	border-radius: 6px;
+	overflow: hidden;
+}
+.outputHeading {
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--ifm-color-primary);
+	margin: 0;
+	padding: 14px 16px 0;
+}
+.tabBar {
+	display: flex;
+	border-bottom: 1px solid var(--ifm-color-emphasis-200);
+	overflow-x: auto;
+	padding: 0 12px;
+	margin-top: 12px;
+}
+.tab {
+	padding: 9px 12px;
+	font-size: 12px;
+	font-family: var(--ifm-font-family-monospace);
+	white-space: nowrap;
+	cursor: pointer;
+	border: none;
+	border-bottom: 3px solid transparent;
+	background: transparent;
+	color: var(--ifm-color-emphasis-600);
+	margin-bottom: -1px;
+}
+.tabActive {
+	border-bottom-color: var(--ifm-color-primary);
+	color: var(--ifm-color-primary);
+	font-weight: 600;
+}
+
+.outputBody {
+	position: relative;
+}
+.outputToolbar {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	display: flex;
+	gap: 6px;
+	z-index: 1;
+}
+.pre {
+	margin: 0;
+	padding: 16px;
+	overflow: auto;
+	font-size: 12px;
+	line-height: 1.6;
+	background: var(--ifm-code-background);
+	color: var(--ifm-font-color-base);
+	max-height: 460px;
+}

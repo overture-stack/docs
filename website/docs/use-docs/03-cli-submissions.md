@@ -10,6 +10,45 @@
 
 ![Submission Overview](./images/dataSubmission.webp "End Goal")
 
+## Prerequisites
+
+Install and verify the following before you start.
+
+<details>
+<summary><strong>1. WSL2 Setup </strong>(windows only)</summary>
+
+Docker Desktop on Windows runs on WSL2, so configure it before installing Docker Desktop below:
+
+1. Install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install)
+2. Use Ubuntu or another Linux distribution within WSL2
+3. Enable Docker Desktop's WSL2 integration (Docker Desktop → Settings → Resources → WSL Integration)
+4. Run all commands from a **Bash terminal inside WSL2**, not PowerShell or Command Prompt. To open one, search for your Linux distribution (e.g. "Ubuntu") in the Start menu.
+
+</details>
+
+<details>
+<summary><strong>2. Git</strong> installed</summary>
+
+Download from [git-scm.com](https://git-scm.com/downloads) if the command is not recognised.
+
+</details>
+
+<details>
+<summary><strong>3. Docker Desktop</strong> (`28.0.0` or later)</summary>
+
+- **macOS / Windows:** Download from [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/)
+- **Linux:** Follow the [Docker Engine install guide](https://docs.docker.com/engine/install/)
+
+Once installed, open Docker Desktop → Settings → Resources and set:
+
+- **CPUs:** 4+ cores (8 recommended)
+- **Memory:** 8 GB minimum
+- **Disk:** 10 GB+ available
+
+Please ensure `docker --version` and `docker compose version` both return version numbers, and Docker Desktop is **running** with **4+ CPUs** and **8 GB+ memory** allocated
+
+</details>
+
 ## Getting Started
 
 This guide uses a dedicated demo environment: the `docs-demo/file-transfer` branch of the Overture Prelude repository. It is a self-contained Overture portal (Song, Score, Maestro, MinIO, Arranger, and Stage) preconfigured with a `demo` study and a `genomicVariants` analysis schema.
@@ -64,10 +103,38 @@ Below is the payload for donor `DO001`. Its `analysisType` is `genomicVariants`,
     }
   ],
   "files": [
-    { "fileName": "DO001.snv.vcf.gz",   "fileSize": 0, "fileMd5sum": "00000000000000000000000000000000", "fileType": "VCF", "fileAccess": "open", "dataType": "SNV" },
-    { "fileName": "DO001.indel.vcf.gz", "fileSize": 0, "fileMd5sum": "00000000000000000000000000000000", "fileType": "VCF", "fileAccess": "open", "dataType": "INDEL" },
-    { "fileName": "DO001.cnv.txt.gz",   "fileSize": 0, "fileMd5sum": "00000000000000000000000000000000", "fileType": "TXT", "fileAccess": "open", "dataType": "CNV" },
-    { "fileName": "DO001.sv.vcf.gz",    "fileSize": 0, "fileMd5sum": "00000000000000000000000000000000", "fileType": "VCF", "fileAccess": "open", "dataType": "SV" }
+    {
+      "fileName": "DO001.snv.vcf.gz",
+      "fileSize": 0,
+      "fileMd5sum": "00000000000000000000000000000000",
+      "fileType": "VCF",
+      "fileAccess": "open",
+      "dataType": "SNV"
+    },
+    {
+      "fileName": "DO001.indel.vcf.gz",
+      "fileSize": 0,
+      "fileMd5sum": "00000000000000000000000000000000",
+      "fileType": "VCF",
+      "fileAccess": "open",
+      "dataType": "INDEL"
+    },
+    {
+      "fileName": "DO001.cnv.txt.gz",
+      "fileSize": 0,
+      "fileMd5sum": "00000000000000000000000000000000",
+      "fileType": "TXT",
+      "fileAccess": "open",
+      "dataType": "CNV"
+    },
+    {
+      "fileName": "DO001.sv.vcf.gz",
+      "fileSize": 0,
+      "fileMd5sum": "00000000000000000000000000000000",
+      "fileType": "VCF",
+      "fileAccess": "open",
+      "dataType": "SV"
+    }
   ],
   "experiment": {
     "sex": "female",
@@ -167,7 +234,7 @@ Once Song accepts and stores the metadata under an analysis ID, it is a Song ana
 :::tip
 If Song rejects the payload with a `schema.violation` error, the metadata does not match the `genomicVariants` schema. You can inspect the registered schema from Song's Swagger UI at `localhost:8080/swagger-ui.html` under **Schema**, then **GET /schemas**.
 
-![Song Swagger](./images/song-swagger.png 'Song Swagger')
+![Song Swagger](./images/song-swagger.png "Song Swagger")
 :::
 
 ## Generate a manifest

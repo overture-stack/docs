@@ -36,7 +36,7 @@ This guide provides a step-by-step deployment of an Overture platform, including
         | ----------------- | -------------------------------------------------------------------------------------------------- |
         | **Song**          | Our metadata management service with automated submission validation system.                       |
         | **Score**         | Our file transfer microservice that supports fault-tolerant multi-part parallel transfer.          |
-        | **Maestro**       | Our indexing service for transforming metadata in Song into an Elasticsearch search index.         |
+        | **Maestro**       | Our indexing service for transforming metadata in Song into a search index (Elasticsearch or OpenSearch). |
         | **Arranger**      | Our search API and UI component generation services.                                               |
         | **Stage**         | Our React-based user interface designed to allow easy deployment of data portals.                  |
 
@@ -46,7 +46,7 @@ This guide provides a step-by-step deployment of an Overture platform, including
         | **Postgres**         | A free and open-source relational database management system.                                   |
         | **Minio**            | A high-performance open-source object storage provider.                                         |
         | **Kafka**            | The messaging system used to enable asynchronous communication between Song and Maestro.        |
-        | **Elasticsearch**    | A search and analytics engine used to help query massive datasets flexibly and efficiently.     |
+        | **Elasticsearch** or **OpenSearch** | A search and analytics engine used to query massive datasets flexibly and efficiently. Maestro and Arranger support either engine. |
 
     :::info Do you have a specific deployment scenario?
     Due to the variety of possible deployment scenarios (notably cloud servers and object storage providers) we are providing a generalized and reproducible deployment of an Overture platform running on your local machine. If you require further assistance with server deployments customized to your specific needs, our team can help. Feel free to reach out to us at contact@overture.bio for personalized consultation.

@@ -11,7 +11,7 @@ Before you start, make sure the [testing environment](/use/ai-assisted-data-disc
 
 ## Install LM Studio
 
-[Download and install LM Studio](https://lmstudio.ai/) for macOS, Windows, or Linux. LM Studio bundles a local model runtime with a chat UI, so the model runs on your machine and nothing leaves it (principle 1).
+[Download and install LM Studio](https://lmstudio.ai/) for macOS, Windows, or Linux. LM Studio bundles a local model runtime with a chat UI, so the model runs on your machine and nothing leaves it.
 
 ## Choose a local model
 
@@ -20,19 +20,21 @@ The workflow requires a model that supports **tool calling**: the model calls th
 1. Open the **Discover** tab (magnifying glass icon).
 2. Search for a tool-capable model. Reasonable starting points:
 
-   | Model                               | Notes                                                     |
-   | ----------------------------------- | --------------------------------------------------------- |
-   | `Qwen2.5-7B-Instruct` (Q4, ~4.7 GB) | Good balance of speed and reasoning; strong tool-calling  |
-   | `Qwen2.5-3B-Instruct` (Q4, ~2 GB)   | Smaller option for machines with limited RAM              |
+   | Model                               | Notes                                                    |
+   | ----------------------------------- | -------------------------------------------------------- |
+   | `Qwen2.5-7B-Instruct` (Q4, ~4.7 GB) | Good balance of speed and reasoning; strong tool-calling |
+   | `Qwen2.5-3B-Instruct` (Q4, ~2 GB)   | Smaller option for machines with limited RAM             |
 
-   These are **provisional starting points**, not a benchmarked recommendation. A defensible, benchmarked model recommendation lands after the August 2026 model evaluation.
+   :::important
+   These are **provisional starting points**, not a benchmarked recommendation. We are currently working on establishing a defensible, benchmarked model recommendation.
+   :::
 
 3. Click **Download** and wait for it to complete.
 4. Open the **Chat** tab and load the downloaded model; it should appear in the top status bar.
 
 ## Configure the MCP connection
 
-The server speaks the **Streamable HTTP** MCP transport at `http://localhost:3100/mcp`. In LM Studio:
+The server is setup for **Streamable HTTP** MCP transport at `http://localhost:3100/mcp`. In LM Studio:
 
 1. Select the **Chat** tab from the left-hand menu.
 2. In the right-hand panel, under **Integrations**, select **`+ Install`**. This opens your `mcp.json` file.

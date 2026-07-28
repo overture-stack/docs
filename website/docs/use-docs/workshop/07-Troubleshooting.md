@@ -32,13 +32,13 @@ Confirm all containers are up:
 docker ps
 ```
 
-You should see `stage`, `arranger-datatable1`, `elasticsearch`, and `postgres`. If any are missing, check their logs:
+You should see `stage`, `arranger`, `elasticsearch`, and `postgres`. If any are missing, check their logs:
 
 ```bash
 docker logs setup
 docker logs postgres
 docker logs elasticsearch
-docker logs arranger-datatable1
+docker logs arranger
 docker logs stage
 ```
 
@@ -98,7 +98,7 @@ curl -X POST http://localhost:5050/graphql \
 `documentType` in `base.json` is always `"records"`, so the GraphQL query always uses `{ records { hits { total } } }`. If you see a `Cannot query field` error, it means `base.json` has the wrong value; verify that `"documentType": "records"` is set correctly.
 :::
 
-This should return a document count. If it fails, check `docker logs arranger-datatable1`. Common causes:
+This should return a document count. If it fails, check `docker logs arranger`. Common causes:
 
 - Elasticsearch is not yet healthy when Arranger starts, run `make restart`
 - `esIndex` in `base.json` doesn't match the alias in your Elasticsearch mapping

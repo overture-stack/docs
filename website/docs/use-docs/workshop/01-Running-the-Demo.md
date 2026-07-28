@@ -16,10 +16,10 @@ Before building anything from scratch, let's deploy the pre-configured demo port
   <source src={demoVideo} type="video/webm" />
 </video>
 
-If you have not done so yet, clone the following repository.
+Clone the following repository:
 
 ```
-git clone -b quickstart https://github.com/overture-stack/prelude.git
+git clone -b docs-demo/search-portal-workshop https://github.com/overture-stack/prelude.git
 cd prelude
 ```
 
@@ -28,22 +28,6 @@ From the root of the cloned repository, run:
 ```bash
 make demo
 ```
-
-<details>
-<summary><strong>Running on Windows?</strong></summary>
-
-| Platform           | Command                             |
-| ------------------ | ----------------------------------- |
-| WSL2 (recommended) | `make demo` (in an Ubuntu terminal) |
-| Native PowerShell  | `.\run.ps1 demo`                    |
-
-**One-time setup for native PowerShell:** allow local scripts to run by executing this once:
-
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
-
-</details>
 
 The portal will be available at **http://localhost:3000** once deployment completes.
 
@@ -58,6 +42,22 @@ The portal will be available at **http://localhost:3000** once deployment comple
 6. Loads demo data (clinical/oncology CSV) into Elasticsearch
 7. Starts Arranger (search API) and Stage (portal UI)
 8. Opens the portal in your browser automatically
+
+</details>
+
+<details>
+<summary><strong>Running on Windows?</strong></summary>
+
+| Platform           | Command                             |
+| ------------------ | ----------------------------------- |
+| WSL2 (recommended) | `make demo` (in an Ubuntu terminal) |
+| Native PowerShell  | `.\run.ps1 demo`                    |
+
+**One-time setup for native PowerShell:** allow local scripts to run by executing this once:
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
 
 </details>
 
@@ -108,7 +108,7 @@ You should see containers for:
 | Container             | Port | Role                      |
 | --------------------- | ---- | ------------------------- |
 | `stage`               | 3000 | Portal frontend           |
-| `arranger-datatable1` | 5050 | Search API for datatable1 |
+| `arranger`            | 5050 | Search API                |
 | `elasticsearch`       | 9200 | Search engine             |
 | `postgres`            | 5435 | Persistent storage        |
 
@@ -159,10 +159,10 @@ Arranger exposes a GraphQL API at `http://localhost:5050/graphql`. You can query
 ```bash
 curl -X POST http://localhost:5050/graphql \
   -H "Content-Type: application/json" \
-  -d '{"query": "{ datatable1 { hits { total } } }"}'
+  -d '{"query": "{ records { hits { total } } }"}'
 ```
 
-This should return the total number of indexed records. You can also open `http://localhost:5050/graphql` in a browser to access the GraphQL playground and explore the schema interactively.
+This should return the total number of indexed records. The root field is `records` because that is the `documentType` set in `base.json`. You can also open `http://localhost:5050/graphql` in a browser to access the GraphQL playground and explore the schema interactively.
 
 ### Checkpoint
 
@@ -171,7 +171,7 @@ Before moving on, confirm:
 1. The portal is running at http://localhost:3000
 2. You can see the data exploration page with records in the table
 3. Clicking a facet value filters the table results
-4. `docker ps` shows containers for `stage`, `arranger-datatable1`, `elasticsearch`, and `postgres`
+4. `docker ps` shows containers for `stage`, `arranger`, `elasticsearch`, and `postgres`
 
 :::info
 **Stuck?** Run `docker logs setup` to see where initialization may have failed. Common issues: Docker not running, port 3000 already in use, insufficient memory allocated to Docker.

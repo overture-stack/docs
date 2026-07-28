@@ -1,3 +1,5 @@
+import ConfigGenerator from '/src/components/ConfigGenerator';
+
 # Customizing the Data Portal
 
 Arranger simplifies GraphQL queries over Elasticsearch indices with its front-end library of reusable search components. The primary configurable components for this guide are the left-hand search facets and the central data table seen below.
@@ -228,3 +230,15 @@ The [facets.json file](https://github.com/overture-stack/composer/blob/develop/c
     :::info Facets.json Syntax
     One caveat of the `facets.json` file is the notation used for fieldNames. Here we use double underscores `__` rather than `.` for nested elements, for example `analysis__collaborator__name` instead of `analysis.collaborator.name`
     :::
+
+## Try It: Generate Your Arranger Configs
+
+Rather than assembling `base.json`, `extended.json`, `table.json`, and `facets.json` from scratch, generate a working set from your data and adjust from there. Give the generator below a CSV (upload a file, paste rows, or press **Load example**) and it produces all four Arranger configuration files: a `base.json` pointing at your index, an `extended.json` with a display name per field, a `table.json` with a sortable column per field, and a `facets.json` with an aggregation for each searchable field. Everything runs in your browser; nothing is sent to a server. Switch between the tabs to review each file, then copy or download it.
+
+<ConfigGenerator
+  outputs={['arrangerBase', 'arrangerExtended', 'arrangerTable', 'arrangerFacets']}
+  title="Arranger Config Generator"
+  subtitle="Turn a CSV into base.json, extended.json, table.json, and facets.json, entirely in your browser."
+/>
+
+The generated configs use flat, top-level fields (`data.<column>`), so they are an ideal starting point for a new index. When your Elasticsearch documents nest fields more deeply, extend the generated `fieldName` values using the `.` (and `__` for facets) notation described above.

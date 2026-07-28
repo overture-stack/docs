@@ -16,8 +16,8 @@ Now that you've seen the running portal, let's walk through how data flows from 
 | **Conductor**                                                                                              | CLI tool              | Reads CSV files, loads records into PostgreSQL, then indexes them into Elasticsearch as structured documents.                                                  |
 | **[PostgreSQL](https://www.postgresql.org/)**                                                              | Database              | Persistent relational storage for your data. Serves as the source of truth: data is loaded here first, then indexed into Elasticsearch for search.             |
 | **[Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/elasticsearch-intro.html)** | Search engine         | Indexes and stores your data for search. Handles full-text search, faceted filtering, aggregations, and sorting.                                               |
-| **[Arranger](https://docs.overture.bio/develop/Arranger/overview)**                             | Search API + UI layer | Sits between Elasticsearch and the frontend. Provides a GraphQL API and generates search UI components (facets, tables, filters) based on configuration files. |
-| **[Stage](https://docs.overture.bio/develop/Stage/overview/)**                                  | Portal frontend       | A React-based web application that renders Arranger's search components and provides the overall portal experience (navigation, theming, documentation pages). |
+| **[Arranger](https://docs.overture.bio/develop/Arranger/overview)**                                        | Search API + UI layer | Sits between Elasticsearch and the frontend. Provides a GraphQL API and generates search UI components (facets, tables, filters) based on configuration files. |
+| **[Stage](https://docs.overture.bio/develop/Stage/overview/)**                                             | Portal frontend       | A React-based web application that renders Arranger's search components and provides the overall portal experience (navigation, theming, documentation pages). |
 
 ### Data Flow
 
@@ -97,7 +97,7 @@ The components used in this tutorial are part of the broader [Overture](https://
 
 These extensions are beyond the scope of this tutorial but represent the natural next steps for teams that need structured data submission workflows, file management, or multi-service integration.
 
-#### AI-Assisted Data Discovery
+### AI-Assisted Data Discovery
 
 Structuring data through a search API like Arranger makes it **machine-accessible in a way that modern AI tooling can reason over**. Arranger exposes a live, structured description of your data, including field names, types, value distributions, and schema, making it a natural foundation for AI-assisted discovery. Our team is building an **[AI-Assisted Data Discovery](https://www.alliancecan.ca/en/latest/news/the-alliance-invests-in-transforming-research-software-to-accelerate-discovery)** platform that wraps self-hosted language models around Arranger-indexed datasets, allowing researchers to query and analyse data in plain language rather than constructing filters manually.
 

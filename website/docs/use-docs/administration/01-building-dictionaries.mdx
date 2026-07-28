@@ -1,6 +1,12 @@
+import DictionaryPlayground from '/src/components/DictionaryPlayground';
+
 # Building Dictionaries
 
 Before any record is submitted to your platform, someone has to decide what fields exist, what types they hold, what values are permitted, and which are required. Lectern is Overture's data dictionary management service: it gives those decisions a persistent, versioned, machine-readable home, so the same dictionary that guides submitters also drives automated validation at ingestion time.
+
+:::info Looking for the complete specification?
+This page is a hands-on introduction to building dictionaries. The full reference — every restriction type, schema-level `uniqueKey`/`foreignKey` relationships, reusable `references`, and versioning — lives in the [Lectern dictionary reference](/develop/Lectern/dictionaryReference).
+:::
 
 ## Dictionary Structure
 
@@ -34,7 +40,7 @@ A Lectern dictionary is a JSON document made up of a name, a version, and one or
 }
 ```
 
-Restrictions (`required`, `codeList`, `regex`, `range`, and more) are where the curation work lives; they turn naming conventions and value ranges into enforced constraints, rejected at submission time rather than discovered after the fact. Schemas can also reference each other through shared identifier fields (a `specimen` schema referencing its donor's `donor_id`), expressing hierarchy without flattening everything into one table.
+Restrictions (`required`, `codeList`, `regex`, `range`, and [many more](/develop/Lectern/dictionaryReference#field-restrictions)) are where the curation work lives; they turn naming conventions and value ranges into enforced constraints, rejected at submission time rather than discovered after the fact. Schemas can also reference each other through shared identifier fields (a `specimen` schema referencing its donor's `donor_id`), expressing hierarchy without flattening everything into one table.
 
 ## Where a Dictionary Fits
 
@@ -45,8 +51,8 @@ Once published to a running Lectern server, a dictionary drives the rest of the 
 
 ## Try It: Dictionary Playground
 
-If you have a running instance, its portal includes a **Dictionary Playground** at `/dictionary/playground`, a live editor where you can write a schema and see it rendered as an interactive table in real time, no server required.
+Use the playground below to build a dictionary hands-on. Edit the Lectern schema on the left and it renders as an interactive table on the right, validated live against the Lectern schema as you type. It runs entirely in your browser; nothing is sent to a server. Start from the template, press **Load Demo** for a fuller multi-schema example, then **Download JSON** or **Copy JSON** to take your dictionary with you.
 
-:::tip
-For the full schema reference (every restriction type, schema-level `uniqueKey`/`foreignKey` relationships, and versioning), see the [Lectern dictionary reference](/develop/Lectern/dictionaryReference).
-:::
+<DictionaryPlayground />
+
+The validation strip above the editor reports one of three states: a valid Lectern dictionary, schema warnings (the preview still renders from your raw JSON), or a JSON syntax error. Warnings point at the exact field path so you can see which restriction or property needs attention.

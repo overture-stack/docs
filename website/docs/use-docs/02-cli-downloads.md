@@ -8,6 +8,45 @@
 
 ![Retrieval Overview](./images/dataRetrieval.webp "End Goal")
 
+## Prerequisites
+
+Install and verify the following before you start.
+
+<details>
+<summary><strong>1. WSL2 Setup </strong>(windows only)</summary>
+
+Docker Desktop on Windows runs on WSL2, so configure it before installing Docker Desktop below:
+
+1. Install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install)
+2. Use Ubuntu or another Linux distribution within WSL2
+3. Enable Docker Desktop's WSL2 integration (Docker Desktop → Settings → Resources → WSL Integration)
+4. Run all commands from a **Bash terminal inside WSL2**, not PowerShell or Command Prompt. To open one, search for your Linux distribution (e.g. "Ubuntu") in the Start menu.
+
+</details>
+
+<details>
+<summary><strong>2. Git</strong> installed</summary>
+
+Download from [git-scm.com](https://git-scm.com/downloads) if the command is not recognised.
+
+</details>
+
+<details>
+<summary><strong>3. Docker Desktop</strong> (`28.0.0` or later)</summary>
+
+- **macOS / Windows:** Download from [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/)
+- **Linux:** Follow the [Docker Engine install guide](https://docs.docker.com/engine/install/)
+
+Once installed, open Docker Desktop → Settings → Resources and set:
+
+- **CPUs:** 4+ cores (8 recommended)
+- **Memory:** 8 GB minimum
+- **Disk:** 10 GB+ available
+
+Please ensure `docker --version` and `docker compose version` both return version numbers, and Docker Desktop is **running** with **4+ CPUs** and **8 GB+ memory** allocated
+
+</details>
+
 ## Getting Started
 
 This guide uses a dedicated demo environment: the `docs-demo/file-transfer` branch of the Overture Prelude repository. It is a self-contained Overture portal (Song, Score, Maestro, MinIO, Arranger, and Stage).

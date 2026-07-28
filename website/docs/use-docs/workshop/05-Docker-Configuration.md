@@ -68,7 +68,7 @@ If services don't start correctly after changes:
 # Check container logs
 docker logs setup
 docker logs postgres
-docker logs arranger-datatable1
+docker logs arranger
 docker logs stage
 
 # Verify PostgreSQL is healthy
@@ -178,34 +178,38 @@ Adding a second dataset only requires a new SQL file in `setup/configs/postgresC
 
 ### Arranger
 
-Each data table requires its own Arranger service instance. The volume mount connects the Arranger configuration files you generated to the running container, and the environment variables tell it how to reach Elasticsearch:
+A single Arranger service provides the search API for your data. It reads one config directory per catalogue from the mounted `arrangerConfigs` folder; with one data table, that folder holds a single `datatable1` catalogue. The volume mount connects the Arranger configuration files you generated to the running container, and the environment variables tell it how to reach Elasticsearch:
 
 ```yaml showLineNumbers
-arranger-datatable1:
-  image: ghcr.io/overture-stack/arranger-server:4919f736
-  container_name: arranger-datatable1
+arranger:
+  image: ghcr.io/overture-stack/arranger-search-server:b5c6051b
+  container_name: arranger
   restart: unless-stopped
   volumes:
     # highlight-next-line
-    - ./setup/configs/arrangerConfigs/datatable1:/app/apps/search-server/configs
+    - ./setup/configs/arrangerConfigs:/app/configs # each subfolder is one catalogue
   environment:
     ES_HOST: http://elasticsearch:9200
     # highlight-start
     ES_USER: ${ES_USER:-elastic} # update if changing Elasticsearch credentials
     ES_PASS: ${ES_PASSWORD:-myelasticpassword} # update if changing Elasticsearch credentials
-    ES_ARRANGER_SET_INDEX: datatable1_arranger_set # must be unique per Arranger instance
+    ES_ARRANGER_SET_INDEX: arranger_set # index for saved sets, shared across catalogues
     # highlight-end
     PORT: 5050
 ```
 
-| Setting                 | What it controls                                                                            |
-| ----------------------- | ------------------------------------------------------------------------------------------- |
-| Volume mount path       | Which Arranger config directory is loaded, the `datatable1` segment matches your table name |
-| `ES_USER` / `ES_PASS`   | Credentials used to connect to Elasticsearch                                                |
-| `ES_ARRANGER_SET_INDEX` | Internal Arranger bookmarks index, must be unique per Arranger instance                     |
+| Setting                 | What it controls                                                                              |
+| ----------------------- | --------------------------------------------------------------------------------------------- |
+| Volume mount path       | The parent config directory; each subfolder (here, `datatable1`) is served as one catalogue    |
+| `ES_USER` / `ES_PASS`   | Credentials used to connect to Elasticsearch                                                   |
+| `ES_ARRANGER_SET_INDEX` | Elasticsearch index Arranger uses to store saved sets                                          |
+
+:::info Catalogue routing
+With a single catalogue, Arranger serves it at the root: `http://arranger:5050/graphql`. Add more catalogues (see the tip below) and each is served under its own path instead: `http://arranger:5050/<catalogue>/graphql`.
+:::
 
 :::tip
-Adding a second Arranger instance requires a new service block with a unique port, container name, config directory, and `ES_ARRANGER_SET_INDEX`. This is beyond the scope of this tutorial, but reach out via [contact@overture.bio](mailto:contact@overture.bio) if you'd like guidance afterwards.
+Adding a second catalogue only requires a new config directory under `setup/configs/arrangerConfigs/`; the single Arranger service discovers it on restart and serves it at `/<catalogue>/graphql`, no new service block needed. This is beyond the scope of this tutorial, but reach out via [contact@overture.bio](mailto:contact@overture.bio) if you'd like guidance afterwards.
 :::
 
 ### Stage
@@ -222,7 +226,7 @@ stage:
     # highlight-end
 
     # highlight-start
-    NEXT_PUBLIC_ARRANGER_DATATABLE_1_API: http://arranger-datatable1:5050 # must match Arranger service name and port
+    NEXT_PUBLIC_ARRANGER_DATATABLE_1_API: http://arranger:5050 # must match Arranger service name and port
     NEXT_PUBLIC_ARRANGER_DATATABLE_1_DOCUMENT_TYPE: records
     NEXT_PUBLIC_ARRANGER_DATATABLE_1_INDEX: datatable1_centric # must match ES_INDEX_0_ALIAS_NAME in setup
     NEXT_PUBLIC_DATATABLE_1_EXPORT_ROW_ID_FIELD: submission_metadata.submission_id

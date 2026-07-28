@@ -5,11 +5,7 @@ sidebar_position: 0
 description: Build a searchable, FAIR-compliant data discovery portal from tabular CSV data using Elasticsearch, Arranger, and Stage.
 ---
 
-:::caution Complete the prerequisites before you start
-Most importantly, download the Docker images in advance; depending on your connection, this can take a while.
-:::
-
-# Prerequisites
+# Building a Foundational Search Portal
 
 This tutorial will guide you through building a foundational data discovery portal for tabular CSV data using Elasticsearch, Arranger, and Stage.
 
@@ -24,17 +20,29 @@ This tutorial will guide you through building a foundational data discovery port
 
 ## Prerequisites
 
-The following software should be installed and verified before you start:
+Install and verify the following before you start.
 
 <details>
-<summary><strong>1. Git</strong> `git --version` returns a version number</summary>
+<summary><strong>1. WSL2 Setup </strong>(windows only)</summary>
+
+Docker Desktop on Windows runs on WSL2, so configure it before installing Docker Desktop below:
+
+1. Install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install)
+2. Use Ubuntu or another Linux distribution within WSL2
+3. Enable Docker Desktop's WSL2 integration (Docker Desktop → Settings → Resources → WSL Integration)
+4. Run all commands from a **Bash terminal inside WSL2**, not PowerShell or Command Prompt. To open one, search for your Linux distribution (e.g. "Ubuntu") in the Start menu.
+
+</details>
+
+<details>
+<summary><strong>2. Git</strong> installed</summary>
 
 Download from [git-scm.com](https://git-scm.com/downloads) if the command is not recognised.
 
 </details>
 
 <details>
-<summary><strong>2. Docker Desktop</strong> (`28.0.0` or later)</summary>
+<summary><strong>3. Docker Desktop</strong> (`28.0.0` or later)</summary>
 
 - **macOS / Windows:** Download from [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/)
 - **Linux:** Follow the [Docker Engine install guide](https://docs.docker.com/engine/install/)
@@ -49,57 +57,12 @@ Please ensure `docker --version` and `docker compose version` both return versio
 
 </details>
 
-<details>
-<summary><strong>3. Docker images pre-downloaded</strong> Most time-consuming step, run these before you start</summary>
-
-Pull the required Docker images now to avoid slow downloads while working through this tutorial:
-
-```bash
-docker pull alpine/curl:8.8.0
-docker pull postgres:15-alpine
-docker pull docker.elastic.co/elasticsearch/elasticsearch:7.17.27
-docker pull ghcr.io/overture-stack/arranger-server:4919f736
-docker pull ghcr.io/overture-stack/conductor:171d9ce
-docker pull node:18-alpine
-```
-
-Verify all six downloaded:
-
-```bash
-docker images | grep -E "alpine/curl|postgres|elasticsearch|arranger-server|conductor|node"
-```
-
-You should see all six images listed.
-
-</details>
-
-<details>
-<summary><strong>4. Repository cloned:</strong> `git clone -b quickstart https://github.com/overture-stack/prelude.git`</summary>
-
-The `prelude` repository contains everything needed for this tutorial: Docker Compose configuration, the Conductor wrapper script, and sample data. Clone it once before you start and you won't need internet access for the hands-on portion.
-
-```bash
-git clone -b quickstart https://github.com/overture-stack/prelude.git
-```
-
-</details>
-
-<details>
-<summary><strong>5. _(Windows only)_ WSL2 configured</strong> with Docker Desktop integration enabled</summary>
-
-1. Install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install)
-2. Use Ubuntu or another Linux distribution within WSL2
-3. Enable Docker Desktop's WSL2 integration (Docker Desktop → Settings → Resources → WSL Integration)
-4. Run all commands from a **Bash terminal inside WSL2**, not PowerShell or Command Prompt. To open one, search for your Linux distribution (e.g. "Ubuntu") in the Start menu.
-
-</details>
-
 #### Optional Prerequisites
 
 These are not required but will make this tutorial easier to follow:
 
 <details>
-<summary><strong>6. (Optional) Elasticvue:</strong> browser-based Elasticsearch GUI</summary>
+<summary><strong>5. (Optional) Elasticvue:</strong> browser-based Elasticsearch GUI</summary>
 
 [Elasticvue](https://elasticvue.com/installation) is a browser-based Elasticsearch GUI useful for inspecting indices, browsing documents, and troubleshooting. It is not required but helpful for understanding what's happening inside Elasticsearch while working through this tutorial.
 
@@ -108,7 +71,7 @@ Install it as a browser extension or standalone app.
 </details>
 
 <details>
-<summary><strong>7. (Optional) PostgreSQL GUI client</strong></summary>
+<summary><strong>6. (Optional) PostgreSQL GUI client</strong></summary>
 
 A PostgreSQL GUI client is useful for browsing the database while working through this tutorial. It is not required but helpful if you want to inspect the Postgres data directly.
 
@@ -121,29 +84,12 @@ A PostgreSQL GUI client is useful for browsing the database while working throug
 </details>
 
 <details>
-<summary><strong>8. (Optional) Bring your own data:</strong> CSV file</summary>
+<summary><strong>7. (Optional) Bring your own data:</strong> CSV file</summary>
 
 If you have a tabular dataset you'd like to use, bring it as a CSV file. This tutorial uses demo data throughout, but the final sections cover adapting the portal to your own dataset.
 
 </details>
 
-## Support
-
-|                     |                                                                                                                        |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| **Community support** | [community support channels](https://docs.overture.bio/community/support) or [contact@overture.bio](mailto:contact@overture.bio) |
-| **Bug reports**       | [GitHub Issues](https://github.com/overture-stack/prelude/issues)                                                       |
-
-## Verification Checklist
-
-Before starting, confirm:
-
-1. `git --version` returns a version number
-2. `docker --version` returns 28.0.0 or later
-3. `docker compose version` returns a version number
-4. Docker Desktop is running with 4+ CPUs and 8 GB+ memory allocated
-5. **All six Docker images are downloaded** (`docker images`): _this is the most time-consuming step_
-6. The repository is cloned and you can `cd` into it
-7. _(Windows only)_ WSL2 is configured and Docker integration is enabled
-
-> **Troubleshooting:** If you run into issues, reach out via the [community support channels](https://docs.overture.bio/community/support).
+:::tip Finding Support
+If you can't find what you're looking for please don't hesitate to reach out through our [**support page**](/community/support) or our [**discussion forum**](https://github.com/overture-stack/docs/discussions?discussions_q=).
+:::

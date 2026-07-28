@@ -1,11 +1,11 @@
 ---
 id: use-cases
-sidebar_label: Use cases
+sidebar_label: Demonstrated Use cases
 ---
 
 # Demonstrated use cases
 
-These are reproducible against the demo's Drug Discovery sample. The goal in each case is to refine a large gene list into a focused set of candidate targets. They are written so you can adapt the pattern to a different portal: substitute your own catalogue and field names, and keep the shape of the conversation. If a request is ambiguous, the model asks a targeted follow-up before querying (see [the researcher workflow](/use/ai-assisted-data-discovery#the-researcher-workflow)).
+These are reproducible against the demo's Drug Discovery sample. The goal in each case is to refine a large gene list into a focused set of candidate targets. They are written so you can adapt the pattern to a different portal: substitute your own catalogue and field names, and keep the shape of the conversation. If a request is ambiguous, the model asks a targeted follow-up before querying (see [the reseaher workflow](/use/ai-assisted-data-discovery#the-researcher-workflow)).
 
 ## Use case 1: iterative refinement
 
@@ -45,7 +45,7 @@ Each step approves and runs one query, and each follow-up operates on the previo
 
 ## Use case 2: pathway-informed filtering
 
-Pathway-informed filtering uses the same refinement pattern to assemble a candidate gene set, then relates those genes to biological pathways, the question that feeds deeper analysis. This is the project's headline end-to-end example; the sequence below mirrors it.
+Pathway-informed filtering uses the same refinement pattern to assemble a candidate gene set, then relates those genes to biological pathways, the question that feeds deeper analysis.
 
 1. **Assemble a candidate set** by mutation burden and cancer type:
 

@@ -2,6 +2,8 @@
 title: Building Song Schemas
 ---
 
+import SongSchemaPlayground from '/src/components/SongSchemaPlayground';
+
 # Building Song Schemas
 
 ## Schema Validation and Submission
@@ -323,6 +325,16 @@ The above key value pair is considered valid according to the schema. This allow
     :::info Want to learn more?
     If you want to learn more about JSON schema take a look at the following [JSON Schema guide](https://json-schema.org/understanding-json-schema).
     :::
+
+## Try It: Song Schema Playground
+
+You have seen the pieces; now assemble one. The playground below lets you build a Song schema two ways. Press **Generate from CSV** to turn example data into a starter schema, where each column becomes a typed property and low-cardinality columns get a suggested `enum`; or write the JSON directly in the editor. It validates the Song envelope and the inner JSON Schema as you type, flagging issues such as a `required` field that is not defined, an unknown type, or an invalid regex `pattern`, and it renders the fields on the right. Everything runs in your browser. Use **Download JSON** or **Copy JSON** to carry your schema to the update step below.
+
+<SongSchemaPlayground />
+
+:::note
+The playground checks structure, not Song's full base-schema merge. It warns when you redefine a base-owned field (such as `studyId` or `analysisType`), but the authoritative check is Song itself when you register the schema.
+:::
 
 ## Updating the Schema
 

@@ -1,8 +1,19 @@
 # Data Portal
 
-Setting up your data portal involves configuring and running Elasticsearch, Maestro, Arranger and Stage. Below are the steps and breakdowns to ensure a smooth setup process.
+Setting up your data portal involves configuring and running a search engine (Elasticsearch or OpenSearch), Maestro, Arranger and Stage. Below are the steps and breakdowns to ensure a smooth setup process.
 
-## Setting up Elasticsearch
+## Setting up your search engine
+
+Overture's search platform runs on either Elasticsearch or OpenSearch. Maestro indexes your metadata into whichever engine you choose, and Arranger generates the search API and UI components on top of it. The steps below are given for both engines; follow the tab for the one you are running.
+
+:::note Supported search engines
+
+Arranger supports **OpenSearch 1.x or higher** and **Elasticsearch 7.x** (minimum 7.0, licensed or default distribution only; ES OSS and ES 8.x are not supported; the bundled client is `@elastic/elasticsearch` v7). OpenSearch maintains API compatibility with Elasticsearch 7.x, so the index templates, mappings, and queries in this guide apply to both engines unchanged.
+
+:::
+
+<Tabs groupId="search-engine">
+<TabItem value="elasticsearch" label="Elasticsearch" default>
 
 1. **Run Elasticsearch:** Use the following command to pull and run the Elasticsearch docker container
 
@@ -46,8 +57,6 @@ Setting up your data portal involves configuring and running Elasticsearch, Maes
 
     :::
 
-Would you like me to explain any specific Elasticsearch 7 features or compatibility considerations in more detail?
-
 2. **Supply an index template:** Create a folder titled `elasticsearchConfigs`
 
    Download and place the following **[quickstart_index_template.json](https://raw.githubusercontent.com/overture-stack/composer/develop/configurationFiles/elasticsearchConfigs/quickstart_index_template.json)** within your `elasticsearchConfigs` folder. This file specifies settings, mappings, and configurations that will be applied automatically to new indices that match the template's pattern
@@ -76,7 +85,85 @@ Would you like me to explain any specific Elasticsearch 7 features or compatibil
             Any index alias that starts with `overture-` will use the mapping of the index template we initially provided. This is defined on [line two of our `quickstart_index_template`](https://github.com/overture-stack/composer/blob/develop/configurationFiles/elasticsearchConfigs/quickstart_index_template.json#L2).
             :::
 
+</TabItem>
+<TabItem value="opensearch" label="OpenSearch">
+
+1. **Run OpenSearch:** Use the following command to pull and run the OpenSearch docker container
+
+    ```bash
+    docker run -d --name opensearch \
+    -p 9200:9200 \
+    -e discovery.type=single-node \
+    -e cluster.name=workflow.opensearch \
+    -e OPENSEARCH_JAVA_OPTS="-Xms512m -Xmx2048m" \
+    -e DISABLE_SECURITY_PLUGIN=true \
+    -e DISABLE_INSTALL_DEMO_CONFIG=true \
+    opensearchproject/opensearch:2.17.1
+    ```
+
+    <details>
+    <summary><b>Click here for a detailed breakdown</b></summary>
+
+    - `-p 9200:9200` maps port 9200 of the host to port 9200 of the container
+
+    - `-e discovery.type=single-node` runs OpenSearch as a standalone node, bypassing cluster discovery and formation, ideal for development, testing, or small-scale deployments where clustering is not necessary
+
+    - `-e cluster.name=workflow.opensearch` names the cluster, good practice in case you choose to run multiple clusters or nodes in the future
+
+    - `-e OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx2048m` sets the initial (`-Xms512m`, 512 MB) and maximum (`-Xmx2048m`, 2 GB) heap size for the JVM running OpenSearch. This is the OpenSearch equivalent of Elasticsearch's `ES_JAVA_OPTS`
+
+    - `-e DISABLE_SECURITY_PLUGIN=true` turns off the OpenSearch security plugin so the REST API is served over plain HTTP with no TLS and no admin password. This keeps the `curl`, Maestro, and Arranger configuration in this guide identical to the Elasticsearch path
+
+    - `-e DISABLE_INSTALL_DEMO_CONFIG=true` skips installing the demo security certificates and users, which are not needed when the security plugin is disabled
+
+    </details>
+
+    :::warning OpenSearch configuration notes
+
+    - OpenSearch 2.x serves the Elasticsearch 7.x style index templates and queries used throughout this guide, so the index template and mapping files work unchanged.
+
+    - Do not set `compatibility.override_main_response_version`. It hides `version.distribution` from the `GET /` response, which causes Arranger to auto-detect the Elasticsearch client instead of OpenSearch and fail to initialize.
+
+    - Disabling the security plugin is only appropriate for a localhost-bound development instance. On any network-exposed deployment, keep the security plugin enabled and connect over HTTPS with credentials.
+
+    :::
+
+2. **Supply an index template:** Create a folder titled `elasticsearchConfigs`
+
+   Download and place the following **[quickstart_index_template.json](https://raw.githubusercontent.com/overture-stack/composer/develop/configurationFiles/elasticsearchConfigs/quickstart_index_template.json)** within your `elasticsearchConfigs` folder. This is the same template used for Elasticsearch; OpenSearch applies it without changes.
+
+    :::info Learn More
+    If you'd like to learn more about creating an index mapping for your own data see our [administration guide on configuring the index mapping](/use/administration/index-mappings).
+    :::
+
+3. **Initialize your index:** Run the following scripts to set up your OpenSearch cluster
+
+        Update OpenSearch with your index template using the following `curl` command:
+
+            ```bash
+            curl -X PUT 'http://localhost:9200/_template/index_template' -H 'Content-Type: application/json' -d ./elasticsearchConfigs/quickstart_index_template.json
+            ```
+
+        Create a new alias in OpenSearch using the following `curl` command:
+
+            ```bash
+            curl -X PUT 'http://localhost:9200/overture-quickstart-index'
+            ```
+
+        With the security plugin disabled these requests need no credentials. If successful you should be able to view the updated index in your browser from `http://localhost:9200/overture-quickstart-index`.
+
+            :::info How this works
+            Any index alias that starts with `overture-` will use the mapping of the index template we initially provided. This is defined on [line two of our `quickstart_index_template`](https://github.com/overture-stack/composer/blob/develop/configurationFiles/elasticsearchConfigs/quickstart_index_template.json#L2).
+            :::
+
+</TabItem>
+</Tabs>
+
 ## Running Maestro
+
+:::info Using OpenSearch
+Maestro communicates with the search engine over the Elasticsearch 7.x REST API, which OpenSearch 2.x also serves, so the same `MAESTRO_ELASTICSEARCH_*` variables below drive an OpenSearch cluster. Point `MAESTRO_ELASTICSEARCH_CLUSTER_NODES` at your OpenSearch node (for example `http://opensearch:9200`), and if you disabled the OpenSearch security plugin as shown above, set `MAESTRO_ELASTICSEARCH_CLIENT_BASICAUTH_ENABLED=false` since no credentials are required.
+:::
 
 1. **Create an env file:** Create a file named `.env.maestro` with the following content:
 
@@ -100,7 +187,7 @@ Would you like me to explain any specific Elasticsearch 7 features or compatibil
     MAESTRO_ELASTICSEARCH_CLUSTER_NODES=http://elasticsearch:9200
     MAESTRO_ELASTICSEARCH_CLIENT_BASICAUTH_USER=elastic
     MAESTRO_ELASTICSEARCH_CLIENT_BASICAUTH_PASSWORD=myelasticpassword
-    MAESTRO_ELASTICSEARCH_CLIENT_TRUSTSELFSIGNCERT=true
+    MAESTRO_ELASTICSEARCH_CLIENT_TRUSTSELFSIGNEDCERT=true
     MAESTRO_ELASTICSEARCH_INDEXES_ANALYSISCENTRIC_ENABLED=false
     MAESTRO_ELASTICSEARCH_INDEXES_FILECENTRIC_ENABLED=true
     MAESTRO_ELASTICSEARCH_INDEXES_FILECENTRIC_NAME=overture-quickstart-index
@@ -142,9 +229,9 @@ Would you like me to explain any specific Elasticsearch 7 features or compatibil
 
     #### Elasticsearch Variables
 
-    - `MAESTRO_ELASTICSEARCH_INDEXES_ANALYSISCENTRIC_ENABLED` set to `true` specifying that analysis-centric indices are to be expected
+    - `MAESTRO_ELASTICSEARCH_INDEXES_ANALYSISCENTRIC_ENABLED` set to `false` specifying that analysis-centric indices are not to be expected
 
-    - `MAESTRO_ELASTICSEARCH_INDEXES_FILECENTRIC_ENABLED` set to `false` specifying to Maestro that file-centric indices are not to be expected
+    - `MAESTRO_ELASTICSEARCH_INDEXES_FILECENTRIC_ENABLED` set to `true` specifying to Maestro that file-centric indices are to be expected
 
     - `MAESTRO_ELASTICSEARCH_CLIENT_BASICAUTH_ENABLED` enables basic authentication for the Elasticsearch client
 
@@ -186,6 +273,10 @@ Would you like me to explain any specific Elasticsearch 7 features or compatibil
 
 ## Running Arranger
 
+:::info Using OpenSearch
+Set `SEARCH_ENGINE=opensearch` and point `ES_HOST` at your OpenSearch node (for example `http://opensearch:9200`). The `ES_HOST`, `ES_USER`, and `ES_PASS` variables apply to both engines; the credentials are ignored when the OpenSearch security plugin is disabled. Leaving `SEARCH_ENGINE` unset makes Arranger auto-detect the engine from the cluster.
+:::
+
 1. **Create an env file:** Create a file named `.env.arranger` with the following content:
 
     ```bash
@@ -195,13 +286,13 @@ Would you like me to explain any specific Elasticsearch 7 features or compatibil
 
     # Arranger Variables
     ENABLE_LOGS=false
-    # Elasticsearch Variables
+    # Directory holding the per-catalogue config files (mounted below)
+    CONFIGS_PATH=/configs
+    # Elasticsearch / OpenSearch Variables
     ES_HOST=http://elasticsearch:9200
     ES_USER=elastic
     ES_PASS=myelasticpassword
-    # Stage Variables
-    REACT_APP_BASE_URL=http://stage:3000
-    REACT_APP_ARRANGER_ADMIN_ROOT=http://arranger-server:5050/graphql
+    SEARCH_ENGINE=elasticsearch
     ```
 
 2. **Create a folder titled `arrangerConfigs` and place the following configuration files within it:**
@@ -209,7 +300,6 @@ Would you like me to explain any specific Elasticsearch 7 features or compatibil
    - The **[base.json](https://github.com/overture-stack/composer/blob/develop/configurationFiles/arrangerConfigs/base.json)**, containing the base configuration for the Arranger server
    - The **[extended.json](https://github.com/overture-stack/composer/blob/develop/configurationFiles/arrangerConfigs/extended.json)**, containing all possible fields inputted into arranger
    - The **[facets.json](https://github.com/overture-stack/composer/blob/develop/configurationFiles/arrangerConfigs/facets.json)**,  defines the facets found within the facet panel of the data exploration page in Stage
-   - The **[matchbox.json](https://github.com/overture-stack/composer/blob/develop/configurationFiles/arrangerConfigs/matchbox.json)**, containing matchbox configuration settings
    - The **[table.json](https://github.com/overture-stack/composer/blob/develop/configurationFiles/arrangerConfigs/table.json)**, defines the formatting of the tables found on the data exploration page in Stage
 
 3. **Run Arranger:** Use the docker run command with your `.env.arranger` file:
@@ -218,12 +308,8 @@ Would you like me to explain any specific Elasticsearch 7 features or compatibil
     docker run --env-file .env.arranger \
         --name arranger-server \
         -p 5050:5050 \
-        -v ./arrangerConfigs/base.json:/app/modules/server/configs/base.json \
-        -v ./arrangerConfigs/extended.json:/app/modules/server/configs/extended.json \
-        -v ./arrangerConfigs/facets.json:/app/modules/server/configs/facets.json \
-        -v ./arrangerConfigs/matchbox.json:/app/modules/server/configs/matchbox.json \
-        -v ./arrangerConfigs/table.json:/app/modules/server/configs/table.json \
-        ghcr.io/overture-stack/arranger-server:3.0.0-beta.33
+        -v ./arrangerConfigs:/configs \
+        ghcr.io/overture-stack/arranger-search-server:3.1.0-rc.2
     ```
 
     Make sure to confirm the `./arrangerConfigs/` path aligns with the actual paths to your Arranger-Server configuration files, update your command or folder structure accordingly.
@@ -237,20 +323,19 @@ Would you like me to explain any specific Elasticsearch 7 features or compatibil
 
     - `ES_USER` and `ES_PASS` are the credentials for accessing Elasticsearch
 
-    - `REACT_APP_BASE_URL` is the base URL for your front-end application, in this case Stage, which we will set up next
+    - `SEARCH_ENGINE` selects the search backend, either `elasticsearch` or `opensearch`
 
-    - `REACT_APP_ARRANGER_ADMIN_ROOT` is the URL for the Arranger GraphQL endpoint
+    - `CONFIGS_PATH` is the directory inside the container that holds the per-catalogue config files (matched by the volume mount below)
 
     ### When running Arranger:
 
     - `-p 5050:5050` maps port 5050 of the host to port 5050 of the container.
 
-    - `-v ./arrangerConfigs/...:/app/modules/server/configs/...` mounts configuration files into the container
+    - `-v ./arrangerConfigs:/configs` mounts the config directory into the container (matched by `CONFIGS_PATH`)
         - `base.json` contains the base configuration for the Arranger server
         - `extended.json` contains all possible fields inputted into arranger
         - `facets.json` defines the facets found within the facet panel of the data exploration page in Stage
         - `table.json` defines the formatting of the tables found on the data exploration page in Stage
-        - `matchbox.json` contains matchbox configuration settings
 
     </details>
 
@@ -272,7 +357,6 @@ Would you like me to explain any specific Elasticsearch 7 features or compatibil
     NEXT_PUBLIC_LAB_NAME=Overture QuickStart Portal
     NEXT_PUBLIC_ADMIN_EMAIL=contact@overture.bio
     NEXT_PUBLIC_DEBUG=true
-    NEXT_PUBLIC_SHOW_MOBILE_WARNING=true
     # Keycloak Variables
     NEXT_PUBLIC_AUTH_PROVIDER=keycloak
     ACCESSTOKEN_ENCRYPTION_SECRET=super_secret
@@ -282,8 +366,6 @@ Would you like me to explain any specific Elasticsearch 7 features or compatibil
     NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=webclient
     KEYCLOAK_CLIENT_SECRET=ikksyrYaKX07acf4hpGrpKWcUGaFkEdM
     NEXT_PUBLIC_KEYCLOAK_PERMISSION_AUDIENCE=dms
-    # Score Variables
-    NEXT_PUBLIC_SCORE_API_URL=http://score:8087
     # Arranger Variables
     NEXT_PUBLIC_ARRANGER_DOCUMENT_TYPE=file
     NEXT_PUBLIC_ARRANGER_INDEX=file_centric
@@ -315,10 +397,6 @@ Would you like me to explain any specific Elasticsearch 7 features or compatibil
     - `NEXT_PUBLIC_KEYCLOAK_CLIENT_ID` and client secret `KEYCLOAK_CLIENT_SECRET` are assigned to the application by Keycloak, linking the application to its configuration within Keycloak
 
     - `NEXT_PUBLIC_KEYCLOAK_PERMISSION_AUDIENCE` specifies the audience for the permission claims in the access token, restricting the scope of access granted to the token
-
-    #### Score Variables
-
-    - `NEXT_PUBLIC_SCORE_API_URL` is the URL of the Score API, which the application uses to communicate with the Score service
 
     #### Arranger Variables
 
@@ -365,9 +443,13 @@ API Keys are brokered by Keycloak and accessible when logged in to the Stage UI 
     --platform linux/amd64 \
     -p 8080:8080 \
     --env-file .env.song \
-    ghcr.io/overture-stack/song-server:438c2c42
+    ghcr.io/overture-stack/song-server:fc479c13
     ```
 
     :::tip Next Steps
     Now that you have the end-to-end portal setup we recommend you check out our [administration guide on building Song schemas](/use/administration/building-song-schemas).
     :::
+
+:::note Verified against
+This guide was verified against **Maestro** `4.3.0` (`d831878`), **Arranger** image `arranger-search-server:3.1.0-rc.2` (checkout `8e84b4b`), and **Stage** `1.1.3` (`2072033`) on 2026-07-28. The Elasticsearch path was verified with Elasticsearch `7.17.1`; the OpenSearch configuration mirrors the verified AI-assisted discovery stack (`opensearchproject/opensearch:2.17.1`). Newer releases may differ.
+:::

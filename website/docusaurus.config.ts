@@ -118,8 +118,11 @@ const config: Config = {
             from: "/guides/deployment-guide/authorization",
           },
           {
-            to: "/deploy/deployment/data-management-storage",
-            from: "/guides/deployment-guide/data-management-storage",
+            to: "/deploy/deployment/file-transfer",
+            from: [
+              "/guides/deployment-guide/data-management-storage",
+              "/deploy/deployment/data-management-storage",
+            ],
           },
           {
             to: "/deploy/deployment/search-portal",
@@ -249,7 +252,10 @@ const config: Config = {
           ];
           for (const component of components) {
             const prefix = `/develop/${component}`;
-            if (existingPath === prefix || existingPath.startsWith(`${prefix}/`)) {
+            if (
+              existingPath === prefix ||
+              existingPath.startsWith(`${prefix}/`)
+            ) {
               const rest = existingPath.slice("/develop/".length);
               return [
                 `/docs/core-software/${rest}`,
@@ -403,7 +409,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Overture, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Copyright © 2026 Ontario Institute for Cancer Research. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,

@@ -10,8 +10,10 @@ const sidebars: SidebarsConfig = {
   deploySidebar: [
     "index",
     "deployment/authorization",
-    "deployment/data-management-storage",
+    "deployment/file-transfer",
+    "deployment/tabular-data-submission",
     "deployment/search-portal",
+    "deployment/mcp-server",
   ],
 };
 
