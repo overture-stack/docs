@@ -95,11 +95,13 @@
    below flows to its natural height so the page provides the scroll length. */
 .editorPanel {
 	min-width: 0;
-	height: clamp(360px, 55vh, 560px);
 	display: grid;
 	grid-template-rows: auto auto 1fr;
 	overflow: hidden;
 	border-bottom: 1px solid var(--ifm-color-emphasis-300);
+	resize: vertical;
+	min-height: 280px;
+	max-height: 680px;
 }
 
 .editorToolbar {
@@ -206,10 +208,25 @@
 }
 
 .previewContent {
-	padding: 0 20px 24px;
-	overflow-x: auto;
+	padding: 0;
+	overflow: hidden;
 	-webkit-overflow-scrolling: touch;
 	animation: preview-bounce 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.previewBody {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+}
+
+.previewScale {
+	transform: scale(0.88);
+	transform-origin: top center;
+	width: 100%;
+	max-width: 100%;
 }
 
 @keyframes preview-bounce {
