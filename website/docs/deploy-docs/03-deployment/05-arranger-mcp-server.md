@@ -1,4 +1,11 @@
-# MCP Server
+---
+id: arranger-mcp-server
+slug: /deployment/arranger-mcp-server
+title: Arranger MCP Server
+sidebar_label: Arranger MCP Server
+---
+
+# Arranger MCP Server
 
 The Arranger MCP server sits on top of Arranger (deployed with the search portal above) and exposes your indexed data to MCP-compatible AI clients, so researchers can query the portal in plain language. Deploy it only if you want to offer AI-assisted, conversational data discovery on top of your search portal.
 

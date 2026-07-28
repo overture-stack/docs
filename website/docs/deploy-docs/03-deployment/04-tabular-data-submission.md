@@ -1,4 +1,16 @@
+---
+id: tabular-data-submission
+slug: /deployment/tabular-data-submission
+title: Tabular Data Submission
+sidebar_label: Tabular Data Submission
+unlisted: true
+---
+
 # Tabular Data Submission
+
+This page has been split into individual service guides:
+- [Lectern](/deploy/deployment/lectern)
+- [Lyric](/deploy/deployment/lyric)
 
 Lectern and Lyric will be set up next. Together they form Overture's structured, dictionary-driven data submission system: Lectern manages the data dictionaries (the schemas that define your tabular data), and Lyric validates and stores tabular submissions against those dictionaries. Lyric depends on Lectern, so we set up Lectern first.
 

@@ -1,22 +1,19 @@
 ---
-id: file-transfer
-slug: /deployment/file-transfer
-title: File Transfer
-sidebar_label: File Transfer
-unlisted: true
+id: song
+slug: /deployment/song
+title: Song
+sidebar_label: Song
 ---
 
-# File Transfer
+# Song
 
-This page has been split into individual service guides:
-- [Song](/deploy/deployment/song)
-- [Score](/deploy/deployment/score)
+Song is our data cataloging service for metadata and submission validation. It works with Score for file transfer, MinIO for object storage, PostgreSQL for the Song database, and Kafka for asynchronous communication.
 
-Song, Score, and the services they depend on (Postgres, MinIO, and Kafka) will be set up next. These Overture services move and store file data and its metadata on the backend: Score handles file transfer to and from object storage, and Song tracks the associated metadata.
+If you want to deploy the file-transfer service that moves file data, see [Score](/deploy/deployment/score).
 
 ## Setting up Object Storage
 
-The file transfer service Score is compatible with any S3 storage provider; for simplicity, we will use the open-source object storage provider MinIO for this setup. 
+The file transfer service Score is compatible with any S3 storage provider; for simplicity, we will use the open-source object storage provider MinIO for this setup.
 
 1. **Run MinIO:** Use the following command to pull and run the MinIO docker container
 
@@ -61,7 +58,7 @@ The file transfer service Score is compatible with any S3 storage provider; for 
 
     - **State Bucket:** `mb myminio/state` creates a bucket named "state". The "state" bucket is designated for storing application state data. This could include metadata about the objects stored in the "object" bucket.
 
-    - **Object Bucket:** `mb myminio/object` creates another bucket named "object". The "object" bucket is intended for storing the actual content objects, such as VCFs, BAMs, etc. 
+    - **Object Bucket:** `mb myminio/object` creates another bucket named "object". The "object" bucket is intended for storing the actual content objects, such as VCFs, BAMs, etc.
 
     - **Data directory & Heliograph File:** The `put` command seeds an empty 'heliograph' file within the object storage data folder. Score uses this dummy file to test that the server can successfully communicate with the storage provider and that your client can successfully retrieve files from it, too.
 
@@ -79,6 +76,7 @@ The file transfer service Score is compatible with any S3 storage provider; for 
     -v ./persistentStorage/data-song-db:/var/lib/postgresql/data \
     -d postgres:11.1 
     ```
+
     <details>
     <summary><b>For more details, click here</b></summary>
 
@@ -176,13 +174,10 @@ Kafka serves as a distributed streaming platform, enabling high-throughput, faul
     - `KAFKA_LOG4J_LOGGERS`: Specific logger levels for Kafka components
     - `KAFKA_LOG4J_ROOT_LOGLEVEL`: Default logging level for all components
 
-    </details>
+    #### Cluster Configuration
+    - `CLUSTER_ID`: Unique identifier for the Kafka cluster
 
-    :::tip For more detailed information about Kafka refer to:
-    - [Confluent Kafka Documentation](https://docs.confluent.io/platform/current/installation/docker/config-reference.html#confluent-ak-configuration)
-    - [Spring Cloud Stream Documentation](https://docs.spring.io/spring-cloud-stream/docs/current/reference/html/)
-    - [Apache Kafka Documentation](https://kafka.apache.org/documentation/)
-    :::
+    </details>
 
 2. **Run Kafka:** Use the docker run command with your `.env.kafka` file:
 
@@ -324,104 +319,6 @@ Song is our data cataloging system. It will provide submission validations and t
 
     Once running you should be able to access the Song Swagger UI from `http://localhost:8080/swagger-api`
 
-## Running Score
-
-Score is a fault-tolerant multi-part parallel transfer service made to facilitate transfers of file data to and from object storage.      
-
-1. **Create an env file:** Create a file named `.env.score` with the following content:
-
-    ```bash
-    # ==============================
-    # Score Environment Variables
-    # ==============================
-
-    # Spring Variables
-    SPRING_PROFILES_ACTIVE=default,s3,prod,secure
-    SERVER_PORT=8087
-    # Song Variable
-    METADATA_URL=http://song:8080
-    # Score Variables
-    SERVER_SSL_ENABLED="false"
-    # Object Storage Variables
-    S3_ENDPOINT=http://host.docker.internal:9000
-    S3_ACCESSKEY=admin
-    S3_SECRETKEY=admin123
-    S3_SIGV4ENABLED=true
-    S3_SECURED=false
-    OBJECT_SENTINEL=heliograph
-    BUCKET_NAME_OBJECT=object
-    BUCKET_NAME_STATE=state
-    UPLOAD_PARTSIZE=1073741824
-    UPLOAD_CONNECTION_TIMEOUT=1200000
-    # Keycloak Variables
-    AUTH_SERVER_PROVIDER=keycloak
-    AUTH_SERVER_CLIENTID=dms
-    AUTH_SERVER_CLIENTSECRET=t016kqXfI648ORoIP5gepqCzqtsRjlcc
-    AUTH_SERVER_TOKENNAME=apiKey
-    AUTH_SERVER_KEYCLOAK_HOST=http://keycloak:8080
-    AUTH_SERVER_KEYCLOAK_REALM=myrealm
-    AUTH_SERVER_SCOPE_DOWNLOAD_STUDY_PREFIX=STUDY.
-    AUTH_SERVER_SCOPE_DOWNLOAD_STUDY_SUFFIX=.READ
-    AUTH_SERVER_SCOPE_DOWNLOAD_SYSTEM=score.READ
-    AUTH_SERVER_SCOPE_UPLOAD_STUDY_PREFIX=STUDY.
-    AUTH_SERVER_SCOPE_UPLOAD_STUDY_SUFFIX=.WRITE
-    AUTH_SERVER_SCOPE_UPLOAD_SYSTEM=score.WRITE
-    AUTH_SERVER_URL=http://keycloak:8080/realms/myrealm/apikey/check_api_key/
-    SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://keycloak:8080/realms/myrealm/protocol/openid-connect/certs
-    ```
-
-    <details>
-    <summary><b>Click here for a detailed breakdown</b></summary>
-
-    #### Spring Run Profiles
-
-    - **Spring Run Profiles** activates specific profiles for the application with defined configurations. Profiles and their specified environment variables are defined in the [Score server application.yml](https://github.com/overture-stack/score/blob/develop/score-server/src/main/resources/application.yml). The profiles used here are summarized below.
-
-    | Profile       | Description                                                                                                                                                                                                 |
-    |---------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-    | `s3` | Configures the service for use with an S3-compatible backend.                                             |
-    | `prod`        | Optimizes the service for production use, enabling S3 security features and specifying the metadata server URL.                                                                                           |
-    | `secure`      | Implements OAuth authentication, specifying the authentication server URL, token name, client ID, client secret, and scopes for download and upload operations.                                  |
-
-    #### Song & Score Variables
-
-    - `SERVER_PORT` and `SERVER_SSL_ENABLED` specifies the port for the Score service (`8087`) and disables SSL (`false`), indicating HTTP communication. SSL is disabled to simplify deployment by avoiding the need to configure SSL certificates for HTTPS. This configuration should only be used in development environments and not in production.
-
-    - `METADATA_URL` points to the URL for our previously deployed song-server at `http://song:8080`.
-
-    #### Object Storage Variables
-
-    - `S3_ENDPOINT`, `S3_ACCESSKEY`, `S3_SECRETKEY`, `BUCKET_NAME_OBJECT`, `BUCKET_NAME_STATE` defines access to object storage, including the endpoint (`minio:9000`), access key (`admin`), secret key (`admin123`), bucket names for objects (`object`) and state (`state`).
-
-    - `UPLOAD_PARTSIZE` specifies the maximum size of individual parts when uploading large files to an object storage service. Large files are typically split into smaller parts to facilitate parallel uploads and to manage network bandwidth efficiently. If network bandwidth is limited, smaller part sizes might be beneficial to keep the upload process moving quickly. On the other hand, if the application requires high throughput and can afford to wait longer for uploads to complete, larger part sizes might be preferable.
-
-    - `UPLOAD_CONNECTION_TIMEOUT` This variable sets the timeout duration for establishing a connection to the object storage service during the upload process. It is measured in milliseconds (ms). Adjusting the connection timeout allows for fine-tuning the application's tolerance for network latency and variability. 
-        
-    #### Keycloak Variables
-
-    - **Authentication Configuration**: Specifies the authentication server provider (`Keycloak`), the Keycloak server's host (`http://keycloak:8080`), and the realm (`myrealm`) that contains the users and roles. This setup is crucial for securing applications by directing them to the correct Keycloak instance and realm for authentication and authorization processes.
-
-    - **Token and Client Details**: Defines the token name (`apiKey`), client ID (`dms`), and the client secret configured in your `.env.score` used for authentication. These elements are essential for establishing a secure connection between the application and the Keycloak server, ensuring that only authorized applications can access protected resources.
-
-    - **Scope Definitions**: Outlines the scopes for study, download, and upload operations, specifying prefixes and suffixes that indicate the level of access granted to the token holder. These scopes are critical for defining the permissions associated with the tokens, controlling what actions can be performed by the authenticated users.
-
-    - **Introspection and JWT Validation**: Provides the URL for checking the validity of a token (`http://keycloak:8080/realms/myrealm/apikey/check_api_key/`) and the location of the JSON Web Key Set (JWS) for validating JWT tokens (`http://keycloak:8080/realms/myrealm/protocol/openid-connect/certs`). These mechanisms ensure that tokens are valid and have not been tampered with, maintaining the security of the authentication process.
-
-    </details>
-
-2. **Run Score:** Use the docker run command with the `--env-file` option:
-
-    ```bash
-    docker run -d \
-    --name score \
-    --platform linux/amd64 \
-    -p 8087:8087 \
-    --env-file .env.score \
-    ghcr.io/overture-stack/score-server:5.11.0
-    ```
-
-    Once running you should be able to access the Score Swagger UI from `http://localhost:8087/swagger-ui.html`
-
-:::note Verified against
-This guide was verified against **Song** `5.1.2-SNAPSHOT` (`2de5c0d`) and **Score** `5.12.0-SNAPSHOT` (`174ed13`) on 2026-07-28. Newer releases may differ.
+:::info Next step
+Once Song is running, continue with [Score](/deploy/deployment/score) to deploy the file transfer service.
 :::
