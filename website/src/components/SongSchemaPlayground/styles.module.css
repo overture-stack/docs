@@ -6,6 +6,9 @@
  */
 
 .playground {
+	/* The editor toolbar and the preview header are siblings in different panes,
+	   so a shared height is what keeps their bottom borders on one line. */
+	--song-bar-height: 36px;
 	display: flex;
 	flex-direction: column;
 	height: clamp(560px, 82vh, 760px);
@@ -163,11 +166,13 @@
 	overflow: hidden;
 }
 .editorToolbar {
+	box-sizing: border-box;
+	min-height: var(--song-bar-height);
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	gap: 8px;
-	padding: 6px 10px;
+	padding: 2px 12px;
 	border-bottom: 1px solid var(--ifm-color-emphasis-300);
 	background: var(--ifm-color-emphasis-100);
 	flex-wrap: wrap;
@@ -289,7 +294,11 @@
 	overscroll-behavior: contain;
 }
 .previewHeader {
-	padding: 8px 12px;
+	box-sizing: border-box;
+	min-height: var(--song-bar-height);
+	display: flex;
+	align-items: center;
+	padding: 2px 12px;
 	border-bottom: 1px solid var(--ifm-color-emphasis-300);
 	background: var(--ifm-color-emphasis-100);
 	font-size: 11px;

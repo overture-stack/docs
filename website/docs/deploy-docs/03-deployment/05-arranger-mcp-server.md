@@ -52,7 +52,7 @@ At `LOG_LEVEL` `debug` or `trace`, the server may write SQON query objects to it
 :::
 
 :::info Learn More
-For the server's internals, its full tool inventory, and development and testing workflows, see the canonical Arranger MCP Server documentation at [`apps/mcp-server`](https://github.com/overture-stack/arranger/tree/main/apps/mcp-server) and Arranger's [AI and automation](/develop/Arranger/reference/ai-and-automation) reference.
+For the server's internals, its full tool inventory, and development and testing workflows, see the canonical Arranger MCP Server documentation at [`apps/mcp-server`](https://github.com/overture-stack/arranger/tree/main/apps/mcp-server) and Arranger's [MCP server](/develop/Arranger/mcp-server) reference.
 :::
 
 :::note Verified against

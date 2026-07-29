@@ -11,7 +11,7 @@
  * only (CodeMirror), so it loads through <BrowserOnly> from index.tsx.
  */
 
-import { json } from '@codemirror/lang-json';
+import { json, jsonParseLinter } from '@codemirror/lang-json';
 import { RangeSetBuilder } from '@codemirror/state';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { Decoration, EditorView, ViewPlugin, ViewUpdate } from '@codemirror/view';
@@ -20,7 +20,8 @@ import ReactCodeMirror from '@uiw/react-codemirror';
 import React, { Fragment, ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 
 import { generateSongSchema } from './lib/generateSongSchema';
-import { PreviewGroup, SongValidationResult, validateSongSchema } from './lib/validateSongSchema';
+import { locateJsonPath } from './lib/locateJsonPath';
+import { Issue, PreviewGroup, SongValidationResult, validateSongSchema } from './lib/validateSongSchema';
 import { DEMO_TEMPLATE, STARTER_TEMPLATE } from './templates';
 import styles from './styles.module.css';
 
@@ -84,7 +85,111 @@ const rainbowBracketsPlugin = ViewPlugin.fromClass(
 	{ decorations: (v) => v.decorations },
 );
 
-const editorExtensions = [json(), rainbowBracketsPlugin, rainbowBracketTheme, indentationMarkers()];
+/*
+ * Findings highlighted in the document.
+ *
+ * The validator reports a JSON path with each finding, which locateJsonPath maps
+ * back to an offset, so a finding underlines the key it is about and tints that
+ * line. A document that does not parse has no structural findings, so the syntax
+ * error stands alone: lang-json's own linter provides its position, which avoids
+ * reading offsets out of browser-specific SyntaxError messages.
+ *
+ * Validation runs here on the document rather than being pushed in from React,
+ * so highlights can never lag the text: the function is pure and cheap, and the
+ * rainbow-bracket plugin above already rescans on every change.
+ */
+const syntaxErrorPosition = jsonParseLinter();
+
+const errorLine = Decoration.line({ class: 'cm-song-error-line' });
+const warningLine = Decoration.line({ class: 'cm-song-warning-line' });
+
+const diagnosticTheme = EditorView.baseTheme({
+	'& .cm-song-error-line': { backgroundColor: 'rgba(198, 40, 40, 0.22)' },
+	'& .cm-song-warning-line': { backgroundColor: 'rgba(180, 83, 9, 0.20)' },
+	'& .cm-song-error-token': {
+		textDecoration: 'underline wavy #ff6b6b',
+		textUnderlineOffset: '3px',
+	},
+	'& .cm-song-warning-token': {
+		textDecoration: 'underline wavy #f0a94a',
+		textUnderlineOffset: '3px',
+	},
+});
+
+interface Highlight {
+	from: number;
+	to: number;
+	decoration: Decoration;
+}
+
+function buildDiagnosticDecorations(view: EditorView) {
+	const doc = view.state.doc;
+	const text = doc.toString();
+	const result = validateSongSchema(text);
+	const highlights: Highlight[] = [];
+	const tintedLines = new Set<number>();
+
+	const tintLine = (pos: number, severity: 'error' | 'warning'): void => {
+		const line = doc.lineAt(pos);
+		if (tintedLines.has(line.from)) return;
+		tintedLines.add(line.from);
+		highlights.push({ from: line.from, to: line.from, decoration: severity === 'error' ? errorLine : warningLine });
+	};
+
+	if (result.preview === null) {
+		// Unparseable: the only thing to point at is where JSON.parse gave up.
+		for (const diagnostic of syntaxErrorPosition(view)) {
+			tintLine(Math.min(diagnostic.from, Math.max(0, doc.length - 1)), 'error');
+		}
+	} else {
+		const mark = (issue: Issue, severity: 'error' | 'warning'): void => {
+			const range = locateJsonPath(text, issue.path);
+			if (range === null || range.from >= range.to) return;
+			tintLine(range.from, severity);
+			highlights.push({
+				from: range.from,
+				to: range.to,
+				decoration: Decoration.mark({
+					class: severity === 'error' ? 'cm-song-error-token' : 'cm-song-warning-token',
+					attributes: { title: issue.message },
+				}),
+			});
+		};
+		for (const issue of result.errors) mark(issue, 'error');
+		for (const issue of result.warnings) mark(issue, 'warning');
+	}
+
+	// A RangeSetBuilder only accepts ranges in document order, and a line
+	// decoration has to land before any mark starting on that same line.
+	highlights.sort((a, b) => a.from - b.from || a.to - b.to);
+	const builder = new RangeSetBuilder<Decoration>();
+	for (const { from, to, decoration } of highlights) builder.add(from, to, decoration);
+	return builder.finish();
+}
+
+const diagnosticsPlugin = ViewPlugin.fromClass(
+	class {
+		decorations: ReturnType<typeof buildDiagnosticDecorations>;
+		constructor(view: EditorView) {
+			this.decorations = buildDiagnosticDecorations(view);
+		}
+		update(update: ViewUpdate) {
+			if (update.docChanged) {
+				this.decorations = buildDiagnosticDecorations(update.view);
+			}
+		}
+	},
+	{ decorations: (v) => v.decorations },
+);
+
+const editorExtensions = [
+	json(),
+	rainbowBracketsPlugin,
+	rainbowBracketTheme,
+	diagnosticsPlugin,
+	diagnosticTheme,
+	indentationMarkers(),
+];
 
 // Enum chips wrap, so the cap only guards against a controlled vocabulary with
 // dozens of terms; patterns are truncated because a long regex is unreadable
@@ -489,14 +594,14 @@ const SongSchemaPlayground = (): ReactElement => {
 							<div className={styles.statusValidText}>Valid Song schema</div>
 						) : (
 							<div className={styles.statusMsgList}>
-								{result.errors.map((err, i) => (
+								{result.errors.map((issue, i) => (
 									<div key={`e${i}`} className={[styles.statusMsg, styles.statusMsgErr].join(' ')}>
-										{err}
+										{issue.message}
 									</div>
 								))}
-								{result.warnings.map((w, i) => (
+								{result.warnings.map((issue, i) => (
 									<div key={`w${i}`} className={[styles.statusMsg, styles.statusMsgWarn].join(' ')}>
-										{w}
+										{issue.message}
 									</div>
 								))}
 							</div>

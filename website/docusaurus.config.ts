@@ -235,6 +235,17 @@ const config: Config = {
             to: "/develop",
             from: ["/docs", "/docs/getting-started", "/build"],
           },
+          // Arranger docs reshuffle: the "AI and automation" reference page
+          // became the standalone "Arranger MCP server" page, and the
+          // migration guides moved under Reference.
+          {
+            to: "/develop/Arranger/mcp-server",
+            from: "/develop/Arranger/reference/ai-and-automation",
+          },
+          {
+            to: "/develop/Arranger/reference/Migration/v3.1",
+            from: "/develop/Arranger/migration/v3.1",
+          },
         ],
         // Component reference moved from /docs/* to /build/* (Reference folded
         // into Build), then from /build/core-software/* to /build/* (the

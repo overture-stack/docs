@@ -69,7 +69,7 @@ Establishing accurate, precise retrieval within the conversational interface is 
 These are early-stage exploratory concept mocks intended to illustrate potential design directions and functionality. They are not final representations of the user interface or system architecture.
 :::
 
-For the Arranger server's own roadmap, see its [AI and automation](/develop/Arranger/reference/ai-and-automation#whats-coming) reference.
+For the Arranger server's own roadmap, see its [Arranger MCP server](/develop/Arranger/mcp-server#whats-coming) reference.
 
 :::info **Need Help?**
 If you encounter any issues or have questions, please reach out through our [**community support channels**](https://docs.overture.bio/community/support).
