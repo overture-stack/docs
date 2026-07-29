@@ -4,7 +4,7 @@
  * Integrated "both" experience for the Building Song Schemas guide:
  *   - Generate a starter schema from CSV (Generate from CSV panel), and
  *   - edit it in a live editor that validates the Song schema envelope + inner
- *     JSON Schema as you type, with a rendered field preview.
+ *     JSON Schema as you type, with a rendered preview of the property tree.
  *
  * Same shell/patterns as the Dictionary Playground: emotion -> CSS Modules,
  * CodeMirror with rainbow brackets + oneDark, three-tier validation. Browser-
@@ -17,10 +17,10 @@ import { oneDark } from '@codemirror/theme-one-dark';
 import { Decoration, EditorView, ViewPlugin, ViewUpdate } from '@codemirror/view';
 import { indentationMarkers } from '@replit/codemirror-indentation-markers';
 import ReactCodeMirror from '@uiw/react-codemirror';
-import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
+import React, { Fragment, ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 
 import { generateSongSchema } from './lib/generateSongSchema';
-import { SongValidationResult, validateSongSchema } from './lib/validateSongSchema';
+import { PreviewGroup, SongValidationResult, validateSongSchema } from './lib/validateSongSchema';
 import { DEMO_TEMPLATE, STARTER_TEMPLATE } from './templates';
 import styles from './styles.module.css';
 
@@ -86,6 +86,183 @@ const rainbowBracketsPlugin = ViewPlugin.fromClass(
 
 const editorExtensions = [json(), rainbowBracketsPlugin, rainbowBracketTheme, indentationMarkers()];
 
+// Enum chips wrap, so the cap only guards against a controlled vocabulary with
+// dozens of terms; patterns are truncated because a long regex is unreadable
+// inline either way, and the full value stays available on hover.
+const ENUM_CHIP_LIMIT = 8;
+const PATTERN_MAX_CHARS = 34;
+
+const truncate = (value: string, max: number): string => (value.length > max ? `${value.slice(0, max - 1)}…` : value);
+
+// The analysis type and its top-level objects each get their own section, so a
+// field pointing at one of those scrolls to it. Anything deeper is detail, and
+// opens inline in the row that names it.
+const INLINE_FROM_DEPTH = 2;
+
+/** Names a group the way its heading does, for a button's tooltip. */
+const describe = (group: PreviewGroup): string => (group.prefix ? `${group.prefix} ${group.title}` : group.title);
+
+/** An object's own constraints. Conditional rules render after the table, not here. */
+const GroupNotes = ({ group }: { group: PreviewGroup }): ReactElement | null =>
+	group.notes.length > 0 ? (
+		<>
+			{group.notes.map((note, i) => (
+				<div key={i} className={styles.groupNote}>
+					{note}
+				</div>
+			))}
+		</>
+	) : null;
+
+/** The rules deciding when a field becomes required, shown below the fields they govern. */
+const GroupConditions = ({ group }: { group: PreviewGroup }): ReactElement | null =>
+	group.conditions.length > 0 ? (
+		<div className={styles.conditionBlock}>
+			<span className={styles.conditionLabel}>Conditional rules</span>
+			{group.conditions.map((condition, i) => (
+				<div key={i} className={styles.groupCondition}>
+					{condition}
+				</div>
+			))}
+		</div>
+	) : null;
+
+interface GroupTableProps {
+	group: PreviewGroup;
+	/** Every group by path, so a row can resolve the table it opens. */
+	groups: Map<string, PreviewGroup>;
+	expanded: ReadonlySet<string>;
+	onToggle: (path: string) => void;
+	onJump: (path: string) => void;
+}
+
+/** One object's field definitions, with deeper objects expanding inside their row. */
+const GroupTable = ({ group, groups, expanded, onToggle, onJump }: GroupTableProps): ReactElement => (
+	<table className={styles.fieldTable}>
+		<thead>
+			<tr>
+				<th>Field</th>
+				<th>Type</th>
+				<th>Required</th>
+				<th>Details</th>
+			</tr>
+		</thead>
+		<tbody>
+			{group.fields.map((field) => {
+				const child = field.childPath ? groups.get(field.childPath) : undefined;
+				const inline = child !== undefined && child.depth >= INLINE_FROM_DEPTH;
+				const isOpen = inline && child !== undefined && expanded.has(child.path);
+				return (
+					<Fragment key={field.name}>
+						<tr>
+							<td
+								className={[
+									styles.fieldName,
+									field.requirement === 'required' ? styles.fieldNameRequired : '',
+								].join(' ')}
+							>
+								{field.name}
+							</td>
+							<td className={styles.fieldType}>
+								{child === undefined ? (
+									field.type
+								) : inline ? (
+									<button
+										type="button"
+										className={styles.toggleButton}
+										onClick={() => onToggle(child.path)}
+										aria-expanded={isOpen}
+										title={`${isOpen ? 'Hide' : 'Show'} the ${child.fields.length} fields of ${describe(child)}`}
+									>
+										{field.type} {isOpen ? '▾' : '▸'}
+									</button>
+								) : (
+									<button
+										type="button"
+										className={styles.jumpButton}
+										onClick={() => onJump(child.path)}
+										title={`Jump to ${describe(child)}`}
+									>
+										{field.type} ↓
+									</button>
+								)}
+							</td>
+							<td className={styles.fieldRequirement}>
+								{field.requirement === 'required' ? (
+									<span className={styles.requiredBadge}>yes</span>
+								) : field.requirement === 'conditional' ? (
+									<span className={styles.conditionalBadge} title={field.rule ?? undefined}>
+										conditional
+									</span>
+								) : (
+									<span className={styles.optionalBadge}>no</span>
+								)}
+							</td>
+							<td className={styles.fieldDetails}>
+								{field.description && <div className={styles.fieldDescription}>{field.description}</div>}
+								{field.enumValues && (
+									<span className={styles.enumChips}>
+										{field.enumValues.slice(0, ENUM_CHIP_LIMIT).map((value, i) => (
+											<code key={`${value}-${i}`} className={styles.enumChip}>
+												{value}
+											</code>
+										))}
+										{field.enumValues.length > ENUM_CHIP_LIMIT && (
+											<span className={styles.enumMore} title={field.enumValues.join(', ')}>
+												+{field.enumValues.length - ENUM_CHIP_LIMIT} more
+											</span>
+										)}
+									</span>
+								)}
+								{field.pattern && (
+									<div className={styles.detailsLine}>
+										matches{' '}
+										<code className={styles.patternValue} title={field.pattern}>
+											{truncate(field.pattern, PATTERN_MAX_CHARS)}
+										</code>
+									</div>
+								)}
+								{field.details && <div className={styles.detailsLine}>{field.details}</div>}
+							</td>
+						</tr>
+						{isOpen && child !== undefined && (
+							<tr className={styles.nestedRow}>
+								<td colSpan={4}>
+									<div className={styles.nestedPanel}>
+										<div className={styles.nestedHeading}>
+											{child.prefix && <span className={styles.groupPrefix}>{child.prefix}</span>}
+											<code className={styles.groupTitle}>{child.title}</code>
+											{child.kind && <span className={styles.groupKind}>{child.kind}</span>}
+										</div>
+										{/* The row above already carries this object's description; an array's
+										    item shape has its own, which is worth showing. */}
+										{child.description && child.description !== field.description && (
+											<p className={styles.groupDescription}>{child.description}</p>
+										)}
+										<GroupNotes group={child} />
+										{child.fields.length > 0 ? (
+											<GroupTable
+												group={child}
+												groups={groups}
+												expanded={expanded}
+												onToggle={onToggle}
+												onJump={onJump}
+											/>
+										) : (
+											<div className={styles.groupEmpty}>No fields defined; any content is accepted.</div>
+										)}
+										<GroupConditions group={child} />
+									</div>
+								</td>
+							</tr>
+						)}
+					</Fragment>
+				);
+			})}
+		</tbody>
+	</table>
+);
+
 const SAMPLE_CSV = [
 	'donor_id,gender,vital_status,primary_site,age_at_diagnosis,tumour_stage,survival_days',
 	'DO001,Female,Alive,Breast,45,II,1200',
@@ -103,10 +280,33 @@ const SongSchemaPlayground = (): ReactElement => {
 	const [csvText, setCsvText] = useState('');
 	const [analysisName, setAnalysisName] = useState('');
 	const [csvError, setCsvError] = useState<string | null>(null);
+	const [expanded, setExpanded] = useState<ReadonlySet<string>>(() => new Set<string>());
 
 	const splitContainerRef = useRef<HTMLDivElement>(null);
+	const previewBodyRef = useRef<HTMLDivElement>(null);
 	const isDragging = useRef(false);
 	const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+	const toggleGroup = useCallback((path: string) => {
+		setExpanded((current) => {
+			const next = new Set(current);
+			if (!next.delete(path)) next.add(path);
+			return next;
+		});
+	}, []);
+
+	// Scrolls the preview to the table describing a nested object. Matching on the
+	// data attribute rather than an id keeps arbitrary property names safe to use.
+	const jumpToGroup = useCallback((path: string) => {
+		const container = previewBodyRef.current;
+		if (!container) return;
+		for (const section of Array.from(container.querySelectorAll('[data-group]'))) {
+			if (section.getAttribute('data-group') === path) {
+				section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+				return;
+			}
+		}
+	}, []);
 
 	const onDragStart = useCallback((e: React.MouseEvent) => {
 		e.preventDefault();
@@ -153,18 +353,6 @@ const SongSchemaPlayground = (): ReactElement => {
 	const handleReset = useCallback(() => applyValue(STARTER_TEMPLATE), []);
 	const handleLoadDemo = useCallback(() => applyValue(DEMO_TEMPLATE), []);
 
-	const handleDownload = useCallback(() => {
-		const blob = new Blob([editorValue], { type: 'application/json' });
-		const url = URL.createObjectURL(blob);
-		const a = document.createElement('a');
-		a.href = url;
-		a.download = 'song-schema.json';
-		document.body.appendChild(a);
-		a.click();
-		document.body.removeChild(a);
-		URL.revokeObjectURL(url);
-	}, [editorValue]);
-
 	const handleCopy = useCallback(async () => {
 		try {
 			await navigator.clipboard.writeText(editorValue);
@@ -197,7 +385,11 @@ const SongSchemaPlayground = (): ReactElement => {
 		if (debounceTimer.current) clearTimeout(debounceTimer.current);
 	}, []);
 
-	const preview = result.status !== 'error' ? result.preview : null;
+	// The preview renders whenever the JSON parses into something coherent, even
+	// with errors outstanding, so the schema stays visible while it is fixed.
+	const preview = result.preview;
+	const groupsByPath = new Map((preview?.groups ?? []).map((group) => [group.path, group]));
+	const sections = (preview?.groups ?? []).filter((group) => group.depth < INLINE_FROM_DEPTH);
 
 	return (
 		<div className={styles.playground}>
@@ -211,21 +403,8 @@ const SongSchemaPlayground = (): ReactElement => {
 					</p>
 				</div>
 				<div className={styles.headerActions}>
-					<button
-						type="button"
-						className={styles.ghostButton}
-						onClick={handleCopy}
-						disabled={result.status === 'error'}
-					>
+					<button type="button" className={styles.btnPrimary} onClick={handleCopy} disabled={!preview}>
 						{copied ? 'Copied!' : 'Copy JSON'}
-					</button>
-					<button
-						type="button"
-						className={styles.btnPrimary}
-						onClick={handleDownload}
-						disabled={result.status === 'error'}
-					>
-						Download JSON
 					</button>
 				</div>
 			</div>
@@ -295,7 +474,7 @@ const SongSchemaPlayground = (): ReactElement => {
 						</div>
 					</div>
 
-					{/* Validation status */}
+					{/* Validation status: errors are what Song rejects, warnings are advisory */}
 					<div
 						className={[
 							styles.status,
@@ -308,19 +487,16 @@ const SongSchemaPlayground = (): ReactElement => {
 					>
 						{result.status === 'valid' ? (
 							<div className={styles.statusValidText}>Valid Song schema</div>
-						) : result.status === 'warning' ? (
-							<div className={styles.statusMsgList}>
-								{result.warnings.map((w, i) => (
-									<div key={i} className={[styles.statusMsg, styles.statusMsgWarn].join(' ')}>
-										{w}
-									</div>
-								))}
-							</div>
 						) : (
 							<div className={styles.statusMsgList}>
 								{result.errors.map((err, i) => (
-									<div key={i} className={[styles.statusMsg, styles.statusMsgErr].join(' ')}>
+									<div key={`e${i}`} className={[styles.statusMsg, styles.statusMsgErr].join(' ')}>
 										{err}
+									</div>
+								))}
+								{result.warnings.map((w, i) => (
+									<div key={`w${i}`} className={[styles.statusMsg, styles.statusMsgWarn].join(' ')}>
+										{w}
 									</div>
 								))}
 							</div>
@@ -359,36 +535,35 @@ const SongSchemaPlayground = (): ReactElement => {
 				<div className={styles.previewPanel}>
 					<div className={styles.previewHeader}>Live Preview</div>
 					{preview ? (
-						<div className={styles.previewBody}>
-							<p className={styles.previewName}>
-								Analysis type: <code>{preview.name || '(unnamed)'}</code>
-							</p>
-							<table className={styles.fieldTable}>
-								<thead>
-									<tr>
-										<th>Field</th>
-										<th>Type</th>
-										<th>Required</th>
-										<th>Details</th>
-									</tr>
-								</thead>
-								<tbody>
-									{preview.properties.map((p) => (
-										<tr key={p.name}>
-											<td className={styles.fieldName}>{p.name}</td>
-											<td className={styles.fieldType}>{p.type}</td>
-											<td>
-												{p.required ? (
-													<span className={styles.requiredBadge}>Required</span>
-												) : (
-													<span className={styles.optionalText}>optional</span>
-												)}
-											</td>
-											<td className={styles.fieldDetails}>{p.details}</td>
-										</tr>
-									))}
-								</tbody>
-							</table>
+						<div ref={previewBodyRef} className={styles.previewBody}>
+							{/* The analysis type and its objects each get a section; deeper objects
+								open inline from the row that names them. */}
+							{sections.map((group) => (
+								<section key={group.path} data-group={group.path} className={styles.group}>
+									<div className={styles.groupHeading}>
+										{group.prefix && <span className={styles.groupPrefix}>{group.prefix}</span>}
+										<code className={styles.groupTitle}>{group.title}</code>
+										{group.kind && <span className={styles.groupKind}>{group.kind}</span>}
+										{group.required && <span className={styles.requiredBadge}>required</span>}
+									</div>
+									{group.description && <p className={styles.groupDescription}>{group.description}</p>}
+									<GroupNotes group={group} />
+									{group.summary ? (
+										<div className={styles.groupSummary}>{group.summary}</div>
+									) : group.fields.length > 0 ? (
+										<GroupTable
+											group={group}
+											groups={groupsByPath}
+											expanded={expanded}
+											onToggle={toggleGroup}
+											onJump={jumpToGroup}
+										/>
+									) : (
+										<div className={styles.groupEmpty}>No fields defined; any content is accepted.</div>
+									)}
+									<GroupConditions group={group} />
+								</section>
+							))}
 						</div>
 					) : (
 						<div className={styles.previewEmpty}>Fix the schema errors on the left to see a preview.</div>

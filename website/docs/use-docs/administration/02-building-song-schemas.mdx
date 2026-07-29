@@ -53,6 +53,15 @@ There are many different type values available in JSON schema, here is a list of
 
 #### JSON Schema can also include various additional constraints:
 
+- **Descriptions:** Any object or field can carry a `description`, which documents it for whoever submits data against the schema. Annotations like `description` and `title` are allowed anywhere inside `properties`, but not in the schema body itself: Song accepts only `type`, `definitions`, `properties`, and `required` there, and rejects the registration outright if it finds anything else.
+
+    ```JSON
+    "field1": {
+    "type": "string",
+    "description": "Your own identifier for the donor. Song does not assign this."
+    }
+    ```
+
 - **Regex Patterns:** Fields can use regex patterns to enforce specific formatting rules
 
     ```JSON
@@ -276,6 +285,8 @@ Let's break down some more complex schema examples. We will pull from a referenc
 
     - `const` is a validation keyword that specifies that a property's value must exactly match for the submission to be considered valid
 
+    - Define `causeOfDeath` and `survivalTime` in `properties` as well. Naming a property in `required` only forces the key to be present; a property the schema never defines carries no type, no `enum`, and no `pattern`, so any value passes.
+
     </details>
 
 - **Null Values:** Null values can provide flexibility by allowing a property to be explicitly null when no valid string value is applicable or known. The schema segment below shows the use of a `null` enum value for a `relapseType` property.
@@ -326,7 +337,7 @@ The above key value pair is considered valid according to the schema. This allow
 
 ## Try It: Song Schema Playground
 
-You have seen the pieces; now assemble one in the [Song Schema Playground](/use/config-generators-and-playgrounds/song-schema-playground). Press **Generate from CSV** to turn example data into a starter schema, or write the JSON directly; it validates the Song envelope and the inner JSON Schema as you type. Use **Download JSON** or **Copy JSON** to carry your schema to the update step below.
+You have seen the pieces; now assemble one in the [Song Schema Playground](/use/config-generators-and-playgrounds/song-schema-playground). Press **Generate from CSV** to turn example data into a starter schema, or write the JSON directly; it validates the Song envelope and the inner JSON Schema as you type. Use **Copy JSON** to carry your schema to the update step below.
 
 ## Updating the Schema
 

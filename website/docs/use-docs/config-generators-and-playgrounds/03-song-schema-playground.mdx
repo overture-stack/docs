@@ -2,14 +2,17 @@
 title: Song Schema Playground
 ---
 
-import SongSchemaPlayground from '/src/components/SongSchemaPlayground';
+import SongSchemaPlayground from "/src/components/SongSchemaPlayground";
 
 # Song Schema Playground
 
-Build a Song schema two ways. Press **Generate from CSV** to turn example data into a starter schema, where each column becomes a typed property and low-cardinality columns get a suggested `enum`; or write the JSON directly in the editor. It validates the Song envelope and the inner JSON Schema as you type and renders the fields on the right. For the concepts behind it, see [Building Song Schemas](/use/administration/building-song-schemas).
+Build a Song schema two ways: click Generate from CSV to turn example data into a starter schema, or write the JSON directly. Generate from CSV converts each column into a typed property and suggests an enum for low-cardinality columns. The editor validates the Song envelope and inner JSON Schema live, rendering each schema object as its own table on the right, one row per field, with the rules that apply to the whole object shown above it.
+Background: [Building Song Schemas](/use/administration/building-song-schemas)
 
 <SongSchemaPlayground />
 
-:::note
-The playground checks structure, not Song's full base-schema merge. It warns when you redefine a base-owned field (such as `studyId` or `analysisType`), but the authoritative check is Song itself when you register the schema.
+:::note Limitations
+The playground checks structure only. It does not merge Song's base schema, and it does not cover the registration options an analysis type can carry, such as restricting file types or validating against an external service. Song itself is the authoritative check when you register a schema.
+
+For the full picture, see [Data Model Management](/develop/Song/Reference/data-model-management) in the Song reference.
 :::

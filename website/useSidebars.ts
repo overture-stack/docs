@@ -59,7 +59,7 @@ const sidebars: SidebarsConfig = {
           link: { type: "doc", id: "config-generators-and-playgrounds/index" },
           items: [
             "config-generators-and-playgrounds/config-generator",
-            "config-generators-and-playgrounds/dictionary-playground",
+            "config-generators-and-playgrounds/lectern-dictionary-playground",
             "config-generators-and-playgrounds/song-schema-playground",
           ],
         },

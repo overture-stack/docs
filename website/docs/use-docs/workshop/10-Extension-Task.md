@@ -29,7 +29,7 @@ Schemas within a dictionary can reference each other through shared identifier f
 
 ## Step 1: Open the Playground
 
-Open the [Dictionary Playground](/use/config-generators-and-playgrounds/dictionary-playground).
+Open the [Lectern Dictionary Playground](/use/config-generators-and-playgrounds/lectern-dictionary-playground).
 
 The playground opens with a demo dictionary. Clear the editor and replace it with this minimal starting point, a single `donor` entity with one required field:
 
