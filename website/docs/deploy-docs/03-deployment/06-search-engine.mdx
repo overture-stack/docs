@@ -35,26 +35,24 @@ Arranger supports **OpenSearch 1.x or higher** and **Elasticsearch 7.x** (minimu
         docker.elastic.co/elasticsearch/elasticsearch:7.17.1
         ```
 
-        <details>
+    <details>
+    <summary><b>Click here for a detailed breakdown</b></summary>
 
-    <summary>
-      <b>Click here for a detailed breakdown</b>
-    </summary>
     - `-p 9200:9200` maps port 9200 of the host to port 9200 of the container
 
-        - `-e discovery.type=single-node` configures Elasticsearch to run in single-node mode, this bypasses the need for cluster discovery and formation protocols, making Elasticsearch start up as a standalone node, ideal for development, testing, or small-scale deployments where clustering is not necessary
+    - `-e discovery.type=single-node` configures Elasticsearch to run in single-node mode, this bypasses the need for cluster discovery and formation protocols, making Elasticsearch start up as a standalone node, ideal for development, testing, or small-scale deployments where clustering is not necessary
 
-        - `-e cluster.name=workflow.elasticsearch` names the Elasticsearch cluster, this is good practice in case you choose to run multiple clusters or nodes in the future
+    - `-e cluster.name=workflow.elasticsearch` names the Elasticsearch cluster, this is good practice in case you choose to run multiple clusters or nodes in the future
 
-        - `-e ES_JAVA_OPTS=-Xms512m -Xmx2048m` sets the initial and maximum heap size for the Java Virtual Machine (JVM) running Elasticsearch. `-Xms512m` sets the initial heap size to 512 MB. `-Xmx2048m` sets the maximum heap size to 2048 MB (2 GB). Properly setting these values ensures that Elasticsearch has enough memory to handle its operations efficiently, but not so much that it starves other processes on the host machine.
+    - `-e ES_JAVA_OPTS=-Xms512m -Xmx2048m` sets the initial and maximum heap size for the Java Virtual Machine (JVM) running Elasticsearch. `-Xms512m` sets the initial heap size to 512 MB. `-Xmx2048m` sets the maximum heap size to 2048 MB (2 GB). Properly setting these values ensures that Elasticsearch has enough memory to handle its operations efficiently, but not so much that it starves other processes on the host machine.
 
-        - `-e xpack.security.enabled=true` activates security features such as authentication, authorization, encryption, and audit logging
+    - `-e xpack.security.enabled=true` activates security features such as authentication, authorization, encryption, and audit logging
 
-        - `-e MANAGE_INDEX_TEMPLATES=true` ensures Elasticsearch manages index templates, when true, the system expects to manage the index templates as part of its operations. In the next step we will create a client services to set up the default configurations for new indices
+    - `-e MANAGE_INDEX_TEMPLATES=true` ensures Elasticsearch manages index templates, when true, the system expects to manage the index templates as part of its operations. In the next step we will create a client services to set up the default configurations for new indices
 
-        - `-e ELASTIC_PASSWORD=myelasticpassword` Sets the password for the elastic user
+    - `-e ELASTIC_PASSWORD=myelasticpassword` Sets the password for the elastic user
 
-        </details>
+    </details>
 
         :::warning We use Elasticsearch 7
 
@@ -106,24 +104,22 @@ Arranger supports **OpenSearch 1.x or higher** and **Elasticsearch 7.x** (minimu
         opensearchproject/opensearch:2.17.1
         ```
 
-        <details>
+    <details>
+    <summary><b>Click here for a detailed breakdown</b></summary>
 
-    <summary>
-      <b>Click here for a detailed breakdown</b>
-    </summary>
     - `-p 9200:9200` maps port 9200 of the host to port 9200 of the container
 
-        - `-e discovery.type=single-node` runs OpenSearch as a standalone node, bypassing cluster discovery and formation, ideal for development, testing, or small-scale deployments where clustering is not necessary
+    - `-e discovery.type=single-node` runs OpenSearch as a standalone node, bypassing cluster discovery and formation, ideal for development, testing, or small-scale deployments where clustering is not necessary
 
-        - `-e cluster.name=workflow.opensearch` names the cluster, good practice in case you choose to run multiple clusters or nodes in the future
+    - `-e cluster.name=workflow.opensearch` names the cluster, good practice in case you choose to run multiple clusters or nodes in the future
 
-        - `-e OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx2048m` sets the initial (`-Xms512m`, 512 MB) and maximum (`-Xmx2048m`, 2 GB) heap size for the JVM running OpenSearch. This is the OpenSearch equivalent of Elasticsearch's `ES_JAVA_OPTS`
+    - `-e OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx2048m` sets the initial (`-Xms512m`, 512 MB) and maximum (`-Xmx2048m`, 2 GB) heap size for the JVM running OpenSearch. This is the OpenSearch equivalent of Elasticsearch's `ES_JAVA_OPTS`
 
-        - `-e DISABLE_SECURITY_PLUGIN=true` turns off the OpenSearch security plugin so the REST API is served over plain HTTP with no TLS and no admin password. This keeps the `curl`, Maestro, and Arranger configuration in this guide identical to the Elasticsearch path
+    - `-e DISABLE_SECURITY_PLUGIN=true` turns off the OpenSearch security plugin so the REST API is served over plain HTTP with no TLS and no admin password. This keeps the `curl`, Maestro, and Arranger configuration in this guide identical to the Elasticsearch path
 
-        - `-e DISABLE_INSTALL_DEMO_CONFIG=true` skips installing the demo security certificates and users, which are not needed when the security plugin is disabled
+    - `-e DISABLE_INSTALL_DEMO_CONFIG=true` skips installing the demo security certificates and users, which are not needed when the security plugin is disabled
 
-        </details>
+    </details>
 
         :::warning OpenSearch configuration notes
         - OpenSearch 2.x serves the Elasticsearch 7.x style index templates and queries used throughout this guide, so the index template and mapping files work unchanged.
