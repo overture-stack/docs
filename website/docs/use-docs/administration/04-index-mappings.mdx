@@ -1,5 +1,3 @@
-import ConfigGenerator from "/src/components/ConfigGenerator";
-
 # Index Mappings
 
 An index mapping defines how documents and their fields are stored and indexed in your search engine, either Elasticsearch or OpenSearch. Maestro is responsible for taking published Song metadata and translating it into search engine documents. With these documents Arranger uses the index mapping and generates our GraphQL server which enables fast and flexible queries.
@@ -273,10 +271,4 @@ If you change this template to match your own custom schema, and wish to populat
 
 ## Try It: Generate an Index Mapping
 
-You do not have to write an index template by hand to get started. The generator below infers an index mapping from example data (the mapping format is shared by Elasticsearch and OpenSearch): give it a CSV (upload a file, paste rows, or press **Load example**), and it produces the `index_patterns`, `aliases`, `mappings`, and `settings` described above, with each column typed as `keyword`, `integer`, `float`, `boolean`, or `date` from its sample values. It runs entirely in your browser; nothing is sent to a server. Use it as a starting point, then layer on the analyzers, custom settings, and nested structure your data model needs.
-
-<ConfigGenerator
-  outputs={["esMapping"]}
-  title="Index Mapping Generator"
-  subtitle="Turn a CSV into a starting index mapping for Elasticsearch or OpenSearch, entirely in your browser."
-/>
+You do not have to write an index template by hand to get started. The [Config Generator](/use/config-generators-and-playgrounds/config-generator) infers an index mapping from example data (the mapping format is shared by Elasticsearch and OpenSearch): give it a CSV, and it produces the `index_patterns`, `aliases`, `mappings`, and `settings` described above, with each column typed as `keyword`, `integer`, `float`, `boolean`, or `date` from its sample values. Use it as a starting point, then layer on the analyzers, custom settings, and nested structure your data model needs.

@@ -14,7 +14,7 @@ Lectern is Overture's data dictionary management service. It gives those design 
 The portal includes a **Dictionary Playground**: a live editor where you can write a Lectern schema and see it rendered as an interactive table in real time, with no server required.
 
 :::info
-This is an optional follow-on for readers who want to go further after completing the walkthrough above.
+This is an optional follow-on for readers who want to go further after completing the walkthrough above. It covers the same Dictionary Playground as the [Building Dictionaries](/use/administration/building-dictionaries) configuration guide; use that guide when you want the reference version, with links to every restriction type.
 :::
 
 ## Core Concepts
@@ -29,7 +29,7 @@ Schemas within a dictionary can reference each other through shared identifier f
 
 ## Step 1: Open the Playground
 
-Navigate to **http://localhost:3000/dictionary/playground**.
+Open the [Dictionary Playground](/use/config-generators-and-playgrounds/dictionary-playground).
 
 The playground opens with a demo dictionary. Clear the editor and replace it with this minimal starting point, a single `donor` entity with one required field:
 

@@ -2,8 +2,6 @@
 title: Building Song Schemas
 ---
 
-import SongSchemaPlayground from '/src/components/SongSchemaPlayground';
-
 # Building Song Schemas
 
 ## Schema Validation and Submission
@@ -15,7 +13,7 @@ Data administrators can configure custom data submission validations for Song by
 Song merges all admin-defined schemas with its pre-existing [base schema](https://github.com/overture-stack/SONG/blob/develop/song-server/src/main/resources/schemas/analysis/analysisBase.json). Therefore, when creating your schemas, it is important to reference the base schema to avoid specifying conflicting properties.
 
 :::info Song Base Schema
-The Song base schema can be restrictive for data models outside of cancer research contexts, as it requires tumor and normal samples. We are aware of this limitation and are currently working on a new data-agnostic submission system. For more information, check out [**Lyric, our tabular data submission service**](/develop/Lyric/overview)
+As of Song 5.3.0, the base schema requires only `studyId`, `analysisType`, and `files` — donor, specimen, and sample entities are no longer required, making it far less restrictive for data models outside of cancer research contexts. For submitting tabular (clinical) data, check out [**Lyric, our tabular data submission service**](/develop/Lyric/overview)
 :::
 
 ## Building Schemas
@@ -328,13 +326,7 @@ The above key value pair is considered valid according to the schema. This allow
 
 ## Try It: Song Schema Playground
 
-You have seen the pieces; now assemble one. The playground below lets you build a Song schema two ways. Press **Generate from CSV** to turn example data into a starter schema, where each column becomes a typed property and low-cardinality columns get a suggested `enum`; or write the JSON directly in the editor. It validates the Song envelope and the inner JSON Schema as you type, flagging issues such as a `required` field that is not defined, an unknown type, or an invalid regex `pattern`, and it renders the fields on the right. Everything runs in your browser. Use **Download JSON** or **Copy JSON** to carry your schema to the update step below.
-
-<SongSchemaPlayground />
-
-:::note
-The playground checks structure, not Song's full base-schema merge. It warns when you redefine a base-owned field (such as `studyId` or `analysisType`), but the authoritative check is Song itself when you register the schema.
-:::
+You have seen the pieces; now assemble one in the [Song Schema Playground](/use/config-generators-and-playgrounds/song-schema-playground). Press **Generate from CSV** to turn example data into a starter schema, or write the JSON directly; it validates the Song envelope and the inner JSON Schema as you type. Use **Download JSON** or **Copy JSON** to carry your schema to the update step below.
 
 ## Updating the Schema
 

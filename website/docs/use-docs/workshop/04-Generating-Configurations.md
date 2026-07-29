@@ -13,6 +13,10 @@ Navigate to **Config Generator** in the Stage portal navigation bar (visible onc
 
 ![Config Generator page in the Stage portal navigation](./images/config-generator-page.webp)
 
+:::tip
+This same generator also runs in the docs, outside the workshop: [Config Generators and Playgrounds](/use/config-generators-and-playgrounds) produces the same files from a CSV entirely in your browser, with no running portal required.
+:::
+
 ### Step 1: Provide CSV Data
 
 Upload a `.csv` file using the **Upload .csv file** button, or paste CSV content directly into the text area. Once loaded, a preview of the first five rows is shown so you can confirm the correct file was used.
@@ -47,6 +51,14 @@ Use the **Copy** button on each tab to copy the content, then paste it into the 
 ### Reviewing the Output
 
 The generated configs are a starting point; review each file before saving and adjust as needed:
+
+:::info Field-by-field references
+Each generated file has a configuration guide that covers every option in detail:
+
+- For `elasticsearch-mapping.json`, see [Index Mappings](/use/administration/index-mappings).
+- For the four `arranger/*.json` files, see [Customizing the Data Portal](/use/administration/customizing-the-data-portal).
+- For `lectern/dictionary.json`, see [Building Dictionaries](/use/administration/building-dictionaries).
+:::
 
 #### postgres-table.sql
 

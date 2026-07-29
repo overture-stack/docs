@@ -1,11 +1,9 @@
-import DictionaryPlayground from '/src/components/DictionaryPlayground';
-
 # Building Dictionaries
 
 Before any record is submitted to your platform, someone has to decide what fields exist, what types they hold, what values are permitted, and which are required. Lectern is Overture's data dictionary management service: it gives those decisions a persistent, versioned, machine-readable home, so the same dictionary that guides submitters also drives automated validation at ingestion time.
 
 :::info Looking for the complete specification?
-This page is a hands-on introduction to building dictionaries. The full reference — every restriction type, schema-level `uniqueKey`/`foreignKey` relationships, reusable `references`, and versioning — lives in the [Lectern dictionary reference](/develop/Lectern/dictionaryReference).
+This page is a hands-on introduction to building dictionaries. The full reference lives in the [Lectern dictionary reference](/develop/Lectern/dictionaryReference): every restriction type, schema-level `uniqueKey`/`foreignKey` relationships, reusable `references`, and versioning.
 :::
 
 ## Dictionary Structure
@@ -51,8 +49,8 @@ Once published to a running Lectern server, a dictionary drives the rest of the 
 
 ## Try It: Dictionary Playground
 
-Use the playground below to build a dictionary hands-on. Edit the Lectern schema on the left and it renders as an interactive table on the right, validated live against the Lectern schema as you type. It runs entirely in your browser; nothing is sent to a server. Start from the template, press **Load Demo** for a fuller multi-schema example, then **Download JSON** or **Copy JSON** to take your dictionary with you.
+Build a dictionary hands-on in the [Dictionary Playground](/use/config-generators-and-playgrounds/dictionary-playground). Edit a Lectern schema and it renders as an interactive table, validated live as you type, then download or copy the JSON to take it with you.
 
-<DictionaryPlayground />
-
-The validation strip above the editor reports one of three states: a valid Lectern dictionary, schema warnings (the preview still renders from your raw JSON), or a JSON syntax error. Warnings point at the exact field path so you can see which restriction or property needs attention.
+:::tip Prefer a guided walkthrough?
+The workshop's [Extension Task](/use/workshop/extension-task) builds a dictionary step by step in that same playground: starting from a single required field, layering on restrictions, then adding a second related schema.
+:::
