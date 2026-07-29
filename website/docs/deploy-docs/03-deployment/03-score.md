@@ -9,7 +9,7 @@ sidebar_label: Score
 
 Score is a fault-tolerant multi-part parallel transfer service made to facilitate transfers of file data to and from object storage.
 
-If you have not already set up Keycloak and Song, see [Authorization](/deploy/deployment/authorization) and [Song](/deploy/deployment/song).
+If you have not already set up Keycloak and Song, see [Keycloak](/deploy/deployment/keycloak) and [Song](/deploy/deployment/song).
 
 ## Running Score
 

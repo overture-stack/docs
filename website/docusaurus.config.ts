@@ -114,7 +114,7 @@ const config: Config = {
           { to: "/deploy", from: ["/guides", "/guides/getting-started"] },
           { to: "/deploy/deployment", from: "/guides/deployment-guide" },
           {
-            to: "/deploy/deployment/authorization",
+            to: "/deploy/deployment/keycloak",
             from: "/guides/deployment-guide/authorization",
           },
           {

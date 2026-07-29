@@ -1,0 +1,41 @@
+---
+title: Config Generators and Playgrounds
+---
+
+import ConfigGenerator from '/src/components/ConfigGenerator';
+import DictionaryPlayground from '/src/components/DictionaryPlayground';
+import SongSchemaPlayground from '/src/components/SongSchemaPlayground';
+
+# Config Generators and Playgrounds
+
+Every interactive tool from the configuration guides, gathered in one place. Use the generator to turn a CSV into a full set of starter configuration files, then use the playgrounds to shape a Lectern dictionary or a Song schema by hand. Everything on this page runs entirely in your browser; nothing is sent to a server.
+
+Each tool is also embedded in the guide that explains it. The links below each section point to that guide when you want the field-by-field detail.
+
+## Config Generator
+
+Give the generator a CSV (upload a file, paste rows, or press **Load example**) and it produces a starter for every configuration file Overture derives from your data:
+
+- an Elasticsearch or OpenSearch **index mapping**
+- the four **Arranger** configs: `base.json`, `extended.json`, `table.json`, and `facets.json`
+- a **Lectern** dictionary
+- a **Postgres** table definition
+
+Switch between the tabs to review each file, then copy or download it. For the field-by-field walkthrough, see [Index Mappings](/use/administration/index-mappings) and [Customizing the Data Portal](/use/administration/customizing-the-data-portal).
+
+<ConfigGenerator
+  title="Config Generator"
+  subtitle="Turn a CSV into a full set of starter configs (index mapping, Arranger configs, Lectern dictionary, and Postgres table), entirely in your browser."
+/>
+
+## Dictionary Playground
+
+Edit a Lectern schema on the left and it renders as an interactive table on the right, validated live against the Lectern schema as you type. Start from the template, press **Load Demo** for a fuller multi-schema example, then **Download JSON** or **Copy JSON** to take your dictionary with you. For the concepts behind it, see [Building Dictionaries](/use/administration/building-dictionaries).
+
+<DictionaryPlayground />
+
+## Song Schema Playground
+
+Build a Song schema two ways. Press **Generate from CSV** to turn example data into a starter schema, where each column becomes a typed property and low-cardinality columns get a suggested `enum`; or write the JSON directly in the editor. It validates the Song envelope and the inner JSON Schema as you type and renders the fields on the right. For the concepts behind it, see [Building Song Schemas](/use/administration/building-song-schemas).
+
+<SongSchemaPlayground />
