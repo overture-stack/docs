@@ -11,7 +11,35 @@ sidebar_position: 0
 
 Each guide and tutorial below pairs with a locally deployable Overture demo environment. Feel free to use these pages purely as reference, the demos are optional.
 
-### Prerequisites
+## Who these guides are for
+
+These guides are grouped by role in the sidebar. If you are not sure where to start, find yourself below.
+
+### Data Consumers
+
+Researchers and analysts who search and retrieve data from a platform someone else runs.
+
+- **Ask a portal questions in plain language.** [AI-Assisted Data Discovery](/use/ai-assisted-data-discovery) covers the researcher workflow, a locally deployable testing environment, and reproducible use cases you can adapt to your own portal.
+- **Connect the client you already use.** Any MCP-compatible host (LM Studio, Claude Desktop, and others) can be pointed at a portal's Arranger MCP server using the provided [configuration templates](/use/ai-assisted-data-discovery/configuration-templates).
+- **Download the files you find.** [File Download](/use/cli-downloads) walks through retrieving data from a platform with the Song and Score command-line clients.
+
+### Data Submitters
+
+Anyone contributing data files and their accompanying metadata to a platform.
+
+- **Complete a full submission workflow.** [File Submission](/use/cli-submissions) takes you through registering an analysis with Song and uploading its files with Score.
+- **Understand what a submission is.** A submission pairs data files (BAMs, CRAMs, VCFs, and similar) with the metadata that gives them context, including donor information and file descriptions.
+- **See what your submission is validated against.** The permitted fields, types, and values are set by the platform's administrators; [Building Song Schemas](/use/administration/building-song-schemas) explains the schemas your metadata is checked against.
+
+### Platform Administrators
+
+Those deploying, configuring, and maintaining an Overture platform.
+
+- **Stand up a portal end to end.** [Building a Foundational Search Portal](/use/workshop/prerequisites) deploys Elasticsearch, Arranger, and Stage over your own tabular CSV data.
+- **Configure each piece in depth.** Separate guides cover [Lectern dictionaries](/use/administration/building-dictionaries), [Song schemas](/use/administration/building-song-schemas), [search facets and data tables](/use/administration/customizing-the-data-portal), and [index mappings](/use/administration/index-mappings).
+- **Generate configs instead of writing them.** The [generators and playgrounds](/use/config-generators-and-playgrounds) turn a CSV into a full set of starter configuration files, or let you shape a dictionary or schema by hand. All of them run entirely in your browser.
+
+## Prerequisites
 
 Most demo environments use Docker Compose with similar setups. Before starting you can install and verify the following:
 

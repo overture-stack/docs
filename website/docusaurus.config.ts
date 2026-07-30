@@ -174,7 +174,10 @@ const config: Config = {
           // Platform Tools -> Deploy
           { to: "/deploy", from: "/docs/platform-tools" },
           { to: "/deploy/prelude", from: "/docs/platform-tools/prelude" },
-          { to: "/deploy/quickstart", from: "/docs/platform-tools/quickstart" },
+          // The Quickstart page was retired with the prelude `quickstart` branch
+          // (2026-07-30). Components now document their own development
+          // environments; this redirect lands on Prelude, its nearest successor.
+          { to: "/deploy/prelude", from: "/docs/platform-tools/quickstart" },
           // Docs -> Develop
           {
             to: "/develop/contributing",
@@ -245,6 +248,35 @@ const config: Config = {
           {
             to: "/develop/Arranger/reference/Migration/v3.1",
             from: "/develop/Arranger/migration/v3.1",
+          },
+          // Pages retired by the component usage/ -> reference/ restructure
+          // that have no like-for-like successor, so createRedirects (which
+          // only rewrites the /develop, /build, /docs prefix) cannot cover
+          // them. Each target must be a page that exists in the build --
+          // plugin-client-redirects fails on a `to` it cannot resolve.
+          //
+          // Maestro V5 does not implement exclusion rules or Slack
+          // notifications; both pages are now draft: true and absent from
+          // production builds, so these land on the Reference index.
+          {
+            // Trailing slash required: category index routes carry one, and
+            // the plugin validates `to` against the exact route path.
+            to: "/develop/Maestro/reference/",
+            from: [
+              "/develop/Maestro/usage/exclusion-rules",
+              "/develop/Maestro/usage/slack-notifications",
+            ],
+          },
+          // Song's standalone custom-schemas page is gone; its Options content
+          // is now the "Schema Options" section of Data Model Management.
+          {
+            to: "/develop/Song/Reference/data-model-management",
+            from: "/develop/Song/custom-schemas",
+          },
+          // Lyric's single placeholder page became Overview + Setup.
+          {
+            to: "/develop/Lyric/overview",
+            from: "/develop/Lyric/lyric",
           },
         ],
         // Component reference moved from /docs/* to /build/* (Reference folded
