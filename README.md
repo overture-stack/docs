@@ -118,3 +118,9 @@ npm start
 
 > [!TIP]
 > The Overture Docs repo contains everything, therefore finding & tracking links and content across all our repos has never been easier.
+
+## License
+
+Licensed under the GNU Affero General Public License v3.0 (AGPL-3.0), the same license as the rest of the Overture stack. See [LICENSE](LICENSE) for the full text, and the [licensing page](https://docs.overture.bio/community/licensing) for an overview.
+
+Documentation content vendored from the `submodules/` repositories remains under the license of its own repository.

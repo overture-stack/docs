@@ -1,0 +1,66 @@
+@import "../../styles/variables";
+
+.GettingStarted {
+  justify-content: center;
+  align-items: center;
+  padding: 32px 0;
+  font-size: 18px;
+  line-height: 32px;
+  margin-bottom: 64px !important; // override wrapping sub .container
+
+  // A single step of instructions (step, description, terminal)
+  .Step {
+    padding: 2rem 0;
+    @media(max-width: $tablet) {
+      padding: 1rem 0;
+    }
+
+    .step-text {
+      padding: 1rem 0;
+      @include breakpoint(mobile) {
+        padding: 1rem 0;
+      }
+    }
+
+    .yellow-bar {
+      margin-top: 16px;
+    }
+
+    @include breakpoint(mobile) {
+      padding: 0;
+      .yellow-bar {
+        margin-top: 16px !important;
+      }
+    }
+  }
+
+  .header-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 32px 0;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+  }
+
+  .center {
+    flex: 1;
+    text-align: center;
+  }
+
+  .header-offset {
+    display: inline-block;
+    position: relative;
+  }
+
+  .pinned-link {
+    margin-left: -128px;
+    @media (max-width: 768px) {
+      margin-left: 0px;
+      margin: 16px 0;
+    }
+  }
+}

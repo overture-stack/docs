@@ -1,0 +1,87 @@
+# Overture.bio (staged for porting, not built by this repo)
+
+**This directory is a copy of [overture-stack/website](https://github.com/overture-stack/website), placed here so its 13 marketing routes can be ported into the Docusaurus site under [`website/`](../website).** Nothing here is built or deployed by this repo, and the whole directory is deleted once the port lands. The plan, the remaining decisions, and the known issues are in [`.dev/roadmap.md`](.dev/roadmap.md) and [`.dev/tech-debt.md`](.dev/tech-debt.md); read the roadmap first, since it says which parts are deliberately not being ported.
+
+Two things to know before reading further: this code is AGPL-3.0-or-later (see [LICENSE](LICENSE)), and everything below this notice is the original site's own README, describing how the Gatsby site works rather than how the port works.
+
+---
+
+# Overture.bio
+
+- Hosted on Netlify. See **Deployment** for info.
+- Based on the [Gatsby Starter Business](https://gatsby-starter-business.netlify.com).
+
+## Additional READMEs
+
+- [Styles](src/styles/README.md)
+- [Components](src/components/README.md)
+
+Overture's documentation is not part of this site. It lives at
+<https://docs.overture.bio> (source: [overture-stack/docs](https://github.com/overture-stack/docs)).
+
+## Installation
+
+- Node 22 with npm 10 or newer. `nvm use` picks the right version up from `.nvmrc`
+- Netlify CLI (only needed for QA deploys): `npm install -g netlify-cli`
+- `npm install`
+- Setup Netlify deployment: `netlify link` and choose 'Use current git remote origin'.
+
+### Troubleshooting
+
+`engines` in `package.json` is enforced (`.npmrc` sets `engine-strict`), so `npm install` fails outright on an older Node rather than half-working. The error names both the required and the actual version; switch Node and run it again.
+
+## Local development
+
+`npm start`
+
+## Deployment
+
+Check your QA builds locally! (See **Environments**)
+
+- Deploy to a Netlify draft URL for QA: `npm run deploy`
+- Deploy to <https://overture.bio>: Merge a PR into the main branch.
+
+## Environments
+
+Gatsby has two environments: **development** (runs a dev server with hot reloading) and **production** (creates a static build in the `~/public` folder).
+
+Gatsby development and production builds are significantly different, so consider running `npm run qa` (prod build) occasionally to check for issues, and before deploying to QA.
+
+### Local environments
+
+- **Development**
+  - Feature flags ON
+  - Command: `npm run dev`
+  - Secrets and settings file: `.env.development`
+- **QA** (check your build before creating a Netlify link for QA)
+  - Feature flags ON
+  - Command: `npm run qa`
+  - Secrets file: `.env.production` (overridden by `netlify.toml`) (ignored by git)
+  - Settings file: `netlify.toml`, `branch-deploy` context
+- **Production** (check your build before deploying to <https://overture.bio>)
+  - Feature flags OFF
+  - Command: `npm run prod`
+  - Secrets file: `.env.production` (overridden by `netlify.toml`) (ignored by git)
+  - Settings file: `netlify.toml`, `production` & `deploy-preview` contexts
+
+### Netlify contexts
+
+These environments only apply when deploying to Netlify. The non-secret settings are stored in `netlify.toml`.
+
+- `production`: The live site at <https://overture.bio>, deployed automatically by Netlify when a PR is merged into the main branch.
+- `deploy-preview`: Netlify deploys that are automatically generated when there is a PR created/updated on the main branch.
+- `branch-deploy`: Other branches and PRs, deployed manually.
+
+## Feature flags & environment variables
+
+- Feature flags in Gatsby must be environment variables.
+- Environment variables accessed in client-side code must be prefixed with `GATSBY_`.
+- Example: Show something in development and hide it in production:
+  - `FLAG="true"` in `.env.development` and Netlify `branch-deploy` context in `netlify.toml`.
+  - `FLAG="false"` in Netlify `production` and `deploy-preview` contexts in `netlify.toml`.
+
+### Links
+
+- [Gatsby environment variables](https://www.gatsbyjs.com/docs/environment-variables/)
+- [Netlify environment variables](https://docs.netlify.com/configure-builds/environment-variables/)
+- [Netlify File-Based Configuration](https://docs.netlify.com/configure-builds/file-based-configuration/#sample-file)

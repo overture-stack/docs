@@ -1,0 +1,173 @@
+@import '../../styles/colors.scss';
+@import '../../styles/variables.scss';
+
+$bg-color: $grey-2;
+$cs-break: 1000px;
+
+// -- Styles for the parent component : index.js -------------------------------
+.CaseStudiesPage {
+  .Hero {
+    @include breakpoint(tablet-up) {
+      background-image: url('./assets/img_hero_case_studies.svg');
+      background-repeat: no-repeat;
+      background-position-y: -110px;
+      background-position-x: 400px;
+      background-size: 600px;
+    }
+
+    @include breakpoint(desktop-up) {
+      background-position-y: -140px;
+      background-position-x: 500px;
+      background-size: 700px;
+    }
+
+    @include breakpoint(desktop-wide) {
+      background-position-x: 105%;
+    }
+
+    @include breakpoint(desktop-ultra-wide) {
+      background-position-x: 79%;
+    }
+
+    &__section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.8em;
+
+      @include breakpoint(tablet-up) {
+        align-items: start;
+        text-align: left;
+      }
+    }
+
+    &__subtitle {
+      max-width: 330px;
+      @include breakpoint(tablet-up) {
+        max-width: 360px;
+      }
+      @include breakpoint(desktop-up) {
+        max-width: 560px;
+      }
+    }
+  }
+
+  .container {
+    padding: 60px 32px;
+    @include breakpoint(tablet-up) {
+      padding: 3.5em 2.8em;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+}
+
+// -- Component: case-study.js styles ------------------------------------------
+.Case-Study {
+  .top-segment {
+    margin-bottom: 2em;
+  }
+  .case-heading {
+    margin-bottom: 2em;
+    @include breakpoint(tablet-up) {
+      margin-bottom: 4.2em;
+      margin-top: 0.8em;
+    }
+  }
+
+  .columns {
+    gap: 30px;
+  }
+
+  .top-bullets {
+    margin-bottom: 2em;
+  }
+
+  .img-holder {
+    display: flex;
+    justify-content: center;
+    @include breakpoint(desktop-up) {
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+  }
+
+  .client-list-item {
+    list-style-type: disc;
+  }
+
+  .lower-title-holder {
+    margin-bottom: 20px;
+  }
+  .button-holder {
+    margin-top: 48px;
+    display: flex;
+    justify-content: center;
+    @include breakpoint(tablet-up) {
+      justify-content: flex-start;
+      margin-top: 20px;
+    }
+  }
+
+  .indent-group {
+    @include breakpoint(desktop-up) {
+      margin-left: 20px;
+    }
+  }
+}
+
+// Component: ./navigation.js styles
+.CaseStudies-Navigation {
+  width: 100%;
+  background: $white;
+  border-top: 1px solid $white;
+  padding: 18px 0;
+  top: 60px;
+
+  &__scroll-container {
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+    overflow-x: auto;
+    justify-content: flex-start;
+    gap: 20px;
+
+    @include breakpoint(desktop-up) {
+      justify-content: flex-start;
+    }
+    @include breakpoint(desktop-wide) {
+      justify-content: center;
+    }
+  }
+
+  &.nav-fixed {
+    position: sticky;
+    border-bottom: 1px solid #dbdbdb;
+    z-index: 2;
+    top: 60px;
+    @media (max-width: 1260px) {
+      top: 50px;
+    }
+  }
+
+  .nav-item-container {
+    display: inline;
+    min-width: 160px;
+  }
+
+  .nav-item {
+    width: 180px;
+    cursor: pointer;
+    height: 80px;
+    margin: 8px 10px;
+    background-color: $bg-color;
+    border-radius: 15px;
+    image-rendering: -webkit-optimize-contrast;
+
+    &:hover {
+      box-shadow: 1px 4px 5px grey;
+    }
+  }
+}

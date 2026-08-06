@@ -1,0 +1,18 @@
+@import '../../styles/variables';
+
+.Hero {
+  height: 470px;
+  display: flex;
+  justify-content: center;
+
+  @include breakpoint(mobile) {
+    justify-content: center;
+    min-height: 150px;
+    height: auto;
+    padding: 50px 0px;
+  }
+
+  &__subtitle {
+    width: 53vw;
+  }
+}
