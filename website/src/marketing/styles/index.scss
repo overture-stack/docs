@@ -15,9 +15,17 @@
 @import "variables";
 @import "bulma/sass/utilities/initial-variables";
 
-// Bulma variable overrides. The navbar-related ones the Gatsby site set are
-// gone with the navbar itself, which docusaurus.config.ts now supplies.
+// Bulma variable overrides.
+//
+// $navbar-breakpoint has to stay in step with the `navmenu-up` and
+// `navmenu-below` mixins in _variables.scss, which are written against 1160px.
+// Leaving it at Bulma's 1024px default would collapse the navbar to a burger at
+// a different width than the stylesheet expects.
 $primary-invert: $white;
+$navbar-item-hover-color: $pink-darker;
+$navbar-item-color: $navy-black;
+$navbar-item-hover-background-color: $grey-2;
+$navbar-breakpoint: 1160px;
 $link: $blue;
 $family-serif: $font-sans-serif;
 $family-primary: $family-serif;
@@ -25,15 +33,26 @@ $family-primary: $family-serif;
 .marketing {
   @import "bulma/bulma.sass";
 
+  // Bulma 0.9 defines its own `breakpoint($name)` mixin (sass/utilities/
+  // mixins.sass), which overwrites the site's. Bulma's looks the name up in its
+  // `$breakpoints` map and emits nothing at all when it misses, with no warning,
+  // so every `@include breakpoint(mobile)` and friend below would silently
+  // compile to nothing and the marketing pages would have no responsive rules.
+  // Re-importing here puts the site's mixin back for everything that follows.
+  // Keep this import after Bulma's and before the partials.
+  @import "variables";
+
   @import "util";
   @import "defaults";
   @import "common";
   @import "base";
 
   @import "components/button";
+  @import "components/footer";
   @import "components/hero";
   @import "components/homeproductlink";
   @import "components/icon";
+  @import "components/navbar";
   @import "components/notebox";
   @import "components/productspagesection";
   @import "components/servicespagesection";

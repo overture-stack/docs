@@ -15,7 +15,22 @@ export const PRIVACY_PATH = "/privacy/";
 export const PRODUCTS_PATH = "/products/";
 export const SERVICES_PATH = "/services/";
 export const TERMS_PATH = "/terms-conditions/";
-export const HOME_PATH = "/";
+// `/` is the documentation homepage in this build, so the marketing home sits
+// at /home/ until stage 3 gives the marketing build its own root.
+export const HOME_PATH = "/home/";
+
+/** Every route that renders as part of the marketing site. */
+export const MARKETING_PATHS = [
+  HOME_PATH,
+  ABOUT_US_PATH,
+  ACKNOWLEDGEMENTS_PATH,
+  CASE_STUDIES_PATH,
+  GETTING_STARTED_PATH,
+  PRIVACY_PATH,
+  PRODUCTS_PATH,
+  SERVICES_PATH,
+  TERMS_PATH,
+];
 
 export const caseStudyAnchors = {
   icgcargo: `${CASE_STUDIES_PATH}#icgcargo`,

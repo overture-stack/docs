@@ -78,6 +78,8 @@ The marketing site is being ported into this repository so that one codebase ser
 
 - **Where the code lives**: shared components, constants, case-study data and stylesheets are under `website/src/marketing/`. Each route is a page under `website/src/pages/`, one directory apiece: `about-us`, `acknowledgements`, `case-studies`, `getting-started`, `home`, `privacy`, `products`, `services`, and `terms-conditions`.
 
+- **The two sites have separate navigation**: the marketing pages carry their own navbar and footer, so a reader can tell which of the two sites they are on. `website/src/theme/Navbar/` and `website/src/theme/Footer/` decide which to render based on the route, and the marketing versions live in `website/src/marketing/components/`. Documentation routes are untouched and keep the navbar configured in `docusaurus.config.ts`. Adding a marketing nav item means editing `MarketingNavbar.tsx`, not the site config.
+
 - **The home page is at `/home/`, not `/`**: this build's `/` is the documentation homepage. The marketing build gets its own root later in the port, when the two hostnames are separated.
 
 - **Styles are Sass, and they are scoped**: the marketing pages carry their own styling built on [Bulma](https://bulma.io/), which would otherwise fight the documentation theme. Every stylesheet is imported inside a `.marketing` block by `website/src/marketing/styles/index.scss`, and only `MarketingPage.tsx` imports that file. If you are adding marketing styles, add a partial and import it there rather than importing a stylesheet from a component.

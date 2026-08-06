@@ -44,8 +44,15 @@
   }
   &__product-page-img {
     margin-bottom: 20px;
+    // The product icon set is drawn to a single 112x112 viewBox, so the Gatsby
+    // page never had to say how big these are. Anything from outside that set
+    // renders at its own intrinsic size and breaks the row, which is easy to do
+    // by accident when adding a section. Pin the size so it cannot happen.
+    width: 112px;
+    height: 112px;
     @include breakpoint(mobile) {
       width: 50px;
+      height: 50px;
       margin-right: 0.4em;
     }
   }

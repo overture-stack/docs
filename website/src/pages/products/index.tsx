@@ -138,17 +138,17 @@ export default function ProductsPage() {
         description="Lectern manages collections of data dictionaries: schemas that define the structure, constraints and relationships of a data model. It tracks how those dictionaries change over time and exposes them through a REST API, so a platform has one authoritative description of the data it accepts."
         features={[
           {
-            icon: "notes",
+            icon: "productMultipleSongsIndex",
             title: "Schema Definition",
             text: "Define the structure, constraints and relationships of your data elements",
           },
           {
-            icon: "graphCycle",
+            icon: "productStateControls",
             title: "Version Control",
             text: "Track how data structures change over time, and compare any two versions",
           },
           {
-            icon: "checkmark",
+            icon: "productMetadataValidation",
             title: "Schema Validation",
             text: "Check dictionary schemas against the Lectern base meta-schema before they are used",
           },
@@ -168,12 +168,12 @@ export default function ProductsPage() {
             text: "Every submission is validated against the Lectern dictionary it names",
           },
           {
-            icon: "productStateControls",
+            icon: "productHighTransfer",
             title: "Staged Submissions",
             text: "Contributors revise and revalidate their data before anything is committed",
           },
           {
-            icon: "history",
+            icon: "productMultipleIndexLevels",
             title: "Change History",
             text: "A complete audit trail of every submission and update, for data governance",
           },
@@ -198,7 +198,7 @@ export default function ProductsPage() {
             text: "Login and profile pages wired to Keycloak, including SSO identity providers",
           },
           {
-            icon: "palette",
+            icon: "productAdministrativeUI",
             title: "Theme Customization",
             text: "Fine-grained control over the appearance of individual components",
           },

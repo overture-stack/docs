@@ -1,11 +1,24 @@
 // Site-wide marketing rules, from the Gatsby site's src/styles/main.scss.
 //
-// Dropped on the way over, because the chrome and the libraries behind them are
-// not ported: the Bulma navbar overrides and `.has-navbar-fixed-top` (the navbar
-// comes from docusaurus.config.ts), the `.site-wrapper` flex scaffolding and the
-// `html, body, #___gatsby` height rules (Docusaurus owns the page shell), the
-// react-modal overrides (nothing rendered a modal), and the `.BottomCallout`
-// button colour (BottomCallout is one of the dead components).
+// Dropped on the way over, because what they styled is not ported: the
+// `.site-wrapper` flex scaffolding and the `html, body, #___gatsby` height rules
+// (Docusaurus owns the page shell), `.has-navbar-fixed-top` (the marketing
+// navbar is not fixed, so it needs no body offset), the react-modal overrides
+// (nothing rendered a modal), and the `.BottomCallout` button colour
+// (BottomCallout is one of the dead components).
+
+// Override Bulma's hover colour for the marketing navbar.
+a.navbar-item:hover {
+  color: $navy-black;
+}
+
+a.navbar-item.active-item {
+  background: $grey-2;
+
+  &:hover {
+    color: $pink-darker;
+  }
+}
 
 // Bulma's own `html` and `body` rules end up as `.marketing html` and
 // `.marketing body` once nested, so they never match and the marketing pages
