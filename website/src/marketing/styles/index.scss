@@ -1,0 +1,53 @@
+// Entry point for every marketing style in the site.
+//
+// The one structural change the port makes to the styles: instead of each
+// component importing its own `styles.scss`, everything is pulled in here and
+// nested inside `.marketing`. Bulma's global resets would otherwise fight
+// Infima and leak into the documentation pages, which share this build. Only
+// MarketingPage imports this file, and only marketing routes render it.
+//
+// Variables, mixins and Bulma's own configuration have to stay at the top
+// level: Sass scopes a variable to the block it is declared in, so anything
+// declared inside `.marketing` would be invisible to the partials below.
+
+@import "color-codes";
+@import "colors";
+@import "variables";
+@import "bulma/sass/utilities/initial-variables";
+
+// Bulma variable overrides. The navbar-related ones the Gatsby site set are
+// gone with the navbar itself, which docusaurus.config.ts now supplies.
+$primary-invert: $white;
+$link: $blue;
+$family-serif: $font-sans-serif;
+$family-primary: $family-serif;
+
+.marketing {
+  @import "bulma/bulma.sass";
+
+  @import "util";
+  @import "defaults";
+  @import "common";
+  @import "base";
+
+  @import "components/button";
+  @import "components/hero";
+  @import "components/homeproductlink";
+  @import "components/icon";
+  @import "components/notebox";
+  @import "components/productspagesection";
+  @import "components/servicespagesection";
+  @import "components/terminal";
+  @import "components/typography";
+  @import "components/yellowbutton";
+
+  @import "pages/home";
+  @import "pages/about-us";
+  @import "pages/acknowledgements";
+  @import "pages/case-studies";
+  @import "pages/getting-started";
+  @import "pages/privacy";
+  @import "pages/products";
+  @import "pages/services";
+  @import "pages/terms-conditions";
+}

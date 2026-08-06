@@ -1,7 +1,25 @@
 {
   // This file is not used in compilation. It is here just for a nice editor experience.
+  //
+  // It carried `"ignoreDeprecations": "6.0"` to silence an editor warning about
+  // `baseUrl` (which @docusaurus/tsconfig sets, and TypeScript 7 will drop).
+  // The installed TypeScript does not accept that value, so `npm run typecheck`
+  // failed before it reached any source. The deprecation belongs to the base
+  // config upstream; suppressing it here cost the repo its only type gate.
   "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
-    "ignoreDeprecations": "6.0"
-  }
+    // The base config's `baseUrl` resolves against its own directory inside
+    // node_modules, so its `@site/*` mapping points there rather than here.
+    // Repointing it at this directory is what makes `@site/*` imports resolve.
+    //
+    // Editors running a TypeScript 7 preview flag `baseUrl` as deprecated and
+    // suggest `"ignoreDeprecations": "6.0"`. Do not add it back: the installed
+    // TypeScript rejects that value, which is exactly how this project lost its
+    // type gate. The deprecation is the base config's to resolve upstream.
+    "baseUrl": "."
+  },
+  // Without this, tsc walks the whole package directory, including the build
+  // output and the vendored submodule docs, which are not ours to typecheck.
+  "include": ["src/", "*.ts"],
+  "exclude": ["build", "node_modules", ".docusaurus"]
 }

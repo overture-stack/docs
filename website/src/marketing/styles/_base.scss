@@ -1,0 +1,70 @@
+// Site-wide marketing rules, from the Gatsby site's src/styles/main.scss.
+//
+// Dropped on the way over, because the chrome and the libraries behind them are
+// not ported: the Bulma navbar overrides and `.has-navbar-fixed-top` (the navbar
+// comes from docusaurus.config.ts), the `.site-wrapper` flex scaffolding and the
+// `html, body, #___gatsby` height rules (Docusaurus owns the page shell), the
+// react-modal overrides (nothing rendered a modal), and the `.BottomCallout`
+// button colour (BottomCallout is one of the dead components).
+
+// Bulma's own `html` and `body` rules end up as `.marketing html` and
+// `.marketing body` once nested, so they never match and the marketing pages
+// would inherit Infima's base typography instead. Re-apply Bulma's defaults on
+// the wrapper itself, which is the element those rules were meant for.
+// `&` here is `.marketing` itself: this partial is imported inside that block.
+& {
+  background-color: $white;
+  color: #4a4a4a;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.hero {
+  background-color: $blue-top !important;
+}
+
+// Patch Bulma's `.container`; nicer padding across the marketing pages.
+.container {
+  padding: 0 32px;
+}
+
+.sr-only {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+a {
+  color: $blue-links;
+  text-decoration: underline;
+}
+
+.button {
+  text-decoration: none;
+
+  &.is-primary {
+    background: $navy-dark;
+
+    &:active,
+    &:hover,
+    &:focus {
+      background: $navy-black;
+    }
+  }
+}
+
+a.column {
+  text-decoration: none;
+}
+
+.grey-bg {
+  background-color: $grey-2;
+}
+
+.blue-bg {
+  background-color: $blue-block;
+}

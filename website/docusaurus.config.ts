@@ -59,6 +59,28 @@ const config: Config = {
   plugins: [
     "./docsPlugin.ts",
     [
+      // The marketing pages ported from the Gatsby site are written in Sass and
+      // build on Bulma; includePaths lets them import Bulma by package name
+      // rather than by a relative path into node_modules.
+      "docusaurus-plugin-sass",
+      {
+        sassOptions: {
+          includePaths: [require("path").resolve(__dirname, "node_modules")],
+          // Bulma 0.9 is built on Sass features Dart Sass has since deprecated
+          // (global built-ins, the old colour functions). quietDeps silences
+          // those without hiding anything our own stylesheets do.
+          quietDeps: true,
+          // Our own remaining deprecation: the marketing styles nest their
+          // imports inside `.marketing` to keep Bulma's resets off the
+          // documentation pages, and `@use` cannot be nested inside a selector,
+          // so `@import` is the only way to express that. Resolving it means
+          // trimming Bulma, which has to happen before Dart Sass 3.0 removes
+          // @import outright. See .dev/roadmap.md.
+          silenceDeprecations: ["import"],
+        },
+      },
+    ],
+    [
       "@docusaurus/plugin-content-docs",
       {
         id: "community",

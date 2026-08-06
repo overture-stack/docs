@@ -1,0 +1,18 @@
+// Common styles that don't belong to a component (yet)
+
+.yellow-bar {
+  max-width: 80px;
+  height: 4px;
+  min-width: 48px;
+  background-color: $yellow;
+}
+
+.bullet {
+  font-family: $font-sans-serif;
+  color: $navy-black;
+  letter-spacing: 0;
+  // line-height: 30px;
+  list-style-type: disc;
+  margin-left: 20px;
+  padding-left: 4px;
+}

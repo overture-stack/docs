@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import { useLocation } from '@docusaurus/router';
 
@@ -8,7 +8,7 @@ declare global {
   }
 }
 
-export default function MatomoTracking(): JSX.Element | null {
+export default function MatomoTracking(): React.JSX.Element | null {
   const location = useLocation();
 
   useEffect(() => {

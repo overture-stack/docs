@@ -36,6 +36,17 @@ npm start
 > [!IMPORTANT]
 > Docusaurus requires node version 18 or higher. All npm commands run from `website/`; there is no package manifest at the repository root.
 
+### Checking your work
+
+Two commands are worth running before you open a pull request, both from `website/`:
+
+```bash
+npm run typecheck   # tsc across website/src/
+npm run build       # fails on any broken internal link
+```
+
+`onBrokenLinks` is set to `throw`, so a link to a page that does not exist fails the build rather than shipping a 404.
+
 ## How Overture Docs Works
 
 - **Docusaurus**: We use Docusaurus to render the site, providing a sleek and navigable interface for our documentation.
@@ -59,6 +70,23 @@ npm start
 
 - **Interactive components**: Some pages embed browser-based tooling (the configuration generator, the Lectern dictionary playground, and the Song schema playground) built as React components under `website/src/components/`.
 
+- **Marketing pages**: This repository is also becoming the home of the overture.bio marketing site, ported from the Gatsby site at [overture-stack/website](https://github.com/overture-stack/website). Those pages are described in the next section.
+
+## The overture.bio marketing pages
+
+The marketing site is being ported into this repository so that one codebase serves both hostnames. The port is partway through: the pages are here and they build, but nothing a visitor sees has changed yet.
+
+- **Where the code lives**: shared components, constants, case-study data and stylesheets are under `website/src/marketing/`. Each route is a page under `website/src/pages/`, one directory apiece: `about-us`, `acknowledgements`, `case-studies`, `getting-started`, `home`, `privacy`, `products`, `services`, and `terms-conditions`.
+
+- **The home page is at `/home/`, not `/`**: this build's `/` is the documentation homepage. The marketing build gets its own root later in the port, when the two hostnames are separated.
+
+- **Styles are Sass, and they are scoped**: the marketing pages carry their own styling built on [Bulma](https://bulma.io/), which would otherwise fight the documentation theme. Every stylesheet is imported inside a `.marketing` block by `website/src/marketing/styles/index.scss`, and only `MarketingPage.tsx` imports that file. If you are adding marketing styles, add a partial and import it there rather than importing a stylesheet from a component.
+
+- **Assets live in `website/static/img/marketing/`** and are referenced by path, not imported.
+
+> [!NOTE]
+> `website-legacy/` is a staged, read-only copy of the Gatsby site, kept only for reference while the port finishes and deleted when it does. It is not built and not deployed. Do not fix things there; fix them in the ported pages, or in [overture-stack/website](https://github.com/overture-stack/website) if the change needs to reach the site currently serving overture.bio.
+
 ## Repository structure
 
 ```
@@ -76,6 +104,8 @@ npm start
 │
 ├── symlinker.sh                # Regenerates the submodule doc symlinks under /website/docs/
 │
+├── /website-legacy/            # Staged copy of the Gatsby site, reference only (see above)
+│
 └── /website/                   # Documentation Website
     ├── /docs/                  # All documentation content, split by reader journey
     │   ├── /develop-docs/      # Per-component developer docs (symlinked from submodules)
@@ -86,9 +116,11 @@ npm start
     ├── /src/                   # Website source code
     │   ├── /components/        # React components
     │   ├── /css/               # Component-specific styles
+    │   ├── /marketing/         # Components, data and Sass for the overture.bio pages
     │   ├── /theme/             # Global theme configuration and styling
-    │   └── /pages/             # Static page content
+    │   └── /pages/             # Static page content, including the marketing routes
     ├── /static/                # Static assets served as-is
+    │   └── /img/marketing/     # Images and icons for the marketing pages
     ├── docusaurus.config.ts    # Site config: plugin instances, navbar, redirects
     └── *Sidebars.ts            # One sidebar file per documentation section
 ```
@@ -102,6 +134,8 @@ npm start
     - **/docs/use-docs/**: Task-oriented content for people working with a running platform
     - **/docs/community-docs/**: Community-focused content, including the org-wide documentation standards linked from the `.github` submodule
     - **/src/**: Website implementation files including custom components, styling, and page content
+    - **/src/marketing/**: The overture.bio marketing pages ported from the Gatsby site
+- **/website-legacy/**: A staged copy of the Gatsby site, kept for reference until the port finishes
 
 > [!IMPORTANT]
 > Documentation content is owned by the submodules, not by this repository. Where a page under `website/docs/` is a symlink, edit the source file in `submodules/<project>/docs/` and land the change through that project's own repository.
