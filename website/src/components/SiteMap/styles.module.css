@@ -11,107 +11,64 @@
   padding: 0 1rem;
 }
 
-/* Category sections */
-.categorySection {
-  background-color: var(--category-category-color);
-  border-radius: 15px;
-  padding: 2rem;
-  box-shadow: var(--category-block-shadow);
-}
-
-.categoryHeader,
-.categorySubheader {
-  color: var(--category-title-color);
-}
-
-.categoryHeader {
-  margin-bottom: 0.5rem;
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-
-.categorySubheader {
-  font-size: 1rem;
-  opacity: 0.8;
-}
-
-/* Card grid */
-.cardGrid {
+/* ---- Journey picker row: three equal, identically-shaped tiles ---- */
+.pickerRow {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
-/* Card styles */
-.card {
+.pickerTile {
   --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  --card-shadow-hover: 0 1px 2px rgba(0, 0, 0, 0.15);
+  --card-shadow-hover: 0 4px 10px rgba(0, 0, 0, 0.15);
 
-  flex: 1 1 calc(50% - 0.5rem);
-  min-width: 100px;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 1rem;
-  border-radius: 10px;
-  background-color: var(--category-card-color);
+  gap: 0.6rem;
+  background-color: var(--category-category-color);
+  border-radius: 15px;
+  padding: 1.75rem;
   box-shadow: var(--card-shadow);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.card:hover,
-.card:focus {
+.pickerTile:hover,
+.pickerTile:focus {
   transform: translateY(-2px);
   box-shadow: var(--card-shadow-hover);
   text-decoration: none;
   outline: none;
 }
 
-.cardImage {
-  width: 46px;
-  height: 46px;
-  margin-bottom: 0.5rem;
-  object-fit: contain;
-}
-
-.cardTitle {
-  font-size: 1rem;
-  font-weight: 600;
-  text-align: center;
+.pickerTitle {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
   color: var(--category-title-color);
-  margin-bottom: 0.5rem;
 }
 
-.cardDescription {
-  font-size: 0.8rem;
-  text-align: center;
-  color: var(--ifm-color-emphasis-800);
-  margin-bottom: 0;
+.pickerDescription {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--category-title-color);
+  opacity: 0.8;
+  margin: 0;
 }
 
-/* Mosaic grid layout */
-.mosaicLayout {
-  display: flex;
-  gap: 2rem;
-}
-
-.mosaicLayout .leftColumn,
-.mosaicLayout .rightColumn {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.mosaicLayout .leftColumn {
-  gap: 2rem;
-}
-
-.mosaicLayout .rightColumn {
-  gap: 2rem;
-}
-
-.mosaicLayout .rightColumn .cardTitle {
+.pickerGo {
+  margin-top: auto;
   padding-top: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--journey-develop-color);
+}
+
+.pickerTile.deploy .pickerGo {
+  color: var(--journey-deploy-color);
+}
+
+.pickerTile.use .pickerGo {
+  color: var(--journey-use-color);
 }
 
 /* Funding section */
@@ -131,15 +88,18 @@
 }
 
 .fundingTitle {
-  font-size: 1.8rem;
+  font-size: 1.3rem;
+  font-weight: 700;
   margin-bottom: 1rem;
   color: var(--category-title-color);
 }
 
 .fundingDescription {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
   margin-bottom: 1.5rem;
-  color: var(--ifm-color-emphasis-800);
+  color: var(--category-title-color);
+  opacity: 0.8;
 }
 
 .fundingLink {
@@ -161,43 +121,14 @@
 }
 
 /* Responsive styles */
-@media (max-width: 1200px) {
-  .mosaicLayout {
+@media (max-width: 900px) {
+  .pickerRow {
     flex-direction: column;
   }
 }
 
 @media (max-width: 768px) {
-  .card {
-    flex: 1 1 100%;
-  }
-
-  .cardImage {
-    width: 50px;
-    height: 50px;
-  }
-
-  .cardTitle,
-  .cardDescription {
-    width: 100%;
-    text-align: center;
-  }
-
   .fundingBadge {
     padding: 1.5rem;
-  }
-
-  .fundingTitle {
-    font-size: 1.5rem;
-  }
-
-  .fundingDescription {
-    font-size: 1rem;
-  }
-
-  .mosaicLayout .rightColumn .card {
-    flex-direction: column;
-    text-align: left;
-    align-items: flex-start;
   }
 }

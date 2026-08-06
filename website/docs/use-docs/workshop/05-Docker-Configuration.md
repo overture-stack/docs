@@ -1,0 +1,248 @@
+---
+id: docker-configuration
+title: Docker Configuration
+sidebar_position: 5
+description: Walk through the docker-compose.yml service definitions and environment variables to wire configuration files into each container.
+---
+
+# Docker Configuration
+
+In the previous steps you generated three sets of configuration files: a PostgreSQL schema, an Elasticsearch mapping, and Arranger configs. This section covers what to update in `docker-compose.yml` to wire those files into the platform for your dataset, then how to apply the changes.
+
+## Step 1: Update for Your Dataset
+
+When you swap in a different dataset, a few values must change within the `docker-compose.yml`. The table below identifies each location:
+
+| Variable                                 | Service | Update to                                  |
+| ---------------------------------------- | ------- | ------------------------------------------ |
+| `ES_INDEX_0_NAME`                        | `setup` | your index name (`datatable1-index`)   |
+| `ES_INDEX_0_TEMPLATE_NAME`               | `setup` | your index name (`datatable1-index`)   |
+| `ES_INDEX_0_ALIAS_NAME`                  | `setup` | your alias name (`datatable1_centric`) |
+| `NEXT_PUBLIC_ARRANGER_DATATABLE_1_INDEX` | `stage` | your alias name (`datatable1_centric`) |
+
+The most common mistake is updating the alias in one place but not the others. If Arranger throws a GraphQL schema error on startup, check that `ES_INDEX_0_ALIAS_NAME`, `esIndex` in `base.json`, and `NEXT_PUBLIC_ARRANGER_DATATABLE_1_INDEX` all carry the same value.
+
+:::info
+**The index pattern** (e.g. `datatable1-*`) determines which future indices automatically inherit the mapping template. **The index name** (e.g. `datatable1-index`) is the concrete index created at startup. **The alias** (e.g. `datatable1_centric`) is what Arranger and Stage actually query. Aliases become more valuable when managing or migrating multiple indices, the distinction will be less apparent at this scale.
+:::
+
+## Step 2: Apply the Changes
+
+Since you previously ran `make demo`, the environment contains demo data that needs to be cleared before loading your own. Run a full reset first:
+
+```bash
+make reset
+```
+
+:::tip Windows (PowerShell)
+
+```powershell
+.\run.ps1 reset
+```
+
+:::
+
+This wipes all Elasticsearch and PostgreSQL data, stops all containers, and returns the environment to a clean state. Then bring the platform back up with:
+
+```bash
+make platform
+```
+
+:::tip Windows (PowerShell)
+
+```powershell
+.\run.ps1 platform
+```
+
+:::
+
+:::info
+For future configuration changes (once your own data is loaded), `make restart` is sufficient; it reloads configs without wiping data. Only use `make reset` when you need to start from scratch.
+:::
+
+#### Troubleshooting
+
+If services don't start correctly after changes:
+
+```bash
+# Check container logs
+docker logs setup
+docker logs postgres
+docker logs arranger
+docker logs stage
+
+# Verify PostgreSQL is healthy
+docker exec postgres pg_isready -U admin
+
+# Verify Elasticsearch is healthy
+curl -u elastic:myelasticpassword http://localhost:9200/_cluster/health?pretty
+
+# Full reset (caution: deletes all data)
+make reset
+```
+
+:::tip Windows (PowerShell): full reset
+
+```powershell
+.\run.ps1 reset
+```
+
+:::
+
+## Checkpoint
+
+Before proceeding, confirm:
+
+1. You updated `docker-compose.yml` with your dataset's index name, alias, and field values
+2. You ran `make reset` followed by `make platform` to clear demo data and start fresh
+3. The portal is accessible at http://localhost:3000
+
+**Stuck?** Run `docker ps` to check which containers are running. If a container exited, run `docker logs <container-name>` to see why.
+
+**Next:** With the infrastructure configured, let's load data into the portal.
+
+## Reference: Service Configuration Details
+
+The following sections explain how each service in `docker-compose.yml` is wired up. This is supplemental; you don't need to modify these while following along, but it's useful context if you're adapting the platform for your own deployment.
+
+### Setup
+
+The `setup` service runs initialization scripts that create PostgreSQL tables and Elasticsearch indices from your generated config files:
+
+```yaml showLineNumbers
+# PostgreSQL Configuration
+POSTGRES_CONFIGS_DIR: setup/configs/postgresConfigs
+POSTGRES_HOST: postgres
+POSTGRES_PORT: 5432
+# highlight-start
+POSTGRES_DB: ${POSTGRES_DB:-overtureDb} # update if changing the database name
+POSTGRES_USER: ${POSTGRES_USER:-admin} # update if changing credentials
+POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin123}
+# highlight-end
+
+# Elasticsearch Index Configuration
+ES_INDEX_COUNT: 1
+
+# highlight-start
+ES_INDEX_0_NAME: datatable1-index # must match the index name in your mapping file
+ES_INDEX_0_TEMPLATE_FILE: setup/configs/elasticsearchConfigs/datatable1-mapping.json # path to your mapping
+ES_INDEX_0_TEMPLATE_NAME: datatable1-index
+ES_INDEX_0_ALIAS_NAME: datatable1_centric # must match the alias in your mapping and base.json
+# highlight-end
+```
+
+| Variable                    | What it controls                                                                              |
+| --------------------------- | --------------------------------------------------------------------------------------------- |
+| `POSTGRES_DB/USER/PASSWORD` | Database credentials, must be consistent across all services that connect to PostgreSQL       |
+| `ES_INDEX_0_NAME`           | The Elasticsearch index name, corresponds to the index name entered in the Config Generator   |
+| `ES_INDEX_0_TEMPLATE_FILE`  | Path to your generated mapping JSON, tells setup where to find the index template             |
+| `ES_INDEX_0_ALIAS_NAME`     | The alias Arranger queries, must match `aliases` in your mapping and `esIndex` in `base.json` |
+
+:::info
+The `setup` container is backed by shell scripts under `setup/scripts/` that handle sequencing, health checks, and initialization signalling. You do not need to modify these while following along, they run automatically with `make platform` or `make demo`.
+:::
+
+:::tip
+Multiple datasets are supported, each gets its own index block following the same `ES_INDEX_1_*` pattern. This is beyond the scope of this tutorial, but reach out via [contact@overture.bio](mailto:contact@overture.bio) if you'd like guidance on multi-dataset setups afterwards.
+:::
+
+### PostgreSQL
+
+PostgreSQL stores your data persistently. The setup service auto-discovers and executes all `.sql` files from `setup/configs/postgresConfigs/` to create tables:
+
+```yaml showLineNumbers
+postgres:
+  image: postgres:15-alpine
+  restart: unless-stopped
+  environment:
+    # highlight-start
+    POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin123} # update if changing credentials
+    POSTGRES_USER: ${POSTGRES_USER:-admin} # update if changing credentials
+    POSTGRES_DB: ${POSTGRES_DB:-overtureDb} # update if changing the database name
+    # highlight-end
+  volumes:
+    - postgres-data:/var/lib/postgresql/data
+```
+
+| Variable            | What it controls                                                                 |
+| ------------------- | -------------------------------------------------------------------------------- |
+| `POSTGRES_PASSWORD` | Database password, must match the value set in the setup service                 |
+| `POSTGRES_USER`     | Database user, must match the value set in the setup service                     |
+| `POSTGRES_DB`       | Database name, must match the value set in the setup service and your SQL schema |
+
+The `postgres-data` volume ensures your data persists across container restarts. Credentials use `${VARIABLE:-default}` syntax, Docker Compose reads actual values from the `.env` file if it exists, falling back to the tutorial defaults. For production, create a `.env` file with strong passwords (see `.env.example`).
+
+:::tip
+Adding a second dataset only requires a new SQL file in `setup/configs/postgresConfigs/`, the setup service discovers and executes all `.sql` files automatically, no changes to `docker-compose.yml` are needed. This is beyond the scope of this tutorial, but reach out via [contact@overture.bio](mailto:contact@overture.bio) if you'd like guidance afterwards.
+:::
+
+### Arranger
+
+A single Arranger service provides the search API for your data. It reads one config directory per catalogue from the mounted `arrangerConfigs` folder; with one data table, that folder holds a single `datatable1` catalogue. The volume mount connects the Arranger configuration files you generated to the running container, and the environment variables tell it how to reach Elasticsearch:
+
+```yaml showLineNumbers
+arranger:
+  image: ghcr.io/overture-stack/arranger-search-server:b5c6051b
+  container_name: arranger
+  restart: unless-stopped
+  volumes:
+    # highlight-next-line
+    - ./setup/configs/arrangerConfigs:/app/configs # each subfolder is one catalogue
+  environment:
+    ES_HOST: http://elasticsearch:9200
+    # highlight-start
+    ES_USER: ${ES_USER:-elastic} # update if changing Elasticsearch credentials
+    ES_PASS: ${ES_PASSWORD:-myelasticpassword} # update if changing Elasticsearch credentials
+    ES_ARRANGER_SET_INDEX: arranger_set # index for saved sets, shared across catalogues
+    # highlight-end
+    PORT: 5050
+```
+
+| Setting                 | What it controls                                                                              |
+| ----------------------- | --------------------------------------------------------------------------------------------- |
+| Volume mount path       | The parent config directory; each subfolder (here, `datatable1`) is served as one catalogue    |
+| `ES_USER` / `ES_PASS`   | Credentials used to connect to Elasticsearch                                                   |
+| `ES_ARRANGER_SET_INDEX` | Elasticsearch index Arranger uses to store saved sets                                          |
+
+:::info Catalogue routing
+With a single catalogue, Arranger serves it at the root: `http://arranger:5050/graphql`. Add more catalogues (see the tip below) and each is served under its own path instead: `http://arranger:5050/<catalogue>/graphql`.
+:::
+
+:::tip
+Adding a second catalogue only requires a new config directory under `setup/configs/arrangerConfigs/`; the single Arranger service discovers it on restart and serves it at `/<catalogue>/graphql`, no new service block needed. This is beyond the scope of this tutorial, but reach out via [contact@overture.bio](mailto:contact@overture.bio) if you'd like guidance afterwards.
+:::
+
+### Stage
+
+Stage connects to Arranger via environment variables. These settings control the portal's identity and tell Stage which Arranger instance to query for each data table:
+
+```yaml showLineNumbers
+stage:
+  restart: unless-stopped
+  environment:
+    # highlight-start
+    NEXT_PUBLIC_LAB_NAME: ${NEXT_PUBLIC_LAB_NAME:-My Data Portal} # portal display name
+    NEXT_PUBLIC_ADMIN_EMAIL: ${NEXT_PUBLIC_ADMIN_EMAIL:-admin@example.org} # contact email shown in the portal
+    # highlight-end
+
+    # highlight-start
+    NEXT_PUBLIC_ARRANGER_DATATABLE_1_API: http://arranger:5050 # must match Arranger service name and port
+    NEXT_PUBLIC_ARRANGER_DATATABLE_1_DOCUMENT_TYPE: records
+    NEXT_PUBLIC_ARRANGER_DATATABLE_1_INDEX: datatable1_centric # must match ES_INDEX_0_ALIAS_NAME in setup
+    NEXT_PUBLIC_DATATABLE_1_EXPORT_ROW_ID_FIELD: submission_metadata.submission_id
+    # highlight-end
+
+    NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-your-secure-secret-here}
+```
+
+| Variable                                      | What it controls                                                                   |
+| --------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_LAB_NAME`                        | The display name shown in the portal header                                        |
+| `NEXT_PUBLIC_ADMIN_EMAIL`                     | Contact email shown in the portal footer                                           |
+| `NEXT_PUBLIC_ARRANGER_DATATABLE_1_API`        | The URL Stage uses to reach Arranger, must match the service name and port         |
+| `NEXT_PUBLIC_ARRANGER_DATATABLE_1_INDEX`      | The Elasticsearch alias Stage queries, must match `ES_INDEX_0_ALIAS_NAME` in setup |
+| `NEXT_PUBLIC_DATATABLE_1_EXPORT_ROW_ID_FIELD` | The field used as the unique row identifier for TSV export                         |
+
+:::tip
+Stage natively supports up to 5 data table connections following the `DATATABLE_1`, `DATATABLE_2` naming pattern. Adding a second connection is beyond the scope of this tutorial, but reach out via [contact@overture.bio](mailto:contact@overture.bio) if you'd like guidance afterwards.
+:::

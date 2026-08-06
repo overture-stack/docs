@@ -1,0 +1,261 @@
+/*
+ * Styles for the embedded Dictionary Playground.
+ * Ported from the Prelude IBCworkshop stage app (emotion) to Docusaurus CSS
+ * Modules. Chrome uses Infima variables so it adapts to light/dark site themes;
+ * the CodeMirror editor stays dark (oneDark) and the live preview stays on a
+ * light surface so the Lectern table renders legibly in either site theme.
+ */
+
+.playground {
+	display: flex;
+	flex-direction: column;
+	margin: 1.5rem 0;
+	border: 1px solid var(--ifm-color-emphasis-300);
+	border-radius: 8px;
+	overflow: hidden;
+	background: var(--ifm-background-color);
+	font-size: 14px;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	flex-wrap: wrap;
+	padding: 10px 16px;
+	border-bottom: 1px solid var(--ifm-color-emphasis-300);
+	background: var(--ifm-color-emphasis-100);
+	flex-shrink: 0;
+}
+
+.title {
+	margin: 0;
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--ifm-heading-color);
+}
+
+.subtitle {
+	margin: 2px 0 0;
+	font-size: 12px;
+	color: var(--ifm-color-emphasis-600);
+}
+
+.subtitle a {
+	color: var(--ifm-link-color);
+	text-decoration: underline;
+}
+
+.headerActions {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+/* ── Buttons ────────────────────────────────────────────────────────────── */
+.btnPrimary {
+	padding: 6px 14px;
+	font-size: 12px;
+	font-weight: 500;
+	border-radius: 4px;
+	border: 1px solid var(--ifm-color-primary);
+	background: var(--ifm-color-primary);
+	color: #fff;
+	cursor: pointer;
+}
+.btnPrimary:hover {
+	background: var(--ifm-color-primary-dark);
+	border-color: var(--ifm-color-primary-dark);
+}
+
+.ghostButton {
+	padding: 3px 9px;
+	font-size: 11px;
+	border-radius: 3px;
+	border: 1px solid var(--ifm-color-emphasis-300);
+	background: var(--ifm-background-color);
+	color: var(--ifm-color-emphasis-700);
+	cursor: pointer;
+}
+.ghostButton:hover {
+	background: var(--ifm-color-emphasis-200);
+	color: var(--ifm-color-emphasis-900);
+}
+
+/* ── Stacked layout (editor above, preview below) ───────────────────────── */
+.stack {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+}
+
+/* The editor keeps a fixed working height and scrolls internally; the preview
+   below flows to its natural height so the page provides the scroll length. */
+.editorPanel {
+	min-width: 0;
+	display: grid;
+	grid-template-rows: auto auto 1fr;
+	overflow: hidden;
+	border-bottom: 1px solid var(--ifm-color-emphasis-300);
+	resize: vertical;
+	min-height: 280px;
+	max-height: 680px;
+}
+
+.editorToolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 6px 10px;
+	border-bottom: 1px solid var(--ifm-color-emphasis-300);
+	background: var(--ifm-color-emphasis-100);
+}
+
+.paneLabel {
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	color: var(--ifm-color-emphasis-600);
+}
+
+.toolbarButtons {
+	display: flex;
+	gap: 4px;
+}
+
+/* ── Validation strip ───────────────────────────────────────────────────── */
+.status {
+	min-height: 26px;
+	max-height: 100px;
+	overflow-y: auto;
+	border-bottom: 2px solid;
+	-webkit-overflow-scrolling: touch;
+}
+.statusValid {
+	border-color: #2e7d32;
+	background: #f1f8f1;
+}
+.statusWarning {
+	border-color: #b45309;
+	background: #fffbeb;
+}
+.statusError {
+	border-color: #c62828;
+	background: #fff0f0;
+}
+
+.statusValidText {
+	padding: 4px 12px;
+	font-size: 11px;
+	font-weight: 600;
+	color: #2e7d32;
+}
+
+.statusMsgList {
+	padding: 4px 12px;
+}
+.statusMsg {
+	font-family: var(--ifm-font-family-monospace);
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 1.5;
+	padding: 1px 0;
+}
+.statusMsgWarn {
+	color: #b45309;
+}
+.statusMsgErr {
+	color: #c62828;
+}
+
+/* ── CodeMirror editor ──────────────────────────────────────────────────── */
+.editorWrap {
+	overflow: hidden;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+}
+.editorWrap :global(.cm-editor) {
+	height: 100%;
+	font-size: 13px;
+}
+.editorWrap :global(.cm-scroller) {
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+/* ── Preview panel (kept on a light surface for the Lectern table) ──────── */
+.previewPanel {
+	background: #ffffff;
+	color: #1a1a2e;
+	display: flex;
+	flex-direction: column;
+}
+
+.previewHeader {
+	padding: 8px 12px;
+	border-bottom: 1px solid #e0e0e0;
+	background: #f0f4f8;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	color: #555;
+	flex-shrink: 0;
+}
+
+.previewContent {
+	padding: 0;
+	overflow: hidden;
+	-webkit-overflow-scrolling: touch;
+	animation: preview-bounce 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.previewBody {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+}
+
+.previewScale {
+	transform: scale(0.88);
+	transform-origin: top center;
+	width: 100%;
+	max-width: 100%;
+}
+
+@keyframes preview-bounce {
+	0% {
+		transform: translateY(-8px);
+		opacity: 0.5;
+	}
+	55% {
+		transform: translateY(3px);
+		opacity: 1;
+	}
+	75% {
+		transform: translateY(-2px);
+	}
+	90% {
+		transform: translateY(1px);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+
+.previewEmpty {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 140px;
+	color: #999;
+	font-size: 14px;
+	padding: 24px;
+	text-align: center;
+}

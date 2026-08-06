@@ -1,0 +1,33 @@
+---
+title: Config Generator
+---
+
+import ConfigGenerator from '/src/components/ConfigGenerator';
+
+# Config Generator
+
+Give the generator a CSV (upload a file, paste rows, or press **Load example**) and it produces a starter for every configuration file Overture derives from your data:
+
+- an Elasticsearch or OpenSearch **index mapping**
+- the four **Arranger** configs: `base.json`, `extended.json`, `table.json`, and `facets.json`
+- a **Lectern** dictionary
+- a **Postgres** table definition
+
+Treat the output as a starting point, not a finished config: types are inferred from a sample of your values, so review them and add descriptions and validation before production. Switch between the tabs to review each file, then copy or download it. For the field-by-field walkthrough, see [Index Mappings](/use/administration/index-mappings) and [Customizing the Data Portal](/use/administration/customizing-the-data-portal).
+
+<ConfigGenerator
+  title="Config Generator"
+  subtitle="Turn a CSV into a full set of starter configs (index mapping, Arranger configs, Lectern dictionary, and Postgres table), entirely in your browser."
+/>
+
+## Working with hierarchical data
+
+The generator treats your CSV as a single table, producing one schema, one index mapping, and one Postgres table. It does not infer relationships between files, so it is a per-table starting point, not a whole data model.
+
+Overture data can span several related entities. Clinical data, for example, is a hierarchy: a donor has many specimens, each specimen has many samples, plus diagnoses and treatments. Rather than flattening that into one wide CSV, model it as related tables:
+
+1. **Split it into one CSV per entity** (`donor.csv`, `specimen.csv`, `sample.csv`), each with its own identifier column and a column holding its parent's identifier (`specimen.csv` carries a `donor_id`).
+2. **Run the generator once per file** for a starting schema, mapping, and table.
+3. **Join them by hand:** collect the schemas into one Lectern dictionary, mark each entity's identifier as its `uniqueKey` and each child's parent column as a `foreignKey`, then add the matching primary and foreign keys in Postgres.
+
+See [Building Dictionaries](/use/administration/building-dictionaries) for how `uniqueKey` and `foreignKey` express these relationships.

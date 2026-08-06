@@ -1,0 +1,583 @@
+/*
+ * Styles for the embedded Song Schema Playground.
+ * Same shell as the Dictionary Playground (CSS Modules + Infima variables,
+ * theme-aware), plus a CSV-generation panel and a self-rendered property table
+ * for the live preview (Song has no Lectern-style rendered component).
+ */
+
+.playground {
+	/* The editor toolbar and the preview header are siblings in different panes,
+	   so a shared height is what keeps their bottom borders on one line. */
+	--song-bar-height: 36px;
+	display: flex;
+	flex-direction: column;
+	height: clamp(560px, 82vh, 760px);
+	margin: 1.5rem 0;
+	border: 1px solid var(--ifm-color-emphasis-300);
+	border-radius: 8px;
+	overflow: hidden;
+	background: var(--ifm-background-color);
+	font-size: 14px;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	flex-wrap: wrap;
+	padding: 10px 16px;
+	border-bottom: 1px solid var(--ifm-color-emphasis-300);
+	background: var(--ifm-color-emphasis-100);
+	flex-shrink: 0;
+}
+.title {
+	margin: 0;
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--ifm-heading-color);
+}
+.subtitle {
+	margin: 2px 0 0;
+	font-size: 12px;
+	color: var(--ifm-color-emphasis-600);
+}
+.headerActions {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+/* ── Buttons ────────────────────────────────────────────────────────────── */
+.btnPrimary {
+	padding: 6px 14px;
+	font-size: 12px;
+	font-weight: 500;
+	border-radius: 4px;
+	border: 1px solid var(--ifm-color-primary);
+	background: var(--ifm-color-primary);
+	color: #fff;
+	cursor: pointer;
+}
+.btnPrimary:hover:not(:disabled) {
+	background: var(--ifm-color-primary-dark);
+	border-color: var(--ifm-color-primary-dark);
+}
+.btnPrimary:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+.ghostButton {
+	padding: 3px 9px;
+	font-size: 11px;
+	border-radius: 3px;
+	border: 1px solid var(--ifm-color-emphasis-300);
+	background: var(--ifm-background-color);
+	color: var(--ifm-color-emphasis-700);
+	cursor: pointer;
+}
+.ghostButton:hover:not(:disabled) {
+	background: var(--ifm-color-emphasis-200);
+	color: var(--ifm-color-emphasis-900);
+}
+.ghostButton:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+.ghostButtonActive {
+	background: var(--ifm-color-primary);
+	border-color: var(--ifm-color-primary);
+	color: #fff;
+}
+
+/* ── Generate-from-CSV panel ────────────────────────────────────────────── */
+.csvPanel {
+	padding: 12px 16px;
+	border-bottom: 1px solid var(--ifm-color-emphasis-300);
+	background: var(--ifm-color-emphasis-100);
+	flex-shrink: 0;
+}
+.csvRow {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	flex-wrap: wrap;
+	margin-bottom: 8px;
+}
+.csvLabel {
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--ifm-color-emphasis-800);
+}
+.csvInputs {
+	display: flex;
+	gap: 12px;
+	align-items: flex-end;
+	flex-wrap: wrap;
+	margin-top: 8px;
+}
+.nameField {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+.nameField label {
+	font-size: 11px;
+	color: var(--ifm-color-emphasis-700);
+}
+.textInput,
+.csvTextarea {
+	box-sizing: border-box;
+	border: 1px solid var(--ifm-color-emphasis-300);
+	border-radius: 4px;
+	padding: 6px 9px;
+	font-size: 12px;
+	color: var(--ifm-font-color-base);
+	background: var(--ifm-background-color);
+}
+.csvTextarea {
+	width: 100%;
+	font-family: var(--ifm-font-family-monospace);
+	resize: vertical;
+}
+.textInput:focus,
+.csvTextarea:focus {
+	outline: none;
+	border-color: var(--ifm-color-primary);
+}
+.csvError {
+	margin-top: 8px;
+	font-size: 12px;
+	color: var(--ifm-color-danger-dark);
+}
+
+/* ── Split pane ─────────────────────────────────────────────────────────── */
+.split {
+	display: flex;
+	flex: 1;
+	overflow: hidden;
+	min-height: 0;
+}
+.editorPanel {
+	min-width: 0;
+	display: grid;
+	grid-template-rows: auto auto 1fr;
+	overflow: hidden;
+}
+.editorToolbar {
+	box-sizing: border-box;
+	min-height: var(--song-bar-height);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	padding: 2px 12px;
+	border-bottom: 1px solid var(--ifm-color-emphasis-300);
+	background: var(--ifm-color-emphasis-100);
+	flex-wrap: wrap;
+}
+.paneLabel {
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	color: var(--ifm-color-emphasis-600);
+}
+.toolbarButtons {
+	display: flex;
+	gap: 4px;
+	flex-wrap: wrap;
+}
+
+/* ── Validation strip ───────────────────────────────────────────────────── */
+.status {
+	min-height: 26px;
+	max-height: 110px;
+	overflow-y: auto;
+	border-bottom: 2px solid;
+	-webkit-overflow-scrolling: touch;
+}
+.statusValid {
+	border-color: #2e7d32;
+	background: #f1f8f1;
+}
+.statusWarning {
+	border-color: #b45309;
+	background: #fffbeb;
+}
+.statusError {
+	border-color: #c62828;
+	background: #fff0f0;
+}
+.statusValidText {
+	padding: 4px 12px;
+	font-size: 11px;
+	font-weight: 600;
+	color: #2e7d32;
+}
+.statusMsgList {
+	padding: 4px 12px;
+}
+.statusMsg {
+	font-family: var(--ifm-font-family-monospace);
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 1.5;
+	padding: 1px 0;
+}
+.statusMsgWarn {
+	color: #b45309;
+}
+.statusMsgErr {
+	color: #c62828;
+}
+
+/* ── CodeMirror editor ──────────────────────────────────────────────────── */
+.editorWrap {
+	overflow: hidden;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+}
+.editorWrap :global(.cm-editor) {
+	height: 100%;
+	font-size: 13px;
+}
+.editorWrap :global(.cm-scroller) {
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+/* ── Drag handle ────────────────────────────────────────────────────────── */
+.dragHandle {
+	width: 8px;
+	flex-shrink: 0;
+	background: var(--ifm-color-emphasis-200);
+	cursor: col-resize;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 0.15s;
+}
+.dragHandle:hover {
+	background: var(--ifm-color-emphasis-300);
+}
+.dragHandle:hover .dragDots {
+	opacity: 1;
+}
+.dragDots {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	opacity: 0.4;
+	transition: opacity 0.15s;
+	pointer-events: none;
+}
+.dragDot {
+	display: block;
+	width: 3px;
+	height: 3px;
+	border-radius: 50%;
+	background: var(--ifm-color-emphasis-600);
+}
+
+/* ── Preview panel (self-rendered field table) ──────────────────────────── */
+.previewPanel {
+	flex: 1;
+	overflow-y: auto;
+	background: var(--ifm-background-color);
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+	-webkit-overflow-scrolling: touch;
+	overscroll-behavior: contain;
+}
+.previewHeader {
+	box-sizing: border-box;
+	min-height: var(--song-bar-height);
+	display: flex;
+	align-items: center;
+	padding: 2px 12px;
+	border-bottom: 1px solid var(--ifm-color-emphasis-300);
+	background: var(--ifm-color-emphasis-100);
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	color: var(--ifm-color-emphasis-600);
+	flex-shrink: 0;
+}
+.previewBody {
+	padding: 12px 14px 24px;
+	/* Deeply nested properties indent the name column, so let the table scroll
+	   sideways on its own rather than widening the panel. */
+	overflow-x: auto;
+}
+/* One section per object: heading, its own constraints, then its field table. */
+.group + .group {
+	margin-top: 22px;
+	padding-top: 18px;
+	border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+.groupHeading {
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+	flex-wrap: wrap;
+	margin-bottom: 6px;
+}
+.groupTitle {
+	font-family: var(--ifm-font-family-monospace);
+	font-size: 13px;
+	font-weight: 700;
+	color: var(--ifm-color-primary);
+	background: none;
+	border: none;
+	padding: 0;
+}
+/* Reads before the title, e.g. "each item in workflow.inputs". */
+.groupPrefix {
+	font-size: 12px;
+	color: var(--ifm-color-emphasis-700);
+}
+/* Authored prose, so it reads in the body font rather than as machine output. */
+.groupDescription {
+	margin: 0 0 6px;
+	font-size: 12px;
+	line-height: 1.5;
+	color: var(--ifm-color-emphasis-800);
+}
+.groupKind {
+	font-size: 10px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.4px;
+	color: var(--ifm-color-emphasis-600);
+	border: 1px solid var(--ifm-color-emphasis-300);
+	border-radius: 3px;
+	padding: 1px 5px;
+}
+.groupNote,
+.groupCondition {
+	font-family: var(--ifm-font-family-monospace);
+	font-size: 11px;
+	line-height: 1.5;
+	margin-bottom: 3px;
+	word-break: break-word;
+}
+.groupNote {
+	color: var(--ifm-color-emphasis-700);
+}
+/* Conditionals decide whether a submission validates, so they read as rules
+   rather than as another note, and carry a label saying what they are. */
+.conditionBlock {
+	margin: 6px 0 8px;
+	padding: 6px 9px;
+	border-left: 3px solid #b45309;
+	background: rgba(180, 83, 9, 0.06);
+	border-radius: 0 3px 3px 0;
+}
+.conditionLabel {
+	display: block;
+	font-size: 10px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.4px;
+	color: #b45309;
+	margin-bottom: 3px;
+}
+.groupCondition {
+	color: #b45309;
+	margin-bottom: 2px;
+}
+.groupCondition:last-child {
+	margin-bottom: 0;
+}
+/* Stands in for a table whose every row would only point at another table. */
+.groupSummary {
+	font-size: 12px;
+	line-height: 1.6;
+	color: var(--ifm-color-emphasis-700);
+	padding: 2px 0 4px;
+}
+.groupEmpty {
+	font-size: 11px;
+	color: var(--ifm-color-emphasis-500);
+	padding: 2px 0 4px;
+}
+.fieldTable {
+	border-collapse: collapse;
+	width: 100%;
+	font-size: 12px;
+}
+.fieldTable th {
+	text-align: left;
+	padding: 6px 10px;
+	border-bottom: 2px solid var(--ifm-color-emphasis-300);
+	color: var(--ifm-color-emphasis-700);
+	font-weight: 600;
+	white-space: nowrap;
+}
+.fieldTable td {
+	padding: 6px 10px;
+	border-bottom: 1px solid var(--ifm-color-emphasis-200);
+	vertical-align: top;
+}
+/* Required fields carry their weight in the name column, which keeps the
+   Required column light enough to skim past for everything else. */
+.fieldName {
+	font-family: var(--ifm-font-family-monospace);
+	color: var(--ifm-color-emphasis-900);
+	font-weight: 500;
+	white-space: nowrap;
+}
+.fieldNameRequired {
+	color: var(--ifm-color-primary);
+	font-weight: 700;
+}
+.fieldType {
+	font-family: var(--ifm-font-family-monospace);
+	color: var(--ifm-color-emphasis-800);
+	white-space: nowrap;
+}
+/* Jumps the preview to the table describing a nested object or array item. */
+.jumpButton {
+	font-family: var(--ifm-font-family-monospace);
+	font-size: inherit;
+	color: var(--ifm-color-primary);
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	text-underline-offset: 2px;
+}
+.jumpButton:hover {
+	text-decoration-style: solid;
+}
+/* Opens a deeper object's fields inside the row that names it. */
+.toggleButton {
+	font-family: var(--ifm-font-family-monospace);
+	font-size: inherit;
+	color: var(--ifm-color-primary);
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	white-space: nowrap;
+}
+.toggleButton:hover {
+	text-decoration: underline;
+}
+.nestedRow > td {
+	padding: 0;
+	border-bottom: 1px solid var(--ifm-color-emphasis-200);
+	background: var(--ifm-color-emphasis-100);
+}
+.nestedPanel {
+	margin: 0 0 4px 10px;
+	padding: 8px 0 8px 10px;
+	border-left: 2px solid var(--ifm-color-emphasis-300);
+}
+.nestedHeading {
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+	flex-wrap: wrap;
+	margin-bottom: 5px;
+}
+/* An inline table sits on a tinted row, so its own cells stay transparent. */
+.nestedPanel .fieldTable th,
+.nestedPanel .fieldTable td {
+	background: none;
+}
+.fieldRequirement {
+	white-space: nowrap;
+}
+.requiredBadge {
+	display: inline-block;
+	font-size: 10px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.4px;
+	color: #b45309;
+}
+.conditionalBadge {
+	display: inline-block;
+	font-size: 10px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.4px;
+	color: #b45309;
+	border-bottom: 1px dotted #b45309;
+	cursor: help;
+}
+/* Same shape as the required badge so the column reads as one axis, muted so a
+   table of optional fields stays quiet. */
+.optionalBadge {
+	display: inline-block;
+	font-size: 10px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.4px;
+	color: var(--ifm-color-emphasis-500);
+}
+.fieldDetails {
+	font-family: var(--ifm-font-family-monospace);
+	font-size: 11px;
+	color: var(--ifm-color-emphasis-600);
+	word-break: break-word;
+}
+.detailsLine {
+	line-height: 1.5;
+}
+/* Authored prose leads the cell, in the body font, above the constraints. */
+.fieldDescription {
+	font-family: var(--ifm-font-family-base);
+	font-size: 12px;
+	line-height: 1.45;
+	color: var(--ifm-color-emphasis-800);
+	margin-bottom: 3px;
+}
+.patternValue {
+	background: none;
+	border: none;
+	padding: 0;
+	color: var(--ifm-color-emphasis-700);
+	cursor: help;
+}
+/* Allowed values read as a wrapped set of chips rather than one long sentence. */
+.enumChips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 3px;
+	margin-bottom: 3px;
+}
+.enumChip {
+	font-size: 10px;
+	line-height: 1.4;
+	padding: 1px 5px;
+	border: 1px solid var(--ifm-color-emphasis-300);
+	border-radius: 3px;
+	background: var(--ifm-color-emphasis-100);
+	color: var(--ifm-color-emphasis-800);
+	white-space: nowrap;
+}
+.enumMore {
+	font-size: 10px;
+	line-height: 1.6;
+	color: var(--ifm-color-emphasis-500);
+	cursor: help;
+}
+.previewEmpty {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 1;
+	color: var(--ifm-color-emphasis-500);
+	font-size: 14px;
+	padding: 24px;
+	text-align: center;
+}
