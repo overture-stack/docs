@@ -59,27 +59,36 @@ const config: Config = {
   plugins: [
     "./docsPlugin.ts",
     [
-      // The marketing pages ported from the Gatsby site are written in Sass and
-      // build on Bulma; includePaths lets them import Bulma by package name
-      // rather than by a relative path into node_modules.
+      // The marketing pages ported from the Gatsby site are written in Sass.
+      // `includePaths` and `quietDeps` went with Bulma in rebuild phase 2: there
+      // is no longer a node_modules stylesheet to resolve by package name, and no
+      // third-party Sass whose deprecations need silencing.
       "docusaurus-plugin-sass",
       {
         sassOptions: {
-          includePaths: [require("path").resolve(__dirname, "node_modules")],
-          // Bulma 0.9 is built on Sass features Dart Sass has since deprecated
-          // (global built-ins, the old colour functions). quietDeps silences
-          // those without hiding anything our own stylesheets do.
-          quietDeps: true,
-          // Our own remaining deprecation: the marketing styles nest their
-          // imports inside `.marketing` to keep Bulma's resets off the
-          // documentation pages, and `@use` cannot be nested inside a selector,
-          // so `@import` is the only way to express that. Resolving it means
-          // trimming Bulma, which has to happen before Dart Sass 3.0 removes
-          // @import outright. See .dev/roadmap.md.
+          // The marketing styles nest their imports inside `.marketing` to keep
+          // their bare class names and element rules off the documentation pages,
+          // which share one emitted stylesheet with them. `@use` cannot be nested
+          // inside a selector, so `@import` is the only way to express that.
+          // Removing Bulma did not resolve this: the site's own partials need the
+          // same scoping, so the Dart Sass 3.0 deadline is still live and now
+          // needs a different answer. See .dev/roadmap.md.
           silenceDeprecations: ["import"],
         },
       },
     ],
+    // Tailwind runs through PostCSS. It is prefixed and preflight-free (see
+    // src/css/tailwind.css), so unlike Bulma it can be a global stylesheet
+    // without reaching the documentation pages' typography.
+    function tailwindPlugin() {
+      return {
+        name: "tailwind-plugin",
+        configurePostCss(postCssOptions: { plugins: unknown[] }) {
+          postCssOptions.plugins.push(require("@tailwindcss/postcss"));
+          return postCssOptions;
+        },
+      };
+    },
     [
       "@docusaurus/plugin-content-docs",
       {
@@ -382,7 +391,7 @@ const config: Config = {
           onUntruncatedBlogPosts: "warn",
         },
         theme: {
-          customCss: "./src/css/custom.css",
+          customCss: ["./src/css/custom.css", "./src/css/tailwind.css"],
         },
       } satisfies Preset.Options,
     ],
@@ -415,6 +424,16 @@ const config: Config = {
         {
           href: "https://github.com/overture-stack",
           label: "GitHub",
+          position: "right",
+        },
+        // The only route from the documentation back to the website. Before
+        // this, the two sites pointed one way: overture.bio linked into the
+        // docs from its navbar, and the docs linked back only from two legal
+        // items in the footer. Absolute and correct in both states, since it
+        // resolves to the Gatsby site today and to the ported one after stage 3.
+        {
+          href: "https://www.overture.bio/",
+          label: "overture.bio",
           position: "right",
         },
       ],

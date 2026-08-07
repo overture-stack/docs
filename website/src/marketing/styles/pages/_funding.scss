@@ -1,5 +1,8 @@
 
-.AcknowlegementsPage {
+// Carried over from the retired /acknowledgements/ page, which this replaces:
+// same hero, header and two-column detail layout, against maintained content.
+.FundingPage,
+.PublicationsPage {
   .Hero {
     padding: 0;
 
@@ -97,5 +100,26 @@
     @include breakpoint(desktop-up) {
       width: 50%;
     }
+  }
+}
+
+.PublicationsPage {
+  .citation-heading {
+    margin-top: 2em;
+    margin-bottom: 0.6em;
+  }
+
+  // Citations are copied by hand, so they wrap rather than scroll: a horizontal
+  // scrollbar hides the tail of a reference the reader is trying to select.
+  .citation {
+    background-color: $white;
+    border: 1px solid $grey-3;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 0;
+    overflow-wrap: break-word;
+    padding: 1em 1.2em;
+    white-space: pre-wrap;
   }
 }

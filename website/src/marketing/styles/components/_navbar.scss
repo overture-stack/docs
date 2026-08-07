@@ -1,10 +1,10 @@
 // Infima styles the bare `.navbar` class too, and Docusaurus's rule is global
 // rather than scoped, so it reaches this navbar as well. It pins the element to
 // `--ifm-navbar-height` and adds its own padding, which crushed the navbar to a
-// single 64px row and pushed the menu down over the page. Bulma's `.navbar` is
-// the one this markup wants, so undo Infima's two properties at a specificity
-// that beats it. `.navbar-brand`, `.navbar-menu` and `.navbar-item` do not
-// collide: Infima's equivalents are BEM (`.navbar__brand` and friends).
+// single 64px row and pushed the menu down over the page. The `.navbar` in
+// `_layout.scss` is the one this markup wants, so undo Infima's two properties at
+// a specificity that beats it. `.navbar-brand`, `.navbar-menu` and `.navbar-item`
+// do not collide: Infima's equivalents are BEM (`.navbar__brand` and friends).
 .NavHeader.navbar {
   height: auto;
   padding: 0;

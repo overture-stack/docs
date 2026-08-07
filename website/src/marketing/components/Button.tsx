@@ -75,7 +75,7 @@ export default function Button({
     icon ? (
       <Icon
         alt={iconAlt}
-        className="mr2"
+        className="ow:mr-4"
         style={iconStyle}
         size={iconSizes[size]}
         img={icon}

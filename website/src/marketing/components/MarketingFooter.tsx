@@ -2,10 +2,11 @@ import React from "react";
 import Link from "./Link";
 import {
   ABOUT_US_PATH,
-  ACKNOWLEDGEMENTS_PATH,
   CASE_STUDIES_PATH,
+  FUNDING_PATH,
   PRIVACY_PATH,
   PRODUCTS_PATH,
+  PUBLICATIONS_PATH,
   SERVICES_PATH,
   TERMS_PATH,
 } from "../constants/pages";
@@ -18,10 +19,13 @@ import {
 
 const OICR_LOGO = "/img/marketing/chrome/oicr_logo.svg";
 
+// Funding and Publications replace the retired Acknowledgements entry, and are
+// the only route to either page until phase 4 rebuilds the nav and this footer.
 const links = [
   { name: "Products", url: PRODUCTS_PATH },
   { name: "About Us", url: ABOUT_US_PATH },
-  { name: "Acknowledgements", url: ACKNOWLEDGEMENTS_PATH },
+  { name: "Funding", url: FUNDING_PATH },
+  { name: "Publications", url: PUBLICATIONS_PATH },
   { name: "Services", url: SERVICES_PATH },
   { name: "Case Studies", url: CASE_STUDIES_PATH },
   { name: "Software Licensing", url: OVERTURE_DOCUMENTATION_LICENSING },
@@ -65,19 +69,19 @@ export default function MarketingFooter() {
           </div>
           <NetlifyBadge className="netlify-badge-desktop" />
         </div>
-        <div className="bg-grey px1 footer-grey">
+        <div className="bg-grey ow:px-2 footer-grey">
           <div className="footer-grey__text ">
             <div className="footer-grey__top-container-mobile">
-              <div className="px1">© {new Date().getFullYear()} Overture.</div>
+              <div className="ow:px-2">© {new Date().getFullYear()} Overture.</div>
               <NetlifyBadge className="netlify-badge-mobile" />
             </div>
 
-            <div className="px2 ">
+            {/* Acknowledgements used to repeat here, a second link to a page
+                already in the row above. Retired with the page itself. */}
+            <div className="ow:px-4 ">
               <Link to={PRIVACY_PATH}>Privacy</Link>
               <span>|</span>
               <Link to={TERMS_PATH}>Terms &amp; Conditions</Link>
-              <span>|</span>
-              <Link to={ACKNOWLEDGEMENTS_PATH}>Acknowledgements</Link>
             </div>
             <NetlifyBadge className="netlify-badge-tablet" />
           </div>

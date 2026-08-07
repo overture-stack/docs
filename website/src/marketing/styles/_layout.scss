@@ -1,0 +1,624 @@
+// Everything the marketing pages used to take from Bulma, written out.
+//
+// Bulma shipped 291KB compiled to deliver what this file delivers in ~180
+// lines. It was removed in rebuild phase 2 (see .dev/roadmap.md); this partial
+// is what replaced it, so the ported markup keeps rendering identically without
+// the framework underneath it.
+//
+// Two rules on keeping this file honest:
+//
+// 1. Every rule here was extracted from Bulma 0.9.4 compiled with this site's
+//    own variable overrides, then filtered to what the marketing markup can
+//    actually reach. Values are Bulma's, verbatim, including the ones that look
+//    arbitrary (`z-index: 30`, `86ms`). Do not "tidy" them: they are a
+//    compatibility surface, not a design decision. Restyling belongs in the
+//    component and page partials that come after this one.
+// 2. It has to stay first in index.scss, where Bulma's import used to be, so
+//    every later partial keeps overriding it at equal specificity. Several
+//    partials rely on that: `_base.scss` patches `.container` and `.button`,
+//    `_button.scss` patches `.custom-button`, `_navbar.scss` outranks `.navbar`.
+//
+// The `.marketing` nesting in index.scss is what keeps all of this off the
+// documentation pages, which share one stylesheet with these. That is also what
+// makes the bare class names below safe: `.marketing p` (0,1,1) beats Infima's
+// `p` (0,0,1), and nothing here can match outside a marketing route.
+
+// ---------------------------------------------------------------------------
+// Reset (Bulma's minireset.sass, plus the element rules from base/generic.sass)
+//
+// This is the part that is easy to miss when accounting for what Bulma does:
+// the marketing pages are built on its reset, not just its layout classes.
+// Dropping it would hand every heading, paragraph and list back to Infima's
+// typography, on all nine routes at once. Bulma's own `html` and `body` rules
+// are not here because they became `.marketing html`/`.marketing body` once
+// nested and never matched; `_base.scss` re-applies their values to the
+// `.marketing` wrapper itself, which is the element they were meant for.
+// ---------------------------------------------------------------------------
+
+p, ol, ul, li, dl, dt, dd, blockquote, figure, fieldset, legend, textarea, pre,
+iframe, hr, h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: 100%;
+  font-weight: normal;
+}
+
+ul {
+  list-style: none;
+}
+
+button, input, select, textarea {
+  margin: 0;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+img, video {
+  height: auto;
+  max-width: 100%;
+}
+
+iframe {
+  border: 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+
+  td, th {
+    vertical-align: top;
+
+    &:not([align]) {
+      text-align: inherit;
+    }
+  }
+
+  th {
+    color: hsl(0, 0%, 21%);
+  }
+}
+
+td, th {
+  padding: 0;
+}
+
+article, aside, figure, footer, header, hgroup, section {
+  display: block;
+}
+
+button, input, optgroup, select, textarea {
+  font-family: $font-sans-serif;
+}
+
+code, pre {
+  -moz-osx-font-smoothing: auto;
+  -webkit-font-smoothing: auto;
+  font-family: monospace;
+}
+
+// `_base.scss` overrides the colour and underline on `a`; what survives from
+// here is the cursor.
+a {
+  color: #109ed9;
+  cursor: pointer;
+  text-decoration: none;
+
+  strong {
+    color: currentColor;
+  }
+
+  &:hover {
+    color: hsl(0, 0%, 21%);
+  }
+}
+
+code {
+  background-color: hsl(0, 0%, 96%);
+  color: hsl(348, 86%, 46%);
+  font-size: 0.875em;
+  font-weight: normal;
+  padding: 0.25em 0.5em 0.25em;
+}
+
+hr {
+  background-color: hsl(0, 0%, 96%);
+  border: none;
+  display: block;
+  height: 2px;
+  margin: 1.5rem 0;
+}
+
+small {
+  font-size: 0.875em;
+}
+
+span {
+  font-style: inherit;
+  font-weight: inherit;
+}
+
+strong {
+  color: hsl(0, 0%, 21%);
+  font-weight: 700;
+}
+
+fieldset {
+  border: none;
+}
+
+pre {
+  -webkit-overflow-scrolling: touch;
+  background-color: hsl(0, 0%, 96%);
+  color: hsl(0, 0%, 29%);
+  font-size: 0.875em;
+  overflow-x: auto;
+  padding: 1.25rem 1.5rem;
+  white-space: pre;
+  word-wrap: normal;
+
+  code {
+    background-color: transparent;
+    color: currentColor;
+    font-size: 1em;
+    padding: 0;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Layout: .container and .section
+//
+// The two breakpoints are Bulma's `$widescreen` (1216px) and `$fullhd`
+// (1408px). Bulma emitted these as `.container:not(.is-max-desktop)` and
+// `:not(.is-max-widescreen)`; no marketing page uses either modifier, so the
+// plain class carries both max-widths.
+// ---------------------------------------------------------------------------
+
+.container {
+  flex-grow: 1;
+  margin: 0 auto;
+  position: relative;
+  width: auto;
+
+  @media screen and (min-width: 1216px) {
+    max-width: 1152px;
+  }
+
+  @media screen and (min-width: 1408px) {
+    max-width: 1344px;
+  }
+}
+
+.section {
+  padding: 3rem 1.5rem;
+
+  @media screen and (min-width: 1216px) {
+    padding: 3rem 3rem;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Layout: .hero and .hero-body (privacy and terms only)
+//
+// `_base.scss` forces the background colour with `!important`; only the box
+// model comes from here.
+// ---------------------------------------------------------------------------
+
+.hero {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hero-body {
+  flex-grow: 1;
+  flex-shrink: 0;
+  padding: 3rem 1.5rem;
+
+  @media screen and (min-width: 1024px), print {
+    padding: 3rem 3rem;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Grid: .columns and .column (the case studies page only)
+//
+// Note the breakpoint: Bulma's columns do NOT become a flex row until 1024px,
+// so they stack below that. That is the responsive behaviour of every case
+// study, and it is easy to lose by writing `display: flex` unconditionally.
+// ---------------------------------------------------------------------------
+
+.columns {
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+  margin-top: -0.75rem;
+
+  &:last-child {
+    margin-bottom: -0.75rem;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: calc(1.5rem - 0.75rem);
+  }
+
+  @media screen and (min-width: 1024px), print {
+    display: flex;
+  }
+}
+
+.column {
+  display: block;
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+  padding: 0.75rem;
+
+  @media screen and (min-width: 1024px), print {
+    &.is-6 {
+      flex: none;
+      width: 50%;
+    }
+
+    &.is-offset-0 {
+      margin-left: 0%;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Elements: .button
+//
+// Bulma emitted this as several rules in cascade order; they are merged here.
+// `Button.tsx` uses `.button` with `is-primary`, `is-white`, `is-small`,
+// `is-medium` and `is-large`, so those five modifiers are all live. The
+// remaining colour modifiers were dropped with the framework.
+// ---------------------------------------------------------------------------
+
+.button {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid transparent;
+  border-color: hsl(0, 0%, 86%);
+  border-radius: 4px;
+  border-width: 1px;
+  box-shadow: none;
+  color: hsl(0, 0%, 21%);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 1rem;
+  height: 2.5em;
+  justify-content: center;
+  line-height: 1.5;
+  padding-bottom: calc(0.5em - 1px);
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: calc(0.5em - 1px);
+  position: relative;
+  text-align: center;
+  vertical-align: top;
+  white-space: nowrap;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  strong {
+    color: inherit;
+  }
+
+  &:focus,
+  &:active,
+  &.is-active {
+    outline: none;
+  }
+
+  &:hover {
+    border-color: hsl(0, 0%, 71%);
+    color: hsl(0, 0%, 21%);
+  }
+
+  &:focus {
+    border-color: #109ed9;
+    color: hsl(0, 0%, 21%);
+
+    &:not(:active) {
+      box-shadow: 0 0 0 0.125em rgba(16, 158, 217, 0.25);
+    }
+  }
+
+  &:active,
+  &.is-active {
+    border-color: hsl(0, 0%, 29%);
+    color: hsl(0, 0%, 21%);
+  }
+
+  &.is-white {
+    background-color: #fff;
+    border-color: transparent;
+    color: #000;
+
+    &:hover {
+      background-color: rgb(97.5%, 97.5%, 97.5%);
+      border-color: transparent;
+      color: #000;
+    }
+
+    &:focus {
+      border-color: transparent;
+      color: #000;
+
+      &:not(:active) {
+        box-shadow: 0 0 0 0.125em rgba(255, 255, 255, 0.25);
+      }
+    }
+
+    &:active,
+    &.is-active {
+      background-color: rgb(95%, 95%, 95%);
+      border-color: transparent;
+      color: #000;
+    }
+  }
+
+  // `_base.scss` repaints this to the Overture navy; the geometry is Bulma's.
+  &.is-primary {
+    background-color: hsl(171, 100%, 41%);
+    border-color: transparent;
+    color: #fff;
+
+    &:hover {
+      background-color: hsl(171, 100%, 38.5%);
+      border-color: transparent;
+      color: #fff;
+    }
+
+    &:focus {
+      border-color: transparent;
+      color: #fff;
+
+      &:not(:active) {
+        box-shadow: 0 0 0 0.125em rgba(0, 209, 178, 0.25);
+      }
+    }
+
+    &:active,
+    &.is-active {
+      background-color: hsl(171, 100%, 36%);
+      border-color: transparent;
+      color: #fff;
+    }
+  }
+
+  &.is-small {
+    font-size: 0.75rem;
+  }
+
+  &.is-medium {
+    font-size: 1.25rem;
+  }
+
+  &.is-large {
+    font-size: 1.5rem;
+  }
+
+  &[disabled] {
+    background-color: #fff;
+    border-color: hsl(0, 0%, 86%);
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Components: .navbar
+//
+// `$navbar-breakpoint` was set to 1160px in index.scss, so every query here is
+// written against that rather than Bulma's 1024px default. It has to stay in
+// step with the `navmenu-up` and `navmenu-below` mixins in `_variables.scss`.
+//
+// `_navbar.scss` restyles most of this. What only exists here, and what the
+// mobile menu actually depends on, is the `.navbar-menu` display toggle and the
+// `.navbar-burger` bars: `display: none` by default, `block` when `.is-active`
+// is present below 1160px. That pair is the open/close behaviour of the mobile
+// nav, not decoration.
+//
+// Bulma's `.navbar > .container` rules are not here: this navbar wraps its
+// contents in `.nav-container`, which is the site's own class.
+// ---------------------------------------------------------------------------
+
+.navbar {
+  background-color: #fff;
+  min-height: 3.25rem;
+  position: relative;
+  z-index: 30;
+
+  @media screen and (min-width: 1160px) {
+    align-items: stretch;
+    display: flex;
+    min-height: 3.25rem;
+  }
+}
+
+.navbar-brand {
+  align-items: stretch;
+  display: flex;
+  flex-shrink: 0;
+  min-height: 3.25rem;
+
+  a.navbar-item {
+    &:focus,
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+  @media screen and (max-width: 1159px) {
+    .navbar-item {
+      align-items: center;
+      display: flex;
+    }
+  }
+}
+
+.navbar-burger {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background: none;
+  border: none;
+  color: #003055;
+  cursor: pointer;
+  display: block;
+  font-family: inherit;
+  font-size: 1em;
+  height: 3.25rem;
+  margin: 0;
+  margin-left: auto;
+  padding: 0;
+  position: relative;
+  width: 3.25rem;
+
+  span {
+    background-color: currentColor;
+    display: block;
+    height: 1px;
+    left: calc(50% - 8px);
+    position: absolute;
+    transform-origin: center;
+    transition-duration: 86ms;
+    transition-property: background-color, opacity, transform;
+    transition-timing-function: ease-out;
+    width: 16px;
+
+    &:nth-child(1) {
+      top: calc(50% - 6px);
+    }
+
+    &:nth-child(2) {
+      top: calc(50% - 1px);
+    }
+
+    &:nth-child(3) {
+      top: calc(50% + 4px);
+    }
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  // The burger becomes an X when the mobile menu is open.
+  &.is-active {
+    span:nth-child(1) {
+      transform: translateY(5px) rotate(45deg);
+    }
+
+    span:nth-child(2) {
+      opacity: 0;
+    }
+
+    span:nth-child(3) {
+      transform: translateY(-5px) rotate(-45deg);
+    }
+  }
+
+  @media screen and (min-width: 1160px) {
+    display: none;
+  }
+}
+
+.navbar-menu {
+  display: none;
+
+  @media screen and (max-width: 1159px) {
+    background-color: #fff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 0;
+
+    &.is-active {
+      display: block;
+    }
+  }
+
+  @media screen and (min-width: 1160px) {
+    align-items: stretch;
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 0;
+  }
+}
+
+.navbar-start,
+.navbar-end {
+  @media screen and (min-width: 1160px) {
+    align-items: stretch;
+    display: flex;
+  }
+}
+
+.navbar-start {
+  @media screen and (min-width: 1160px) {
+    justify-content: flex-start;
+    margin-right: auto;
+  }
+}
+
+.navbar-end {
+  @media screen and (min-width: 1160px) {
+    justify-content: flex-end;
+    margin-left: auto;
+  }
+}
+
+.navbar-item {
+  color: #003055;
+  display: block;
+  flex-grow: 0;
+  flex-shrink: 0;
+  line-height: 1.5;
+  padding: 0.5rem 0.75rem;
+  position: relative;
+
+  img {
+    max-height: 1.75rem;
+  }
+
+  @media screen and (min-width: 1160px) {
+    align-items: center;
+    display: flex;
+  }
+}
+
+// `$navbar-item-hover-*` and `$navbar-item-color` were set in index.scss, so
+// these are the Overture pink and grey rather than Bulma's defaults.
+a.navbar-item {
+  cursor: pointer;
+
+  &:focus,
+  &:focus-within,
+  &:hover,
+  &.is-active {
+    background-color: #f2f3f5;
+    color: #9e005d;
+  }
+
+  @media screen and (min-width: 1160px) {
+    &.is-active {
+      color: #000;
+
+      &:not(:focus):not(:hover) {
+        background-color: transparent;
+      }
+    }
+  }
+}

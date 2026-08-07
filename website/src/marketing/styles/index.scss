@@ -2,45 +2,43 @@
 //
 // The one structural change the port makes to the styles: instead of each
 // component importing its own `styles.scss`, everything is pulled in here and
-// nested inside `.marketing`. Bulma's global resets would otherwise fight
-// Infima and leak into the documentation pages, which share this build. Only
-// MarketingPage imports this file, and only marketing routes render it.
+// nested inside `.marketing`. These pages share one emitted stylesheet with the
+// documentation, so the nesting is what keeps their bare class names and element
+// rules off the docs pages. Only MarketingPage imports this file, and only
+// marketing routes render it.
 //
-// Variables, mixins and Bulma's own configuration have to stay at the top
-// level: Sass scopes a variable to the block it is declared in, so anything
-// declared inside `.marketing` would be invisible to the partials below.
+// Variables and mixins have to stay at the top level: Sass scopes a variable to
+// the block it is declared in, so anything declared inside `.marketing` would be
+// invisible to the partials below.
+//
+// Bulma was removed here in rebuild phase 2. It used to be imported at the top
+// of the `.marketing` block, and `_layout.scss` now occupies exactly that
+// position: it carries the reset and the seven class families the ported markup
+// takes from it, so every later partial keeps overriding the same things at the
+// same specificity. Three things went with it:
+//
+//   - The `$navbar-breakpoint`, `$navbar-item-*`, `$link`, `$primary-invert` and
+//     `$family-*` overrides, which only ever configured Bulma. The values they
+//     set are written into `_layout.scss` directly.
+//   - `@import "bulma/sass/utilities/initial-variables"`. Nothing in this tree
+//     used a variable it defined; verified before removing it.
+//   - A second `@import "variables"` inside `.marketing`, which existed only
+//     because Bulma 0.9 defined its own `breakpoint($name)` mixin and silently
+//     clobbered the site's. With Bulma gone there is one `breakpoint()` mixin
+//     and no need to restore it.
+//
+// `@import` is still deprecated, and this file still depends on it: `@use`
+// cannot be nested inside a selector, so `.marketing { @import ... }` has no
+// modern equivalent. Removing Bulma did not resolve that, because the site's own
+// 2,800 lines still need the same scoping. See .dev/roadmap.md.
 
 @import "color-codes";
 @import "colors";
 @import "variables";
-@import "bulma/sass/utilities/initial-variables";
-
-// Bulma variable overrides.
-//
-// $navbar-breakpoint has to stay in step with the `navmenu-up` and
-// `navmenu-below` mixins in _variables.scss, which are written against 1160px.
-// Leaving it at Bulma's 1024px default would collapse the navbar to a burger at
-// a different width than the stylesheet expects.
-$primary-invert: $white;
-$navbar-item-hover-color: $pink-darker;
-$navbar-item-color: $navy-black;
-$navbar-item-hover-background-color: $grey-2;
-$navbar-breakpoint: 1160px;
-$link: $blue;
-$family-serif: $font-sans-serif;
-$family-primary: $family-serif;
 
 .marketing {
-  @import "bulma/bulma.sass";
-
-  // Bulma 0.9 defines its own `breakpoint($name)` mixin (sass/utilities/
-  // mixins.sass), which overwrites the site's. Bulma's looks the name up in its
-  // `$breakpoints` map and emits nothing at all when it misses, with no warning,
-  // so every `@include breakpoint(mobile)` and friend below would silently
-  // compile to nothing and the marketing pages would have no responsive rules.
-  // Re-importing here puts the site's mixin back for everything that follows.
-  // Keep this import after Bulma's and before the partials.
-  @import "variables";
+  // Keep first: this is where Bulma used to sit in the cascade.
+  @import "layout";
 
   @import "util";
   @import "defaults";
@@ -62,9 +60,8 @@ $family-primary: $family-serif;
 
   @import "pages/home";
   @import "pages/about-us";
-  @import "pages/acknowledgements";
   @import "pages/case-studies";
-  @import "pages/getting-started";
+  @import "pages/funding";
   @import "pages/privacy";
   @import "pages/products";
   @import "pages/services";

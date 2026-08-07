@@ -44,6 +44,25 @@
       }
     }
 
+    // Reads as a caption under the hero copy rather than a third paragraph
+    // competing with it. The negative top margin pulls it back inside the
+    // section's 18px gap, so the hero keeps the fixed height _hero.scss sets.
+    // No opacity: this sits on the hero's light blue, and the site carries a
+    // WCAG 2.1 AA obligation. Smaller type is what makes it subtle, not
+    // washing out the contrast.
+    &__attribution {
+      color: inherit;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin: -8px 0 0;
+      max-width: 30em;
+
+      a {
+        color: inherit;
+        text-decoration: underline;
+      }
+    }
+
     &__large-button {
       height: fit-content;
       font-size: 40px;

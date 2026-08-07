@@ -4,10 +4,10 @@
 import React from "react";
 import Link from "../components/Link";
 import { P2 } from "../components/Typography";
+import metrics from "./metrics";
 import {
   ICGC_ARGO_LINK,
   ICGC_ARGO_PORTAL_LINK,
-  VIRUSSEQ_LINK,
   VIRUSSEQ_PORTAL_LINK,
   KIDS_FIRST_LINK,
   IHCC_LINK,
@@ -54,9 +54,9 @@ const caseStudies: CaseStudyData[] = [
     logo: `${ASSETS}/icgcargo/logo.svg`,
     listItems: [
       [
-        "63,116 committed donors, 26 programs representing 13 countries and 20 tumour types",
-        "ICGC ARGO aims to analyze specimens from 100,000 cancer patients",
-        "IGGC DACO governs the responsible sharing of this data for use in research",
+        `${metrics.icgcArgoParticipants.value} participants across ${metrics.icgcArgoPrograms.value} programs representing ${metrics.icgcArgoCountries.value} countries`,
+        `${metrics.icgcArgoRegisteredUsers.value} registered users, a subset of whom are approved for controlled-access data`,
+        "ICGC DACO governs the responsible sharing of this data for use in research",
       ],
       [
         {
@@ -75,7 +75,7 @@ const caseStudies: CaseStudyData[] = [
         { "Ego:": "Provides stateless authentication and authorization" },
       ],
       [
-        "ICGC-ARGO is collecting genomic and clinical data from 100k cancer patients. With Overture as the backbone for ICGC ARGO's infrastructure, researchers can search and gain authorized access to genomic and clinical data collected from 26 international projects.",
+        `ICGC-ARGO harmonizes genomic and clinical data for ${metrics.icgcArgoParticipants.value} participants. With Overture as the backbone of its infrastructure, researchers can search and gain authorized access to data collected across ${metrics.icgcArgoPrograms.value} programs in ${metrics.icgcArgoCountries.value} countries.`,
       ],
     ],
     clientLink: ICGC_ARGO_LINK,
@@ -89,50 +89,62 @@ const caseStudies: CaseStudyData[] = [
   },
 
   {
-    title: "VirusSeq",
+    // Renamed from VirusSeq on 2026-08-07. The platform's scope moved with the
+    // name, from SARS-CoV-2 sequencing to pathogen genomes and environmental
+    // wastewater surveillance, so this is a rewrite rather than a relabel.
+    //
+    // The slug stays `virusseq` deliberately: it is the anchor id that today's
+    // #virusseq links land on, and .dev/ia-proposal.md keeps those ids so
+    // existing fragment links survive the move to /impact/. Phase 3 gives the
+    // platform its own page at the current name.
+    //
+    // [NEEDS: logo file] The logo and chart assets below are still VirusSeq
+    // branded, so the card currently shows a VirusSeq mark under an iMicroSeq
+    // heading. Dropping them instead would render a broken image, so they stay
+    // until iMicroSeq artwork exists.
+    title: "iMicroSeq",
     slug: "virusseq",
     portalLink: VIRUSSEQ_PORTAL_LINK,
     description: (
       <P2>
-        The <Link to={VIRUSSEQ_PORTAL_LINK}>Canadian VirusSeq Data Portal</Link>{" "}
-        is an open-source and open-access data portal for all Canadian
-        SARS-CoV-2 sequences and associated non-personal contextual data.
-        VirusSeq harmonizes, validates, and automates submission to
-        international databases, providing critical information for public
-        health and policy decisions, testing and tracing strategies, virus
-        detection and surveillance methods, vaccine and drug development, and
-        understanding susceptibility, disease severity, and clinical outcomes.
+        <Link to={VIRUSSEQ_PORTAL_LINK}>iMicroSeq</Link> is an open-access
+        Canadian database of microbial sequences and harmonized contextual
+        metadata, built on the platform that began as the Canadian VirusSeq Data
+        Portal. It harmonizes and validates submissions, automates deposit into
+        international databases, and now spans clinical pathogen genomes and
+        environmental wastewater surveillance, informing public health decisions,
+        outbreak detection, and vaccine and drug development.
       </P2>
     ),
     logo: `${ASSETS}/virusseq/logo.svg`,
     listItems: [
       [
-        "Built-in 4 weeks with Overture",
-        "Hosts 474,215 viral genomes, surpassing the projection of 150K",
+        `${metrics.imicroseqPathogenGenomes.value} pathogen genomes and environmental wastewater data`,
+        `${metrics.imicroseqClinicalSamples.value} clinical samples and ${metrics.imicroseqWastewaterRecords.value} environmental wastewater records`,
         "Horizontally scaled with replica Score, Song, and Maestro instances",
       ],
       [
-        { "Score:": "Managed file transfers and object storage" },
+        { "Score:": "Manages file transfers and object storage" },
         {
           "Song:":
-            "Modified for the validation and tracking of viral sequencing metadata",
+            "Validates and tracks pathogen sequencing metadata against a custom data model",
         },
-        { "Maestro:": "Indexed sample data for downstream search" },
+        { "Maestro:": "Indexes sample data for downstream search" },
         {
           "Arranger:":
             "Responsible for all search capabilities, including faceted search and data tables",
         },
-        { "Ego:": "Governed the authorization of applications" },
+        { "Lectern:": "Manages the data dictionaries submissions validate against" },
       ],
       [
-        "The VirusSeq Data Portal is an open-access data portal for all Canadian SARS-CoV-2 sequences. Using Overture, the portal was created within a 4 week timeframe. Initially intented to store 150,000 viral sequences, with Overture's scalable indexing, it has expanded to host 500,000 genomes.",
+        `iMicroSeq is an open-access Canadian database of microbial sequences, launched in ${metrics.imicroseqLaunch.value} as the VirusSeq Data Portal and since broadened to pathogen genomes and wastewater surveillance. Overture's scalable indexing carries ${metrics.imicroseqPathogenGenomes.value} genomes alongside their contextual metadata.`,
       ],
     ],
     clientLink: VIRUSSEQ_PORTAL_LINK,
     details: [
       {
         title: "Chart",
-        description: "Virus Seq Chart",
+        description: "iMicroSeq chart",
         screenshot: `${ASSETS}/virusseq/chart.png`,
       },
     ],

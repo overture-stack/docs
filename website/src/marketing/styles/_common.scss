@@ -7,12 +7,61 @@
   background-color: $yellow;
 }
 
-.bullet {
+// The section heading on the prose routes (privacy, terms).
+//
+// Those pages moved to Markdown in rebuild phase 2, so their headings are now
+// plain `h2` elements rather than the `<div><H3/><div class="yellow-bar"/></div>`
+// the JSX built by hand. This reproduces that exactly: the `.t-h3` type scale,
+// the 1rem of space above, and the yellow rule underneath as a pseudo-element
+// instead of an empty div.
+//
+// Defined here rather than in either page partial because both use it, and
+// `_common.scss` is imported before `pages/*` so the mixin is in scope for them.
+@mixin prose-section-heading {
+  padding-top: 1rem;
   font-family: $font-sans-serif;
+  font-weight: 900;
+  font-size: 24px;
   color: $navy-black;
   letter-spacing: 0;
-  // line-height: 30px;
-  list-style-type: disc;
-  margin-left: 20px;
-  padding-left: 4px;
+  line-height: 40px;
+
+  @include breakpoint(mobile) {
+    font-size: 20px;
+    line-height: 30px;
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    max-width: 80px;
+    min-width: 48px;
+    height: 4px;
+    margin: 1rem 0;
+    background-color: $yellow;
+  }
 }
+
+// Markdown emits bare `ul`/`li`, so the `.bullet` look has to come from the
+// element selectors. `_layout.scss` resets `ul` to `list-style: none`, which is
+// what this puts back.
+@mixin prose-bullets {
+  ul {
+    li {
+      list-style-type: disc;
+      margin-left: 20px;
+      padding-left: 4px;
+
+      // The Markdown sources keep a blank line between bullets, which is much
+      // easier to read when the items run several lines long. That makes them
+      // loose lists, so each item's text arrives wrapped in a `p` and picks up
+      // the 20px paragraph margin, spacing the bullets apart. The JSX these
+      // pages replaced had no `p` inside its `li`, so zero it back out and the
+      // source stays readable without changing the rendering.
+      > p {
+        margin: 0;
+      }
+    }
+  }
+}
+

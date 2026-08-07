@@ -11,11 +11,12 @@ import {
   SERVICES_PATH,
   caseStudyAnchors,
   productsAnchors,
-  GETTING_STARTED_PATH,
 } from "../../marketing/constants/pages";
 import {
   DEMO_LINK,
   DOCKER_DOWNLOAD,
+  GI_PROGRAM_LINK,
+  PRELUDE_DOCS_LINK,
 } from "../../marketing/constants/externalLinks";
 
 const ASSETS = "/img/marketing/home";
@@ -59,8 +60,23 @@ export default function HomePage() {
               platforms where researchers manage, share and access genomics
               data.
             </P1>
+            {/* Institutional attribution, subtle but present: one line, here
+                rather than a band further down, because it is what makes
+                everything below it credible. See .dev/ia-proposal.md finding 10
+                for what this deliberately is not, namely a co-brand. */}
+            <p className="Hero__attribution">
+              Developed and built by the{" "}
+              <a
+                href={GI_PROGRAM_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Genome Informatics program
+              </a>{" "}
+              at the Ontario Institute for Cancer Research.
+            </p>
             <div className="Hero__small-buttons-container">
-              <Button link={GETTING_STARTED_PATH} size="medium" type="primary">
+              <Button link={PRELUDE_DOCS_LINK} size="medium" type="primary">
                 Get Started
               </Button>
               <Button link={DEMO_LINK} size="medium" type="primary">
@@ -140,7 +156,7 @@ export default function HomePage() {
                 icon="arrowRightBlack"
                 ariaLabel="Next case study"
                 type="default"
-                className="top-white__blue-container-arrow-tablet top-white__blue-container-arrow ml2"
+                className="top-white__blue-container-arrow-tablet top-white__blue-container-arrow ow:ml-4"
                 onClick={handleRightArrowClick}
               />
             </div>
@@ -253,12 +269,12 @@ export default function HomePage() {
             <span className="upper-grey__text">massive genomic datasets.</span>
           </h2>
         </div>
-        <div className="mt3 lower-grey__buttons">
+        <div className="ow:mt-8 lower-grey__buttons">
           <Button
             link={ABOUT_US_PATH}
             size="medium"
             type="primary"
-            className="upper-grey__button mt2"
+            className="upper-grey__button ow:mt-4"
           >
             About Us
           </Button>
@@ -266,7 +282,7 @@ export default function HomePage() {
             link={SERVICES_PATH}
             size="medium"
             type="primary"
-            className="upper-grey__button mt2"
+            className="upper-grey__button ow:mt-4"
           >
             Our Services
           </Button>
@@ -339,14 +355,11 @@ export default function HomePage() {
             <div className="lower-blue-section__title-holder">
               <H2>Getting Started</H2>
               <P2 className="text-subtitle">
-                <b>
-                  <code>3</code> Steps, <code>2</code> Commands, <code>1</code>{" "}
-                  Platform
-                </b>
+                <b>Try the whole stack locally</b>
               </P2>
               <P1 className="middle-white__title-text">
-                The Overture Quickstart enables a fast and frictionless setup of
-                our data platform locally.
+                Prelude stands up an Overture platform on your own machine, with
+                no cloud account and nothing to provision.
               </P1>
             </div>
             {/* div with the blue background */}
@@ -359,58 +372,49 @@ export default function HomePage() {
                   className="lower-blue-section__img"
                 />
               </div>
+              {/* This block used to repeat the Prelude setup steps verbatim.
+                  It went stale as soon as the docs moved, which is finding 5 in
+                  .dev/ia-proposal.md and the reason /getting-started/ retired,
+                  so it now orients and hands off instead of duplicating. Setup
+                  instructions are the documentation's to own. */}
               <div className="upper-grey-section__content-holder">
                 <div className="terminal-section">
                   <P2 className="text-section">
-                    <b>
-                      1. Download and configure{" "}
-                      <a
-                        href={DOCKER_DOWNLOAD}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Docker Desktop (4.39.0+)
-                      </a>
-                    </b>
+                    Prelude runs the whole Overture stack on your own machine, so
+                    you can submit data, index it and browse it in a portal
+                    before committing to a deployment.
                   </P2>
 
                   <span className="text-section">
-                    In Docker Desktop click the cog{" "}
-                    <Icon alt="" img="cog" size={32} className="icon" /> icon,
-                    then resources. We recommend at minimum setting your CPU
-                    limit to <code>8</code>, memory to <code>8GB</code>, swap to{" "}
-                    <code>2GB</code>, with
-                    <code>64GB</code> of virtual disk space available. If you
-                    have Docker already installed ensure it is up to date.
+                    You need{" "}
+                    <a
+                      href={DOCKER_DOWNLOAD}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Docker Desktop
+                    </a>{" "}
+                    and a clone of the repository. Two <code>make</code> commands
+                    bring the platform up at <code>localhost:3000</code>.
                   </span>
 
-                  <P2 className="text-section">
-                    <b>2. Clone the QuickStart Repository</b>
-                  </P2>
                   <Terminal
                     prompts={[
-                      "git clone -b quickstart https://github.com/overture-stack/prelude.git && cd prelude",
+                      "git clone https://github.com/overture-stack/prelude.git",
                     ]}
                   />
 
-                  <P2 className="text-section">
-                    <b>3. Run the Docker Compose</b>
-                  </P2>
-                  <span className="text-section">For Unix/macOS run:</span>
-                  <Terminal prompts={["make platform"]} />
-                  <span className="text-section">For Windows run:</span>
-                  <Terminal prompts={["./make.bat platform"]} />
-                  <div className="text-section">
-                    Your portal will now be accessible from your:{" "}
-                    <code>localhost:3000</code>
-                  </div>
+                  <span className="text-section">
+                    The documentation carries the current prerequisites, the
+                    resource settings Docker needs, and what each phase adds.
+                  </span>
 
-                  <div className="mt3 lower-blue-section__buttons">
+                  <div className="ow:mt-8 lower-blue-section__buttons">
                     <Button
-                      link={GETTING_STARTED_PATH}
+                      link={PRELUDE_DOCS_LINK}
                       size="medium"
                       type="primary"
-                      className="upper-grey__button mt1"
+                      className="upper-grey__button ow:mt-2"
                     >
                       Guides &amp; Documentation
                     </Button>

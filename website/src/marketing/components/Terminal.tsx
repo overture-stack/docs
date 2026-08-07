@@ -32,7 +32,7 @@ export const UrlBar = ({
 }) => (
   <div className="Browser">
     <TrafficLights />
-    <div className="url-bar mx2">
+    <div className="url-bar ow:mx-4">
       {prompts.map((p, index) =>
         React.cloneElement(p, { key: index, className: "url-text" }),
       )}

@@ -26,6 +26,9 @@ export const OVERTURE_DOCUMENTATION_CONTRIBUTION_LINK = `${DOCS}/community/contr
 export const OVERTURE_GITHUB_DISCUSSION_LINK =
   "https://github.com/overture-stack/docs/discussions";
 export const OVERTURE_DOCUMENTATION_SUPPORT_LINK = `${DOCS}/community/support`;
+// The full roster stays canonical on the docs site; the marketing About page
+// links to it rather than copying 400 lines of it.
+export const OVERTURE_DOCUMENTATION_TEAM_LINK = `${DOCS}/community/team`;
 export const FEATURE_REQUESTS =
   "https://github.com/overture-stack/website/issues/new?assignees=&labels=&projects=&template=Feature_Requests.md";
 export const ADMINISTRATION_GUIDES = `${DOCS}/use`;
@@ -48,8 +51,8 @@ export const IHCC_LINK = "https://ihccglobal.org/";
 export const IHCC_PORTAL_LINK = "https://atlas.ihccglobal.org/";
 export const KIDS_FIRST_LINK =
   "https://portal.kidsfirstdrc.org/login?redirect_path=/dashboard?";
-export const VIRUSSEQ_LINK =
-  "https://genomecanada.ca/challenge-areas/cancogen/virusseq/";
+// iMicroSeq, published as VirusSeq until 2026-08-07. The portal URL still
+// carries the old name; [NEEDS: URL] confirmation of whether it moves.
 export const VIRUSSEQ_PORTAL_LINK = "https://virusseq-dataportal.ca/explorer";
 export const ICGC_ARGO_LINK = "https://www.icgc-argo.org/";
 export const ICGC_ARGO_PORTAL_LINK = "https://platform.icgc-argo.org/";
@@ -63,15 +66,11 @@ export const NETLIFY_IMAGE_LINK =
   "https://www.netlify.com/img/global/badges/netlify-color-bg.svg";
 export const NETLIFY_LINK = "https://www.netlify.com/";
 export const OICR_LINK = "https://oicr.on.ca";
-export const POLICIES_LINK = "https://oicr.on.ca/oicr-policies-and-procedures/";
-export const PRIVACY_EMAIL_LINK = "mailto:privacy@oicr.on.ca";
 export const TEAM_BLOG_LINK = "https://softeng.oicr.on.ca/";
 export const TEAM_LINK = "https://softeng.oicr.on.ca/team/";
 export const EMAIL_LINK = "mailto:contact@overture.bio";
 export const GI_PROGRAM_LINK =
   "https://oicr.on.ca/programs/genome-informatics/";
-export const FAQ_LINK =
-  "https://oicr.on.ca/information-practices-frequently-asked-questions/";
 
 // Product Links
 

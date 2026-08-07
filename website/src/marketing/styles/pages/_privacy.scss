@@ -1,4 +1,8 @@
 
+// The copy for this page is Markdown, in src/marketing/content/privacy.mdx, so
+// everything below styles the elements Markdown emits rather than classes on
+// hand-written JSX.
+
 .PrivacyPage {
   p,
   div,
@@ -14,34 +18,39 @@
     margin: 20px 0;
   }
 
-  /** YUCK BELOW: **/
-
-  ol > li {
-    font-size: 30px;
+  h2 {
+    @include prose-section-heading;
   }
 
-  ol > li > p {
-    margin-left: 48px;
-  }
+  @include prose-bullets;
 
+  // The numbered list under "Collection and Use". The counter is the only way to
+  // get a number with no trailing period, which is what the page has always
+  // shown.
+  //
+  // `counter-reset` is on the `ol` itself. It was on `ol:first-child`, which
+  // worked while the JSX put the list first in its section and would silently
+  // stop counting now that Markdown wraps things differently.
   ol {
+    counter-reset: customlistcounter;
     list-style-type: none;
     margin-left: 0;
-  }
 
-  ol > li {
-    counter-increment: customlistcounter;
-  }
+    > li {
+      counter-increment: customlistcounter;
+      font-size: 30px;
 
-  ol > li:before {
-    /* the only way to remove "." from an OL ?! */
-    content: counter(customlistcounter) ' ';
-    font-weight: bold;
-    float: left;
-    width: 1em;
-  }
+      &::before {
+        content: counter(customlistcounter) ' ';
+        font-weight: bold;
+        float: left;
+        width: 1em;
+      }
 
-  ol:first-child {
-    counter-reset: customlistcounter;
+      // Markdown makes these loose list items, so the text is inside a `p`.
+      > p {
+        margin-left: 48px;
+      }
+    }
   }
 }

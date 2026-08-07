@@ -1,0 +1,62 @@
+/*
+ * Tailwind for the marketing pages, added in rebuild phase 2 as Bulma's
+ * replacement for new work. The layout classes the ported markup already uses
+ * live in src/marketing/styles/_layout.scss; this is what phase 3's new pages
+ * are meant to be built with.
+ *
+ * Three deliberate choices, and all three are what make it safe to load this
+ * globally in a build that already has Infima:
+ *
+ *   1. `prefix(ow)` namespaces every utility and every custom property, so a
+ *      class is `ow:flex`, not `flex`, and a variable is `--ow-spacing`, not
+ *      `--spacing`. Nothing Tailwind emits can collide with an Infima,
+ *      Docusaurus or marketing class. This is the thing Bulma could not do, and
+ *      the reason its bare `.navbar` and `.button` collided with Infima's.
+ *
+ *   2. Preflight is left out. The layer imports below pull in `theme` and
+ *      `utilities` but not `base`, which is where Tailwind's global element
+ *      reset lives. Loading it would restyle every documentation page, since
+ *      Docusaurus emits one shared stylesheet. The marketing pages get their
+ *      reset from `_layout.scss` instead, scoped under `.marketing`.
+ *
+ *   3. `source(none)` disables automatic content detection, which would
+ *      otherwise crawl up from this file and scan the whole repository:
+ *      `submodules/` (eight vendored repos) and `website-legacy/` (the Gatsby
+ *      site being retired) included. The `@source` lines below name the two
+ *      directories that hold page and component code, so utilities are
+ *      generated from those and nothing else.
+ *
+ * A consequence of 2 worth knowing before using this: without preflight there is
+ * no `box-sizing: border-box` reset and no margin zeroing outside `.marketing`.
+ * Tailwind utilities used on a documentation page will apply, but they sit on
+ * Infima's element defaults rather than a clean slate.
+ *
+ * A fourth choice, `important` on the utilities import, is about the cascade
+ * rather than about scoping, and it is not optional here.
+ *
+ * The marketing SCSS is unlayered and nested under `.marketing`, so every one of
+ * its rules outranks a bare utility twice over: unlayered CSS beats layered CSS
+ * whatever the specificity, and `.marketing h1` carries a class more than
+ * `.ow\:py-8` does. Without `important`, utilities silently lose to the reset in
+ * `_layout.scss` and to any page partial with an opinion. Measured before adding
+ * it: `ow:py-8` on the privacy `<h1>` computed to 0px, `ow:font-bold` on a
+ * `<span>` computed to 900, `ow:py-4` on an `<article class="section">` computed
+ * to 48px. An `!important` declaration in a layer does beat an unlayered normal
+ * one, so this is what makes the utilities usable at all.
+ *
+ * The layer beneath cannot be moved instead: putting the marketing SCSS in a
+ * layer would make it lose to Infima, which is unlayered and outside our control.
+ *
+ * What this costs, and it is worth knowing before phase 3: an `ow:` utility can
+ * no longer be overridden by an ordinary SCSS rule. If a partial needs to win
+ * against one, remove the utility from the markup rather than escalating with a
+ * second `!important`.
+ */
+
+@layer theme, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme) prefix(ow);
+@import "tailwindcss/utilities.css" layer(utilities) prefix(ow) source(none) important;
+
+@source "../marketing";
+@source "../pages";

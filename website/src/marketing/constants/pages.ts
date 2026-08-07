@@ -5,29 +5,35 @@
 // one of them at build time, so they are written out literally.
 
 export const ABOUT_US_PATH = "/about-us/";
-export const ACKNOWLEDGEMENTS_PATH = "/acknowledgements/";
 export const CASE_STUDIES_PATH = "/case-studies/";
 // No COMMUNITY_PATH: the Gatsby /community/ page rendered nothing but a title
 // and a keywords meta tag, and /community is already the routeBasePath of the
 // community documentation plugin instance in this build. See .dev/roadmap.md.
-export const GETTING_STARTED_PATH = "/getting-started/";
+export const FUNDING_PATH = "/about/funding/";
 export const PRIVACY_PATH = "/privacy/";
 export const PRODUCTS_PATH = "/products/";
+export const PUBLICATIONS_PATH = "/impact/publications/";
 export const SERVICES_PATH = "/services/";
 export const TERMS_PATH = "/terms-conditions/";
 // `/` is the documentation homepage in this build, so the marketing home sits
 // at /home/ until stage 3 gives the marketing build its own root.
 export const HOME_PATH = "/home/";
 
+// Retired in rebuild phase 1 (2026-08-07). Both still need a redirect entry in
+// whatever Netlify config stage 3 produces, per the table in .dev/ia-proposal.md:
+// /getting-started/ goes cross-host to the docs quickstart, /acknowledgements/
+// to FUNDING_PATH. Nothing 404s in production meanwhile, because the Gatsby site
+// still serves overture.bio until stage 3.
+
 /** Every route that renders as part of the marketing site. */
 export const MARKETING_PATHS = [
   HOME_PATH,
   ABOUT_US_PATH,
-  ACKNOWLEDGEMENTS_PATH,
   CASE_STUDIES_PATH,
-  GETTING_STARTED_PATH,
+  FUNDING_PATH,
   PRIVACY_PATH,
   PRODUCTS_PATH,
+  PUBLICATIONS_PATH,
   SERVICES_PATH,
   TERMS_PATH,
 ];

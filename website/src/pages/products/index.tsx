@@ -4,7 +4,7 @@ import Button from "../../marketing/components/Button";
 import Hero from "../../marketing/components/Hero";
 import ProductsPageSection from "../../marketing/components/ProductsPageSection";
 import { H2, P1 } from "../../marketing/components/Typography";
-import { GETTING_STARTED_PATH } from "../../marketing/constants/pages";
+import { PRELUDE_DOCS_LINK } from "../../marketing/constants/externalLinks";
 
 const ASSETS = "/img/marketing/products";
 
@@ -227,15 +227,15 @@ export default function ProductsPage() {
                 <div className="lower-blue-section__text-holder">
                   <P1 className="lower-blue-section__text">
                     <span>
-                      Built from our core collection of microservices, we
-                      provide an Overture Quickstart for a fast and frictionless
-                      setup of our data platform locally.
+                      Built from our core collection of microservices, Prelude
+                      stands the whole stack up locally so you can try it before
+                      committing to a deployment.
                     </span>
                   </P1>
                 </div>
                 <div className="lower-blue-section__button-holder">
                   <Button
-                    link={GETTING_STARTED_PATH}
+                    link={PRELUDE_DOCS_LINK}
                     type="primary"
                     size="medium"
                     className="lower-blue-section__button"

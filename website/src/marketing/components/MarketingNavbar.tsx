@@ -5,7 +5,6 @@ import Link from "./Link";
 import {
   ABOUT_US_PATH,
   CASE_STUDIES_PATH,
-  GETTING_STARTED_PATH,
   HOME_PATH,
   PRODUCTS_PATH,
   SERVICES_PATH,
@@ -14,6 +13,7 @@ import {
   DOCUMENTATION_LINK,
   OVERTURE_GITHUB_LINK,
   OVERTURE_SUPPORT,
+  PRELUDE_DOCS_LINK,
 } from "../constants/externalLinks";
 
 const LOGO = "/img/marketing/chrome/overture_logo.svg";
@@ -103,11 +103,10 @@ export default function MarketingNavbar() {
                   Check us out on GitHub
                 </Button>
 
-                <Button
-                  link={GETTING_STARTED_PATH}
-                  size="medium"
-                  type="primary"
-                >
+                {/* Points into the docs rather than at a marketing funnel:
+                    /getting-started/ duplicated the documentation and went
+                    stale, so rebuild phase 1 retired it. */}
+                <Button link={PRELUDE_DOCS_LINK} size="medium" type="primary">
                   Get Started
                 </Button>
               </div>

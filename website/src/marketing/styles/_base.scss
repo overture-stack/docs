@@ -7,7 +7,7 @@
 // (nothing rendered a modal), and the `.BottomCallout` button colour
 // (BottomCallout is one of the dead components).
 
-// Override Bulma's hover colour for the marketing navbar.
+// Override the navbar item hover colour from `_layout.scss`.
 a.navbar-item:hover {
   color: $navy-black;
 }
@@ -20,10 +20,10 @@ a.navbar-item.active-item {
   }
 }
 
-// Bulma's own `html` and `body` rules end up as `.marketing html` and
-// `.marketing body` once nested, so they never match and the marketing pages
-// would inherit Infima's base typography instead. Re-apply Bulma's defaults on
-// the wrapper itself, which is the element those rules were meant for.
+// The base typography for the marketing pages. These were Bulma's `html` and
+// `body` rules, which became `.marketing html`/`.marketing body` once nested and
+// so never matched; they are applied to the wrapper itself, which is the element
+// they were meant for. Without them these pages inherit Infima's typography.
 // `&` here is `.marketing` itself: this partial is imported inside that block.
 & {
   background-color: $white;
@@ -31,13 +31,21 @@ a.navbar-item.active-item {
   font-size: 16px;
   font-weight: 400;
   line-height: 1.5;
+
+  // `_layout.scss` sets `box-sizing: inherit` on every descendant, so this is
+  // the one declaration the whole marketing box model hangs off. It used to
+  // resolve by inheriting from `html`, which is set to `border-box` by a global
+  // `*` rule that arrives with swagger-ui's stylesheet. Stating it here removes
+  // that dependency; the computed value is unchanged.
+  box-sizing: border-box;
 }
 
 .hero {
   background-color: $blue-top !important;
 }
 
-// Patch Bulma's `.container`; nicer padding across the marketing pages.
+// Patch the `.container` from `_layout.scss`; nicer padding across the
+// marketing pages.
 .container {
   padding: 0 32px;
 }
