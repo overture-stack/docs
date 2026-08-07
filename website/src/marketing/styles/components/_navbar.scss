@@ -143,38 +143,39 @@
     }
   }
 
-  .github-button {
-    margin-right: 1rem;
-    background: $grey-2;
-
-    @include breakpoint(navmenu-up) {
-      background: white;
-    }
+  // Docs and GitHub. Styled as nav links rather than buttons, so the row has one
+  // button in it and that button is the only call to action, which is the
+  // distinction the IA's `Docs ↗  GitHub ↗  [Get Started]` is drawing.
+  //
+  // This is also what retired the overflow fix that used to sit here. The old row
+  // carried a "Check us out on GitHub" button, and between the navmenu breakpoint
+  // and roughly 1300px its intrinsic width exceeded the viewport: `_layout.scss`
+  // gives both `.navbar-menu` and `.navbar-item` `flex-shrink: 0`, so nothing
+  // gave, "Get Started" went off the right edge, and the burger was already hidden
+  // above the breakpoint. Four short labels plus two short actions fit at the
+  // breakpoint with room to spare, so the media query that hid the long label is
+  // gone rather than kept as decoration. If a future label lengthens this row,
+  // that failure mode is the one to expect.
+  .nav-action {
+    white-space: nowrap;
   }
 
-  // mobile menu
+  .nav-action__arrow {
+    font-size: 0.75em;
+    margin-left: 0.25em;
+    // Sits with the cap height rather than the baseline, which is where the glyph
+    // otherwise lands and reads as a dropped character.
+    align-self: center;
+  }
+
+  // Holds `Get Started`, and nothing else since GitHub became a nav action. The
+  // gap, the column direction under 400px and the `.github-button` overrides that
+  // used to be here were all about spacing two buttons against each other, so they
+  // went with the second button rather than staying as rules with one child.
   .navbar-buttons {
     display: flex;
     flex-grow: 1;
     justify-content: center;
-
-    @include breakpoint(navmenu-below) {
-      gap: 3em;
-    }
-    .github-button {
-      font-size: 1rem;
-      font-weight: 600;
-    }
-
-    @media (max-width: 400px) {
-      flex-direction: column;
-      justify-content: flex-start;
-      gap: 0;
-
-      .github-button {
-        margin: 0.5rem;
-      }
-    }
   }
 
   .navbar-mid {

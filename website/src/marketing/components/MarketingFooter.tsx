@@ -15,12 +15,19 @@ import {
   NETLIFY_IMAGE_LINK,
   OICR_LINK,
   OVERTURE_DOCUMENTATION_LICENSING,
+  OVERTURE_SUPPORT,
 } from "../constants/externalLinks";
 
 const OICR_LOGO = "/img/marketing/chrome/oicr_logo.svg";
 
 // Funding and Publications replace the retired Acknowledgements entry, and are
 // the only route to either page until phase 4 rebuilds the nav and this footer.
+//
+// Support forum arrives here because the primary nav no longer carries Support:
+// the IA moves it into the footer's Connect column, and that column does not exist
+// until phase 4 restructures this list into four. Adding it to the flat list now
+// keeps the support forum reachable in the meantime, which dropping it from the nav
+// without this would not.
 const links = [
   { name: "Products", url: PRODUCTS_PATH },
   { name: "About Us", url: ABOUT_US_PATH },
@@ -28,6 +35,7 @@ const links = [
   { name: "Publications", url: PUBLICATIONS_PATH },
   { name: "Services", url: SERVICES_PATH },
   { name: "Case Studies", url: CASE_STUDIES_PATH },
+  { name: "Support Forum", url: OVERTURE_SUPPORT },
   { name: "Software Licensing", url: OVERTURE_DOCUMENTATION_LICENSING },
 ];
 

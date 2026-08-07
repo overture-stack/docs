@@ -12,19 +12,36 @@ import {
 import {
   DOCUMENTATION_LINK,
   OVERTURE_GITHUB_LINK,
-  OVERTURE_SUPPORT,
   PRELUDE_DOCS_LINK,
 } from "../constants/externalLinks";
 
 const LOGO = "/img/marketing/chrome/overture_logo.svg";
 
+// Four items plus three actions, per `ia-proposal.md` § Navigation, replacing the
+// five plus two the Gatsby site carried. Two things leave the primary nav rather
+// than being renamed: `Documentation` moves right into the actions group, since it
+// leaves the site, and `Support` drops out entirely and becomes "Support forum" in
+// the footer's Connect column.
+//
+// `Impact`, `Collaborate` and `About` point at the routes that exist today. The IA
+// renames all three, but each rename arrives with a page rewrite and a redirect
+// rule, which are phases 3 and 4 in `roadmap.md`. The labels are the half that
+// depends on neither, so a stage 2 reviewer sees the proposed nav rather than the
+// old one. Repoint the URLs when the routes move; these labels are final.
 const navLinks = [
   { name: "Products", url: PRODUCTS_PATH },
-  { name: "Documentation", url: DOCUMENTATION_LINK },
-  { name: "Case Studies", url: CASE_STUDIES_PATH },
-  { name: "Services", url: SERVICES_PATH },
-  { name: "About Us", url: ABOUT_US_PATH },
-  { name: "Support", url: OVERTURE_SUPPORT },
+  { name: "Impact", url: CASE_STUDIES_PATH },
+  { name: "Collaborate", url: SERVICES_PATH },
+  { name: "About", url: ABOUT_US_PATH },
+];
+
+// Two of the three actions. Both leave the site, so both carry the arrow the IA
+// writes them with. `Get Started` is the third and the only one rendered as a
+// button; it points at the docs quickstart rather than a marketing page, which is
+// the handoff that let `/getting-started/` retire.
+const navActions = [
+  { name: "Docs", url: DOCUMENTATION_LINK },
+  { name: "GitHub", url: OVERTURE_GITHUB_LINK },
 ];
 
 /**
@@ -91,18 +108,22 @@ export default function MarketingNavbar() {
               ))}
             </div>
             <div className="navbar-end ">
-              <div className="navbar-item nav-link navbar-buttons">
-                <Button
-                  link={OVERTURE_GITHUB_LINK}
-                  iconAlt=""
-                  className="github-button"
-                  icon="githubMagenta"
-                  size="large"
-                  type="secondary"
+              {navActions.map((action) => (
+                <Link
+                  key={action.name}
+                  className="navbar-item nav-link nav-action"
+                  onClick={closeMenu}
+                  to={action.url}
                 >
-                  Check us out on GitHub
-                </Button>
-
+                  {action.name}
+                  {/* Decorative: `Link` already opens external URLs in a new tab,
+                      and the arrow would read as punctuation to a screen reader. */}
+                  <span className="nav-action__arrow" aria-hidden="true">
+                    ↗
+                  </span>
+                </Link>
+              ))}
+              <div className="navbar-item nav-link navbar-buttons">
                 {/* Points into the docs rather than at a marketing funnel:
                     /getting-started/ duplicated the documentation and went
                     stale, so rebuild phase 1 retired it. */}
