@@ -21,68 +21,61 @@
     &__oicr-logo {
       width: 138px;
       height: auto;
+      flex-shrink: 0;
     }
 
-    &__links-holder {
-      max-height: 240px;
-      min-width: 320px;
-
-      @media (max-width: 440px) {
-        max-height: fit-content;
-      }
-
-      @include breakpoint(tablet-up) {
-        min-width: 550px;
-        max-height: 400px;
-      }
-      @include breakpoint(desktop-up) {
-        min-width: 640px;
-      }
-    }
+    // `__links-holder` went with the flat list in phase 4: it existed to cap
+    // the height that made the column-wrap work, and the grid below needs no
+    // wrapper of its own.
   }
 
-  .links-container {
-    display: flex;
-    flex-flow: column wrap;
-    max-height: 180px;
-    row-gap: 2.2em;
-    column-gap: 6em;
+  // Four columns as of rebuild phase 4, replacing the flat wrapped list this
+  // held through phases 1 to 3. The old `.links-container` used a fixed
+  // `max-height` and column-wrap to fake columns out of one list, which is why
+  // adding a ninth link used to reflow the whole thing.
+  .footer-columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2em;
     margin: 2em 0;
+    text-align: center;
 
-    @media (max-width: 440px) {
-      flex-wrap: nowrap;
-      max-height: fit-content;
-      justify-content: center;
-      align-items: center;
-    }
-
-    @include breakpoint(tablet-up) {
-      max-height: 120px;
-      margin-left: 2.6em;
-      row-gap: 1.4em;
-      column-gap: 5em;
+    @media (min-width: 480px) {
+      grid-template-columns: repeat(2, 1fr);
+      text-align: left;
     }
 
     @include breakpoint(desktop-up) {
-      max-height: 90px;
-      row-gap: 1.2em;
-      column-gap: 4em;
+      grid-template-columns: repeat(4, minmax(150px, 1fr));
+      column-gap: 3em;
+      margin-left: 2.6em;
+    }
+
+    &__heading {
+      font-family: $font-sans-serif;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: $grey-darkest;
+      margin-bottom: 0.9em;
     }
 
     &__link {
-      display: flex;
-      justify-content: flex-start;
+      display: inline-block;
+      padding: 0.3em 0;
       text-decoration: none;
       color: $navy-dark;
       font-weight: 700;
+
       &:hover {
         color: $pink-darker;
       }
+    }
 
-      @include breakpoint(desktop-up) {
-        width: 170px;
-        margin: 5px 0;
-      }
+    &__arrow {
+      padding-left: 0.35em;
+      font-weight: 400;
     }
   }
 

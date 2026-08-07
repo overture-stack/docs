@@ -1,0 +1,105 @@
+// The /impact/ hub and the platform pages under it, added in rebuild phase 3.
+//
+// Almost nothing is here on purpose: the hub is built with `ow:` utilities, and
+// the platform pages reuse the `.Case-Study` component styles, which are
+// top-level rather than scoped to `.CaseStudiesPage`. What is left is the two
+// things utilities cannot supply from the markup.
+
+.ImpactPage,
+.PlatformPage {
+  // `.marketing` sets font size, weight and colour but not family: Bulma's rule
+  // lived on `body` and had nowhere to land once the styles were nested (see
+  // `_base.scss`). Ported markup takes the family from its `.t-*` class, so
+  // only bare elements need this, as on the products and prose pages.
+  p,
+  li,
+  dt,
+  dd,
+  strong {
+    font-family: $font-sans-serif;
+  }
+
+  // The section rhythm the rest of the marketing pages use. `_base.scss` gives
+  // `.container` its horizontal padding; this is the vertical.
+  .container {
+    padding: 80px 32px;
+
+    @include breakpoint(desktop-up) {
+      padding: 5.2em 3.8em;
+    }
+    @include breakpoint(desktop-wide) {
+      padding: 4.7em 3.8em;
+    }
+  }
+}
+
+.ImpactPage {
+  .Hero {
+    height: fit-content;
+
+    &__section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.8em;
+
+      @include breakpoint(tablet-up) {
+        align-items: start;
+        text-align: left;
+      }
+    }
+
+    &__subtitle {
+      max-width: 330px;
+      @include breakpoint(tablet-up) {
+        max-width: 440px;
+      }
+      @include breakpoint(desktop-up) {
+        max-width: 620px;
+      }
+    }
+  }
+
+  // The aggregate band is figures, not prose, so it wants less height than a
+  // content section.
+  .ImpactAggregate .container {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+}
+
+.PlatformPage {
+  .Hero {
+    height: fit-content;
+
+    &__section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.8em;
+
+      @include breakpoint(tablet-up) {
+        align-items: start;
+        text-align: left;
+      }
+    }
+
+    &__subtitle {
+      max-width: 330px;
+      @include breakpoint(tablet-up) {
+        max-width: 520px;
+      }
+      @include breakpoint(desktop-up) {
+        max-width: 720px;
+      }
+    }
+  }
+
+  // The back link is one line, so it does not need a full section's height.
+  &__back .container {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}

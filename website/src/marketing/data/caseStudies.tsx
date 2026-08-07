@@ -1,5 +1,18 @@
 // Data structure to represent the case studies.
 // We iterate over the cases, and render their content.
+//
+// Rendered twice as of rebuild phase 3: by /case-studies/, which is the flat
+// page this file was written for, and by the four platform pages under
+// /impact/, which pick one entry each by slug. /case-studies/ retires in phase
+// 4 and this becomes the impact section's alone.
+//
+// The "How was Overture used?" lists name components functionally with the
+// codename beside them, which is the house style fixed in .dev/ia-proposal.md
+// and applies to any page describing which parts a platform uses.
+// data/components.ts holds the canonical pairing; keep these in step with it.
+// The one exception is the ICGC-ARGO authorization line, which named Ego. Ego
+// is discontinued and nothing sourced says what handles that there now, so the
+// line names the capability rather than guessing at a component.
 
 import React from "react";
 import Link from "../components/Link";
@@ -60,19 +73,19 @@ const caseStudies: CaseStudyData[] = [
       ],
       [
         {
-          "Song:":
+          "File Manager (Song):":
             "Validates all submitted sequence meta(data) against a custom data model",
         },
         {
-          "Score:":
+          "File Transfer (Score):":
             "Manages file transfers and object storage with added SamTools functionalities to help handle large WGS files",
         },
         {
-          "Maestro:":
+          "Indexing Service (Maestro):":
             "Indexes multiple song repositories into one elastic search instance",
         },
-        { "Arranger:": "Facilitates filtering and querying" },
-        { "Ego:": "Provides stateless authentication and authorization" },
+        { "Search (Arranger):": "Facilitates filtering and querying" },
+        { "Access and authorization:": "Stateless authentication, applied across the stack" },
       ],
       [
         `ICGC-ARGO harmonizes genomic and clinical data for ${metrics.icgcArgoParticipants.value} participants. With Overture as the backbone of its infrastructure, researchers can search and gain authorized access to data collected across ${metrics.icgcArgoPrograms.value} programs in ${metrics.icgcArgoCountries.value} countries.`,
@@ -124,17 +137,17 @@ const caseStudies: CaseStudyData[] = [
         "Horizontally scaled with replica Score, Song, and Maestro instances",
       ],
       [
-        { "Score:": "Manages file transfers and object storage" },
+        { "File Transfer (Score):": "Manages file transfers and object storage" },
         {
-          "Song:":
+          "File Manager (Song):":
             "Validates and tracks pathogen sequencing metadata against a custom data model",
         },
-        { "Maestro:": "Indexes sample data for downstream search" },
+        { "Indexing Service (Maestro):": "Indexes sample data for downstream search" },
         {
-          "Arranger:":
+          "Search (Arranger):":
             "Responsible for all search capabilities, including faceted search and data tables",
         },
-        { "Lectern:": "Manages the data dictionaries submissions validate against" },
+        { "Dictionary Manager (Lectern):": "Manages the data dictionaries submissions validate against" },
       ],
       [
         `iMicroSeq is an open-access Canadian database of microbial sequences, launched in ${metrics.imicroseqLaunch.value} as the VirusSeq Data Portal and since broadened to pathogen genomes and wastewater surveillance. Overture's scalable indexing carries ${metrics.imicroseqPathogenGenomes.value} genomes alongside their contextual metadata.`,
@@ -172,10 +185,10 @@ const caseStudies: CaseStudyData[] = [
         "Query and Filter 72 data types with 16 clinical fields",
       ],
       [
-        { "Song:": "Validation and tracking of genomic metadata" },
-        { "Score:": "Managed file transfers and object storage" },
+        { "File Manager (Song):": "Validation and tracking of genomic metadata" },
+        { "File Transfer (Score):": "Managed file transfers and object storage" },
         {
-          "Arranger:":
+          "Search (Arranger):":
             "With the faceted search and customizable data table, arranger enabled users to filter and query this large dataset efficiently",
         },
       ],
@@ -220,7 +233,7 @@ const caseStudies: CaseStudyData[] = [
       ],
       [
         {
-          "Arranger:":
+          "Search (Arranger):":
             "With Arranger, users are able to filter and query the database through an intuitive UI with a customizable table and faceted search",
         },
       ],
@@ -261,7 +274,7 @@ const caseStudies: CaseStudyData[] = [
       ],
       [
         {
-          "Arranger:":
+          "Search (Arranger):":
             "Enables search by filtering and querying the database through an intuitive UI",
         },
       ],

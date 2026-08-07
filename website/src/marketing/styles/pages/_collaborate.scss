@@ -1,0 +1,83 @@
+// /collaborate/, which replaced /services/ in rebuild phase 4.
+//
+// Carried over from `_services.scss`: the hero, including its artwork, which is
+// still the right illustration for the page. Everything below the hero is built
+// with `ow:` utilities, so what is left here is the hero and the two things
+// utilities cannot supply from the markup.
+
+.CollaboratePage {
+  // `.marketing` sets font size, weight and colour but not family, so bare
+  // elements need it stated. Same rule as the products, impact and prose pages;
+  // see `_base.scss` for why the inherited one is missing.
+  p,
+  li,
+  strong {
+    font-family: $font-sans-serif;
+  }
+
+  .Hero {
+    height: fit-content;
+
+    @include breakpoint(tablet-up) {
+      background-image: url('/img/marketing/services/img_hero_services.svg');
+      background-repeat: no-repeat;
+      background-position-x: 100%;
+      background-position-y: 0;
+      background-size: 460px;
+      height: 430px;
+    }
+
+    @include breakpoint(desktop-up) {
+      background-size: 600px;
+    }
+
+    @include breakpoint(desktop-wide) {
+      background-position-x: 105%;
+    }
+
+    @include breakpoint(desktop-ultra-wide) {
+      background-position-x: 81%;
+    }
+
+    &__section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.8em;
+
+      @include breakpoint(tablet-up) {
+        align-items: start;
+        text-align: left;
+      }
+    }
+
+    &__subtitle {
+      @include breakpoint(tablet-up) {
+        width: 45%;
+      }
+    }
+
+    .container {
+      @include breakpoint(tablet-up) {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  .container {
+    padding: 80px 32px;
+
+    @include breakpoint(tablet-up) {
+      padding: 4em 4.4em;
+    }
+  }
+
+  // The contact block is a heading, a line and a button, so it does not need a
+  // full section's height under the band above it.
+  .CollaborateContact .container {
+    padding-top: 48px;
+    padding-bottom: 72px;
+  }
+}

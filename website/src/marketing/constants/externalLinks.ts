@@ -103,5 +103,9 @@ export const LECTERN_DOCS_LINK = `${DOCS}/develop/Lectern/overview`;
 // lyric
 export const LYRIC_DOCS_LINK = `${DOCS}/develop/Lyric/overview`;
 
+// Access and authorization, which is configured rather than shipped: the stack
+// delegates to Keycloak. This is the Control band's destination on /products/.
+export const KEYCLOAK_DEPLOY_LINK = `${DOCS}/deploy/deployment/keycloak`;
+
 // prelude, the development environment that replaced the Quickstart
 export const PRELUDE_DOCS_LINK = `${DOCS}/deploy/prelude`;

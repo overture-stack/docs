@@ -1,5 +1,22 @@
+// Rebuild phase 3 rewrote this page around the Collect / Explore / Control
+// grouping, so what is left here is the hero (which carries the page artwork),
+// the container padding, and the Getting Started band at the foot. The new
+// sections are built with `ow:` utilities in ProductGroup.tsx and the route
+// file, per .dev/roadmap.md; `_productspagesection.scss` went with the
+// component it styled.
 
 .ProductsPage {
+  // The phase 3 markup is bare elements plus utilities, and `.marketing` sets
+  // font size, weight and colour but not family: Bulma's rule lived on `body`,
+  // which had nowhere to land once the styles were nested (see `_base.scss`).
+  // Ported markup takes the family from its `.t-*` class, so only new elements
+  // need this, exactly as the prose pages do.
+  p,
+  li,
+  strong {
+    font-family: $font-sans-serif;
+  }
+
   .Hero {
     height: fit-content;
 

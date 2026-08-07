@@ -4,7 +4,11 @@ body {
   font-family: $font-sans-serif;
 }
 
-nav {
+// The rule under the site navigation. It was written as a bare `nav` when the
+// navbar was the only one on the page; phase 4's footer added a second, which
+// picked up a stray line under its columns. Targeted at the navbar itself now,
+// which is the element it was always for.
+.NavHeader {
   border-bottom: lightgray solid 0.1vmin;
 }
 

@@ -82,12 +82,12 @@ The marketing site is being ported into this repository so that one codebase ser
 
 - **The home page is at `/home/`, not `/`**: this build's `/` is the documentation homepage. The marketing build gets its own root later in the port, when the two hostnames are separated.
 
-- **Styles are Sass, and they are scoped**: the marketing pages carry their own styling built on [Bulma](https://bulma.io/), which would otherwise fight the documentation theme. Every stylesheet is imported inside a `.marketing` block by `website/src/marketing/styles/index.scss`, and only `MarketingPage.tsx` imports that file. If you are adding marketing styles, add a partial and import it there rather than importing a stylesheet from a component.
+- **Styles are Sass, and they are scoped**: the marketing pages carry their own styling, which would otherwise fight the documentation theme. Every stylesheet is imported inside a `.marketing` block by `website/src/marketing/styles/index.scss`, and only `MarketingPage.tsx` imports that file. If you are adding marketing styles, add a partial and import it there rather than importing a stylesheet from a component.
 
 - **Assets live in `website/static/img/marketing/`** and are referenced by path, not imported.
 
 > [!NOTE]
-> `website-legacy/` is a staged, read-only copy of the Gatsby site, kept only for reference while the port finishes and deleted when it does. It is not built and not deployed. Do not fix things there; fix them in the ported pages, or in [overture-stack/website](https://github.com/overture-stack/website) if the change needs to reach the site currently serving overture.bio.
+> The staged copy of the Gatsby site that lived here during the port was deleted once the pages were rebuilt. [overture-stack/website](https://github.com/overture-stack/website) still serves overture.bio, so a change that needs to reach the live site goes there, not here.
 
 ## Repository structure
 
@@ -106,8 +106,6 @@ The marketing site is being ported into this repository so that one codebase ser
 │
 ├── symlinker.sh                # Regenerates the submodule doc symlinks under /website/docs/
 │
-├── /website-legacy/            # Staged copy of the Gatsby site, reference only (see above)
-│
 └── /website/                   # Documentation Website
     ├── /docs/                  # All documentation content, split by reader journey
     │   ├── /develop-docs/      # Per-component developer docs (symlinked from submodules)
@@ -121,6 +119,7 @@ The marketing site is being ported into this repository so that one codebase ser
     │   ├── /marketing/         # Components, data and Sass for the overture.bio pages
     │   ├── /theme/             # Global theme configuration and styling
     │   └── /pages/             # Static page content, including the marketing routes
+    ├── /netlify/               # Redirects staged for the marketing site (not live, see its README)
     ├── /static/                # Static assets served as-is
     │   └── /img/marketing/     # Images and icons for the marketing pages
     ├── docusaurus.config.ts    # Site config: plugin instances, navbar, redirects
@@ -136,8 +135,8 @@ The marketing site is being ported into this repository so that one codebase ser
     - **/docs/use-docs/**: Task-oriented content for people working with a running platform
     - **/docs/community-docs/**: Community-focused content, including the org-wide documentation standards linked from the `.github` submodule
     - **/src/**: Website implementation files including custom components, styling, and page content
-    - **/src/marketing/**: The overture.bio marketing pages ported from the Gatsby site
-- **/website-legacy/**: A staged copy of the Gatsby site, kept for reference until the port finishes
+    - **/src/marketing/**: The overture.bio marketing pages, rebuilt from the Gatsby site
+    - **/netlify/**: Redirects the marketing site will need when it gets its own Netlify site. Nothing reads them yet
 
 > [!IMPORTANT]
 > Documentation content is owned by the submodules, not by this repository. Where a page under `website/docs/` is a symlink, edit the source file in `submodules/<project>/docs/` and land the change through that project's own repository.

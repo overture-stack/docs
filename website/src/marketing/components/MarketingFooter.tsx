@@ -2,41 +2,85 @@ import React from "react";
 import Link from "./Link";
 import {
   ABOUT_US_PATH,
-  CASE_STUDIES_PATH,
+  COLLABORATE_PATH,
   FUNDING_PATH,
+  IMPACT_PATH,
   PRIVACY_PATH,
   PRODUCTS_PATH,
   PUBLICATIONS_PATH,
-  SERVICES_PATH,
   TERMS_PATH,
 } from "../constants/pages";
 import {
+  DOCUMENTATION_LINK,
+  DOCS_COMMUNITY,
+  EMAIL_LINK,
   NETLIFY_LINK,
   NETLIFY_IMAGE_LINK,
   OICR_LINK,
   OVERTURE_DOCUMENTATION_LICENSING,
+  OVERTURE_DOCUMENTATION_TEAM_LINK,
+  OVERTURE_GITHUB_LINK,
   OVERTURE_SUPPORT,
 } from "../constants/externalLinks";
 
 const OICR_LOGO = "/img/marketing/chrome/oicr_logo.svg";
 
-// Funding and Publications replace the retired Acknowledgements entry, and are
-// the only route to either page until phase 4 rebuilds the nav and this footer.
-//
-// Support forum arrives here because the primary nav no longer carries Support:
-// the IA moves it into the footer's Connect column, and that column does not exist
-// until phase 4 restructures this list into four. Adding it to the flat list now
-// keeps the support forum reachable in the meantime, which dropping it from the nav
-// without this would not.
-const links = [
-  { name: "Products", url: PRODUCTS_PATH },
-  { name: "About Us", url: ABOUT_US_PATH },
-  { name: "Funding", url: FUNDING_PATH },
-  { name: "Publications", url: PUBLICATIONS_PATH },
-  { name: "Services", url: SERVICES_PATH },
-  { name: "Case Studies", url: CASE_STUDIES_PATH },
-  { name: "Support Forum", url: OVERTURE_SUPPORT },
-  { name: "Software Licensing", url: OVERTURE_DOCUMENTATION_LICENSING },
+type FooterLink = { name: string; url: string; external?: boolean };
+type FooterColumn = { heading: string; links: FooterLink[] };
+
+/**
+ * Four columns, per `ia-proposal.md` § Navigation, replacing the flat list of
+ * eight links this carried through phases 1 to 3.
+ *
+ * The flat list was a holding pattern: Funding, Publications and Support Forum
+ * were added to it as the pages they point at arrived, with no way to group
+ * them. The columns are what the IA asked for and what makes the difference
+ * between a footer and a pile of links.
+ *
+ * `external` drives the arrow, not a URL test: `Link` already decides how to
+ * open a link, and marking these by hand keeps the two decisions independent.
+ */
+const columns: FooterColumn[] = [
+  {
+    heading: "Platform",
+    links: [
+      { name: "Products", url: PRODUCTS_PATH },
+      { name: "Documentation", url: DOCUMENTATION_LINK, external: true },
+      { name: "GitHub", url: OVERTURE_GITHUB_LINK, external: true },
+      {
+        name: "Software licensing",
+        url: OVERTURE_DOCUMENTATION_LICENSING,
+        external: true,
+      },
+    ],
+  },
+  {
+    heading: "Impact",
+    links: [
+      { name: "Deployments", url: IMPACT_PATH },
+      { name: "Publications", url: PUBLICATIONS_PATH },
+      { name: "Funding", url: FUNDING_PATH },
+    ],
+  },
+  {
+    heading: "Connect",
+    links: [
+      { name: "Collaborate", url: COLLABORATE_PATH },
+      { name: "Support forum", url: OVERTURE_SUPPORT, external: true },
+      { name: "Community", url: DOCS_COMMUNITY, external: true },
+      { name: "Contact", url: EMAIL_LINK },
+    ],
+  },
+  {
+    heading: "About",
+    links: [
+      // Still /about-us/. The IA renames it to /about/ and calls the redirect
+      // optional, so the label moved and the address did not.
+      { name: "Our story", url: ABOUT_US_PATH },
+      { name: "Team", url: OVERTURE_DOCUMENTATION_TEAM_LINK, external: true },
+      { name: "OICR", url: OICR_LINK, external: true },
+    ],
+  },
 ];
 
 const NetlifyBadge = ({ className }: { className: string }) => (
@@ -50,9 +94,9 @@ const NetlifyBadge = ({ className }: { className: string }) => (
 /**
  * The marketing site's own footer, paired with MarketingNavbar.
  *
- * Declarative, like the Gatsby original: it loops over the links above rather
- * than spelling each one out. Wrapped in `.marketing` for the same reason the
- * navbar is, and with the same descendant-selector caveat.
+ * Wrapped in `.marketing` for the same reason the navbar is: these render
+ * outside the page wrapper that carries that class, and without it the styles
+ * scoped under it would not reach them.
  */
 export default function MarketingFooter() {
   return (
@@ -62,19 +106,35 @@ export default function MarketingFooter() {
           <Link className="footer-white__oicr-logo" to={OICR_LINK}>
             <img src={OICR_LOGO} alt="Ontario Institute for Cancer Research" />
           </Link>
-          <div className="footer-white__links-holder">
-            <div className="links-container">
-              {links.map((link) => (
-                <Link
-                  className="links-container__link"
-                  to={link.url}
-                  key={link.name}
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
-          </div>
+
+          <nav className="footer-columns" aria-label="Footer">
+            {columns.map((column) => (
+              <div className="footer-columns__column" key={column.heading}>
+                <h2 className="footer-columns__heading">{column.heading}</h2>
+                <ul>
+                  {column.links.map((link) => (
+                    <li key={link.name}>
+                      <Link className="footer-columns__link" to={link.url}>
+                        {link.name}
+                        {link.external && (
+                          // Decorative: `Link` already opens external URLs in a
+                          // new tab, and the arrow would read as punctuation to
+                          // a screen reader.
+                          <span
+                            className="footer-columns__arrow"
+                            aria-hidden="true"
+                          >
+                            ↗
+                          </span>
+                        )}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </nav>
+
           <NetlifyBadge className="netlify-badge-desktop" />
         </div>
         <div className="bg-grey ow:px-2 footer-grey">

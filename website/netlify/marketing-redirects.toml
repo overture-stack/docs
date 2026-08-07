@@ -1,0 +1,153 @@
+# Redirects the overture.bio (marketing) Netlify site has to carry.
+#
+# NOT LIVE. Netlify reads `netlify.toml` from a site's base directory, which for
+# this repo is `website/`. This file is one directory down and under a different
+# name, so nothing reads it today. It is staged here for stage 3, which is when
+# the marketing build gets its own Netlify site and its own `netlify.toml`. See
+# `netlify/README.md` next to this file, and `.dev/roadmap.md` § Stage 3.
+#
+# It carries no `[build]` block on purpose. This repo has no `netlify.toml` at
+# all today: docs.overture.bio is configured through the Netlify UI, and adding
+# a live config file would move that configuration out from under it. Whoever
+# sets up the second site should paste these rules into that site's own config,
+# not promote this file into one.
+#
+# ---------------------------------------------------------------------------
+# 1. /documentation/*, lifted verbatim from the Gatsby site's netlify.toml
+# ---------------------------------------------------------------------------
+#
+# The /documentation section was retired: docs.overture.bio is the only Overture
+# documentation surface. These URLs were public for years, so each section goes
+# to its nearest equivalent on the docs site rather than to a single landing
+# page. Ego and the DMS bundle have no successor, so they point at the Keycloak
+# deployment guide and Prelude respectively.
+#
+# No `:splat` on the targets, deliberately: a deep URL under any of these lands
+# on the section overview rather than 404ing at a path the docs site does not
+# have. That was the Gatsby site's call and it still holds.
+#
+# These are cross-host, and they stay that way. The hostnames decision keeps
+# overture.bio and docs.overture.bio as separate sites, so `onBrokenLinks`
+# cannot validate any of these targets. Check them by hand when the docs
+# information architecture moves.
+
+[[redirects]]
+  from = "/documentation/song/*"
+  to = "https://docs.overture.bio/develop/Song/overview"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/documentation/score/*"
+  to = "https://docs.overture.bio/develop/Score/overview"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/documentation/maestro/*"
+  to = "https://docs.overture.bio/develop/Maestro/overview"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/documentation/arranger/*"
+  to = "https://docs.overture.bio/develop/Arranger/overview"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/documentation/stage/*"
+  to = "https://docs.overture.bio/develop/Stage/overview"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/documentation/guides/deployment/*"
+  to = "https://docs.overture.bio/deploy/deployment"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/documentation/guides/administration/*"
+  to = "https://docs.overture.bio/use"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/documentation/guides/submission/*"
+  to = "https://docs.overture.bio/use/cli-submissions"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/documentation/guides/download/*"
+  to = "https://docs.overture.bio/use/cli-downloads"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/documentation/dms/*"
+  to = "https://docs.overture.bio/deploy/prelude"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/documentation/ego/*"
+  to = "https://docs.overture.bio/deploy/deployment/keycloak"
+  status = 301
+  force = true
+
+# Catch-all: must stay last of the /documentation rules, since Netlify matches
+# redirects in file order.
+[[redirects]]
+  from = "/documentation/*"
+  to = "https://docs.overture.bio/develop"
+  status = 301
+  force = true
+
+# ---------------------------------------------------------------------------
+# 2. Routes the rebuild retired, per the table in .dev/ia-proposal.md
+# ---------------------------------------------------------------------------
+#
+# No `force` on these: the pages genuinely do not exist in the new build, and
+# Netlify applies a redirect when nothing else matches. Forcing would only mask
+# a future page at the same path.
+#
+# `constants/pages.ts` carries the same list beside the path constants. Keep the
+# two in step.
+
+# Retired in rebuild phase 1. The Get Started handoff points at the docs
+# quickstart, which is the whole reason this page could go.
+[[redirects]]
+  from = "/getting-started/*"
+  to = "https://docs.overture.bio/deploy/prelude"
+  status = 301
+
+# Retired in rebuild phase 1, folded into the funding page.
+[[redirects]]
+  from = "/acknowledgements/*"
+  to = "/about/funding/"
+  status = 301
+
+# Renamed in rebuild phase 4. "Services" read commercial for a not-for-profit.
+[[redirects]]
+  from = "/services/*"
+  to = "/collaborate/"
+  status = 301
+
+# Renamed in rebuild phase 4. This is the one that matters: it is the only
+# retired route with inbound fragment links (`#icgcargo` and its siblings).
+# Browsers preserve the fragment across a 301 and do not send it to the server,
+# so what makes those links land is the matching ids kept on the /impact/ hub
+# cards, not anything in this file. Do not renumber or tidy those ids.
+[[redirects]]
+  from = "/case-studies/*"
+  to = "/impact/"
+  status = 301
+
+# Not included, deliberately:
+#
+#   /about-us/ -> /about/   The IA calls this rename optional and it has not
+#                           happened; /about-us/ is still a live route.
+#   /home/     -> /         Not a redirect. Stage 3 gives the marketing build
+#                           its own `url`, which makes /home/ the root.

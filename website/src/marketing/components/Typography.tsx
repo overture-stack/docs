@@ -8,22 +8,24 @@ type TextProps = {
   className?: string;
   children?: React.ReactNode;
   style?: React.CSSProperties;
+  /** For headings a `<section aria-labelledby>` points at. */
+  id?: string;
 };
 
-export const H1 = ({ className, children, style }: TextProps) => (
-  <h1 style={style} className={`${className ? className : ""} t-h1`}>
+export const H1 = ({ className, children, style, id }: TextProps) => (
+  <h1 id={id} style={style} className={`${className ? className : ""} t-h1`}>
     {children}
   </h1>
 );
 
-export const H2 = ({ className, children, style }: TextProps) => (
-  <h2 style={style} className={`${className ? className : ""} t-h2`}>
+export const H2 = ({ className, children, style, id }: TextProps) => (
+  <h2 id={id} style={style} className={`${className ? className : ""} t-h2`}>
     {children}
   </h2>
 );
 
-export const H3 = ({ className, children, style }: TextProps) => (
-  <h3 style={style} className={`${className ? className : ""} t-h3`}>
+export const H3 = ({ className, children, style, id }: TextProps) => (
+  <h3 id={id} style={style} className={`${className ? className : ""} t-h3`}>
     {children}
   </h3>
 );

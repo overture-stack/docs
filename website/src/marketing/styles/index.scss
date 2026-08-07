@@ -46,24 +46,21 @@
   @import "base";
 
   @import "components/button";
+  @import "components/casestudy";
   @import "components/footer";
   @import "components/hero";
-  @import "components/homeproductlink";
   @import "components/icon";
   @import "components/navbar";
   @import "components/notebox";
-  @import "components/productspagesection";
-  @import "components/servicespagesection";
-  @import "components/terminal";
   @import "components/typography";
   @import "components/yellowbutton";
 
   @import "pages/home";
   @import "pages/about-us";
-  @import "pages/case-studies";
   @import "pages/funding";
+  @import "pages/impact";
   @import "pages/privacy";
   @import "pages/products";
-  @import "pages/services";
+  @import "pages/collaborate";
   @import "pages/terms-conditions";
 }

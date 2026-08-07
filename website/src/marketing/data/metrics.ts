@@ -57,6 +57,44 @@ const metrics = {
     verified: "2026-08-07",
     note: "Core software engineering team.",
   },
+  annualEngagements: {
+    value: "eight",
+    source: "OICR Genome Informatics program",
+    verified: "2026-08-07",
+    note: "Stakeholder engagements a year: platform demonstrations, needs assessments and technical guidance. An average, rounded down from the sixteen named engagements the program tracks.",
+  },
+
+  // Launch years, one per platform the team builds and runs. Added for the
+  // /impact/ hub, which dates every card. iMicroSeq's is further down, with the
+  // rest of that platform's figures. PCGL has no entry on purpose: its launch is
+  // in the future, and announcing another institution's date is not ours to do
+  // until someone confirms it. See .dev/roadmap.md § Inputs needed.
+  icgcArgoLaunch: {
+    value: "2019",
+    source: "OICR Genome Informatics program",
+    verified: "2026-08-07",
+  },
+  ihccLaunch: {
+    value: "2020",
+    source: "OICR Genome Informatics program",
+    verified: "2026-08-07",
+  },
+  hcmiLaunch: {
+    value: "2016",
+    source: "OICR Genome Informatics program",
+    verified: "2026-08-07",
+    note: "The earliest platform still running, so this is also `firstDeployment`.",
+  },
+  ohcrnLaunch: {
+    value: "2025",
+    source: "OICR Genome Informatics program",
+    verified: "2026-08-07",
+  },
+  drugDiscoveryLaunch: {
+    value: "2025",
+    source: "OICR Genome Informatics program",
+    verified: "2026-08-07",
+  },
 
   // ICGC-ARGO
   icgcArgoParticipants: {

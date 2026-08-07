@@ -27,49 +27,11 @@
     text-align: center;
   }
 
-  &__product-page-link {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin-top: 1.6em;
-    @include breakpoint(mobile) {
-      margin-top: 1.8em;
-      gap: 0px;
-      column-gap: 10px;
-    }
-
-    @include breakpoint(tablet-up) {
-      flex-direction: column;
-    }
-  }
-  &__product-page-img {
-    margin-bottom: 20px;
-    // The product icon set is drawn to a single 112x112 viewBox, so the Gatsby
-    // page never had to say how big these are. Anything from outside that set
-    // renders at its own intrinsic size and breaks the row, which is easy to do
-    // by accident when adding a section. Pin the size so it cannot happen.
-    width: 112px;
-    height: 112px;
-    @include breakpoint(mobile) {
-      width: 50px;
-      height: 50px;
-      margin-right: 0.4em;
-    }
-  }
-
-  &__product-page-title {
-    max-width: 260px;
-    text-align: left;
-  }
-
-  &__product-page-text {
-    min-width: 350px;
-    text-align: left;
-    @include breakpoint(tablet-up) {
-      min-width: 320px;
-      text-align: center;
-    }
-  }
+  // The `__product-page-*` variants went with the products page rewrite in
+  // rebuild phase 3: the feature tiles they styled no longer exist, and this
+  // component is now only rendered by /about-us/. The icon-sizing note they
+  // carried is recorded in .dev/roadmap.md, since the icon set itself is
+  // unchanged.
 
   &__disable-hover-event {
     pointer-events: none;

@@ -4,10 +4,10 @@ import Button from "./Button";
 import Link from "./Link";
 import {
   ABOUT_US_PATH,
-  CASE_STUDIES_PATH,
   HOME_PATH,
+  IMPACT_PATH,
   PRODUCTS_PATH,
-  SERVICES_PATH,
+  COLLABORATE_PATH,
 } from "../constants/pages";
 import {
   DOCUMENTATION_LINK,
@@ -23,15 +23,14 @@ const LOGO = "/img/marketing/chrome/overture_logo.svg";
 // leaves the site, and `Support` drops out entirely and becomes "Support forum" in
 // the footer's Connect column.
 //
-// `Impact`, `Collaborate` and `About` point at the routes that exist today. The IA
-// renames all three, but each rename arrives with a page rewrite and a redirect
-// rule, which are phases 3 and 4 in `roadmap.md`. The labels are the half that
-// depends on neither, so a stage 2 reviewer sees the proposed nav rather than the
-// old one. Repoint the URLs when the routes move; these labels are final.
+// Every label now points at the route it names. `Impact` got its hub in phase 3
+// and `Collaborate` its page in phase 4. `About` is the exception and is meant
+// to be: the IA renames /about-us/ to /about/ but calls that redirect optional,
+// so the label moved and the address did not.
 const navLinks = [
   { name: "Products", url: PRODUCTS_PATH },
-  { name: "Impact", url: CASE_STUDIES_PATH },
-  { name: "Collaborate", url: SERVICES_PATH },
+  { name: "Impact", url: IMPACT_PATH },
+  { name: "Collaborate", url: COLLABORATE_PATH },
   { name: "About", url: ABOUT_US_PATH },
 ];
 

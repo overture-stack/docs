@@ -3,6 +3,14 @@ import Link from "./Link";
 import { Icon } from "./Icon";
 import { P2 } from "./Typography";
 
+/**
+ * Icon, heading and blurb in a column, optionally linked.
+ *
+ * It carried an `isProductPage` flag until rebuild phase 3, which switched it to
+ * a horizontal layout for the products page's feature tiles. Those tiles are
+ * gone with the rewrite, so the flag and its five style variants went too, and
+ * /about-us/ is the only route that renders this now.
+ */
 export type YellowButtonProps = {
   link?: string;
   title: React.ReactNode;
@@ -10,7 +18,6 @@ export type YellowButtonProps = {
   img_src: string;
   alt: string;
   text?: React.ReactNode;
-  isProductPage?: boolean;
 };
 
 export default function YellowButton({
@@ -19,44 +26,23 @@ export default function YellowButton({
   img_src,
   alt,
   text,
-  isProductPage,
 }: YellowButtonProps) {
-  const productPageClass = (base: string) =>
-    isProductPage ? ` ${base}` : "";
-
   return (
     <div
       className={`yellow-button ${
         !link ? "yellow-button__disable-hover-event" : ""
       }`}
     >
-      <Link
-        className={`yellow-button__link${productPageClass(
-          "yellow-button__product-page-link",
-        )}`}
-        to={link}
-      >
-        <Icon
-          className={`yellow-button__img${productPageClass(
-            "yellow-button__product-page-img",
-          )}`}
-          img={img_src}
-          alt={alt}
-        />
+      <Link className="yellow-button__link" to={link}>
+        <Icon className="yellow-button__img" img={img_src} alt={alt} />
         <h1
-          className={`yellow-button__title${productPageClass(
-            "yellow-button__product-page-title",
-          )}${!link ? " yellow-button__remove-underline-css" : ""}`}
+          className={`yellow-button__title${
+            !link ? " yellow-button__remove-underline-css" : ""
+          }`}
         >
           {title}
         </h1>
-        <P2
-          className={`yellow-button__text${productPageClass(
-            "yellow-button__product-page-text",
-          )}`}
-        >
-          {text}
-        </P2>
+        <P2 className="yellow-button__text">{text}</P2>
       </Link>
     </div>
   );

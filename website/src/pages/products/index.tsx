@@ -2,209 +2,165 @@ import React from "react";
 import MarketingPage from "../../marketing/MarketingPage";
 import Button from "../../marketing/components/Button";
 import Hero from "../../marketing/components/Hero";
-import ProductsPageSection from "../../marketing/components/ProductsPageSection";
-import { H2, P1 } from "../../marketing/components/Typography";
-import { PRELUDE_DOCS_LINK } from "../../marketing/constants/externalLinks";
+import Link from "../../marketing/components/Link";
+import ProductGroup from "../../marketing/components/ProductGroup";
+import { H2, H3, P1 } from "../../marketing/components/Typography";
+import {
+  OVERTURE_GITHUB_LINK,
+  PRELUDE_DOCS_LINK,
+} from "../../marketing/constants/externalLinks";
+import {
+  adjacentProjects,
+  componentsIn,
+  CONTROL_DOCS_LINK,
+  distinctions,
+  groups,
+} from "../../marketing/data/components";
 
 const ASSETS = "/img/marketing/products";
 
 /**
- * The products page covers the whole stack, so the site and the documentation
- * agree on what Overture contains.
+ * What Overture is made of, grouped by what each part does.
  *
- * Lectern, Lyric and Stage are new here: they were never on the Gatsby page,
- * and the retired products (Ego and the rest) went with `constants/products.js`
- * at source. The three new sections carry no artwork, because none exists yet;
- * ProductsPageSection renders without it.
+ * Rewritten in rebuild phase 3 against .dev/ia-proposal.md § /products/. What
+ * it replaced was seven near-identical sections of three feature tiles each,
+ * one per component, in codename order. Three things changed:
+ *
+ *   - The stack is grouped as Collect, Explore and Control, which is how the
+ *     component diagram in .dev/referenceMaterial/ describes it, so an evaluator
+ *     reads a shape rather than a catalogue.
+ *   - Components are named functionally with the codename beside them, which is
+ *     the house style fixed in the proposal. This is the page that teaches the
+ *     pairing: someone who arrives knowing only "Arranger" leaves knowing it is
+ *     the search service, and someone who needs search finds it without knowing
+ *     any codename at all.
+ *   - A comparison against the three adjacent projects, which is the most
+ *     linkable content the site has and the thing an evaluator actually wants.
+ *
+ * The copy is data, in src/marketing/data/components.ts, so this file is a
+ * layout and nothing on it needs a code change to reword.
+ *
+ * Still owed here: the Collect / Explore / Control diagram itself, which the
+ * proposal puts at the top of this page and on the home page. It is blocked on
+ * the source file, see .dev/roadmap.md § Inputs needed. The page is written to
+ * read correctly without it rather than to hold a gap open.
  */
 export default function ProductsPage() {
+  const [collect, explore, control] = groups;
+
   return (
     <MarketingPage
       className="ProductsPage"
       title="Overture Products"
-      description="Modular software components for scalable data management systems."
+      description="Seven modular components for building research data platforms: collect data, make it discoverable, and keep control of who reaches it."
     >
       <Hero
-        title="Our Products"
-        subtitle="Linking the gaps between data and discovery."
+        title="What Overture is made of"
+        subtitle="Seven components, grouped by what they do. Take one where you have a gap, or the whole stack as a platform."
       />
 
-      {/* Song section - grey background */}
-      <ProductsPageSection
-        src={`${ASSETS}/img_products_song.svg`}
-        title="Song"
-        subtitle="Metadata Submission, Tracking & Validation"
-        description="Song governs the submission, validation and tracking of genomic metadata across multiple cloud storage systems. With minimal human intervention, multiple contributors can create structured metadata repositories full of accessible, interoperable, and reusable data."
-        features={[
-          {
-            icon: "productMetadataValidation",
-            title: "Metadata Validation",
-            text: "All data submissions adhere to user-defined standards and structure",
-          },
-          {
-            icon: "productMetadataTracking",
-            title: "Metadata Tracking",
-            text: "Automated global identifiers tracks metadata across geographically distributed Song repositories",
-          },
-          {
-            icon: "productStateControls",
-            title: "State Controls",
-            text: "Control the publication status of data with configurable data states",
-          },
-        ]}
+      <ProductGroup group={collect} components={componentsIn("collect")} />
+
+      <ProductGroup
+        group={explore}
+        components={componentsIn("explore")}
         isGrey
       />
 
-      {/* Score section - white background */}
-      <ProductsPageSection
-        src={`${ASSETS}/img_products_score.svg`}
-        title="Score"
-        subtitle="File transfer and Object Storage"
-        description="Score simplifies data transfer and storage to and from the cloud. File bundling and resumable download features make it easy to transfer large data sets, while BAM and CRAM slicing enables users to segment large genomic files into manageable portions."
-        features={[
-          {
-            icon: "productHighTransfer",
-            title: "Multi-Platform Support",
-            text: "Support for AWS S3, Azure Storage, Google Cloud and more",
-          },
-          {
-            icon: "productSamtools",
-            title: "Built-in SamTools",
-            text: "Including BAM and CRAM file slicing",
-          },
-          {
-            icon: "productCloudSupport",
-            title: "Robust File Transfers",
-            text: "Resumable multipart uploads and downloads",
-          },
-        ]}
-      />
+      {/* Control is a band around the other two rather than a component we
+          ship, so it renders as prose with no rows. */}
+      <section
+        className="ProductsControl ow:scroll-mt-20 blue-bg"
+        id={control.id}
+        aria-labelledby="control-heading"
+      >
+        <div className="container">
+          <div className="ow:max-w-3xl">
+            <H2 className="ow:text-left" id="control-heading">
+              {control.title}
+            </H2>
+            <div className="yellow-bar ow:my-6" />
+            <P1>{control.blurb}</P1>
+            <Link
+              to={CONTROL_DOCS_LINK}
+              className="ow:inline-block ow:mt-6 ow:text-lg ow:font-bold ow:text-link"
+            >
+              Configuring access and authorization
+            </Link>
+          </div>
+        </div>
+      </section>
 
-      {/* Maestro section - grey background */}
-      <ProductsPageSection
-        src={`${ASSETS}/img_products_maestro.svg`}
-        title="Maestro"
-        subtitle="Indexing of Distributed Data"
-        description="Unifies genomic metadata dispersed across numerous Song repositories into a single, searchable Elasticsearch index."
-        features={[
-          {
-            icon: "productMultipleSongsIndex",
-            title: `Multi "Song" Indexing`,
-            text: "Connect to one or multiple Song servers and produce a single Elasticsearch index",
-          },
-          {
-            icon: "productMultipleIndexLevels",
-            title: "Multiple Indexing Levels",
-            text: "Control indexing of discrete units of data",
-          },
-          {
-            icon: "productSlackIntegration",
-            title: "Slack Integration",
-            text: "Send notifications through a Slack webhook integration",
-          },
-        ]}
-        isGrey
-      />
+      <section
+        className="ProductsCompare ow:scroll-mt-20"
+        id="compare"
+        aria-labelledby="compare-heading"
+      >
+        <div className="container">
+          <div className="ow:max-w-3xl">
+            <H2 className="ow:text-left" id="compare-heading">
+              How Overture compares
+            </H2>
+            <div className="yellow-bar ow:my-6" />
+            <P1>
+              Three projects occupy adjacent space. None of them is a
+              composable, domain-agnostic toolkit, and Overture complements two
+              of them rather than competing with them: it supplies the
+              submission, storage, indexing and search layers they can sit on
+              top of.
+            </P1>
+          </div>
 
-      {/* Arranger section - white background */}
-      <ProductsPageSection
-        src={`${ASSETS}/img_products_arranger.svg`}
-        title="Arranger"
-        subtitle="Data Portal API and UI component generation"
-        description="A data-agnostic search API built alongside a collection of reusable UI components. Arranger allows admins to configure functional data portals from any Elasticsearch index, enabling users to query data, build cohorts, and export filtered data for further analysis and interpretation."
-        features={[
-          {
-            icon: "productSearchAPI",
-            title: "Search API Generation",
-            text: "Generate a GraphQL API from any Elasticsearch Index",
-          },
-          {
-            icon: "productBuiltInUIComponents",
-            title: "Built-In UI Components",
-            text: "Prop up a front end web portal for users to filter and query your data",
-          },
-          {
-            icon: "productAdministrativeUI",
-            title: "Highly Configurable",
-            text: "Helping you create a customized discovery portal",
-          },
-        ]}
-      />
+          <div className="ow:mt-12 ow:grid ow:gap-10 ow:lg:grid-cols-3">
+            {adjacentProjects.map((project) => (
+              <article
+                key={project.name}
+                className="ow:flex ow:flex-col ow:gap-3 ow:border-t-4 ow:border-accent ow:pt-6"
+              >
+                <H3>{project.name}</H3>
+                <p className="ow:text-base ow:text-ink">{project.maintainer}</p>
+                <p className="ow:text-lg ow:leading-8 ow:text-navy">
+                  {project.what}
+                </p>
+                {/* Bottom-anchored so the three concessions line up as a band
+                    across the cards, whatever length the paragraph above is. */}
+                <p className="ow:mt-auto ow:pt-3 ow:text-lg ow:leading-8 ow:font-bold ow:text-navy">
+                  {project.stronger}
+                </p>
+                <Link
+                  to={project.link}
+                  className="ow:text-lg ow:font-bold ow:text-link"
+                >
+                  Visit {project.name}
+                </Link>
+              </article>
+            ))}
+          </div>
 
-      {/* Lectern section - grey background */}
-      <ProductsPageSection
-        title="Lectern"
-        subtitle="Data Dictionary Management"
-        description="Lectern manages collections of data dictionaries: schemas that define the structure, constraints and relationships of a data model. It tracks how those dictionaries change over time and exposes them through a REST API, so a platform has one authoritative description of the data it accepts."
-        features={[
-          {
-            icon: "productMultipleSongsIndex",
-            title: "Schema Definition",
-            text: "Define the structure, constraints and relationships of your data elements",
-          },
-          {
-            icon: "productStateControls",
-            title: "Version Control",
-            text: "Track how data structures change over time, and compare any two versions",
-          },
-          {
-            icon: "productMetadataValidation",
-            title: "Schema Validation",
-            text: "Check dictionary schemas against the Lectern base meta-schema before they are used",
-          },
-        ]}
-        isGrey
-      />
-
-      {/* Lyric section - white background */}
-      <ProductsPageSection
-        title="Lyric"
-        subtitle="Tabular Data Submission"
-        description="Lyric is a model-agnostic submission service for structured tabular data. It validates each submission against a Lectern dictionary, lets contributors correct their data before committing it, and keeps a full audit trail of every change."
-        features={[
-          {
-            icon: "productMetadataValidation",
-            title: "Schema-Driven Validation",
-            text: "Every submission is validated against the Lectern dictionary it names",
-          },
-          {
-            icon: "productHighTransfer",
-            title: "Staged Submissions",
-            text: "Contributors revise and revalidate their data before anything is committed",
-          },
-          {
-            icon: "productMultipleIndexLevels",
-            title: "Change History",
-            text: "A complete audit trail of every submission and update, for data governance",
-          },
-        ]}
-      />
-
-      {/* Stage section - grey background */}
-      <ProductsPageSection
-        src={`${ASSETS}/img_DMS.svg`}
-        title="Stage"
-        subtitle="Data Portal User Interface"
-        description="Stage is a React-based scaffold for browser-accessible data portals. It supplies the navigation, authentication and data exploration components a portal needs, so teams customize a working front end rather than building one from scratch."
-        features={[
-          {
-            icon: "productBuiltInUIComponents",
-            title: "Modular Architecture",
-            text: "A component-based structure built for customizing and extending the interface",
-          },
-          {
-            icon: "productSingleSignOn",
-            title: "Identity and Access",
-            text: "Login and profile pages wired to Keycloak, including SSO identity providers",
-          },
-          {
-            icon: "productAdministrativeUI",
-            title: "Theme Customization",
-            text: "Fine-grained control over the appearance of individual components",
-          },
-        ]}
-        isGrey
-      />
+          <div className="ow:mt-16 ow:max-w-3xl">
+            <H3>Where Overture is different</H3>
+            <ul className="ow:mt-6 ow:flex ow:flex-col ow:gap-6">
+              {distinctions.map((distinction) => (
+                <li
+                  key={distinction.title}
+                  className="ow:border-l-4 ow:border-rule ow:pl-6"
+                >
+                  <p className="ow:text-lg ow:leading-8 ow:text-navy">
+                    <strong>{distinction.title}.</strong> {distinction.text}
+                  </p>
+                </li>
+              ))}
+            </ul>
+            <p className="ow:mt-8 ow:text-lg ow:leading-8 ow:text-navy">
+              All seven components are developed in the open at{" "}
+              <Link to={OVERTURE_GITHUB_LINK} className="ow:font-bold">
+                github.com/overture-stack
+              </Link>
+              .
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* lower blue section */}
       <section className="lower-blue-section">

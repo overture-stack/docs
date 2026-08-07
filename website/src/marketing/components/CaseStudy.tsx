@@ -10,20 +10,30 @@ import type { CaseStudyData } from "../data/caseStudies";
 export type CaseStudyProps = {
   caseData: CaseStudyData;
   currentScreenshot: number;
+  /**
+   * False on the per-platform pages under /impact/, where the hero already
+   * carries the name as the page's `h1` and repeating it as an `h2` directly
+   * underneath reads as a mistake. True on /case-studies/, which stacks several
+   * of these and needs each one labelled.
+   */
+  showTitle?: boolean;
 };
 
 export default function CaseStudy({
   caseData,
   currentScreenshot,
+  showTitle = true,
 }: CaseStudyProps) {
   const detail = caseData.details[currentScreenshot];
 
   return (
     <section className="Case-Study" id={caseData.slug}>
       <div className="container">
-        <div className="case-heading">
-          <H2>{caseData.title}</H2>
-        </div>
+        {showTitle && (
+          <div className="case-heading">
+            <H2>{caseData.title}</H2>
+          </div>
+        )}
         {/* top segment */}
         <div className=" top-segment">
           <div className="columns">
@@ -76,7 +86,7 @@ export default function CaseStudy({
               </ul>
               <div className="button-holder indent-group">
                 <Button type="primary" size="medium" link={caseData.clientLink}>
-                  Check it out!
+                  Visit {caseData.title}
                 </Button>
               </div>
             </div>
