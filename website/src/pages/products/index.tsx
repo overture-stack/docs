@@ -4,13 +4,12 @@ import Button from "../../marketing/components/Button";
 import Hero from "../../marketing/components/Hero";
 import Link from "../../marketing/components/Link";
 import ProductGroup from "../../marketing/components/ProductGroup";
-import { H2, H3, P1 } from "../../marketing/components/Typography";
+import { H2, P1 } from "../../marketing/components/Typography";
 import {
   OVERTURE_GITHUB_LINK,
   PRELUDE_DOCS_LINK,
 } from "../../marketing/constants/externalLinks";
 import {
-  adjacentProjects,
   componentsIn,
   CONTROL_DOCS_LINK,
   distinctions,
@@ -34,8 +33,8 @@ const ASSETS = "/img/marketing/products";
  *     pairing: someone who arrives knowing only "Arranger" leaves knowing it is
  *     the search service, and someone who needs search finds it without knowing
  *     any codename at all.
- *   - A comparison against the three adjacent projects, which is the most
- *     linkable content the site has and the thing an evaluator actually wants.
+ *   - A "Where Overture is different" section, which is the most linkable
+ *     content the site has and the thing an evaluator actually wants.
  *
  * The copy is data, in src/marketing/data/components.ts, so this file is a
  * layout and nothing on it needs a code change to reword.
@@ -92,73 +91,35 @@ export default function ProductsPage() {
       </section>
 
       <section
-        className="ProductsCompare ow:scroll-mt-20"
+        className="ProductsDifferent ow:scroll-mt-20"
         id="compare"
-        aria-labelledby="compare-heading"
+        aria-labelledby="different-heading"
       >
         <div className="container">
-          <div className="ow:max-w-3xl">
-            <H2 className="ow:text-left" id="compare-heading">
-              How Overture compares
-            </H2>
-            <div className="yellow-bar ow:my-6" />
-            <P1>
-              Three projects occupy adjacent space. None of them is a
-              composable, domain-agnostic toolkit, and Overture complements two
-              of them rather than competing with them: it supplies the
-              submission, storage, indexing and search layers they can sit on
-              top of.
-            </P1>
-          </div>
+          <H2 className="ow:text-left" id="different-heading">
+            Where Overture is different
+          </H2>
+          <div className="yellow-bar ow:my-6" />
 
-          <div className="ow:mt-12 ow:grid ow:gap-10 ow:lg:grid-cols-3">
-            {adjacentProjects.map((project) => (
-              <article
-                key={project.name}
-                className="ow:flex ow:flex-col ow:gap-3 ow:border-t-4 ow:border-accent ow:pt-6"
+          <ul className="ow:mt-6 ow:grid ow:gap-6 ow:lg:grid-cols-2">
+            {distinctions.map((distinction) => (
+              <li
+                key={distinction.title}
+                className="ow:border-l-4 ow:border-rule ow:pl-6"
               >
-                <H3>{project.name}</H3>
-                <p className="ow:text-base ow:text-ink">{project.maintainer}</p>
                 <p className="ow:text-lg ow:leading-8 ow:text-navy">
-                  {project.what}
+                  <strong>{distinction.title}.</strong> {distinction.text}
                 </p>
-                {/* Bottom-anchored so the three concessions line up as a band
-                    across the cards, whatever length the paragraph above is. */}
-                <p className="ow:mt-auto ow:pt-3 ow:text-lg ow:leading-8 ow:font-bold ow:text-navy">
-                  {project.stronger}
-                </p>
-                <Link
-                  to={project.link}
-                  className="ow:text-lg ow:font-bold ow:text-link"
-                >
-                  Visit {project.name}
-                </Link>
-              </article>
+              </li>
             ))}
-          </div>
-
-          <div className="ow:mt-16 ow:max-w-3xl">
-            <H3>Where Overture is different</H3>
-            <ul className="ow:mt-6 ow:flex ow:flex-col ow:gap-6">
-              {distinctions.map((distinction) => (
-                <li
-                  key={distinction.title}
-                  className="ow:border-l-4 ow:border-rule ow:pl-6"
-                >
-                  <p className="ow:text-lg ow:leading-8 ow:text-navy">
-                    <strong>{distinction.title}.</strong> {distinction.text}
-                  </p>
-                </li>
-              ))}
-            </ul>
-            <p className="ow:mt-8 ow:text-lg ow:leading-8 ow:text-navy">
-              All seven components are developed in the open at{" "}
-              <Link to={OVERTURE_GITHUB_LINK} className="ow:font-bold">
-                github.com/overture-stack
-              </Link>
-              .
-            </p>
-          </div>
+          </ul>
+          <p className="ow:mt-8 ow:max-w-3xl ow:text-lg ow:leading-8 ow:text-navy">
+            All seven components are developed in the open at{" "}
+            <Link to={OVERTURE_GITHUB_LINK} className="ow:font-bold">
+              github.com/overture-stack
+            </Link>
+            .
+          </p>
         </div>
       </section>
 

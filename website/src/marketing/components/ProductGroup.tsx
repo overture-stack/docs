@@ -1,4 +1,5 @@
 import React from "react";
+import useBrokenLinks from "@docusaurus/useBrokenLinks";
 import Link from "./Link";
 import { H2, H3, P1 } from "./Typography";
 import type { ComponentGroup, OvertureComponent } from "../data/components";
@@ -31,6 +32,15 @@ export default function ProductGroup({
   components,
   isGrey,
 }: ProductGroupProps) {
+  // MDX headings and list items register their own anchors as they render, so
+  // Docusaurus's broken-anchor check knows about them; a plain React page like
+  // this one never does that registration on its own, so anything linking to
+  // `id={group.id}` or a component's `id={component.id}` reads as broken even
+  // though the anchor is really there. HeroDiagram is the first internal link
+  // into these ids; nothing caught this sooner because nothing linked here.
+  const brokenLinks = useBrokenLinks();
+  brokenLinks.collectAnchor(group.id);
+
   return (
     <section
       className={`ProductGroup ow:scroll-mt-20 ${isGrey ? "grey-bg" : ""}`}
@@ -47,7 +57,9 @@ export default function ProductGroup({
         </div>
 
         <ul className="ow:mt-10">
-          {components.map((component) => (
+          {components.map((component) => {
+            brokenLinks.collectAnchor(component.id);
+            return (
             // The id is the anchor: /products/#song and its siblings are linked
             // from the home page and predate this page. See data/components.ts.
             <li
@@ -74,7 +86,8 @@ export default function ProductGroup({
                 </Link>
               </div>
             </li>
-          ))}
+            );
+          })}
         </ul>
       </div>
     </section>

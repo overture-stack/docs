@@ -19,7 +19,6 @@ export const DOCS_DEPLOY = `${DOCS}/deploy`;
 export const DOCS_USE = `${DOCS}/use`;
 export const DOCS_COMMUNITY = `${DOCS}/community/support`;
 
-export const DEMO_LINK = "https://demo.overture.bio/";
 export const DOCUMENTATION_LINK = `${DOCS}/`;
 export const OVERTURE_GITHUB_LINK = "https://github.com/overture-stack/";
 export const OVERTURE_DOCUMENTATION_CONTRIBUTION_LINK = `${DOCS}/community/contribution`;

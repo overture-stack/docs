@@ -50,7 +50,7 @@ export const components: OvertureComponent[] = [
     name: "Dictionary Manager",
     codename: "Lectern",
     summary:
-      "Holds the data dictionaries that define what a platform accepts, the fields, types and constraints of each model, and tracks how they change over time.",
+      "Defines and version-tracks the data dictionaries a platform validates submissions against.",
     docs: LECTERN_DOCS_LINK,
     group: "collect",
   },
@@ -59,7 +59,7 @@ export const components: OvertureComponent[] = [
     name: "Tabular Submission",
     codename: "Lyric",
     summary:
-      "Takes tabular submissions and validates them against a dictionary before anything is committed, so contributors correct their own data and every change keeps an audit trail.",
+      "Validates and commits tabular submissions against a dictionary, keeping every change auditable.",
     docs: LYRIC_DOCS_LINK,
     group: "collect",
   },
@@ -68,7 +68,7 @@ export const components: OvertureComponent[] = [
     name: "File Manager",
     codename: "Song",
     summary:
-      "Tracks file metadata across repositories that may sit in different clouds or institutions, assigning global identifiers and controlling what is published.",
+      "Catalogs file metadata across repositories, assigning global identifiers and controlling what gets published.",
     docs: SONG_DOCS_LINK,
     group: "collect",
   },
@@ -77,7 +77,7 @@ export const components: OvertureComponent[] = [
     name: "File Transfer",
     codename: "Score",
     summary:
-      "Moves large files to and from cloud object storage, with resumable multipart transfers and BAM and CRAM slicing so a genome does not have to be downloaded whole.",
+      "Moves large files to and from cloud storage, with resumable transfers and BAM/CRAM slicing.",
     docs: SCORE_DOCS_LINK,
     group: "collect",
   },
@@ -85,8 +85,11 @@ export const components: OvertureComponent[] = [
     id: "maestro",
     name: "Indexing Service",
     codename: "Maestro",
+    // Maestro's own README now names both File Manager (Song) and Tabular
+    // Submission (Lyric) as sources it indexes, not File Manager alone —
+    // confirmed there 2026-08-10, not just trimmed for length.
     summary:
-      "Draws metadata from one or many File Manager repositories into a single Elasticsearch index, which is what makes distributed data searchable as one collection.",
+      "Indexes metadata from File Manager and Tabular Submission repositories into one searchable index.",
     docs: MAESTRO_DOCS_LINK,
     group: "explore",
   },
@@ -94,8 +97,10 @@ export const components: OvertureComponent[] = [
     id: "arranger",
     name: "Search",
     codename: "Arranger",
+    // Arranger's own README now supports OpenSearch as well as Elasticsearch
+    // (previously Elasticsearch-only here) — confirmed there 2026-08-10.
     summary:
-      "Generates a search API and matching interface components from any Elasticsearch index, so users can filter, build cohorts and export without a bespoke back end.",
+      "Builds a search API and matching UI components from any Elasticsearch or OpenSearch index.",
     docs: ARRANGER_DOCS_LINK,
     group: "explore",
   },
@@ -104,7 +109,7 @@ export const components: OvertureComponent[] = [
     name: "Portal UI",
     codename: "Stage",
     summary:
-      "The front end a portal is assembled from: navigation, login and data exploration components, themed and extended per deployment rather than built from scratch.",
+      "A React framework for a data portal's front end, themed and extended per deployment.",
     docs: STAGE_DOCS_LINK,
     group: "explore",
   },

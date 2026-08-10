@@ -4,26 +4,30 @@
   .Hero {
     background-color: $blue-top;
 
+    // The orbit diagram is a real focusable/hoverable component (HeroDiagram),
+    // not decoration, so it is hidden outright below tablet-up rather than
+    // just visually: `display: none` also drops it from the tab order on a
+    // viewport where it never appears. Its own sizing (a `clamp()` matching
+    // the viewport) lives in _hero-diagram.scss.
+    .HeroDiagram {
+      display: none;
+    }
+
     @include breakpoint(tablet-up) {
-      background-image: url('/img/marketing/home/home_hero_img.svg');
-      background-repeat: no-repeat;
-      background-position-x: 100%;
-      background-size: 450px;
       height: fit-content;
       // Was `max-height: 470px`, which capped the box while the phase 4 hero
       // heading grew past it. `min-height` keeps the old proportions when the
-      // copy is short and lets the box grow when it is not.
-      min-height: 470px;
-      padding: 3.8em 0;
-    }
-    @include breakpoint(desktop-up) {
-      background-size: 450px;
-    }
-    @include breakpoint(desktop-wide) {
-      background-position-x: 90%;
-    }
-    @include breakpoint(desktop-ultra-wide) {
-      background-position-x: 75%;
+      // copy is short and lets the box grow when it is not. Both this and
+      // the padding below have come down three times now, each time on
+      // request: with LogoCarousel reading as an extension of the hero right
+      // underneath it, the hero doesn't need to carry much air of its own
+      // between the diagram and the carousel below.
+      min-height: 320px;
+      padding: 0.9em 0;
+
+      .HeroDiagram {
+        display: block;
+      }
     }
 
     &__section {
@@ -43,7 +47,11 @@
 
       @include breakpoint(desktop-up) {
         max-width: 700px;
-        padding: 50px;
+        // Was `padding: 50px` (all sides): the 50px top and bottom stacked
+        // on top of `.Hero`'s own vertical padding above, and was most of
+        // where the hero's "empty space" actually was. Horizontal-only
+        // keeps the same breathing room next to the diagram.
+        padding: 0 50px;
       }
     }
 
@@ -84,7 +92,12 @@
       justify-content: center;
       @include breakpoint(tablet-up) {
         align-items: center;
-        justify-content: flex-start;
+        // Two children once HeroDiagram renders (tablet-up and up): the text
+        // section and the diagram. `space-between` puts the text at the start
+        // and the diagram at the end with no fixed widths to keep in sync, and
+        // `align-items: center` above centers the diagram vertically against
+        // whatever height the hero text gives the row.
+        justify-content: space-between;
       }
     }
   }
@@ -127,10 +140,27 @@
     padding: 0 32px;
   }
 
+  // Same override, for the same reason, one section down: this is what lines
+  // LogoCarousel's edge fades up with the hero's own content edges (the hero
+  // text's left edge, the diagram's right edge), both of which are just
+  // `.Hero .container`'s inner edges above.
+  .LogoCarousel .container {
+    padding: 0 32px;
+  }
+
+  // Pulled up closer to the hero: `.section`'s own 3rem plus the generic
+  // `.container` padding above stacked to roughly 128px of blank space
+  // between the hero and this heading, reading as a gap rather than the
+  // next thing on the page.
   .HomeProof {
-    &__logo {
-      max-height: 44px;
-      width: auto;
+    padding-top: 1.5rem;
+
+    .container {
+      padding-top: 24px;
+
+      @include breakpoint(desktop-up) {
+        padding-top: 2rem;
+      }
     }
   }
 }

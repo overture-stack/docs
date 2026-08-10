@@ -1,0 +1,159 @@
+// The home hero's diagram. See HeroDiagram.tsx.
+//
+// Square aspect ratio, matching the 528x528 artwork it lays hotspots over.
+// Sized with clamp() rather than a fixed width: a fixed size collided with
+// the hero paragraph between roughly 768px and 1216px viewport width,
+// invisible against the diagram's own empty space, not against text. See
+// _home.scss history for the full account.
+.HeroDiagram {
+  position: relative;
+  flex-shrink: 0;
+  width: clamp(220px, 32vw, 450px);
+  aspect-ratio: 1;
+
+  &__disc,
+  &__ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &__disc {
+    width: 75%;
+    height: 75%;
+    background: #edf6f9;
+    opacity: 0.666;
+    border: 1.4px dashed #4cc6f1;
+  }
+
+  &__ring {
+    // Touches the diagram's own edge by design: this is the outer boundary
+    // the icons are laid out inside of.
+    width: 100%;
+    height: 100%;
+    border: 1.4px dashed rgba(107, 116, 132, 0.47);
+  }
+
+  &__portal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -47%);
+    pointer-events: none;
+  }
+
+  &__portalImage {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  &__hotspot {
+    position: absolute;
+    // Baseline z-index so this participates in explicit stacking at all:
+    // eight of these sit in the same absolutely-positioned layer, so
+    // without it a later sibling (later in DOM, not necessarily further
+    // away on screen) paints over an earlier one's `scale()`-enlarged
+    // hover/focus state. Raised further on hover/focus so it clears every
+    // neighbour, not just earlier ones.
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    transition: transform 120ms ease-out, opacity 150ms ease-out,
+      filter 150ms ease-out;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      z-index: 3;
+      transform: translate(-50%, -50%) scale(1.14);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $yellow;
+      outline-offset: 3px;
+    }
+
+    &--disabled {
+      cursor: default;
+
+      .HeroDiagram__icon {
+        opacity: 0.55;
+      }
+    }
+
+    // Hovering or focusing a LogoCarousel logo sets `highlightedPlatform`
+    // (data/componentUsage.ts says which components it uses); every hotspot
+    // is always on screen at once here, unlike the carousel's own logos, so
+    // dimming the rest in place is enough — nothing needs filtering out.
+    &--highlighted {
+      z-index: 3;
+      transform: translate(-50%, -50%) scale(1.14);
+      filter: drop-shadow(0 0 3px $yellow) drop-shadow(0 0 5px $yellow);
+    }
+
+    &--dimmed {
+      opacity: 0.35;
+    }
+  }
+
+  &__icon {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  // `position: fixed`, positioned in JS from the hovered hotspot's own
+  // `getBoundingClientRect()` (utils/floatingTooltip.ts), not `position:
+  // absolute` anchored to the hotspot: a fixed offset from one hotspot
+  // could cover the rest of the diagram, or run off the browser window for
+  // a hotspot near the top of a shorter one, both caught by the developer
+  // using the real page. No `:hover`/`:focus-visible` trigger here either —
+  // visibility is React state (only rendered while a tooltip is set), not
+  // CSS.
+  &__tooltip {
+    position: fixed;
+    z-index: 20;
+    transform: translateX(-50%);
+    width: 200px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: $navy-black;
+    color: $white;
+    font-family: $font-sans-serif;
+    text-align: left;
+    pointer-events: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  &__tooltipName {
+    display: block;
+    // `_defaults.scss` sets `strong { color: $navy-black !important; }`
+    // site-wide; inheriting $white from .HeroDiagram__tooltip loses to that
+    // regardless of selector specificity, since !important beats inheritance
+    // outright. Only another !important wins it back.
+    color: $white !important;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  &__tooltipSummary {
+    display: block;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: $grey-2;
+  }
+}

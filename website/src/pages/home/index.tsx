@@ -1,15 +1,15 @@
 import React from "react";
 import MarketingPage from "../../marketing/MarketingPage";
 import Button from "../../marketing/components/Button";
+import HeroDiagram from "../../marketing/components/HeroDiagram";
 import HomePillars from "../../marketing/components/HomePillars";
 import Link from "../../marketing/components/Link";
+import LogoCarousel from "../../marketing/components/LogoCarousel";
+import { ComponentHighlightProvider } from "../../marketing/context/ComponentHighlightContext";
 import { H1, H2, H3, P1 } from "../../marketing/components/Typography";
 import { groups } from "../../marketing/data/components";
 import metrics from "../../marketing/data/metrics";
-import {
-  featuredPlatforms,
-  platformLogos,
-} from "../../marketing/data/platforms";
+import { featuredPlatforms } from "../../marketing/data/platforms";
 import {
   ABOUT_US_PATH,
   COLLABORATE_PATH,
@@ -19,7 +19,6 @@ import {
   PUBLICATIONS_PATH,
 } from "../../marketing/constants/pages";
 import {
-  DEMO_LINK,
   GI_PROGRAM_LINK,
   PRELUDE_DOCS_LINK,
 } from "../../marketing/constants/externalLinks";
@@ -53,10 +52,12 @@ import {
  *     to anyone who did not already know what Overture is, and as the closing
  *     band that repeated it.
  *
- * Still owed: the Collect / Explore / Control diagram, which the proposal wants
- * high on this page as the orientation device, and the funder logos. Both are
- * blocked on files, see .dev/roadmap.md § Inputs needed. Each section is written
- * to read correctly without its artwork rather than to hold a gap open.
+ * The hero's orientation device is HeroDiagram, an interactive orbit of
+ * Overture's components built from .dev/referenceMaterial/diagram.pptx: not
+ * the proposal's labeled Collect/Explore/Control diagram, which is still
+ * blocked on a source file (see .dev/roadmap.md § Inputs needed). Still owed:
+ * the funder logos. Each section is written to read correctly without its
+ * artwork rather than to hold a gap open.
  */
 export default function HomePage() {
   const [collect, explore, control] = groups;
@@ -67,45 +68,55 @@ export default function HomePage() {
       title="Overture - Home"
       description="Open-source microservices for building research data platforms: collect data, make it discoverable, and run the whole thing on infrastructure you control."
     >
-      {/* 1. Hero, with the institutional attribution in it. */}
-      <div className="Hero">
-        <div className="container">
-          <section className="Hero__section">
-            <H1>Open-source building blocks for research data platforms</H1>
-            <P1>
-              Overture is a set of microservices for storing, organizing,
-              exploring and sharing research data at scale. Take one component
-              or the whole stack, and run it on infrastructure you control.
-            </P1>
-            {/* Institutional attribution, subtle but present: one line, here
-                rather than a band further down, because it is what makes
-                everything below it credible. See .dev/ia-proposal.md finding 10
-                for what this deliberately is not, namely a co-brand. */}
-            <p className="Hero__attribution">
-              Developed and built by the{" "}
-              <a
-                href={GI_PROGRAM_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Genome Informatics program
-              </a>{" "}
-              at the Ontario Institute for Cancer Research.
-            </p>
-            <div className="Hero__small-buttons-container">
-              <Button link={PRELUDE_DOCS_LINK} size="medium" type="primary">
-                Get Started
-              </Button>
-              <Button link={DEMO_LINK} size="medium" type="primary">
-                View Demo
-              </Button>
-            </div>
-          </section>
+      {/* 1. Hero, with the institutional attribution in it. Wrapped with
+             LogoCarousel below in ComponentHighlightProvider: hovering a
+             component here highlights, in the carousel, the platforms that
+             use it (data/componentUsage.ts). */}
+      <ComponentHighlightProvider>
+        <div className="Hero">
+          <div className="container">
+            <section className="Hero__section">
+              <H1>Connecting research through shared data.</H1>
+              <P1>
+                Overture is a collection of open-source software used for
+                building platforms to store, organize and explore research data.
+              </P1>
+              {/* Institutional attribution, subtle but present: one line, here
+                  rather than a band further down, because it is what makes
+                  everything below it credible. See .dev/ia-proposal.md finding 10
+                  for what this deliberately is not, namely a co-brand. */}
+              {/* <p className="Hero__attribution">
+                Developed and maintained by the{" "}
+                <a
+                  href={ABOUT_US_PATH}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Genome Informatics program
+                </a>{" "}
+                at the Ontario Institute for Cancer Research.
+              </p> */}
+              <div className="Hero__small-buttons-container">
+                <Button link={PRELUDE_DOCS_LINK} size="medium" type="primary">
+                  Get Started
+                </Button>
+                <Button link={PRODUCTS_PATH} size="medium" type="primary">
+                  Learn More
+                </Button>
+              </div>
+            </section>
+            <HeroDiagram />
+          </div>
         </div>
-      </div>
 
-      {/* 2. Proof band, high. Figures from metrics.ts, logos from the platforms
-             that have one. Longevity is the part the old band was missing. */}
+        {/* 2. Who runs Overture, scrolling right below the hero: its own
+               section, but the shared blue background reads as a continuation
+               of the hero rather than a new one starting. */}
+        <LogoCarousel />
+      </ComponentHighlightProvider>
+
+      {/* 3. Proof band. Figures from metrics.ts; the platform logos moved
+             into LogoCarousel above rather than repeating here. */}
       <section className="HomeProof section" aria-labelledby="proof-heading">
         <div className="container">
           <H2 id="proof-heading">Running in production since 2016</H2>
@@ -133,27 +144,13 @@ export default function HomePage() {
               </div>
             ))}
           </dl>
-
-          <ul className="HomeProof__logos ow:mt-12 ow:flex ow:flex-wrap ow:items-center ow:justify-center ow:gap-10">
-            {platformLogos.map((platform) => (
-              <li key={platform.id}>
-                <Link to={platform.href ?? IMPACT_PATH}>
-                  <img
-                    src={platform.logo}
-                    alt={`${platform.name} logo`}
-                    className="HomeProof__logo"
-                  />
-                </Link>
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
 
-      {/* 3. The three pillars. */}
+      {/* 4. The three pillars. */}
       <HomePillars />
 
-      {/* 4. What Overture is made of. The diagram belongs here and does not
+      {/* 5. What Overture is made of. The diagram belongs here and does not
              exist yet, so the grouping is carried in words instead. The
              catalogue and the comparison stay on /products/. */}
       <section className="HomeStack section" aria-labelledby="stack-heading">
@@ -180,7 +177,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 5. Featured deployments, replacing the carousel. Which three is a data
+      {/* 6. Featured deployments, replacing the carousel. Which three is a data
              decision in platforms.ts, not a layout one. */}
       <section
         className="HomeFeatured section grey-bg"
@@ -220,7 +217,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. Three doors, one per audience. */}
+      {/* 7. Three doors, one per audience. */}
       <section className="HomeDoors section" aria-labelledby="doors-heading">
         <div className="container">
           <H2 id="doors-heading">Where to go next</H2>
@@ -260,7 +257,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 7. Funders and publication. The funder logos belong here, Canadian and
+      {/* 8. Funders and publication. The funder logos belong here, Canadian and
              American together; they are blocked on files, so this reads as
              prose until they arrive. */}
       <section

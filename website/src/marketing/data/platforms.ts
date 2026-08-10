@@ -73,7 +73,7 @@ export const platforms: Platform[] = [
     summary: `Genomic and clinical data for ${metrics.icgcArgoParticipants.value} participants, harmonized across ${metrics.icgcArgoPrograms.value} programs in ${metrics.icgcArgoCountries.value} countries.`,
     href: ICGC_ARGO_PATH,
     portal: ICGC_ARGO_PORTAL_LINK,
-    logo: `${LOGOS}/icgcargo/logo.svg`,
+    logo: `${LOGOS}/icgcargo/logo.png`,
     featured: true,
   },
   {
@@ -83,8 +83,7 @@ export const platforms: Platform[] = [
     summary: `${metrics.imicroseqPathogenGenomes.value} pathogen genomes and environmental wastewater surveillance, open access, launched as the Canadian VirusSeq Data Portal.`,
     href: IMICROSEQ_PATH,
     portal: VIRUSSEQ_PORTAL_LINK,
-    // Still the VirusSeq mark, see .dev/roadmap.md § Known issues.
-    logo: `${LOGOS}/virusseq/logo.svg`,
+    logo: `${LOGOS}/virusseq/logo.png`,
     featured: true,
   },
   {
@@ -94,7 +93,7 @@ export const platforms: Platform[] = [
     summary: `The International Health Cohorts Consortium atlas: ${metrics.ihccCohorts.value} cohorts, most of them a hundred thousand participants or more.`,
     href: IHCC_PATH,
     portal: IHCC_PORTAL_LINK,
-    logo: `${LOGOS}/ihcc/logo.svg`,
+    logo: `${LOGOS}/ihcc/logo.png`,
   },
   {
     id: "humanCancerModels",
@@ -103,7 +102,7 @@ export const platforms: Platform[] = [
     summary: `A searchable catalogue of ${metrics.hcmiCancerModels.value} unique cancer models with their genomic and clinical annotation.`,
     href: HCMI_PATH,
     portal: HCMIS_PORTAL_LINK,
-    logo: `${LOGOS}/hcmis/logo.svg`,
+    logo: `${LOGOS}/hcmis/logo.png`,
     featured: true,
   },
   {
@@ -112,6 +111,7 @@ export const platforms: Platform[] = [
     launched: metrics.ohcrnLaunch.value,
     summary:
       "A provincial network linking hereditary cancer research data across Ontario institutions.",
+    logo: `${LOGOS}/ohcrn/logo.png`,
   },
   {
     id: "drug-discovery",
@@ -125,6 +125,7 @@ export const platforms: Platform[] = [
     name: "Pan-Canadian Genome Library",
     summary:
       "A federal genomic infrastructure initiative hosted at McGill, in development.",
+    logo: `${LOGOS}/pcgl/logo.png`,
   },
 ];
 
@@ -165,6 +166,8 @@ export type LineagePlatform = {
   name: string;
   summary: string;
   link: string;
+  /** Absent on this page: the lineage section (/impact/#lineage) is text-only. */
+  logo?: string;
 };
 
 /**
@@ -182,6 +185,7 @@ export const lineage: LineagePlatform[] = [
     summary:
       "The original International Cancer Genome Consortium portal, and where these components started.",
     link: ICGC_LINK,
+    logo: `${LOGOS}/icgc25k/logo.png`,
   },
   {
     id: "gdc",
@@ -189,6 +193,7 @@ export const lineage: LineagePlatform[] = [
     summary:
       "Built with the Chicago group. Search (Arranger) came out of this work and was adopted back into Gen3.",
     link: GDC_LINK,
+    logo: `${LOGOS}/gdc/logo.svg`,
   },
   {
     id: "kidsFirst",
@@ -196,11 +201,9 @@ export const lineage: LineagePlatform[] = [
     summary:
       "A pediatric cancer and birth defect discovery portal built on Overture components, no longer a platform the team runs.",
     link: KIDS_FIRST_LINK,
+    logo: `${LOGOS}/kidsfirst/logo.png`,
   },
 ];
 
 /** The three the home page shows. See `Platform.featured`. */
 export const featuredPlatforms = platforms.filter((entry) => entry.featured);
-
-/** Tier 1 platforms that have a logo, for the proof band's logo strip. */
-export const platformLogos = platforms.filter((entry) => entry.logo);
