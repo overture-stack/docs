@@ -49,7 +49,11 @@ export default function HeroDiagram() {
   } | null>(null);
 
   return (
-    <div className="HeroDiagram" role="group" aria-label="Overture's components">
+    <div
+      className="HeroDiagram"
+      role="group"
+      aria-label="Overture's components"
+    >
       <div className="HeroDiagram__disc" />
       <div className="HeroDiagram__ring" />
 
@@ -149,13 +153,11 @@ export default function HeroDiagram() {
           role="tooltip"
           style={floatingTooltipPosition(
             tooltip.rect,
-            // Preference only, not a guarantee: `tooltipSide` on the
-            // hotspot itself if the developer set one (data/heroDiagram.ts),
-            // else away from the ring's own center by default — but this
-            // still flips if the preferred side would run off the browser
-            // window regardless of which one it is.
-            tooltip.hotspot.tooltipSide ??
-              (tooltip.hotspot.top < 50 ? "above" : "below"),
+            // Preference only, not a guarantee: pointed away from the
+            // ring's own center — a hotspot in the top half throws its
+            // tooltip further up, not down over the portal — but flips if
+            // that would run off the browser window.
+            tooltip.hotspot.top < 50 ? "above" : "below",
             { width: 200, estimatedHeight: 130 },
           )}
         >

@@ -1,0 +1,138 @@
+// Terminal: a block of shell commands, styled as a terminal window.
+//
+// Ported from the Gatsby site's `Terminal/styles.scss`, kept close to the
+// original so the quickstart looks like the one visitors have seen since 2023.
+// The values that changed and why:
+//
+//   - `pre`/`code` are stated explicitly (background, margin, padding, size).
+//     Infima styles both on the documentation side of this build, and while the
+//     `.marketing` nesting keeps our rules winning, it does not stop an
+//     unstated property from coming from Infima's rule instead.
+//   - The copy button is new, and lives inside `&__inner` rather than the title
+//     bar so it sits over the commands it copies.
+
+.Terminal {
+  background: $grey-2;
+  padding: 12px 2px 2px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(1, 1, 1, 0.4);
+
+  &__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px 4px 12px;
+  }
+
+  &__lights {
+    display: flex;
+    gap: 8px;
+  }
+
+  &__light {
+    width: 10px;
+    height: 10px;
+    background-color: $grey-3;
+  }
+
+  &__inner {
+    background-color: $grey-darkest;
+    border-radius: 6px;
+    margin: 8px;
+    padding: 18px 20px;
+  }
+
+  // #82ee86 on #282a35 measures 9.8:1, so this clears AA for body text as well
+  // as the 3:1 the site's accessibility obligation needs at this size. Do not
+  // dim it to look more like a real terminal.
+  &__code {
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: 0;
+    color: $terminal-text;
+    font-family: $font-monospace;
+    font-size: 15px;
+    line-height: 1.9;
+    // Wraps at a space and nowhere else. Getting there took three attempts,
+    // each measured with Range rects per visual line rather than read off a
+    // screenshot, since a screenshot cannot tell a wrap from a real newline:
+    //
+    //   1. `pre-wrap` plus `overflow-wrap: break-word` broke `docker build
+    //      --platform ...` as `docker build --` / `platform` at 390px. A
+    //      hyphen is a line-break opportunity in CSS, so this is not an
+    //      overflow-wrap question at all.
+    //   2. `word-break: keep-all` produced the identical break in Chrome.
+    //   3. What works: `Terminal__token`'s `white-space: nowrap` on each
+    //      whitespace-separated token, so the only break opportunities left in
+    //      a command are the spaces the command itself has.
+    //
+    // `overflow-x` is the fallback for a single token wider than the block,
+    // which nothing in the quickstart currently is.
+    white-space: pre-wrap;
+    overflow-x: auto;
+    // A monospace face with a `--` ligature would render every long flag here as
+    // a single dash, which is the one thing a command must not do.
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "calt" 0;
+
+    // A visible track if the `overflow-x` fallback above ever engages. macOS
+    // hides overlay scrollbars until something moves, so without this the only
+    // clue that a command continues past the right edge would be the command
+    // looking finished when it is not.
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $grey-4;
+      border-radius: 4px;
+    }
+
+    // Firefox, which has no pseudo-elements for this.
+    scrollbar-width: thin;
+    scrollbar-color: $grey-4 transparent;
+
+    code {
+      background: none;
+      border: 0;
+      padding: 0;
+      color: inherit;
+      font-family: inherit;
+      font-size: inherit;
+    }
+  }
+
+  // One command. The hanging indent is what separates a command that wrapped
+  // from the next command in the block: a continuation line sits two characters
+  // in, where every real command starts at the left edge.
+  &__line {
+    display: block;
+    padding-left: 2ch;
+    text-indent: -2ch;
+  }
+
+  &__token {
+    white-space: nowrap;
+  }
+
+  // Sits on the light frame now, not on the dark code, so it takes the dark
+  // text rather than the light: 4.5:1 against $grey-2 either way.
+  &__copy {
+    background: transparent;
+    color: $navy-black;
+    border: 1px solid $grey-4;
+    border-radius: 4px;
+    padding: 2px 10px;
+    font-family: $font-sans-serif;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      border-color: $navy-black;
+      background-color: $white;
+    }
+  }
+}

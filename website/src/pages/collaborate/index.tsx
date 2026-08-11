@@ -1,4 +1,5 @@
 import React from "react";
+import useBrokenLinks from "@docusaurus/useBrokenLinks";
 import MarketingPage from "../../marketing/MarketingPage";
 import Button from "../../marketing/components/Button";
 import Hero from "../../marketing/components/Hero";
@@ -25,6 +26,16 @@ import { EMAIL_LINK } from "../../marketing/constants/externalLinks";
  * "Services" read commercial for a not-for-profit. The offers did not change.
  */
 export default function CollaboratePage() {
+  // Docusaurus only knows about anchors something registers, and a plain React
+  // page registers none on its own, so every `id` on this page reads as broken
+  // to any other page linking at it. The home page's collaborate band is the
+  // first thing to link into these three, which is why this was invisible
+  // until now; same fix, same reason, as ProductGroup.
+  const brokenLinks = useBrokenLinks();
+  offers.forEach((offer) => brokenLinks.collectAnchor(offer.id));
+  brokenLinks.collectAnchor("engagements");
+  brokenLinks.collectAnchor("contact");
+
   return (
     <MarketingPage
       className="CollaboratePage"

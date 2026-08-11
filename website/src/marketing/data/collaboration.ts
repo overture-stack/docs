@@ -12,8 +12,18 @@ const ASSETS = "/img/marketing/services";
 export type Offer = {
   id: string;
   title: string;
-  /** What is on offer, in a sentence or two. */
+  /** What is on offer, in a sentence or two. Used on /collaborate/ itself. */
   blurb: string;
+  /**
+   * The same offer in one line, for the home page band, which has three of
+   * these side by side and one link out rather than a section each.
+   *
+   * Written out rather than derived from `blurb`'s first sentence: splitting on
+   * a full stop breaks on "Overture." and reads like a truncation when it does
+   * not. Keep the two in step; they are the same offer described at two
+   * lengths, and they sit in the same file so that is a one-screen check.
+   */
+  oneLine: string;
   /** What it concretely includes. Empty where a list would be padding. */
   includes: string[];
   /** Illustration carried over from the services page. */
@@ -27,6 +37,8 @@ export const offers: Offer[] = [
   {
     id: "academic-partnership",
     title: "Academic partnership",
+    oneLine:
+      "We collaborate on research projects and join grant proposals as a co-applicant.",
     blurb:
       "We collaborate on research projects and join grant proposals as a co-applicant. That covers deploying or adapting Overture for the work, and building whatever the project needs that does not exist yet.",
     includes: [
@@ -39,6 +51,8 @@ export const offers: Offer[] = [
   {
     id: "consulting",
     title: "Consulting",
+    oneLine:
+      "We work alongside your team to get Overture into what you are building, and it is most useful before the architecture is set.",
     blurb:
       "We work alongside your team, or on our own, to understand what you are building and get Overture into it. Useful at any stage, and most useful before the architecture is set.",
     includes: [
@@ -52,6 +66,8 @@ export const offers: Offer[] = [
   {
     id: "technical-support",
     title: "Technical support",
+    oneLine:
+      "Help running the software: reviewing a deployment, working through the setup, or getting past something that is not behaving.",
     blurb:
       "Help running the software: reviewing a deployment, working through the setup, or getting past something that is not behaving. The community forum is free and public, and it is the fastest route for most questions.",
     includes: [

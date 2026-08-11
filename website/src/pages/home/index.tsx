@@ -2,12 +2,12 @@ import React from "react";
 import MarketingPage from "../../marketing/MarketingPage";
 import Button from "../../marketing/components/Button";
 import HeroDiagram from "../../marketing/components/HeroDiagram";
-import HomePillars from "../../marketing/components/HomePillars";
+import HomeQuickstart from "../../marketing/components/HomeQuickstart";
 import Link from "../../marketing/components/Link";
 import LogoCarousel from "../../marketing/components/LogoCarousel";
 import { ComponentHighlightProvider } from "../../marketing/context/ComponentHighlightContext";
 import { H1, H2, H3, P1 } from "../../marketing/components/Typography";
-import { groups } from "../../marketing/data/components";
+import { offers } from "../../marketing/data/collaboration";
 import metrics from "../../marketing/data/metrics";
 import { featuredPlatforms } from "../../marketing/data/platforms";
 import {
@@ -18,60 +18,57 @@ import {
   PRODUCTS_PATH,
   PUBLICATIONS_PATH,
 } from "../../marketing/constants/pages";
-import {
-  GI_PROGRAM_LINK,
-  PRELUDE_DOCS_LINK,
-} from "../../marketing/constants/externalLinks";
 
 /**
- * The marketing home page, reordered in rebuild phase 4 to the sequence in
- * .dev/ia-proposal.md § Home. One job: get each of the three audiences to the
- * right second page inside one scroll.
+ * The marketing home page. One job, unchanged since .dev/ia-proposal.md § Home:
+ * get each of the three audiences to the right second page inside one scroll.
  *
- * What went, and why, since this is mostly a subtraction:
+ * Six bands became four. What the hero and the carousel above them already do
+ * is the reason: the hero says what Overture is and HeroDiagram names all eight
+ * components in its tooltips, and LogoCarousel says who runs it. Everything
+ * after them was a seventh, eighth and ninth telling of the same two things, in
+ * six sections of identical shape (centred heading, three columns of prose,
+ * about half the band empty). Measured at 1440px, the page was 4763px tall.
  *
- *   - **The carousel.** Five case studies behind arrows, where a visitor saw one
- *     at a time and the other four were a click each. Three featured deployment
- *     cards linking to /impact/<platform>/ say more and hide nothing. This also
- *     retires the last home link into /case-studies/ fragments.
- *   - **"We are a team of software engineers, data scientists and cloud
- *     infrastructure specialists".** A taxonomy of roles reads like an org chart
- *     justifying headcount. The proposal rules against it, attribution is in the
- *     hero, and /about-us/ carries the story.
- *   - **The five-component catalogue.** It listed five of seven components with
- *     links into /products/ fragments. Orientation belongs here and the
- *     catalogue belongs on its own page, so this is now the Collect / Explore /
- *     Control shape and one link. Side effect: five of the six broken-anchor
- *     warnings in the build are gone with it.
- *   - **The Prelude walkthrough and terminal.** Setup instructions are the
- *     documentation's to own. This is finding 5 in the proposal, and the same
- *     reasoning that retired /getting-started/ in phase 1: a second copy of the
- *     quickstart goes stale the moment the first one moves. "Deploy it" is now
- *     one of the three doors and points straight at the docs.
- *   - **"Build. Deploy. Discover."** Both as the hero heading, which said nothing
- *     to anyone who did not already know what Overture is, and as the closing
- *     band that repeated it.
+ * What went, and why:
  *
- * The hero's orientation device is HeroDiagram, an interactive orbit of
- * Overture's components built from .dev/referenceMaterial/diagram.pptx: not
- * the proposal's labeled Collect/Explore/Control diagram, which is still
- * blocked on a source file (see .dev/roadmap.md § Inputs needed). Still owed:
- * the funder logos. Each section is written to read correctly without its
- * artwork rather than to hold a gap open.
+ *   - **"Modular, open, and yours to host"** (`HomePillars`, now deleted). Its
+ *     copy is `distinctions` in data/components.ts, which /products/ already
+ *     renders in full under "Where Overture is different". The argument is not
+ *     lost, it is made once, on the page that exists to make it.
+ *   - **"What Overture is made of"**, the Collect / Explore / Control band. A
+ *     third pass at the product story, with a six-line Control paragraph naming
+ *     Keycloak, directly under a diagram that shows the same grouping. The
+ *     hero's "Learn More" carries the one link to /products/ this page needs.
+ *   - **"Where to go next"**, the three doors. Each door survives as the thing
+ *     itself: "deploy it" is the quickstart at the foot of the page, so it is a
+ *     section rather than a promise of one; "collaborate with us" is its own
+ *     band; "fund or partner" is the funders band that was already below it.
+ *     Three doors, a funders band and a footer was three endings in a row.
+ *   - **The separate proof band.** Its three figures are the credibility line
+ *     for the deployments underneath them, so they are the top of that section
+ *     now rather than a band of their own with a heading of its own.
+ *
+ * What arrived: the quickstart, at the foot. That reverses ia-proposal finding
+ * 5 (a second copy of the setup goes stale the moment the first one moves) on
+ * the developer's own call. data/quickstart.ts carries the rule that keeps it
+ * honest, and names the docs file it mirrors.
+ *
+ * Still owed: the funder logos, and the labelled Collect / Explore / Control
+ * diagram, both `[NEEDS:]` in .dev/roadmap.md. Each section is written to read
+ * correctly without its artwork rather than to hold a gap open.
  */
 export default function HomePage() {
-  const [collect, explore, control] = groups;
-
   return (
     <MarketingPage
       className="HomePage"
       title="Overture - Home"
       description="Open-source microservices for building research data platforms: collect data, make it discoverable, and run the whole thing on infrastructure you control."
     >
-      {/* 1. Hero, with the institutional attribution in it. Wrapped with
-             LogoCarousel below in ComponentHighlightProvider: hovering a
-             component here highlights, in the carousel, the platforms that
-             use it (data/componentUsage.ts). */}
+      {/* 1. Hero, with the product story in it. Wrapped with LogoCarousel below
+             in ComponentHighlightProvider: hovering a component here
+             highlights, in the carousel, the platforms that use it
+             (data/componentUsage.ts). */}
       <ComponentHighlightProvider>
         <div className="Hero">
           <div className="container">
@@ -97,7 +94,11 @@ export default function HomePage() {
                 at the Ontario Institute for Cancer Research.
               </p> */}
               <div className="Hero__small-buttons-container">
-                <Button link={PRELUDE_DOCS_LINK} size="medium" type="primary">
+                {/* Points at the quickstart at the foot of this page, not out
+                    to the documentation: the page's first CTA and its last
+                    section are now the same offer. A bare hash goes to the
+                    browser rather than the router, see Link.tsx. */}
+                <Button link="#quickstart" size="medium" type="primary">
                   Get Started
                 </Button>
                 <Button link={PRODUCTS_PATH} size="medium" type="primary">
@@ -115,13 +116,20 @@ export default function HomePage() {
         <LogoCarousel />
       </ComponentHighlightProvider>
 
-      {/* 3. Proof band. Figures from metrics.ts; the platform logos moved
-             into LogoCarousel above rather than repeating here. */}
-      <section className="HomeProof section" aria-labelledby="proof-heading">
+      {/* 3. Impact: the figures and the deployments they describe, in one
+             section rather than two bands with a product band between them.
+             Which three platforms is a data decision in platforms.ts (the
+             `featured` flag), not a layout one. The cards carry no logos on
+             purpose: LogoCarousel is showing them one section up. */}
+      <section className="HomeImpact section" aria-labelledby="impact-heading">
         <div className="container">
-          <H2 id="proof-heading">Running in production since 2016</H2>
+          <H2 id="impact-heading">Running in production since 2016</H2>
 
-          <dl className="ow:mt-10 ow:grid ow:gap-8 ow:md:grid-cols-3">
+          {/* Figures first, as one compact row: they are what makes the three
+              cards under them credible, which is the whole reason the proof
+              band merged into this section rather than keeping a heading of its
+              own. Smaller than the 4xl they carried as a band of their own. */}
+          <dl className="ow:mt-8 ow:grid ow:gap-6 ow:sm:grid-cols-3">
             {[
               {
                 figure: metrics.activePlatforms.value,
@@ -136,57 +144,16 @@ export default function HomePage() {
                 label: "first deployment, still running",
               },
             ].map((stat) => (
-              <div key={stat.label} className="ow:flex ow:flex-col ow:gap-2">
-                <dt className="ow:text-4xl ow:font-black ow:text-navy ow:first-letter:uppercase">
+              <div key={stat.label} className="ow:flex ow:flex-col ow:gap-1">
+                <dt className="ow:text-3xl ow:font-black ow:text-navy ow:first-letter:uppercase">
                   {stat.figure}
                 </dt>
-                <dd className="ow:text-lg ow:text-ink">{stat.label}</dd>
+                <dd className="ow:text-base ow:text-ink">{stat.label}</dd>
               </div>
             ))}
           </dl>
-        </div>
-      </section>
 
-      {/* 4. The three pillars. */}
-      <HomePillars />
-
-      {/* 5. What Overture is made of. The diagram belongs here and does not
-             exist yet, so the grouping is carried in words instead. The
-             catalogue and the comparison stay on /products/. */}
-      <section className="HomeStack section" aria-labelledby="stack-heading">
-        <div className="container">
-          <H2 id="stack-heading">What Overture is made of</H2>
-
-          <ul className="ow:mt-10 ow:grid ow:gap-10 ow:md:grid-cols-3">
-            {[collect, explore, control].map((group) => (
-              <li key={group.id} className="ow:flex ow:flex-col ow:gap-3">
-                <div className="yellow-bar" />
-                <H3>{group.title}</H3>
-                <p className="ow:text-lg ow:leading-8 ow:text-navy">
-                  {group.blurb}
-                </p>
-              </li>
-            ))}
-          </ul>
-
-          <div className="ow:mt-10 ow:flex ow:justify-center">
-            <Button link={PRODUCTS_PATH} size="medium" type="primary">
-              All seven components
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. Featured deployments, replacing the carousel. Which three is a data
-             decision in platforms.ts, not a layout one. */}
-      <section
-        className="HomeFeatured section grey-bg"
-        aria-labelledby="featured-heading"
-      >
-        <div className="container">
-          <H2 id="featured-heading">Where it runs</H2>
-
-          <ul className="ow:mt-10 ow:grid ow:gap-8 ow:md:grid-cols-3">
+          <ul className="ow:mt-12 ow:grid ow:gap-8 ow:md:grid-cols-3">
             {featuredPlatforms.map((platform) => (
               <li
                 key={platform.id}
@@ -217,49 +184,58 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 7. Three doors, one per audience. */}
-      <section className="HomeDoors section" aria-labelledby="doors-heading">
+      {/* 4. How to work with the team. The three offers are `offers` in
+             data/collaboration.ts, the same array /collaborate/ renders a
+             section each from; this reads their `oneLine`, so the two pages
+             describe the same three things and cannot drift apart. */}
+      <section
+        className="HomeCollaborate section grey-bg"
+        aria-labelledby="collaborate-heading"
+      >
         <div className="container">
-          <H2 id="doors-heading">Where to go next</H2>
+          <div className="ow:max-w-3xl">
+            <H2 className="ow:text-left" id="collaborate-heading">
+              Work with the team
+            </H2>
+            <div className="yellow-bar ow:my-6" />
+            <P1>
+              We give time to around {metrics.annualEngagements.value} groups a
+              year: platform demonstrations, needs assessments and technical
+              guidance. Several of those conversations became platforms.
+            </P1>
+          </div>
 
           <ul className="ow:mt-10 ow:grid ow:gap-10 ow:md:grid-cols-3">
-            {[
-              {
-                title: "Deploy it",
-                text: "Prelude stands the whole stack up on your own machine, with no cloud account and nothing to provision. The documentation carries the prerequisites and each step.",
-                cta: { label: "Read the docs", href: PRELUDE_DOCS_LINK },
-              },
-              {
-                title: "Collaborate with us",
-                text: "Academic partnership, consulting, or help getting past something. We join grant proposals as a co-applicant and give time to around eight groups a year.",
-                cta: { label: "Work with the team", href: COLLABORATE_PATH },
-              },
-              {
-                title: "Fund or partner",
-                text: "Overture is sustained by public research funding, and every platform built on it extends what that funding paid for. Our funders are named in full.",
-                cta: { label: "Who funds this", href: FUNDING_PATH },
-              },
-            ].map((door) => (
-              <li key={door.title} className="ow:flex ow:flex-col ow:gap-3">
-                <H3>{door.title}</H3>
+            {offers.map((offer) => (
+              <li key={offer.id} className="ow:flex ow:flex-col ow:gap-3">
+                <H3>{offer.title}</H3>
                 <p className="ow:text-lg ow:leading-8 ow:text-navy">
-                  {door.text}
+                  {offer.oneLine}
                 </p>
+                {/* Into the section for this offer, not the top of the page:
+                    /collaborate/ gives each one an id, and the anchor is what
+                    makes three cards and one page not feel like a detour. */}
                 <Link
-                  to={door.cta.href}
+                  to={`${COLLABORATE_PATH}#${offer.id}`}
                   className="ow:mt-auto ow:pt-3 ow:text-lg ow:font-bold ow:text-link"
                 >
-                  {door.cta.label}
+                  What this involves
                 </Link>
               </li>
             ))}
           </ul>
+
+          <div className="ow:mt-10 ow:flex ow:justify-center">
+            <Button link={COLLABORATE_PATH} size="medium" type="primary">
+              Collaborate with us
+            </Button>
+          </div>
         </div>
       </section>
 
-      {/* 8. Funders and publication. The funder logos belong here, Canadian and
-             American together; they are blocked on files, so this reads as
-             prose until they arrive. */}
+      {/* 5. Funders and publication, absorbing the "fund or partner" door. The
+             funder logos belong here, Canadian and American together; they are
+             blocked on files, so this reads as prose until they arrive. */}
       <section
         className="HomeFunders section blue-bg"
         aria-labelledby="funders-heading"
@@ -299,6 +275,11 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* 6. The quickstart, last, which is where the hero's "Get Started"
+             button lands. Commands mirrored from the documentation; see
+             data/quickstart.ts. */}
+      <HomeQuickstart />
     </MarketingPage>
   );
 }

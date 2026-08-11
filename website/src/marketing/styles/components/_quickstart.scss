@@ -1,0 +1,119 @@
+// HomeQuickstart: the Prelude quickstart at the foot of the home page.
+//
+// A partial rather than `ow:` utilities alone, unlike the other home sections:
+// the numbered-step markers are a `::before`-free counter layout, and the
+// screenshot column needs a sticky offset, neither of which a utility set
+// expresses. The spacing inside it is still utilities where a utility does the
+// job.
+
+.HomeQuickstart {
+  &__body {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+
+    @include breakpoint(desktop-up) {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 3.5rem;
+    }
+  }
+
+  // The commands are the content, so they take the wider column. Below
+  // `desktop-up` the screenshot drops out entirely (see `&__figure`) and this
+  // is the whole width, which is what keeps a 60-character docker command from
+  // wrapping three times on a phone.
+  &__steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    @include breakpoint(desktop-up) {
+      flex: 1 1 60%;
+    }
+  }
+
+  &__step {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  &__stepTitle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__stepNumber {
+    flex: 0 0 auto;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: $blue-block;
+    color: $navy-black;
+    font-family: $font-sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__note {
+    font-family: $font-sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: $navy-black;
+    margin: 0;
+    max-width: 46em;
+  }
+
+  // Decoration, and the first thing to go when there is not room for it: at
+  // `desktop-up` and below, two columns leave the terminal blocks too narrow to
+  // read a command in one line, and this is a screenshot of a portal rather
+  // than anything a visitor needs to follow the steps.
+  &__figure {
+    display: none;
+
+    @include breakpoint(desktop-up) {
+      display: block;
+      flex: 1 1 40%;
+      position: sticky;
+      // Clears the fixed navbar, matching `ow:scroll-mt-20` elsewhere.
+      top: 96px;
+    }
+  }
+
+  &__screenshot {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 2px 12px rgba(0, 48, 85, 0.18);
+  }
+
+  &__outcome {
+    margin: 2rem 0 0;
+    font-family: $font-sans-serif;
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: $navy-black;
+
+    // `color` is stated because Infima's inline-code colour is a red that has
+    // nothing to do with this brand, and an unstated property still comes from
+    // its rule even though `.marketing` keeps ours winning on the rest.
+    code {
+      font-family: $font-monospace;
+      font-size: 0.95em;
+      color: $navy-black;
+      background-color: $grey-2;
+      border: 0;
+      border-radius: 4px;
+      padding: 2px 6px;
+    }
+  }
+}

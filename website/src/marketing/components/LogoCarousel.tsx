@@ -9,11 +9,10 @@ import Link from "./Link";
 import { H3 } from "./Typography";
 import { partnerLogos, type PartnerLogo } from "../data/partnerLogos";
 import { componentUsage } from "../data/componentUsage";
-import { heroDiagramHotspots } from "../data/heroDiagram";
 import { useComponentHighlight } from "../context/ComponentHighlightContext";
 import { floatingTooltipPosition } from "../utils/floatingTooltip";
 
-const DEFAULT_HINT =
+const HINT =
   "Hover a component above, or a platform below, to see how they connect";
 
 // Pixels per millisecond. Slow enough that a logo is legible for a couple of
@@ -199,7 +198,7 @@ export default function LogoCarousel() {
   const draggingRef = useRef(false);
   const dragStartRef = useRef({ x: 0, scrollLeft: 0 });
   const highlightedComponentRef = useRef<string | null>(null);
-  const { highlightedComponent, highlightedPlatform } = useComponentHighlight();
+  const { highlightedComponent } = useComponentHighlight();
   const [tooltip, setTooltip] = useState<TooltipInfo | null>(null);
   const [filteredScale, setFilteredScale] = useState(1);
 
@@ -327,30 +326,6 @@ export default function LogoCarousel() {
       )
     : null;
 
-  // The same hint line does three jobs depending on what's hovered: an
-  // instruction by default, or naming whichever side of the interaction the
-  // *other* side is currently reacting to, so a visitor who noticed
-  // something change (the diagram dimming, the carousel filtering) has an
-  // immediate answer for what caused it without having to guess.
-  let hint = DEFAULT_HINT;
-  if (highlightedComponent) {
-    const hotspot = heroDiagramHotspots.find(
-      (h) => h.id === highlightedComponent,
-    );
-    if (hotspot) {
-      // The codename, not "Functional Name (Codename)": that combined form
-      // is the house style for introducing a component, but this is a quick
-      // hint reacting to a hover, not an introduction, and the codename is
-      // the name the developer actually wanted shown here.
-      hint = `Projects using ${hotspot.codename ?? hotspot.name}`;
-    }
-  } else if (highlightedPlatform) {
-    const logo = partnerLogos.find((p) => p.id === highlightedPlatform);
-    if (logo) {
-      hint = `Products used in ${logo.name}`;
-    }
-  }
-
   return (
     <LogoTooltipContext.Provider value={setTooltip}>
       <section
@@ -361,7 +336,7 @@ export default function LogoCarousel() {
           <div className="LogoCarousel__band">
             <div className="LogoCarousel__heading">
               <H3 className="LogoCarousel__title">Powered by Overture</H3>
-              <p className="LogoCarousel__hint">{hint}</p>
+              <p className="LogoCarousel__hint">{HINT}</p>
             </div>
 
             <div className="LogoCarousel__stage" ref={stageRef}>

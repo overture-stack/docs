@@ -126,11 +126,17 @@
     font-family: $font-sans-serif;
   }
 
+  // The band rhythm. This was `80px 32px` / `5.2em 3.8em`, which stacked with
+  // `.section`'s own 3rem to put roughly 166px of blank space between the
+  // content of one band and the next: measured at 1440px, every section on the
+  // page was about half empty, and six of them in a row read as a page that had
+  // run out of things to say rather than as generous spacing. The horizontal
+  // padding is unchanged; only the vertical came down.
   .container {
-    padding: 80px 32px;
+    padding: 48px 32px;
 
     @include breakpoint(desktop-up) {
-      padding: 5.2em 3.8em;
+      padding: 3.2em 3.8em;
     }
   }
 
@@ -148,11 +154,12 @@
     padding: 0 32px;
   }
 
-  // Pulled up closer to the hero: `.section`'s own 3rem plus the generic
-  // `.container` padding above stacked to roughly 128px of blank space
-  // between the hero and this heading, reading as a gap rather than the
-  // next thing on the page.
-  .HomeProof {
+  // Pulled up closer to the carousel above it, which is the same fix the old
+  // `.HomeProof` band carried: `.section`'s own 3rem on top of the container
+  // padding read as a gap between the hero group and the first band rather than
+  // as the next thing on the page. This is now the first band below the
+  // carousel, so it inherits the treatment.
+  .HomeImpact {
     padding-top: 1.5rem;
 
     .container {

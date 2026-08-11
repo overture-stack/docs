@@ -312,13 +312,11 @@
     white-space: nowrap;
   }
 
-  // Says what the interaction is by default; while something's highlighted,
-  // says which side caused it ("Projects using Score" / "Products used in
-  // ICGC-ARGO" — LogoCarousel.tsx picks the text), so a visitor who noticed
-  // the diagram dim or the carousel filter has an immediate answer for why,
-  // not just the fact that something changed. Only shown where the
-  // interaction itself is possible, matching HeroDiagram's own `display:
-  // none` below tablet-up (_home.scss).
+  // A fixed line saying what the interaction is; it stays put rather than
+  // reacting to whatever is highlighted, so nothing under the title moves
+  // while a visitor is hovering across the diagram or the logos. Only shown
+  // where the interaction itself is possible, matching HeroDiagram's own
+  // `display: none` below tablet-up (_home.scss).
   &__hint {
     display: none;
 
