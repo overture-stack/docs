@@ -130,11 +130,24 @@ export default function MarketingNavbar() {
                   to={action.url}
                 >
                   {action.name}
-                  {/* Decorative: `Link` already opens external URLs in a new tab,
-                      and the arrow would read as punctuation to a screen reader. */}
-                  <span className="nav-action__arrow" aria-hidden="true">
-                    ↗
-                  </span>
+                  {/* The same external-link glyph the documentation navbar renders
+                      for its own off-site items (GitHub, Support Forum,
+                      overture.bio) — see NavbarNavLink/IconExternalLink in
+                      @docusaurus/theme-classic. Decorative: `Link` already opens
+                      external URLs in a new tab, and the icon would read as
+                      punctuation to a screen reader. */}
+                  <svg
+                    width="13.5"
+                    height="13.5"
+                    viewBox="0 0 24 24"
+                    className="nav-action__icon"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"
+                    />
+                  </svg>
                 </Link>
               ))}
               <div className="navbar-item nav-link navbar-buttons">

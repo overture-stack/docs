@@ -197,7 +197,7 @@
 
   // Docs and GitHub. Styled as nav links rather than buttons, so the row has one
   // button in it and that button is the only call to action, which is the
-  // distinction the IA's `Docs ↗  GitHub ↗  [Get Started]` is drawing.
+  // distinction the IA's `Docs [icon]  GitHub [icon]  [Get Started]` is drawing.
   //
   // This is also what retired the overflow fix that used to sit here. The old row
   // carried a "Check us out on GitHub" button, and between the navmenu breakpoint
@@ -281,11 +281,11 @@
     }
   }
 
-  .nav-action__arrow {
-    font-size: 0.75em;
-    margin-left: 0.25em;
-    // Sits with the cap height rather than the baseline, which is where the glyph
-    // otherwise lands and reads as a dropped character.
+  // Matches `.iconExternalLink` in @docusaurus/theme-classic's `Icon/ExternalLink`
+  // exactly (0.3rem), so the same icon sits the same distance from its label on
+  // both navbars.
+  .nav-action__icon {
+    margin-left: 0.3rem;
     align-self: center;
   }
 
