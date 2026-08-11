@@ -1,68 +1,89 @@
-// The Prelude quickstart, as the foot of the home page shows it.
+// The demo quickstart, as the foot of the home page shows it.
 //
-// **Every command here is mirrored from `website/docs/deploy-docs/01-prelude.md`
-// § Getting Started, which is the source of record.** If that file's commands
-// change, change these; nothing enforces it yet. Keeping the steps as data
-// rather than as markup in the section is what makes that check a diff of one
-// short file instead of a read of a component.
+// **Every command and every figure here is mirrored from
+// `website/docs/use-docs/workshop/01-Running-the-Demo.md` and the Prerequisites
+// section of `00-Intro.md`, which are the source of record.** If either changes,
+// change these; nothing enforces it yet. Keeping the steps as data rather than
+// as markup in the section is what makes that check a diff of one short file
+// instead of a read of a component.
 //
-// .dev/ia-proposal.md finding 5 cut the home page's Prelude walkthrough on the
-// reasoning that a second copy of the setup goes stale the moment the first one
-// moves, and this brings it back on the developer's own call. The rule that
-// keeps it honest: commands only, no explanation the documentation already
-// owns, and one link out per step that needs more than a line. Anything longer
-// than a sentence belongs in the docs, not here.
+// It used to mirror `deploy-docs/01-prelude.md` and its four `make phase*`
+// steps instead. The demo is the shorter offer and the one the "3 steps, 2
+// commands, 1 platform" claim is true of, so the claim is derived below rather
+// than typed out.
+//
+// The rule that keeps this honest: commands only, no explanation the
+// documentation already owns, and one link out per step that needs more than a
+// line. Anything longer than a sentence belongs in the docs, not here.
 
 import { DOCKER_DOWNLOAD } from "../constants/externalLinks";
 
 export type QuickstartStep = {
   id: string;
   title: string;
+  /**
+   * A link that is part of the title rather than a line under it, for the step
+   * whose subject is a download.
+   */
+  titleLink?: { label: string; href: string };
   /** One line of context, where the commands alone are not enough. */
   note?: string;
+  /** Rendered as a label and an inline-code value, so figures stay scannable. */
+  settings?: { label: string; value: string }[];
+  /** A closing line, for a prerequisite the settings list does not cover. */
+  footnote?: string;
   /** Shell commands, in order, exactly as the documentation gives them. */
   commands?: string[];
-  /** A single link out, for the step whose detail lives elsewhere. */
-  link?: { label: string; href: string };
 };
 
 export const quickstartSteps: QuickstartStep[] = [
   {
-    id: "prerequisites",
-    title: "Check the prerequisites",
-    note: "Docker Desktop 4.39.0+ with an 8-core CPU, 8 GB of memory, 2 GB of swap and 64 GB of virtual disk, plus Node.js 18+ and npm 9+.",
-    link: { label: "Get Docker Desktop", href: DOCKER_DOWNLOAD },
+    id: "docker",
+    title: "Download and configure",
+    titleLink: {
+      label: "Docker Desktop (28.0.0+)",
+      href: DOCKER_DOWNLOAD,
+    },
+    note: "Open Settings, then Resources, and set at minimum:",
+    settings: [
+      { label: "CPUs", value: "4+" },
+      { label: "Memory", value: "8GB" },
+      { label: "Disk", value: "10GB" },
+    ],
+    footnote:
+      "Git is required. On Windows, set up WSL2 first and run everything below from a Bash terminal.",
   },
   {
     id: "clone",
-    title: "Clone the repository",
+    title: "Clone the demo repository",
+    // Two lines in the documentation, joined with `&&` here so the step is one
+    // command a visitor can copy in one action, which is also what makes the
+    // "2 commands" claim below true.
     commands: [
-      "git clone https://github.com/overture-stack/prelude.git",
-      "cd prelude",
+      "git clone -b docs-demo/search-portal-workshop https://github.com/overture-stack/prelude.git && cd prelude",
     ],
   },
   {
-    id: "check",
-    title: "Run the pre-deployment check",
-    note: "Confirms your machine has what the stack needs before anything starts.",
-    commands: ["make phase0"],
-  },
-  {
-    id: "deploy",
-    title: "Build the portal image, then deploy",
-    // `cd ../..` is not in the documentation's own snippet: it says to build
-    // from `apps/stage` and then run `make phase1` "from the root directory",
-    // which is two commands with a directory change between them that a reader
-    // copying the block would otherwise miss.
-    note: "Phase 1 brings up Elasticsearch, Arranger and Stage. The later phases add tabular submission, then file management.",
-    commands: [
-      "cd apps/stage",
-      "docker build --platform linux/arm64 -t stageimage:1.0 .",
-      "cd ../..",
-      "make phase1",
-    ],
+    id: "run",
+    title: "Run the demo",
+    // The documentation also gives `.\run.ps1 demo` for native PowerShell. Not
+    // published here: step 1 already sends Windows readers to a Bash terminal
+    // inside WSL2, which is the route the documentation recommends, and a second
+    // terminal block for the shell it steers them away from was the only thing
+    // on the page that needed a label to explain which one to use.
+    commands: ["make demo"],
   },
 ];
 
-/** Where the portal answers once phase 1 is up. */
-export const quickstartPortalUrl = "http://localhost:3000";
+/** Where the portal answers once the demo is up. */
+export const quickstartPortalUrl = "localhost:3000";
+
+/**
+ * The three figures in the section's subtitle, derived rather than typed so a
+ * fourth step or a second command cannot leave the claim behind.
+ */
+export const quickstartClaim = {
+  steps: quickstartSteps.length,
+  commands: quickstartSteps.flatMap((step) => step.commands ?? []).length,
+  platforms: 1,
+};

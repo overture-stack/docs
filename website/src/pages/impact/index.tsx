@@ -1,41 +1,59 @@
 import React from "react";
 import MarketingPage from "../../marketing/MarketingPage";
+import CaseStudy from "../../marketing/components/CaseStudy";
 import Hero from "../../marketing/components/Hero";
 import Link from "../../marketing/components/Link";
-import { H2, H3, P1 } from "../../marketing/components/Typography";
+import { H3 } from "../../marketing/components/Typography";
+import { OVERTURE_DOCUMENTATION_FUNDING } from "../../marketing/constants/externalLinks";
+import caseStudies from "../../marketing/data/caseStudies";
 import metrics from "../../marketing/data/metrics";
-import {
-  adopters,
-  lineage,
-  platforms,
-} from "../../marketing/data/platforms";
-import { PUBLICATIONS_PATH } from "../../marketing/constants/pages";
+import { platforms } from "../../marketing/data/platforms";
 
 /**
- * The /impact/ hub, added in rebuild phase 3 against .dev/ia-proposal.md.
+ * The /impact/ hub: every deployment and every write-up on one page.
  *
- * It replaces a flat list of five case studies with three tiers, because the
- * reference material distinguishes them and a single list does not: platforms
- * the team builds and runs, organizations that adopted the components on their
- * own, and the lineage the components came out of. The middle tier is new to
- * the site and is the most persuasive evidence on it.
+ * The four platforms that had their own page under /impact/<slug>/ now render
+ * their write-up here instead, in full. The card grid at the top is the link
+ * tree into them, so the page reads top-down as a summary and jumps sideways
+ * into whichever deployment the reader came for. Those four routes are retired
+ * and redirect to the matching fragment here (see netlify/marketing-redirects.toml).
  *
- * /case-studies/ is still live and still renders the old flat page. Phase 4
- * retires it, once the home page stops linking into its fragments, and writes
- * the 301. Until then the two coexist and nothing is user-visible either way,
- * since production still serves the Gatsby site.
+ * The anchor ids live on the write-up sections, not on the cards: `CaseStudy`
+ * puts `id={slug}` on its own section, and `Platform.id` is the same string, so
+ * `/impact/#icgcargo` and the 301 from `/case-studies/#icgcargo` land on the
+ * content rather than on a card that only summarizes it. That is also why the
+ * cards carry an id only when there is no write-up to hold it — two elements
+ * cannot share one.
  *
- * Three of the seven tier 1 cards do not link anywhere yet: OHCRN, PCGL and the
- * Drug Discovery Portal need a portal URL and their own page. They are listed
- * regardless, because the aggregate band above them claims seven platforms and
- * showing four would read as a discrepancy.
+ * Two of the six cards have no write-up and no portal URL yet: OHCRN and PCGL.
+ * They are listed regardless, because the aggregate band above them claims `7+`
+ * platforms and showing four would read as a discrepancy.
+ *
+ * The adopters and lineage tiers and the published-work footer were cut from
+ * this page. Both lists stay in `data/platforms.ts`: `lineage` because the home
+ * page logo carousel reads it, `adopters` because the researched list is worth
+ * keeping even with nothing rendering it.
  */
+
+/**
+ * The write-ups, in card order, paired with the platform they belong to.
+ * `flatMap` rather than `filter` so the pair type carries no optional
+ * `caseData`: a platform with no entry in caseStudies.tsx contributes nothing
+ * instead of an entry with a hole in it.
+ */
+const writeUps = platforms.flatMap((platform) => {
+  const caseData = caseStudies.find((entry) => entry.slug === platform.id);
+  return caseData ? [{ platform, caseData }] : [];
+});
+
+const hasWriteUp = new Set(writeUps.map((entry) => entry.platform.id));
+
 export default function ImpactPage() {
   return (
     <MarketingPage
       className="ImpactPage"
       title="Overture Impact"
-      description="Seven research data platforms in production, the organizations building on Overture independently, and the projects the components came out of."
+      description="The research data platforms Overture runs in production, and how each of them uses it."
     >
       {/* No figure is typed into this page, here included: the subtitle reads
           from metrics.ts like everything else. */}
@@ -46,54 +64,92 @@ export default function ImpactPage() {
 
       {/* Aggregate band. Every figure comes from data/metrics.ts; nothing here
           is typed in, which is the rule that stopped the last set going stale. */}
-      <section className="ImpactAggregate grey-bg" aria-label="Overture at a glance">
+      <section
+        className="ImpactAggregate grey-bg"
+        aria-label="Overture at a glance"
+      >
         <div className="container">
-          <dl className="ow:grid ow:gap-8 ow:md:grid-cols-3">
+          {/* `key` is its own field rather than the label, because one label is
+              an element now and cannot be a key. */}
+          <dl className="ow:grid ow:gap-4 ow:sm:grid-cols-2 ow:lg:grid-cols-4">
             {[
-              { figure: metrics.activePlatforms.value, label: "platforms in production today" },
-              { figure: metrics.stableReleaseHistory.value, label: "of stable releases across the components" },
-              { figure: metrics.firstDeployment.value, label: "first deployment, still running" },
+              {
+                key: "platforms",
+                figure: metrics.activePlatforms.value,
+                label: "platforms in production today",
+              },
+              {
+                key: "releases",
+                figure: metrics.stableReleaseHistory.value,
+                label: "of stable releases across the components",
+              },
+              {
+                key: "grants",
+                figure: metrics.activeGrants.value,
+                // The count is the one figure here a reader might want to check,
+                // so the label carries the link to the list it was counted from
+                // rather than a sentence under the band doing it.
+                label: (
+                  <>
+                    active grants{" "}
+                    <Link
+                      to={OVERTURE_DOCUMENTATION_FUNDING}
+                      className="ow:text-link"
+                    >
+                      funding
+                    </Link>{" "}
+                    the platform
+                  </>
+                ),
+              },
+              {
+                key: "users",
+                // ICGC-ARGO's figure, and the label says so. It is the only
+                // platform whose user count the team holds, so the alternative
+                // is not a platform-wide number, it is no number at all. See the
+                // note on this metric before relabelling it as a total.
+                figure: metrics.icgcArgoRegisteredUsers.value,
+                label: "registered users on ICGC-ARGO alone",
+              },
             ].map((stat) => (
-              <div key={stat.label} className="ow:flex ow:flex-col ow:gap-2">
-                {/* `first-letter:uppercase` rather than a capitalized value in
-                    metrics.ts: "seven" is the published form of that figure and
-                    reads correctly mid-sentence, it just cannot start a stat
-                    tile in lower case. Numerals are unaffected. */}
-                <dt className="ow:text-4xl ow:font-black ow:text-navy ow:first-letter:uppercase">
+              <div
+                key={stat.key}
+                className="ow:flex ow:flex-col ow:gap-1 ow:items-center ow:text-center"
+              >
+                {/* `first-letter:uppercase` for a figure metrics.ts spells as a
+                    word: those read correctly mid-sentence in the subtitle above
+                    but cannot start a stat tile in lower case. Numerals, which
+                    all four of these are today, are unaffected. */}
+                <dt className="ow:text-3xl ow:font-black ow:text-navy ow:first-letter:uppercase">
                   {stat.figure}
                 </dt>
-                <dd className="ow:text-lg ow:text-ink">{stat.label}</dd>
+                <dd className="ow:text-base ow:text-ink">{stat.label}</dd>
               </div>
             ))}
           </dl>
         </div>
       </section>
 
+      {/* The link tree. Every platform is here; the four with a write-up link
+          down to it, and the rest link out to their portal or nowhere yet. */}
+      {/* No heading and no standfirst: the hero and the band above already say
+          what these are, and the cards carry their own names. `aria-label` does
+          the work `aria-labelledby` used to, so the section is still named for
+          anyone navigating by landmark. */}
       <section
         className="ImpactTier ow:scroll-mt-20"
         id="platforms"
-        aria-labelledby="platforms-heading"
+        aria-label="Platforms we build and run"
       >
         <div className="container">
-          <div className="ow:max-w-3xl">
-            <H2 className="ow:text-left" id="platforms-heading">
-              Platforms we build and run
-            </H2>
-            <div className="yellow-bar ow:my-6" />
-            <P1>
-              Each one is a production deployment with its own institutions,
-              governance and users. Overture is the layer underneath.
-            </P1>
-          </div>
-
-          <ul className="ow:mt-10 ow:grid ow:gap-8 ow:md:grid-cols-2 ow:lg:grid-cols-3">
+          <ul className="ow:grid ow:gap-8 ow:md:grid-cols-2 ow:lg:grid-cols-3">
             {platforms.map((platform) => (
-              // The id is the anchor today's /case-studies/#slug links land on
-              // once that route redirects here. Do not tidy these to match the
-              // page slugs.
               <li
                 key={platform.id}
-                id={platform.id}
+                // Only the cards with nothing below them keep the id; see the
+                // note at the top of this file. Do not tidy these to match the
+                // old page slugs either way.
+                id={hasWriteUp.has(platform.id) ? undefined : platform.id}
                 className="ow:scroll-mt-20 ow:flex ow:flex-col ow:gap-3 ow:border-t-4 ow:border-accent ow:pt-6"
               >
                 <H3>{platform.name}</H3>
@@ -108,16 +164,23 @@ export default function ImpactPage() {
                   {platform.summary}
                 </p>
                 <div className="ow:mt-auto ow:pt-3 ow:flex ow:flex-col ow:gap-2">
-                  {platform.href && (
+                  {hasWriteUp.has(platform.id) && (
+                    // A bare hash, not `platform.href`: that one is the address
+                    // other pages link in with, and going through the router to
+                    // reach a section of the page already open would push a
+                    // history entry and scroll nowhere (see components/Link).
                     <Link
-                      to={platform.href}
+                      to={`#${platform.id}`}
                       className="ow:text-lg ow:font-bold ow:text-link"
                     >
                       How Overture is used here
                     </Link>
                   )}
                   {platform.portal && (
-                    <Link to={platform.portal} className="ow:text-lg ow:text-link">
+                    <Link
+                      to={platform.portal}
+                      className="ow:text-lg ow:text-link"
+                    >
                       Visit the platform
                     </Link>
                   )}
@@ -128,92 +191,27 @@ export default function ImpactPage() {
         </div>
       </section>
 
-      <section
-        className="ImpactTier blue-bg ow:scroll-mt-20"
-        id="adopters"
-        aria-labelledby="adopters-heading"
-      >
-        <div className="container">
-          <div className="ow:max-w-3xl">
-            <H2 className="ow:text-left" id="adopters-heading">
-              Built on Overture independently
-            </H2>
-            <div className="yellow-bar ow:my-6" />
-            <P1>
-              Institutions running Overture components in their own stacks,
-              without us. They chose the parts they needed and deployed them.
-            </P1>
-          </div>
-
-          <ul className="ow:mt-10 ow:grid ow:gap-8 ow:md:grid-cols-2 ow:lg:grid-cols-3">
-            {adopters.map((adopter) => (
-              <li key={adopter.name} className="ow:flex ow:flex-col ow:gap-2">
-                <H3>{adopter.name}</H3>
-                <p className="ow:text-base ow:text-ink">{adopter.where}</p>
-                <p className="ow:text-lg ow:leading-8 ow:text-navy">
-                  {adopter.uses}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section
-        className="ImpactTier ow:scroll-mt-20"
-        id="lineage"
-        aria-labelledby="lineage-heading"
-      >
-        <div className="container">
-          <div className="ow:max-w-3xl">
-            <H2 className="ow:text-left" id="lineage-heading">
-              Lineage
-            </H2>
-            <div className="yellow-bar ow:my-6" />
-            <P1>
-              Where the components came from. These are not platforms the team
-              runs today, and the site says so rather than counting them twice.
-            </P1>
-          </div>
-
-          <ul className="ow:mt-10 ow:grid ow:gap-8 ow:md:grid-cols-2 ow:lg:grid-cols-3">
-            {lineage.map((project) => (
-              <li
-                key={project.id}
-                id={project.id}
-                className="ow:scroll-mt-20 ow:flex ow:flex-col ow:gap-2"
-              >
-                <H3>{project.name}</H3>
-                <p className="ow:text-lg ow:leading-8 ow:text-navy">
-                  {project.summary}
-                </p>
-                <Link
-                  to={project.link}
-                  className="ow:mt-auto ow:pt-2 ow:text-lg ow:font-bold ow:text-link"
-                >
-                  Visit {project.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section className="ImpactPublications grey-bg">
-        <div className="container">
-          <div className="ow:max-w-3xl">
-            <H3>Published work</H3>
-            <p className="ow:mt-4 ow:text-lg ow:leading-8 ow:text-navy">
-              The Overture paper, the author list, and how to cite the software
-              are on the{" "}
-              <Link to={PUBLICATIONS_PATH} className="ow:font-bold">
-                publications page
+      {/* The write-ups themselves, banded alternately so four of them in a row
+          read as four sections rather than one long scroll. `CaseStudy` owns the
+          `id`, the heading and the layout; the wrapper adds the background and
+          the way back up to the link tree. */}
+      {writeUps.map((entry, index) => (
+        <div
+          key={entry.platform.id}
+          // Grey first, so the first write-up reads as a new band rather than
+          // running on from the white section the link tree sits in.
+          className={`ImpactWriteUp${index % 2 === 0 ? " grey-bg" : ""}`}
+        >
+          <CaseStudy caseData={entry.caseData} currentScreenshot={0} />
+          <div className="ImpactWriteUp__back">
+            <div className="container">
+              <Link to="#platforms" className="ow:text-lg ow:text-link">
+                Back to all platforms
               </Link>
-              .
-            </p>
+            </div>
           </div>
         </div>
-      </section>
+      ))}
     </MarketingPage>
   );
 }

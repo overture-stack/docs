@@ -1,7 +1,5 @@
-import { components } from "./components";
+import { componentIcon, components } from "./components";
 import { PRODUCTS_PATH } from "../constants/pages";
-
-const ASSETS = "/img/marketing/home/diagram";
 
 /**
  * Layout for the home hero's diagram: what Overture is made of. Positions
@@ -49,7 +47,7 @@ function componentHotspot(
   }
   return {
     id: component.id,
-    icon: `${ASSETS}/${component.id}.png`,
+    icon: componentIcon(component.id),
     ...layout,
     name: component.name,
     codename: component.codename,
@@ -72,7 +70,7 @@ export const heroDiagramHotspots: HeroDiagramHotspot[] = [
     // until it has real documentation to link to; `[NEEDS: URL]` per
     // .dev/roadmap.md's convention once one exists.
     id: "control",
-    icon: `${ASSETS}/control.png`,
+    icon: componentIcon("control"),
     left: 16.914,
     top: 9.601,
     width: 6.771,

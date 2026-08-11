@@ -1,12 +1,12 @@
-// The /impact/ hub and the platform pages under it, added in rebuild phase 3.
+// The /impact/ hub, added in rebuild phase 3 and since collapsed into one page:
+// the per-platform pages are gone and their write-ups render here.
 //
-// Almost nothing is here on purpose: the hub is built with `ow:` utilities, and
-// the platform pages reuse the `.Case-Study` component styles, which are
-// top-level rather than scoped to `.CaseStudiesPage`. What is left is the two
-// things utilities cannot supply from the markup.
+// Almost nothing is here on purpose. The hub is built with `ow:` utilities, and
+// the write-ups reuse the `.Case-Study` component styles, which are top-level
+// rather than scoped to a page. What is left is the few things utilities cannot
+// supply from the markup.
 
-.ImpactPage,
-.PlatformPage {
+.ImpactPage {
   // `.marketing` sets font size, weight and colour but not family: Bulma's rule
   // lived on `body` and had nowhere to land once the styles were nested (see
   // `_base.scss`). Ported markup takes the family from its `.t-*` class, so
@@ -34,72 +34,74 @@
 }
 
 .ImpactPage {
+  // Box, text and inset come from the shared subpage-hero rules in
+  // `components/_hero.scss`. Only the artwork is this page's own.
+  //
+  // This page never had hero artwork, just an empty right half of the band. It
+  // reuses About Us's own hero graphic, the same illustration Collaborate's
+  // Technical support section uses.
   .Hero {
-    height: fit-content;
-
-    &__section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 0.8em;
-
-      @include breakpoint(tablet-up) {
-        align-items: start;
-        text-align: left;
-      }
+    @include breakpoint(tablet-up) {
+      background-image: url('/img/marketing/about-us/img_hero_about_us.svg');
+      background-position-x: 442px;
     }
 
-    &__subtitle {
-      max-width: 330px;
-      @include breakpoint(tablet-up) {
-        max-width: 440px;
-      }
-      @include breakpoint(desktop-up) {
-        max-width: 620px;
-      }
+    @include breakpoint(desktop-up) {
+      background-position-x: 540px;
+    }
+
+    @include breakpoint(desktop-wide) {
+      background-position-x: 105%;
+    }
+
+    @include breakpoint(desktop-ultra-wide) {
+      background-position-x: 81%;
     }
   }
 
-  // The aggregate band is figures, not prose, so it wants less height than a
-  // content section.
+  // The aggregate band is three short figures, not prose, so it wants far less
+  // height than a content section: it is a strip between the hero and the link
+  // tree rather than a section of its own.
   .ImpactAggregate .container {
-    padding-top: 48px;
-    padding-bottom: 48px;
+    padding-top: 24px;
+    padding-bottom: 24px;
   }
-}
 
-.PlatformPage {
-  .Hero {
-    height: fit-content;
+  // A write-up and its way back up to the link tree are one band, so the two
+  // containers inside it share a single section's height rather than each
+  // taking the full one.
+  .ImpactWriteUp {
+    .Case-Study .container {
+      padding-bottom: 32px;
+    }
 
-    &__section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 0.8em;
+    &__back .container {
+      padding-top: 0;
+    }
 
-      @include breakpoint(tablet-up) {
-        align-items: start;
+    // The write-up heading is `.t-h2`, which centres, and it carried no rule
+    // under it. That was right when each of these was its own page; here they
+    // are sections of one, and every other section heading on the page is left
+    // aligned over a yellow bar. The bar is generated rather than marked up
+    // because the markup belongs to `CaseStudy`, which /impact/ is now the only
+    // caller of but which should not have to know that.
+    .case-heading {
+      text-align: left;
+      margin-bottom: 2.4em;
+
+      .t-h2 {
         text-align: left;
+
+        &::after {
+          content: "";
+          display: block;
+          max-width: 80px;
+          min-width: 48px;
+          height: 4px;
+          margin-top: 24px;
+          background-color: $yellow;
+        }
       }
     }
-
-    &__subtitle {
-      max-width: 330px;
-      @include breakpoint(tablet-up) {
-        max-width: 520px;
-      }
-      @include breakpoint(desktop-up) {
-        max-width: 720px;
-      }
-    }
-  }
-
-  // The back link is one line, so it does not need a full section's height.
-  &__back .container {
-    padding-top: 32px;
-    padding-bottom: 32px;
   }
 }

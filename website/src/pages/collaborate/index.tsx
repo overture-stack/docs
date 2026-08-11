@@ -4,24 +4,29 @@ import MarketingPage from "../../marketing/MarketingPage";
 import Button from "../../marketing/components/Button";
 import Hero from "../../marketing/components/Hero";
 import Link from "../../marketing/components/Link";
-import { H2, H3, P1 } from "../../marketing/components/Typography";
-import { engagements, offers } from "../../marketing/data/collaboration";
-import metrics from "../../marketing/data/metrics";
+import { H2, P1 } from "../../marketing/components/Typography";
+import { offers } from "../../marketing/data/collaboration";
 import { EMAIL_LINK } from "../../marketing/constants/externalLinks";
 
 /**
  * /collaborate/, which replaced /services/ in rebuild phase 4.
  *
- * Three changes from the page it replaces, all from .dev/ia-proposal.md:
+ * One change from the page it replaces, from .dev/ia-proposal.md: academic
+ * partnership leads, because it is the highest-value ask. It used to be third,
+ * under technical support and consulting.
  *
- *   - Academic partnership leads, because it is the highest-value ask. It used
- *     to be third, under technical support and consulting.
- *   - One contact route at the foot instead of the same email address repeated
- *     under each of the three offers.
- *   - The engagement record, which is what turns a menu into an invitation. The
- *     team gives time to roughly eight groups a year and several of the named
- *     ones became platforms; saying so is more persuasive than describing the
- *     offers again.
+ * Two things were built here and then removed on request, and both eventually
+ * landed somewhere else. The named engagement record ("Who we have worked
+ * with") stayed gone from this page and is now a block inside the home page's
+ * collaborate band, under the figure it used to open with. The closing
+ * "Get in touch" section with
+ * its own email button also went, on the reasoning that the footer's Contact
+ * link already routes to the same address — but each offer without its own
+ * self-serve route (Academic partnership, Consulting) has since gained its
+ * own "Email us" button, so the CTA is back, just per-offer instead of once
+ * at the foot of the page. Technical support keeps its own self-serve link to
+ * the community forum instead, since that one has a real free alternative to
+ * emailing.
  *
  * "Services" read commercial for a not-for-profit. The offers did not change.
  */
@@ -33,8 +38,6 @@ export default function CollaboratePage() {
   // until now; same fix, same reason, as ProductGroup.
   const brokenLinks = useBrokenLinks();
   offers.forEach((offer) => brokenLinks.collectAnchor(offer.id));
-  brokenLinks.collectAnchor("engagements");
-  brokenLinks.collectAnchor("contact");
 
   return (
     <MarketingPage
@@ -57,17 +60,40 @@ export default function CollaboratePage() {
           aria-labelledby={`${offer.id}-heading`}
         >
           <div className="container">
-            <div className="ow:flex ow:flex-col ow:gap-8 ow:lg:flex-row ow:lg:items-center ow:lg:gap-16">
+            <div className="ow:flex ow:flex-col ow:gap-6 ow:lg:flex-row ow:lg:items-center ow:lg:gap-12">
               {/* Artwork second in the source order so it reads after the
                   heading for a screen reader, and `lg:order-first` on the
                   alternating rows only, which is what gives the page its
                   left-right rhythm without reordering the content. */}
+              {/* Capped below `lg`: with no width limit of its own, this
+                  illustration (several run portrait, taller than wide) filled
+                  the full column width at a tablet size and stretched well
+                  past 1000px tall, which is most of why these sections ran so
+                  long. Uncapped again at `lg`, where the fixed `2/5` column
+                  already limits it, so the desktop illustration keeps its
+                  original size.
+
+                  All three also get Technical support's own aspect ratio
+                  (576:411, the one image here that was never a problem), so
+                  every section is the same height. A crop (`object-cover`) was
+                  tried here first: cropping to that ratio meant losing roughly
+                  half of Consulting's taller illustration and slicing the
+                  certificate on Academic partnership down to a floating dot,
+                  which read as broken rather than tidy. `object-contain`
+                  shrinks the whole illustration to fit instead, so nothing is
+                  cut off; an illustration further from 576:411 just sits
+                  smaller within the same box, with empty space to its sides
+                  rather than losing content off the top or bottom. */}
               <div
-                className={`ow:lg:w-2/5 ${
+                className={`ow:w-full ow:max-w-xs ow:mx-auto ow:lg:w-2/5 ow:lg:max-w-none ow:lg:mx-0 ow:aspect-[576/411] ${
                   index % 2 === 1 ? "ow:lg:order-last" : ""
                 }`}
               >
-                <img src={offer.image} alt="" className="ow:w-full" />
+                <img
+                  src={offer.image}
+                  alt=""
+                  className="ow:h-full ow:w-full ow:object-contain"
+                />
               </div>
 
               <div className="ow:lg:flex-1">
@@ -75,88 +101,43 @@ export default function CollaboratePage() {
                   {offer.title}
                 </H2>
                 <div className="yellow-bar ow:my-6" />
-                <P1>{offer.blurb}</P1>
+                <P1 className="CollaborateOffer__blurb">{offer.blurb}</P1>
 
-                <ul className="ow:mt-6 ow:flex ow:flex-col ow:gap-2">
+                <ul className="ow:mt-4 ow:flex ow:flex-col ow:gap-1.5">
                   {offer.includes.map((item) => (
                     <li
                       key={item}
-                      className="ow:text-lg ow:leading-8 ow:text-navy ow:list-disc ow:ml-6"
+                      className="ow:text-base ow:leading-7 ow:text-navy ow:list-disc ow:ml-6"
                     >
                       {item}
                     </li>
                   ))}
                 </ul>
 
-                {offer.selfServe && (
+                {offer.selfServe ? (
                   <Link
                     to={offer.selfServe.href}
-                    className="ow:inline-block ow:mt-6 ow:text-lg ow:font-bold ow:text-link"
+                    className="ow:inline-block ow:mt-4 ow:text-base ow:font-bold ow:text-link"
                   >
                     {offer.selfServe.label}
                   </Link>
+                ) : (
+                  // Technical support has a self-serve route (the community
+                  // forum); the other two don't, so this is a direct email
+                  // CTA instead — the button the closing "Get in touch"
+                  // section used to carry, now per-offer rather than once at
+                  // the foot of the page.
+                  <div className="ow:mt-4">
+                    <Button link={EMAIL_LINK} type="primary" size="medium">
+                      contact@overture.bio
+                    </Button>
+                  </div>
                 )}
               </div>
             </div>
           </div>
         </section>
       ))}
-
-      <section
-        className="CollaborateEngagements blue-bg ow:scroll-mt-20"
-        id="engagements"
-        aria-labelledby="engagements-heading"
-      >
-        <div className="container">
-          <div className="ow:max-w-3xl">
-            <H2 className="ow:text-left" id="engagements-heading">
-              Who we have worked with
-            </H2>
-            <div className="yellow-bar ow:my-6" />
-            <P1>
-              The team gives time to around {metrics.annualEngagements.value}{" "}
-              groups a year: platform demonstrations, needs assessments and
-              technical guidance, across academic, clinical and government
-              research. Several of those conversations became platforms.
-            </P1>
-          </div>
-
-          <ul className="ow:mt-8 ow:flex ow:flex-wrap ow:gap-x-8 ow:gap-y-3">
-            {engagements.map((engagement) => (
-              <li
-                key={engagement.name}
-                className="ow:text-lg ow:leading-8 ow:text-navy"
-              >
-                <strong>{engagement.name}</strong>
-                {engagement.outcome && ` (${engagement.outcome})`}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* One contact route, which is the whole point of the section. The old
-          page printed the same address three times, once under each offer. */}
-      <section
-        className="CollaborateContact ow:scroll-mt-20"
-        id="contact"
-        aria-labelledby="contact-heading"
-      >
-        <div className="container">
-          <div className="ow:max-w-3xl">
-            <H3 id="contact-heading">Get in touch</H3>
-            <p className="ow:mt-4 ow:text-lg ow:leading-8 ow:text-navy">
-              Email us and say what you are building. We are a not-for-profit,
-              so anything we charge for goes back into the software.
-            </p>
-            <div className="ow:mt-6">
-              <Button link={EMAIL_LINK} type="primary" size="medium">
-                contact@overture.bio
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
     </MarketingPage>
   );
 }

@@ -3,6 +3,16 @@
   max-width: 100%;
   .Hero {
     background-color: $blue-top;
+    // `.section`'s horizontal padding, which the hero does not get from the
+    // class because it is not one.
+    //
+    // Longhands, not `padding: 0 var(--band-outset-x)`. That shorthand also set
+    // the vertical to zero, and it outranks `_hero.scss`'s own
+    // `padding: 50px 0` at mobile, so below 768px the heading sat against the
+    // navbar and the second button against the carousel. The vertical padding
+    // belongs to the hero component; only the horizontal is this file's.
+    padding-left: var(--band-outset-x);
+    padding-right: var(--band-outset-x);
 
     // The orbit diagram is a real focusable/hoverable component (HeroDiagram),
     // not decoration, so it is hidden outright below tablet-up rather than
@@ -23,10 +33,38 @@
       // underneath it, the hero doesn't need to carry much air of its own
       // between the diagram and the carousel below.
       min-height: 320px;
-      padding: 0.9em 0;
+      padding: 0.9em var(--band-outset-x);
 
       .HeroDiagram {
         display: block;
+      }
+    }
+
+    // The heading steps down below 1024, where this hero has the least room and
+    // `.t-h1` gives it the most type. Scoped to this hero rather than fixed in
+    // `.t-h1` itself, because the other pages' heroes carry one short line each
+    // and are not what this is about.
+    //
+    // Under 768 the hero is a single centred column with the diagram gone, and
+    // `.t-h1`'s own mobile size is 40px on a 55px line: a 1.4 leading on type
+    // that already wraps to three lines in a 430px column, which made the
+    // heading alone most of the first screen.
+    @include breakpoint(mobile) {
+      .t-h1 {
+        font-size: 32px;
+        line-height: 1.2;
+      }
+    }
+
+    // Between 768 and 1024 the diagram is back and the copy is down to 63% of
+    // the container, while `.t-h1` has already stepped up to 48px on a 70px
+    // line. Measured at 768: three lines, 210px of heading above a 420px hero.
+    // The band is bounded at the top rather than using `tablet-up`, so `.t-h1`'s
+    // own desktop-up size still applies from 1024 and is not restated here.
+    @media screen and (min-width: 768px) and (max-width: 1023px) {
+      .t-h1 {
+        font-size: 36px;
+        line-height: 1.2;
       }
     }
 
@@ -42,16 +80,19 @@
         align-items: start;
         max-width: 63%;
         text-align: left;
-        padding-left: 25px;
       }
 
       @include breakpoint(desktop-up) {
         max-width: 700px;
-        // Was `padding: 50px` (all sides): the 50px top and bottom stacked
-        // on top of `.Hero`'s own vertical padding above, and was most of
-        // where the hero's "empty space" actually was. Horizontal-only
-        // keeps the same breathing room next to the diagram.
-        padding: 0 50px;
+        // Right only. This was `padding: 50px` on all sides, then `0 50px`; the
+        // left half of that is what put the hero's first line 50px inside every
+        // heading below it, on top of the 25px it also carried at tablet. The
+        // hero's left edge is `--band-inset-x` on its container now, the same
+        // one every band uses, and nothing sits between that and the text.
+        //
+        // The right half stays: it is the gap between the copy and the orbit
+        // diagram, which is a real element in the same row and not a margin.
+        padding: 0 50px 0 0;
       }
     }
 
@@ -102,19 +143,157 @@
     }
   }
 
-  // Every block that used to follow, from `.top-white` to `.terminal-section`,
-  // styled markup the phase 4 reorder removed: the case-study carousel, the
-  // role-taxonomy band, the five-component catalogue, the Prelude walkthrough
-  // and terminal, the closing "Build. Deploy. Discover." band, and the six
-  // floating cubes that were position-tuned to the boundaries between them.
-  // 580 lines, all of it unreachable, deleted rather than left to rot. The
-  // sections that replaced them are built with `ow:` utilities, so what is left
-  // here is the hero and the two things utilities cannot do from the markup.
+  // ---------------------------------------------------------------------------
+  // Floating cubes
   //
-  // The cubes are the one deliberate loss of decoration. They were placed with
-  // negative margins against a section sequence that no longer exists, so
-  // bringing the motif back is a design task rather than a port. See
-  // .dev/roadmap.md.
+  // Back after the phase 4 reorder dropped them, and rebuilt rather than ported.
+  // The Gatsby site placed them as floated `<img>` elements with negative
+  // margins tuned to a section sequence that no longer exists, which also meant
+  // every cube announced itself to a screen reader as "Floating Maroon Cube".
+  //
+  // Here they are pseudo-elements on the sections they sit between, so each one
+  // is positioned against its own section's box and cannot be knocked out of
+  // place by a content change two bands away. Being pseudo-elements also keeps
+  // them out of the accessibility tree, which is correct: they are decoration.
+  //
+  // Only the left-hand cubes hang past the edge. A box left of the origin is
+  // clipped by the viewport and does not scroll, but the same overhang on the
+  // right extends the scrollable area and adds a horizontal scrollbar, and
+  // clipping this page to prevent that would break the sticky navbar above it.
+  // The right-hand cubes therefore sit flush at `right: 0` instead. `cube_teal_blue`
+  // is the exception that needs nothing: its artwork is already clipped inside
+  // its own file, so flush against the right edge is the overhang.
+  //
+  // Each cube declares where its artwork actually sits inside its file, because
+  // none of these SVGs is trimmed to its own drawing. `cube_yellow` is the worst:
+  // its cube fills 48% by 40% of the file, in the top-left corner, so sizing the
+  // element to the file renders a cube less than half the size asked for and
+  // leaves it nowhere near the edge it is anchored to. Sized this way the element
+  // box *is* the artwork, so `right: 0` puts the cube on the page edge and
+  // `width` is the size it draws at. Fractions measured with `getBBox()` against
+  // each file's viewBox; `cube_teal_blue`'s `x1` is its clip at 100%, not the
+  // 106% its path reaches.
+  // ---------------------------------------------------------------------------
+  @mixin cube-art($file, $w, $h, $x0, $x1, $y0, $y1) {
+    $sx: $x1 - $x0;
+    $sy: $y1 - $y0;
+
+    width: $w;
+    height: $h;
+    background-image: url("/img/marketing/home/#{$file}.svg");
+    background-size: calc(#{$w} / #{$sx}) calc(#{$h} / #{$sy});
+    background-position: calc(-1 * #{$w} * #{$x0} / #{$sx})
+      calc(-1 * #{$h} * #{$y0} / #{$sy});
+  }
+
+  %cube {
+    display: none;
+
+    @include breakpoint(tablet-up) {
+      content: "";
+      display: block;
+      position: absolute;
+      z-index: 0;
+      pointer-events: none;
+      background-repeat: no-repeat;
+    }
+  }
+
+  // Every band that hosts one needs to be the positioning context for it.
+  .HomeCapabilities,
+  .HomeCollaborate,
+  .HomeDocs,
+  .HomeQuickstart,
+  .HomeQuickstart__band {
+    position: relative;
+  }
+
+  // Which colour the tiles in each band are. The tile reads it as
+  // `--card-tile-bg` (components/_card-tile.scss) and falls back to white, so
+  // only the white bands have to say anything: their tiles take the grey the
+  // band gave up. `.HomeCollaborate` is the grey band and says nothing, which
+  // is how its tiles stay white.
+  //
+  // Stated on the section rather than passed as a prop because it is a fact
+  // about the band, not about any one card: a band that changes colour should
+  // not need four cards edited to follow it.
+  //
+  // This list and the `grey-bg` in the markup are the whole cost of swapping the
+  // first two bands, which has now happened twice: the colours belong to the
+  // slots, so they stay put and the two names here trade places.
+  .HomeCapabilities,
+  .HomeDocs {
+    --card-tile-bg: #{$grey-2};
+  }
+
+  // The container has to sit above them: a cube in a gutter at a narrow desktop
+  // width overlaps the edge of the text column.
+  .HomeCapabilities > .container,
+  .HomeCollaborate > .container,
+  .HomeDocs > .container,
+  .HomeQuickstart .container {
+    position: relative;
+    z-index: 1;
+  }
+
+  // The cubes belong to the slots, not to the bands: each one is drawn to
+  // straddle a particular seam on the way down the page, and the seams did not
+  // move when these two bands swapped. So the art traded selectors with the
+  // colours above rather than travelling with its band, which is what keeps the
+  // yellow cube on the carousel's bottom edge and the teal one on the white/grey
+  // seam below it.
+  .HomeCapabilities::before {
+    @extend %cube;
+    @include cube-art("cube_yellow", 100px, 91px, 0.114, 0.599, 0.165, 0.561);
+    top: -44px;
+    right: 0;
+  }
+
+  .HomeCollaborate::before {
+    @extend %cube;
+    @include cube-art("cube_bright_teal_inverted", 100px, 100px, 0.086, 0.88, 0.222, 0.921);
+    top: -50px;
+    left: -14px;
+  }
+
+  .HomeDocs::before {
+    @extend %cube;
+    @include cube-art("cube_maroon", 104px, 101px, 0.091, 0.861, 0.234, 0.902);
+    // Two thirds in the band above: any lower and its bottom corner reaches the
+    // left edge of this band's heading.
+    top: -66px;
+    left: -16px;
+  }
+
+  // No cube left of the quickstart's introduction: `cube_chartreuse` sat there
+  // and read as a second yellow cube after `cube_yellow` on the first band above,
+  // so the page had the same colour twice on the way down. `cube_yellow`
+  // is the one that stays. `.HomeQuickstart::after` further down is unaffected.
+
+  // Flush against the right edge, on the blue band's own top edge, which is the
+  // section's only colour change now that its introduction shares the grey above.
+  // This is the cube whose file clips its own right face, so the page edge has to
+  // finish it: anywhere else it reads as a cube with a slice taken off.
+  //
+  // The right gutter is free even though the screenshot crosses the same edge:
+  // the figure is centred and capped at 944px, so it never reaches this far out.
+  .HomeQuickstart__band::before {
+    @extend %cube;
+    @include cube-art("cube_teal_blue", 104px, 104px, 0.19, 1, 0.249, 0.875);
+    top: -52px;
+    right: 0;
+  }
+
+  // Stays inside its band rather than hanging over the footer, which is
+  // `position: relative` with a white background of its own and paints over
+  // anything at this z-index reaching into it. Raising the cube above the footer
+  // instead would put decoration over real content.
+  .HomeQuickstart::after {
+    @extend %cube;
+    @include cube-art("cube_bright_teal", 100px, 100px, 0.12, 0.914, 0.222, 0.921);
+    bottom: 22px;
+    left: -20px;
+  }
 
   // `.marketing` sets font size, weight and colour but not family; bare
   // elements need it stated, as on the products, impact and collaborate pages.
@@ -126,6 +305,41 @@
     font-family: $font-sans-serif;
   }
 
+  // How far every band's content sits inside its container, and the one number
+  // that puts the hero, the carousel and the six bands below them on a single
+  // left edge. It used to be three numbers: the bands took 3.8em, the hero and
+  // the carousel overrode it to 32px, and the hero copy added 50px more on top
+  // of that. At 1440px that was 108.8, 80 and 130 -- three left edges down one
+  // page, none of them agreeing with the next.
+  //
+  // `rem` rather than the `em` the bands used to carry: an `em` inside a custom
+  // property is resolved against whichever element ends up using the property,
+  // so the same declaration would mean different distances in two containers
+  // with different type sizes. 3.8rem is what 3.8em measured here anyway.
+  --band-inset-x: 2rem;
+
+  @include breakpoint(desktop-up) {
+    --band-inset-x: 3.8rem;
+  }
+
+  // The other half of the same alignment, and the reason matching the inset
+  // alone was not enough. A band's content starts at `.section`'s horizontal
+  // padding plus the container's own; the hero and the carousel are not
+  // `.section`s, so they were missing the outer half entirely.
+  //
+  // It only shows below 1216px. At and above it `.container` takes a max-width
+  // and centres itself, and the auto margins happen to absorb exactly what the
+  // section padding would have added -- which is why the hero looked aligned at
+  // 1440 and 1280 while sitting 24px out at 1024.
+  //
+  // These are `.section`'s own two values (_layout.scss), at its own breakpoint,
+  // which is Bulma's `$widescreen` rather than one of ours.
+  --band-outset-x: 1.5rem;
+
+  @media screen and (min-width: 1216px) {
+    --band-outset-x: 3rem;
+  }
+
   // The band rhythm. This was `80px 32px` / `5.2em 3.8em`, which stacked with
   // `.section`'s own 3rem to put roughly 166px of blank space between the
   // content of one band and the next: measured at 1440px, every section on the
@@ -133,17 +347,19 @@
   // run out of things to say rather than as generous spacing. The horizontal
   // padding is unchanged; only the vertical came down.
   .container {
-    padding: 48px 32px;
+    padding: 48px var(--band-inset-x);
 
     @include breakpoint(desktop-up) {
-      padding: 3.2em 3.8em;
+      padding: 3.2em var(--band-inset-x);
     }
   }
 
   // The hero has its own padding above, and a second container's worth on top
-  // of it leaves the artwork stranded.
+  // of it leaves the artwork stranded. Only the vertical is overridden: the
+  // horizontal is the shared inset, which is what aligns the hero's first line
+  // with every heading under it.
   .Hero .container {
-    padding: 0 32px;
+    padding: 0 var(--band-inset-x);
   }
 
   // Same override, for the same reason, one section down: this is what lines
@@ -151,22 +367,355 @@
   // text's left edge, the diagram's right edge), both of which are just
   // `.Hero .container`'s inner edges above.
   .LogoCarousel .container {
-    padding: 0 32px;
+    padding: 0 var(--band-inset-x);
   }
 
-  // Pulled up closer to the carousel above it, which is the same fix the old
-  // `.HomeProof` band carried: `.section`'s own 3rem on top of the container
-  // padding read as a gap between the hero group and the first band rather than
-  // as the next thing on the page. This is now the first band below the
-  // carousel, so it inherits the treatment.
-  .HomeImpact {
-    padding-top: 1.5rem;
+  // And the outer half for the carousel, for the same reason as the hero: it is
+  // a `<section>` element without the `.section` class.
+  .LogoCarousel {
+    padding-left: var(--band-outset-x);
+    padding-right: var(--band-outset-x);
+  }
 
-    .container {
-      padding-top: 24px;
+  // `.section`'s 3rem stacks on top of the `.container` rule above, which put
+  // close to 200px of blank space between the content of one band and the
+  // content of the next: four bands of that read as a page that has run out of
+  // things to say. The horizontal half of `.section` is what keeps these bands'
+  // content aligned with each other, so only the vertical comes off.
+  .HomeCapabilities,
+  .HomeCollaborate,
+  .HomeDocs {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  // The quickstart's introduction hands its lower padding to the portal
+  // screenshot, which hangs that far up out of the blue band below it. Without
+  // this the overhang eats the lede's last line instead of empty space.
+  //
+  // Here rather than in _quickstart.scss because the two rules above set
+  // `padding` as a shorthand at the same specificity and are emitted later:
+  // nesting under `.HomePage` is what makes this win. `--portal-overhang` is
+  // declared on `.HomeQuickstart` and inherits down.
+  .HomeQuickstart__intro .container {
+    padding-bottom: var(--portal-overhang);
+  }
+
+  .HomeCapabilities {
+    // Left-aligned `.t-h2`, matching "What we do" on `.HomeCollaborate` below,
+    // down to the yellow bar under it (the div in the JSX). The size override
+    // that used to be here made this heading a step smaller than that one, so
+    // the two section openings on the same page did not match; the carousel
+    // heading above them is the one that is deliberately smaller now.
+    &__title {
+      margin: 0;
+      text-align: left;
+    }
+
+    // 1.25rem, up from 1.05rem at the developer's request, and the same size as
+    // `.HomeDocs__lede` and `.HomeCollaborate__prose`: the three bands under the
+    // carousel open with one paragraph each and they are set at one size, so a
+    // reader scrolling past them is not read three different hierarchies.
+    &__lede {
+      margin: 4px 0 0;
+      max-width: $lede-max-width;
+      font-size: 1.25rem;
+      line-height: 1.6;
+      text-align: left;
+    }
+
+    // Two by two rather than the documentation band's three across: these four
+    // carry a sentence of evidence each, and at a third of the container that
+    // sentence runs to five lines. The tile is components/_card-tile.scss.
+    &__grid {
+      list-style: none;
+      margin: 3rem 0 0;
+      padding: 0;
+      display: grid;
+      gap: 1.5rem;
+
+      @include breakpoint(tablet-up) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    // No `.CardTile__link` override here. This band is white and its tiles are
+    // `$grey-2`, but the rule that says so is `--card-tile-bg` further up this
+    // file, set on whichever slot is the white one. Restating it here is what
+    // broke the last time the bands swapped: a hard-coded `$grey-2` on the tile
+    // painted it the exact colour of the section behind it the moment this band
+    // became the grey one.
+  }
+
+  .HomeCollaborate {
+    // The three paragraphs under the heading. No cap at all, on the
+    // developer's call: this band's opening runs to the container's own edges,
+    // so the prose ends where the row of offer tiles below it ends. It has been
+    // narrowed twice before, first to 48rem by an `ow:max-w-3xl` in the markup
+    // and then to `$lede-max-width`; both left the paragraphs in a column
+    // narrower than everything under them. Nothing sets a width here now.
+
+    // Every paragraph in this band's opening, at one size. It was a `.t-p1` lede
+    // (24px at desktop) over two 17px notes, and the three of them are one
+    // statement about the team, so the size steps read as a hierarchy that is not
+    // there.
+    //
+    // 1.25rem, up from 1rem at the developer's request, matching
+    // `.HomeCapabilities__lede` and `.HomeDocs__lede`: the paragraph under each of
+    // the three band headings below the carousel is set the same. That does put
+    // this a step above `&__values` and `&__selfServe`, which still carry the 1rem
+    // they shared with this rule -- deliberate now, since this is the band's
+    // opening statement and those two are notes hanging off the offers.
+    //
+    // The accessibility floor the old 1rem was reasoned against still holds and
+    // this only moves away from it: 16px is the browser default and the accepted
+    // floor for body copy; the unit is `rem` and not `px`, so a user's own text
+    // size carries (1.4.4 Resize Text, which a px size defeats in some browsers);
+    // the line height is 1.6, above the 1.5 a user must be able to set without
+    // breaking the layout (1.4.12 Text Spacing). Contrast is not what limits it:
+    // `$navy-black` on this band's `$grey-2` measures 12.17:1, against the 4.5:1
+    // that normal-size text has to clear.
+    &__prose {
+      font-family: $font-sans-serif;
+      font-size: 1.25rem;
+      line-height: 1.6;
+      color: $navy-black;
+      margin: 0;
+    }
+
+    // Between paragraphs only, so the first one sits against the yellow bar above
+    // it at whatever gap the bar's own margin gives. `:first-child` cannot say
+    // this: the heading and the bar are the first two children of `&__intro`.
+    //
+    // A paragraph gap has to beat the gap between two lines inside a paragraph or
+    // it is not read as a break at all, and at one size for every paragraph that
+    // is the only thing marking where one ends. 1.6 line height on the 20px type
+    // above puts 32px between lines, so this tracks the size: it was 1.5rem
+    // against 16px type, and 16px before that, which was less than a line gap and
+    // rendered the band's opening as a single block of text.
+    // The second half of the selector is the class written out, not a second
+    // `&`. `&` here carries the whole ancestor chain (`.HomePage
+    // .HomeCollaborate`), so `&__prose + &__prose` compiles to
+    // `.HomePage .HomeCollaborate__prose + .HomePage .HomeCollaborate__prose`:
+    // a descendant of `.HomePage` following a sibling, which nothing can match.
+    // It silently matched nothing and the paragraphs rendered with no gap at all.
+    &__prose + .HomeCollaborate__prose {
+      margin-top: 2rem;
+    }
+
+    // /about-us/'s four values, one row each rather than the four illustrated
+    // cards that page gives them. Two columns at tablet and up: four rows
+    // stacked full width read as a checklist in the middle of the band, and
+    // three columns leaves a single value orphaned on its own row.
+    &__values {
+      list-style: none;
+      margin: 2rem 0 0;
+      padding: 1.5rem 0 0;
+      border-top: 1px solid rgba(0, 48, 85, 0.15);
+      display: grid;
+      gap: 16px 40px;
+
+      @include breakpoint(tablet-up) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      // Two rows and two columns: the badge holds the left column across both
+      // rows, so the name and the text under it share one left edge and the
+      // badge sits against the pair rather than against either line of it.
+      li {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        column-gap: 14px;
+        row-gap: 2px;
+        align-items: start;
+      }
+    }
+
+    // `align-self: start` and not `center`: these read as a mark against the
+    // start of the entry, and centring them against a value whose text wraps to
+    // two lines puts the badge halfway down the block on some rows and not on
+    // others.
+    &__valueIcon {
+      grid-row: 1 / span 2;
+      align-self: start;
+    }
+
+    // Weight, not size, is what marks these as terms: in bold at the size of the
+    // line under them they read as its label, and a size of their own would be a
+    // third step in a band that has two.
+    &__valueName {
+      font-family: $font-sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.5;
+      color: $navy-black;
+    }
+
+    // `$navy-black`, not the `$navy-dark` the engagement list above uses: at
+    // #04518c on white, one line of text under a bold navy term reads as a link
+    // rather than as a description, and this list sits two rules above three
+    // real links.
+    &__valueText {
+      font-family: $font-sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: $navy-black;
+    }
+
+    // The offers below open with their own headings, so they need a heading of
+    // their own to sit under: without it the band reads as one continuous
+    // statement about the team and the three cards look like a fourth value.
+    //
+    // The yellow rule under it is gone, on the developer's call. It was here to
+    // stop the subhead reading as a fourth offer with no text under it, back
+    // when subhead and offer title were both bare `.t-h3` at the same size on
+    // the same background. The offers are boxed tiles now, so the thing that
+    // separates the heading from them is the edge of the first card.
+    // On the container's left margin, with "What we do" above it and every
+    // other heading on the page. It carried the tile's own inset for one round,
+    // which lined it up with "Academic partnership" inside the first card but
+    // left it as the only heading on the page that started anywhere else.
+    &__subhead.t-h3 {
+      margin: 3rem 0 0;
+    }
+
+    // Three `.CardTile`s across, on the same grid as `.HomeDocs__journeys` at
+    // the foot of the page: the two bands that offer a reader three things to
+    // pick between now lay them out identically. The tile itself is
+    // components/_card-tile.scss.
+    //
+    // `&__offerTitle` is gone with the markup it styled. It was the `.t-h3` type
+    // scale copied out so an `<h4>` could keep it, and the tile's own
+    // `.CardTile__title` is that same scale, so the copy had nothing left to do.
+    &__offers {
+      list-style: none;
+      margin: 1.5rem 0 0;
+      padding: 0;
+      display: grid;
+      gap: 1.5rem;
+
+      @include breakpoint(tablet-up) {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    // The free route, under the three cards rather than inside one of them.
+    // Quieter than the offers, and a step under the band's opening paragraph
+    // rather than level with it: it is a qualifier on the band, not a fourth
+    // thing to choose.
+    &__selfServe {
+      font-family: $font-sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: $navy-black;
+      margin: 1.5rem 0 0;
+      max-width: $lede-max-width;
+    }
+
+    // No `&__actions` any more. The band ended on a "contact@overture.bio" and
+    // a "Collaborate with us" button, both on the developer's call: each of the
+    // three offer cards already opens the page those buttons led to, at the
+    // section for that offer, and the address is in the footer on every page.
+    // Two buttons under three cards restated the same destination a fourth and
+    // fifth time.
+
+    &__engagements {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(0, 48, 85, 0.15);
+    }
+
+    &__engagementList {
+      list-style: none;
+      margin: 1.25rem 0 0;
+      padding: 0;
+      display: grid;
+      gap: 12px 32px;
+
+      @include breakpoint(tablet-up) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
 
       @include breakpoint(desktop-up) {
-        padding-top: 2rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      li {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+    }
+
+    &__engagementName {
+      font-family: $font-sans-serif;
+      font-size: 1.0625rem;
+      font-weight: 700;
+      line-height: 1.5;
+      color: $navy-black;
+    }
+
+    &__engagementOutcome {
+      font-family: $font-sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: $navy-dark;
+    }
+
+    &__links {
+      margin-top: 2.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 32px;
+
+      a {
+        font-family: $font-sans-serif;
+        font-size: 1.0625rem;
+        font-weight: 700;
+      }
+    }
+  }
+
+  .HomeDocs {
+    // Same pair as `.HomeCapabilities__title` / `&__lede` above: this band and
+    // that one open the same way, so the page has one heading treatment below
+    // the hero rather than two competing ones. Left-aligned `.t-h2` plus the
+    // yellow bar, as on "What we do" and "What you can do with Overture".
+    &__title {
+      margin: 0;
+      text-align: left;
+    }
+
+    // Was `68em` measured against this element's own font size, which is where
+    // `$lede-max-width` came from: it is the width this band was widened to at
+    // the developer's request, now stated once in rem and shared by every band
+    // rather than re-derived per element -- so the size change below does not
+    // move the measure with it.
+    //
+    // 1.25rem, matching `.HomeCapabilities__lede` and `.HomeCollaborate__prose`
+    // above: one size for the paragraph under all three band headings.
+    &__lede {
+      margin: 4px 0 0;
+      max-width: $lede-max-width;
+      font-size: 1.25rem;
+      line-height: 1.6;
+      text-align: left;
+    }
+
+    // No `&__search` here any more. The band carried its own Algolia field for
+    // one round; the navbar's is the one that stays, and the rules for it are
+    // components/_navbar.scss `.navbar-search`.
+
+    // Three `.CardTile`s across; the tile itself is components/_card-tile.scss.
+    &__journeys {
+      list-style: none;
+      margin: 2.5rem 0 0;
+      padding: 0;
+      display: grid;
+      gap: 1.5rem;
+
+      @include breakpoint(tablet-up) {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
     }
   }

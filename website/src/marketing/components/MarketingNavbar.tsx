@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useLocation } from "@docusaurus/router";
+import SearchBar from "@theme/SearchBar";
 import Button from "./Button";
 import Link from "./Link";
 import {
-  ABOUT_US_PATH,
   HOME_PATH,
   IMPACT_PATH,
   PRODUCTS_PATH,
@@ -17,21 +17,24 @@ import {
 
 const LOGO = "/img/marketing/chrome/overture_logo.svg";
 
-// Four items plus three actions, per `ia-proposal.md` § Navigation, replacing the
-// five plus two the Gatsby site carried. Two things leave the primary nav rather
-// than being renamed: `Documentation` moves right into the actions group, since it
-// leaves the site, and `Support` drops out entirely and becomes "Support forum" in
-// the footer's Connect column.
+// Three items plus three actions, per `ia-proposal.md` § Navigation, replacing
+// the five plus two the Gatsby site carried. Two things leave the primary nav
+// rather than being renamed: `Documentation` moves right into the actions group,
+// since it leaves the site, and `Support` drops out entirely and becomes
+// "Support forum" in the footer's Connect column.
 //
-// Every label now points at the route it names. `Impact` got its hub in phase 3
-// and `Collaborate` its page in phase 4. `About` is the exception and is meant
-// to be: the IA renames /about-us/ to /about/ but calls that redirect optional,
-// so the label moved and the address did not.
+// `About` has left it too, on the developer's call. It was the one item that did
+// not point at the route it names: /about-us/ was removed and the item pointed
+// into a band of the home page instead, which is a nav entry that scrolls the
+// page a visitor is already on. "Who are these people" is answered by that band
+// on arrival and by the footer's Our story, both still `ABOUT_BAND` in
+// constants/pages.ts, so nothing that address serves has been lost.
+//
+// Every label left here points at the page it names.
 const navLinks = [
   { name: "Products", url: PRODUCTS_PATH },
   { name: "Impact", url: IMPACT_PATH },
   { name: "Collaborate", url: COLLABORATE_PATH },
-  { name: "About", url: ABOUT_US_PATH },
 ];
 
 // Two of the three actions. Both leave the site, so both carry the arrow the IA
@@ -65,8 +68,12 @@ export default function MarketingNavbar() {
   const closeMenu = () => setMobileMenuOpen(false);
   const openClass = mobileMenuOpen ? "is-active" : "";
 
+  // `MarketingNavbar` alongside `marketing` so the wrapper can be styled at
+  // all: everything in styles/ compiles nested inside `.marketing`, which
+  // cannot select the element that carries that class. The sticky rule is
+  // therefore the one marketing rule written at the top level of index.scss.
   return (
-    <div className="marketing">
+    <div className="marketing MarketingNavbar">
       <nav
         className={`NavHeader navbar ${openClass}`}
         aria-label="main navigation"
@@ -107,6 +114,14 @@ export default function MarketingNavbar() {
               ))}
             </div>
             <div className="navbar-end ">
+              {/* The same Algolia search the documentation navbar carries, and
+                  the same index: these pages are one build with the docs, so a
+                  visitor who arrives on the marketing site can search it from
+                  here rather than having to cross over first. It leads the
+                  actions group so the row still ends on `Get Started`. */}
+              <div className="navbar-item nav-link navbar-search">
+                <SearchBar />
+              </div>
               {navActions.map((action) => (
                 <Link
                   key={action.name}

@@ -31,11 +31,6 @@
     }
   }
 
-  .active-item {
-    color: $pink-darker;
-    background-color: '$grey';
-  }
-
   // Overture Logo container and Link
   .navbar-brand {
     align-items: center;
@@ -119,6 +114,63 @@
     }
   }
 
+  // Products / Impact / Collaborate / About, and the two nav actions beside the
+  // search box. Their hover was Bulma's `a.navbar-item:hover`, a full-bleed
+  // block, landing on an element that `.nav-link` stretches to the navbar's full
+  // height: hovering swept a 64px rectangle from the navbar's top edge to its
+  // bottom, and the 8px `margin-right` between items showed through it as a
+  // white sliver, so the row read as a band of tiles with notches cut between
+  // them. The current page wore that identical rectangle, leaving hover and
+  // "you are here" the same shape, told apart only by the label colour.
+  //
+  // Above the navmenu breakpoint the state is now a rounded rectangle centred in
+  // the row, so the margin between items falls outside the paint and reads as
+  // spacing rather than as a gap in something continuous. Below the breakpoint
+  // the menu is a stack of full-width rows where the full-width highlight is the
+  // right shape, so only the colours apply there.
+  //
+  // The 4px radius and `0.25rem 0.75rem` are the documentation navbar's own
+  // metrics, not a separate judgement call: `src/css/custom.css` gives
+  // `.navbar__items .navbar__item:hover` that radius, and Infima's
+  // `--ifm-navbar-item-padding-*` that padding. Both navbars are 64px tall, so
+  // hovering a link lands the same size box in the same place whichever site the
+  // visitor is on. Keep them in step if either side moves.
+  a.navbar-item.nav-link {
+    @include breakpoint(navmenu-up) {
+      align-self: center;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      transition: background-color 100ms ease-out, color 100ms ease-out;
+
+      // The plain `.navbar-item` rule below tightens the row here; this selector
+      // out-specifies it, so the tightening is restated rather than lost.
+      @media (max-width: 1260px) {
+        padding: 0.25rem 0.5rem;
+      }
+    }
+
+    &:hover,
+    &:focus-visible {
+      background-color: $grey-2;
+      color: $navy-black;
+    }
+  }
+
+  // The current page: pink label on a pink tint, against hover's navy on grey,
+  // so the two states no longer collide. `_base.scss` fills `.active-item` with
+  // $grey-2 — the hover colour exactly — so this has to out-specify that rule
+  // rather than sit next to it, hence the three classes.
+  a.navbar-item.nav-link.active-item {
+    color: $pink-darker;
+    background-color: $pink-light;
+
+    &:hover,
+    &:focus-visible {
+      color: $pink-darker;
+      background-color: $pink-tint;
+    }
+  }
+
   .navbar-item {
     font-family: $font-sans-serif;
     font-size: 16px;
@@ -158,6 +210,75 @@
   // that failure mode is the one to expect.
   .nav-action {
     white-space: nowrap;
+  }
+
+  // Algolia's button, leading the actions group. Restyled rather than left at
+  // the theme's default: Infima's version is a square-cornered box tuned to the
+  // documentation navbar's own metrics, and next to a pill button and two plain
+  // links it read as a form field dropped into the row.
+  //
+  // This is the row that the comment above warns is width-sensitive between the
+  // navmenu breakpoint and roughly 1300px. The button is allowed to shrink to
+  // its icon there (the placeholder and the ⌘K hint drop out below 1260px), so
+  // the search takes space from itself rather than from `Get Started`.
+  .navbar-search {
+    display: flex;
+    align-items: center;
+
+    // No width of its own in the open mobile menu: `.navbar-menu.is-active` is a
+    // flex column, so this row already stretches to it. `width: 100%` here is
+    // 100% of that column *plus* `.navbar-item`'s own 0.75rem padding, and the
+    // button hangs 24px off the right edge.
+
+    .DocSearch-Button {
+      // `@docsearch/css` opens this rule with `all: unset`, which takes
+      // `box-sizing` back to `content-box` with it. Without this, a width of
+      // 100% is 100% *plus* the padding below and the pill hangs off the end of
+      // the open mobile menu.
+      box-sizing: border-box;
+      width: 100%;
+      height: 36px;
+      margin: 0;
+      padding: 0 0.6rem;
+      background-color: $grey-2;
+      border: 1px solid $grey-3;
+      border-radius: 18px;
+
+      @include breakpoint(navmenu-up) {
+        width: 200px;
+      }
+
+      &:hover,
+      &:focus-visible {
+        background-color: $white;
+        border-color: $blue-light;
+        box-shadow: none;
+      }
+    }
+
+    .DocSearch-Button-Placeholder {
+      font-family: $font-sans-serif;
+      font-size: 0.9375rem;
+      color: $navy-black;
+      padding: 0 0.5rem;
+    }
+
+    .DocSearch-Search-Icon {
+      color: $navy-black;
+      width: 16px;
+      height: 16px;
+    }
+
+    @media (max-width: 1260px) and (min-width: 1160px) {
+      .DocSearch-Button {
+        width: auto;
+      }
+
+      .DocSearch-Button-Placeholder,
+      .DocSearch-Button-Keys {
+        display: none;
+      }
+    }
   }
 
   .nav-action__arrow {

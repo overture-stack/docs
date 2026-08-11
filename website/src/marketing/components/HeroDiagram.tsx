@@ -154,10 +154,13 @@ export default function HeroDiagram() {
           style={floatingTooltipPosition(
             tooltip.rect,
             // Preference only, not a guarantee: pointed away from the
-            // ring's own center — a hotspot in the top half throws its
-            // tooltip further up, not down over the portal — but flips if
-            // that would run off the browser window.
-            tooltip.hotspot.top < 50 ? "above" : "below",
+            // ring's own center by default — a hotspot in the top half
+            // throws its tooltip further up, not down over the portal —
+            // unless the hotspot overrides that on its own visual call
+            // (see `tooltipSide` in data/heroDiagram.ts). Either way, flips
+            // if that would run off the browser window.
+            tooltip.hotspot.tooltipSide ??
+              (tooltip.hotspot.top < 50 ? "above" : "below"),
             { width: 200, estimatedHeight: 130 },
           )}
         >

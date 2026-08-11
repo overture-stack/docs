@@ -15,22 +15,65 @@
     padding: 28px 0 24px;
   }
 
-  // Powered-by title plus the interaction hint underneath it, stacked and
-  // centered as one block above the logos.
+  // The figures heading plus the interaction hint underneath it, stacked as
+  // one block above the logos.
+  // The gap above the logos lives here, not on `&__hint`: the hint is
+  // `display: none` below tablet-up, so a margin on it left the heading sitting
+  // directly on top of the first logo card on a phone.
   &__heading {
     display: flex;
     flex-direction: column;
     align-items: left;
     gap: 4px;
-    margin-bottom: 8px;
+    margin-bottom: 28px;
   }
 
-  &__title {
+  // Heading-sized, but only the two figures inside it are bold: the sentence is
+  // long for a heading, and setting all of it in the H3's own weight made it
+  // shout the words rather than the numbers. The regular weight is also what
+  // lets the funders link inside it read as a link rather than as more heading.
+  // `&.t-h3`, not a bare `&__title`: the H3 component adds `.t-h3` (see
+  // Typography.tsx), which sets its own size and weight at the same specificity
+  // as this class and is compiled after it, so a single-class rule here loses
+  // the tie and the size below is ignored.
+  //
+  // A step under the section headings below it (`.t-h2`, see _home.scss): this
+  // band sits inside the hero's colour block and introduces the logos rather
+  // than opening a section of the page, so it reads as the smaller of the two.
+  // Bold throughout: it is a heading, not a sentence with figures picked out of
+  // it.
+  // No `padding-left` on this or on `&__hint` below. Both carried 47px, which
+  // was this band's share of an alignment done by hand: the carousel's own
+  // container sat 28px left of the section headings and the hero's copy sat 22px
+  // right of them, and 47px was roughly what it took to split the difference and
+  // land the heading under the hero's first line. Both edges are now the shared
+  // `--band-inset-x` (_home.scss), so the padding is the only thing left pushing
+  // this line out of line with every other heading on the page.
+  &__title.t-h3 {
     margin: 0;
-    padding-left: 47px;
     color: $navy-black;
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+    font-weight: 900;
+    line-height: 1.3;
     text-align: left;
+
+    // A step down on a phone. At 1.5rem and 900 weight this sentence wrapped to
+    // three lines under 600px and read as a second hero rather than as a label
+    // on the logos below it, which are the point of the band. The hint under it
+    // is `display: none` at this width, so this is the whole heading block and
+    // there is nothing else here to carry the emphasis.
+    @include breakpoint(mobile) {
+      font-size: 1.125rem;
+      line-height: 1.35;
+    }
+  }
+
+  // Inherits the heading's size, so it stays part of the sentence rather than
+  // dropping to body size mid-line; colour and underline are what mark it.
+  &__fundingLink {
+    color: $blue-links;
+    text-decoration: underline;
+    white-space: nowrap;
   }
 
   // `.HomePage .container`'s own padding override lines this section's
@@ -313,17 +356,16 @@
   }
 
   // A fixed line saying what the interaction is; it stays put rather than
-  // reacting to whatever is highlighted, so nothing under the title moves
-  // while a visitor is hovering across the diagram or the logos. Only shown
-  // where the interaction itself is possible, matching HeroDiagram's own
-  // `display: none` below tablet-up (_home.scss).
+  // reacting to whatever is highlighted, so nothing under the title moves while
+  // a visitor is hovering across the diagram or the logos. Only shown where the
+  // interaction itself is possible, matching HeroDiagram's own `display: none`
+  // below tablet-up (_home.scss).
   &__hint {
     display: none;
 
     @include breakpoint(tablet-up) {
       display: block;
-      margin: 0 0 20px;
-      padding-left: 47px;
+      margin: 0;
       font-family: $font-sans-serif;
       font-size: 1.05rem;
       color: $navy-black;

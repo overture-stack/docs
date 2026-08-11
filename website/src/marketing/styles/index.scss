@@ -36,6 +36,26 @@
 @import "colors";
 @import "variables";
 
+// The one rule outside the `.marketing` block, and it has to be: it styles the
+// element that *carries* `.marketing`, which a rule nested inside that class can
+// never select (`.marketing .MarketingNavbar` is a descendant selector, and this
+// is the same element). MarketingNavbar.tsx puts both classes on its wrapper.
+//
+// Sticky belongs on the wrapper rather than on `.NavHeader` inside it for the
+// same structural reason a sticky element sticks within its parent's box: the
+// wrapper is exactly as tall as the navbar, so a sticky `.NavHeader` would have
+// no room to travel and would never move at all.
+//
+// z-index above `_layout.scss`'s `.navbar` (30) and above the home page's
+// floating cubes, which are `z-index: 0` on the sections they decorate. 200 is
+// Docusaurus' own `--ifm-z-index-fixed`, which is what its navbar uses on the
+// documentation routes, so the two navbars sit at the same level.
+.MarketingNavbar {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
 .marketing {
   // Keep first: this is where Bulma used to sit in the cascade.
   @import "layout";
@@ -46,6 +66,7 @@
   @import "base";
 
   @import "components/button";
+  @import "components/card-tile";
   @import "components/casestudy";
   @import "components/footer";
   @import "components/hero";
@@ -58,11 +79,12 @@
   @import "components/quickstart";
   @import "components/terminal";
   @import "components/typography";
-  @import "components/yellowbutton";
 
   @import "pages/home";
-  @import "pages/about-us";
-  @import "pages/funding";
+  // No pages/funding: it styled `.FundingPage` and `.PublicationsPage` and
+  // nothing else, and both pages are gone (the funding and citation content is
+  // canonical on the docs site again). Its hero art,
+  // img/marketing/acknowledgements/, has no other reader either.
   @import "pages/impact";
   @import "pages/privacy";
   @import "pages/products";

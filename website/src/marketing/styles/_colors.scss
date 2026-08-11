@@ -17,6 +17,9 @@ $navy-dark: $c-navy-500;
 $navy-black: $c-navy-600;
 
 $pink-light: $c-pink-100;
+// One step down from `$pink-light`, for the case where a pink-tinted surface has
+// to react to the pointer: the navbar's current-page pill hovers to this.
+$pink-tint: $c-pink-200;
 $pink: $c-pink-400;
 $pink-dark: $c-pink-500;
 $pink-darker: $c-pink-600;

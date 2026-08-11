@@ -34,7 +34,7 @@ export const MAX_VERIFIED_AGE_MONTHS = 6;
 const metrics = {
   // Platform-wide
   activePlatforms: {
-    value: "seven",
+    value: "7+",
     source: "OICR Genome Informatics program",
     verified: "2026-08-07",
     note: "Platforms the team builds and runs, excluding lineage deployments such as Kids First.",
@@ -56,6 +56,12 @@ const metrics = {
     source: "OICR Genome Informatics program",
     verified: "2026-08-07",
     note: "Core software engineering team.",
+  },
+  activeGrants: {
+    value: "3",
+    source: "OICR Genome Informatics program",
+    verified: "2026-08-11",
+    note: "Grants funding platform development today: the Digital Research Alliance of Canada (2026 to 2028), CIHR through PCGL (2023 to 2028) and the US National Cancer Institute (2021 to 2026). Counts competitively awarded grants only, so the Government of Ontario operational funding that supports the team is excluded, as is the concluded 2020 to 2024 COVID-19 genomic data infrastructure funding. Recount against docs/community-docs/02-funding.md, which lists all of them: the NCI award ends in 2026, so this figure changes before the next verification is due.",
   },
   annualEngagements: {
     value: "eight",
@@ -90,11 +96,6 @@ const metrics = {
     source: "OICR Genome Informatics program",
     verified: "2026-08-07",
   },
-  drugDiscoveryLaunch: {
-    value: "2025",
-    source: "OICR Genome Informatics program",
-    verified: "2026-08-07",
-  },
 
   // ICGC-ARGO
   icgcArgoParticipants: {
@@ -117,7 +118,7 @@ const metrics = {
     value: "3,500+",
     source: "ICGC-ARGO Data Platform",
     verified: "2026-08-07",
-    note: "Registered users, a subset of whom are approved for controlled-access data.",
+    note: "Registered users, a subset of whom are approved for controlled-access data. Also the external-user figure in the /impact/ aggregate band, where the label names ICGC-ARGO on purpose: it is the largest platform the team runs directly and the only one whose user count we hold. The platforms other institutions own and run do not report theirs, so no honest platform-wide total exists to publish in its place.",
   },
 
   // iMicroSeq, published as VirusSeq until 2026-08-07

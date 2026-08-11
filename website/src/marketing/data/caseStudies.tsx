@@ -1,10 +1,14 @@
 // Data structure to represent the case studies.
 // We iterate over the cases, and render their content.
 //
-// Rendered twice as of rebuild phase 3: by /case-studies/, which is the flat
-// page this file was written for, and by the four platform pages under
-// /impact/, which pick one entry each by slug. /case-studies/ retires in phase
-// 4 and this becomes the impact section's alone.
+// Rendered by /impact/, and only there. The flat /case-studies/ page this file
+// was written for is gone, and so are the four platform pages that replaced it:
+// the hub renders every entry whose `slug` matches a platform, in the order
+// data/platforms.ts lists them, under the card that links down to it.
+//
+// Kids First is the one entry no page renders: it is lineage rather than a
+// platform the team runs, and the hub dropped its lineage section. It stays
+// because the write-up is still accurate and the tier may come back.
 //
 // The "How was Overture used?" lists name components functionally with the
 // codename beside them, which is the house style fixed in .dev/ia-proposal.md

@@ -21,3 +21,117 @@
     width: 53vw;
   }
 }
+
+// The three subpage heroes — Products, Collaborate and Impact — are one band
+// with one text treatment, written once here instead of three times in the page
+// partials that each used to carry their own copy of it. The copies had
+// drifted: at 1440 the text started 148px, 119px and 108px from the left of the
+// same viewport, the subtitle was capped at 570px, 45% and 480px, and only one
+// of the three centred its text in the box. What stays in the page partials is
+// the artwork, which is the only genuinely per-page thing about these heroes.
+//
+// The home page is deliberately not in this list. Its hero is the full 470px
+// box with the diagram component in it, not a band with a title in one half.
+.ProductsPage,
+.CollaboratePage,
+.ImpactPage {
+  .Hero {
+    height: fit-content;
+
+    // The shared rule above pads the band on top of whatever the container
+    // inside it does. One or the other, and it is the container here.
+    @include breakpoint(mobile) {
+      padding: 0;
+    }
+
+    // `auto 100%` sizes the artwork to the box's own height exactly (width
+    // scales with it, keeping the SVG's aspect ratio), so it fills the band
+    // top to bottom at whatever height the band happens to be. Each page
+    // supplies the image and where it sits horizontally.
+    @include breakpoint(tablet-up) {
+      background-repeat: no-repeat;
+      background-position-y: 0;
+      background-size: auto 100%;
+      height: 340px;
+      min-height: 340px;
+    }
+
+    @include breakpoint(desktop-up) {
+      height: 360px;
+      min-height: 360px;
+    }
+
+    // One inset for the text on all three, and centred in the band rather than
+    // pushed down from the top by a padding figure written for a content
+    // section. `3.8em` is the horizontal rhythm the marketing pages' own
+    // `.container` rule uses, so the hero text lines up with the content under
+    // it as well as with the other two heroes.
+    .container {
+      display: flex;
+      align-items: center;
+      padding: 48px 32px;
+
+      @include breakpoint(desktop-up) {
+        padding: 48px 3.8em;
+      }
+    }
+
+    &__section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.8em;
+      width: 100%;
+
+      // Just under half the band, which leaves the other half to the artwork
+      // all three of these pages put there. The column carries the title as
+      // well as the subtitle, so a long title wraps inside it instead of
+      // running out over the image on its own.
+      @include breakpoint(tablet-up) {
+        align-items: start;
+        text-align: left;
+        width: 46%;
+      }
+    }
+
+    // A step down from the shared `.t-h1` (40 to 50px), which is sized for a
+    // page whose hero has nothing under it competing: these three all have
+    // section headings immediately below. Still the largest text on the page.
+    .t-h1 {
+      font-size: 36px;
+      line-height: 44px;
+
+      @include breakpoint(tablet-up) {
+        font-size: 40px;
+        line-height: 48px;
+      }
+
+      @include breakpoint(desktop-up) {
+        font-size: 44px;
+        line-height: 52px;
+      }
+    }
+
+    // No width of its own from tablet up: the column above decides where this
+    // wraps, which is what keeps the three subtitles the same shape. `53vw`
+    // comes from the shared rule and is a viewport figure, so it ignored both
+    // the band's padding and the artwork.
+    &__subtitle {
+      width: auto;
+      max-width: 330px;
+      font-size: 18px;
+      line-height: 28px;
+
+      @include breakpoint(tablet-up) {
+        max-width: none;
+        font-size: 20px;
+        line-height: 30px;
+      }
+
+      @include breakpoint(desktop-up) {
+        line-height: 32px;
+      }
+    }
+  }
+}

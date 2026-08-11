@@ -1,13 +1,11 @@
 import React from "react";
 import Link from "./Link";
 import {
-  ABOUT_US_PATH,
+  ABOUT_BAND,
   COLLABORATE_PATH,
-  FUNDING_PATH,
   IMPACT_PATH,
   PRIVACY_PATH,
   PRODUCTS_PATH,
-  PUBLICATIONS_PATH,
   TERMS_PATH,
 } from "../constants/pages";
 import {
@@ -17,6 +15,8 @@ import {
   NETLIFY_LINK,
   NETLIFY_IMAGE_LINK,
   OICR_LINK,
+  OVERTURE_DOCUMENTATION_CITING,
+  OVERTURE_DOCUMENTATION_FUNDING,
   OVERTURE_DOCUMENTATION_LICENSING,
   OVERTURE_DOCUMENTATION_TEAM_LINK,
   OVERTURE_GITHUB_LINK,
@@ -37,6 +37,10 @@ type FooterColumn = { heading: string; links: FooterLink[] };
  * them. The columns are what the IA asked for and what makes the difference
  * between a footer and a pile of links.
  *
+ * This is now the only navigation to the funding and citation content, and it
+ * leaves the site to reach it: see the Impact column. It is also the only route
+ * left to `ABOUT_BAND`, since the navbar's About item is gone.
+ *
  * `external` drives the arrow, not a URL test: `Link` already decides how to
  * open a link, and marking these by hand keeps the two decisions independent.
  */
@@ -55,11 +59,22 @@ const columns: FooterColumn[] = [
     ],
   },
   {
+    // Two of these three now leave the site. /impact/publications/ and
+    // /about/funding/ were marketing pages holding content whose maintained
+    // version is on the docs site under /community/, and keeping a second copy
+    // here meant a paper and five grants stated twice. Both pages are gone and
+    // these point at the docs, which is why they carry the arrow: "How to cite
+    // us" is the docs page's own subject, and it is a clearer label than
+    // "Publications" for a link a reader follows to get a citation string.
     heading: "Impact",
     links: [
       { name: "Deployments", url: IMPACT_PATH },
-      { name: "Publications", url: PUBLICATIONS_PATH },
-      { name: "Funding", url: FUNDING_PATH },
+      {
+        name: "How to cite us",
+        url: OVERTURE_DOCUMENTATION_CITING,
+        external: true,
+      },
+      { name: "Funding", url: OVERTURE_DOCUMENTATION_FUNDING, external: true },
     ],
   },
   {
@@ -74,9 +89,10 @@ const columns: FooterColumn[] = [
   {
     heading: "About",
     links: [
-      // Still /about-us/. The IA renames it to /about/ and calls the redirect
-      // optional, so the label moved and the address did not.
-      { name: "Our story", url: ABOUT_US_PATH },
+      // /about-us/ is gone; the "What we do" band on the home page is what
+      // carries what it said. `ABOUT_BAND` in constants/pages.ts is the one
+      // spelling of that address, shared with the navbar's About item.
+      { name: "Our story", url: ABOUT_BAND },
       { name: "Team", url: OVERTURE_DOCUMENTATION_TEAM_LINK, external: true },
       { name: "OICR", url: OICR_LINK, external: true },
     ],

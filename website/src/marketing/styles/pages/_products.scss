@@ -1,9 +1,8 @@
 // Rebuild phase 3 rewrote this page around the Collect / Explore / Control
 // grouping, so what is left here is the hero (which carries the page artwork),
-// the container padding, and the Getting Started band at the foot. The new
-// sections are built with `ow:` utilities in ProductGroup.tsx and the route
-// file, per .dev/roadmap.md; `_productspagesection.scss` went with the
-// component it styled.
+// the container padding, and the component table. The rest is built with `ow:`
+// utilities in ComponentTable.tsx and the route file, per .dev/roadmap.md;
+// `_productspagesection.scss` went with the component it styled.
 
 .ProductsPage {
   // The phase 3 markup is bare elements plus utilities, and `.marketing` sets
@@ -17,68 +16,39 @@
     font-family: $font-sans-serif;
   }
 
+  // Box, text and inset come from the shared subpage-hero rules in
+  // `components/_hero.scss`. Only the artwork is this page's own.
+  //
+  // This illustration is much the widest of the three: a conveyor running the
+  // diagonal of the band rather than a picture sitting in its right half. At
+  // full height it is over 800px wide, so it needs two things the other two
+  // heroes do not.
+  //
+  // First it is anchored to the right edge rather than at a fixed offset from
+  // the left (82px, which ran it straight under the text at every width below
+  // `desktop-wide`). Second it is scaled below the band height until there is
+  // room for it beside the text column: the cubes are the solid part, and they
+  // sit a quarter of the way in from the image's left edge, so the pale tail is
+  // all that ever passes behind the subtitle.
   .Hero {
-    height: fit-content;
-
     @include breakpoint(tablet-up) {
       background-image: url('/img/marketing/products/img_hero_products.svg');
-      background-repeat: no-repeat;
-      background-position-x: 82px;
-      background-position-y: 92px;
-      background-size: 860px;
-      height: 470px;
+      background-position: right bottom;
+      background-size: auto 52%;
     }
 
     @include breakpoint(desktop-up) {
-      background-position-x: 120px;
-      background-position-y: 0px;
-      background-size: 1070px;
+      background-size: auto 78%;
     }
 
     @include breakpoint(desktop-wide) {
       background-position-x: 105%;
+      background-position-y: 0;
+      background-size: auto 100%;
     }
 
     @include breakpoint(desktop-ultra-wide) {
       background-position-x: 81%;
-    }
-
-    &__section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 0.8em;
-
-      @include breakpoint(tablet-up) {
-        align-items: start;
-        text-align: left;
-      }
-    }
-
-    &__subtitle {
-      max-width: 330px;
-      @include breakpoint(tablet-up) {
-        max-width: 440px;
-      }
-      @include breakpoint(desktop-up) {
-        max-width: 570px;
-      }
-    }
-
-    .container {
-      @include breakpoint(tablet-up) {
-        padding: 5.2em 4.8em;
-      }
-      @include breakpoint(desktop-up) {
-        padding: 5.2em 4.2em;
-      }
-      @include breakpoint(desktop-wide) {
-        padding: 4.7em 4.6em;
-      }
-      @include breakpoint(desktop-ultra-wide) {
-        padding: 4.7em 6.2em;
-      }
     }
   }
 
@@ -93,55 +63,210 @@
     }
   }
 
-  .lower-blue-section {
-    margin-top: 2.6em;
-
-    &__holder {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2em;
-    }
-
-    &__top-gradient {
-      height: 100px;
+  // The seven components, as one table. See ComponentTable.tsx.
+  //
+  // This is SCSS rather than `ow:` utilities, against the phase 2 default for
+  // new work, because a table is the one thing utilities cannot dress here.
+  // Infima styles every `table` on the site — `display: block`, a border on
+  // each cell, a background on every second row — and undoing that takes
+  // element selectors (`tr:nth-child(2n)` has no utility) on markup we do not
+  // own the class list of. `.ProductsPage .ProductsTable__table tr` outranks
+  // `table tr:nth-child(2n)` on specificity alone, so nothing here needs
+  // `!important`; a utility would have needed it and could then never be
+  // overridden again.
+  .ProductsTable {
+    &__table {
+      // Infima's `display: block` turns a table into a scrolling box and drops
+      // column alignment entirely, which is the whole point of the element.
+      display: table;
       width: 100%;
-      margin-bottom: -2em;
-      background-image: (linear-gradient(#ffffff, #f9f9f9));
+      margin: 2.5em 0 0;
+      overflow: visible;
+      table-layout: fixed;
+      font-family: $font-sans-serif;
+
+      tr {
+        // Kills Infima's zebra striping and its per-row border. The rules
+        // between rows are drawn on the cells instead, which is what lets the
+        // group rows go without one and the stacked layout below put a single
+        // rule back on the row itself.
+        background-color: transparent;
+        border-top: 0;
+      }
+
+      th,
+      td {
+        border: 0;
+        padding: 1.6em 1.5em 1.6em 0;
+        vertical-align: top;
+
+        &:last-child {
+          padding-right: 0;
+        }
+      }
     }
 
-    &__content-holder {
-      background-color: $blue-block;
-      height: fit-content;
-      width: 100%;
+    thead {
+      // Infima fills the header row with its table stripe colour, which reads
+      // as a grey band the page has nowhere else.
+      background-color: transparent;
     }
 
-    &__img-holder {
+    // Column headers, and the column widths with them: set on the header cells
+    // rather than with `col`, which browsers honour for width but not for
+    // padding or type.
+    thead th {
+      padding-bottom: 0.9em;
+      border-bottom: 2px solid $grey-3;
+      color: $c-grey-500;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+
+      &:nth-child(1) {
+        width: 30%;
+      }
+      &:nth-child(2) {
+        width: 46%;
+      }
+      &:nth-child(3) {
+        width: 24%;
+      }
+    }
+
+    // Collect, Explore and Control, as a row spanning the table rather than a
+    // section heading each.
+    &__group th {
+      padding-top: 2.6em;
+      padding-bottom: 1.2em;
+    }
+
+    &__groupTitle {
+      display: block;
+      color: $navy-black;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    // Runs the container's full width rather than being capped at a reading
+    // measure: the group row spans all three columns, and a blurb breaking
+    // early inside it read as a column the table did not have.
+    &__groupBlurb {
+      display: block;
+      margin-top: 0.5em;
+      color: $navy-black;
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.7;
+    }
+
+    // Only Control has one: the how-to for what a deployment can do about
+    // access today, which belongs to the group rather than to any one row.
+    &__groupLink {
+      display: inline-block;
+      margin-top: 0.9em;
+      color: $blue-links;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    tbody th[scope='row'] {
+      border-top: 1px solid $grey-3;
+      font-weight: 400;
+    }
+
+    tbody td {
+      border-top: 1px solid $grey-3;
+      color: $navy-black;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    // Icon beside the name, and the name wrapping inside its own column rather
+    // than dropping below the icon when the column is narrow, which is what an
+    // inline-block pair does at tablet width.
+    &__component {
       display: flex;
-      justify-content: center;
-    }
-
-    &__img {
-      position: relative;
-      image-rendering: crisp-edges;
-      max-width: 1000px;
-      width: 70%;
-      bottom: 70px;
-    }
-
-    &__text-button-holder {
-      position: relative;
-      bottom: 70px;
-      margin-top: 2em;
-      display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 2.6em;
+      gap: 14px;
     }
 
-    &__text-holder {
-      width: 70%;
-      max-width: 1000px;
+    // The icons are drawn at eight different aspect ratios, so the box is
+    // square and the artwork is fitted into it: setting a width instead would
+    // give Lyric's tall tag and Stage's wide one two different visual weights.
+    &__icon {
+      flex: none;
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+    }
+
+    &__nameFunctional {
+      display: block;
+      color: $navy-black;
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    &__codename {
+      display: block;
+      margin-top: 0.15em;
+      color: $c-grey-500;
+      font-size: 16px;
+    }
+
+    &__docs {
+      font-size: 17px;
+      font-weight: 700;
+      color: $blue-links;
+    }
+
+    // Below tablet there is no room for three columns, so the table stops
+    // being one: every cell becomes a block and each row reads as the stacked
+    // card the old row list used to be. The rules move off the cells and onto
+    // the row with them, so a stacked row is separated once rather than three
+    // times.
+    @include breakpoint(mobile) {
+      // The table element stacks along with everything inside it. Leaving it
+      // as a table while its rows and cells are blocks puts the two layout
+      // models against each other: the browser wraps the stray blocks back
+      // into anonymous cells and then sizes the table from their content,
+      // which is not a width the phone can be held to.
+      &__table {
+        display: block;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tbody,
+      tbody tr,
+      tbody th,
+      tbody td {
+        display: block;
+        width: auto;
+      }
+
+      // Every stacked row carries its own rule, group rows included: that is
+      // the table's top edge above Collect and the break above Explore.
+      tbody tr {
+        border-top: 1px solid $grey-3;
+        padding: 1.6em 0;
+      }
+
+      tbody th,
+      tbody td {
+        border-top: 0;
+        padding: 0;
+      }
+
+      tbody td {
+        margin-top: 0.7em;
+      }
     }
   }
 }

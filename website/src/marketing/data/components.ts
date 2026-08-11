@@ -1,4 +1,5 @@
-// The seven Overture components, and the grouping the products page is built on.
+// The seven Overture components, the authorization service being built beside
+// them, and the grouping the products page is built on.
 //
 // The Collect / Explore / Control grouping and the functional names come from
 // the component diagram in .dev/referenceMaterial/. .dev/ia-proposal.md
@@ -19,9 +20,10 @@ import {
   SCORE_DOCS_LINK,
   SONG_DOCS_LINK,
   STAGE_DOCS_LINK,
+  USHER_GITHUB_LINK,
 } from "../constants/externalLinks";
 
-export type ComponentGroupId = "collect" | "explore";
+export type ComponentGroupId = "collect" | "explore" | "control";
 
 export type OvertureComponent = {
   /**
@@ -42,6 +44,17 @@ export type OvertureComponent = {
   /** One link per row, to the docs page. See .dev/ia-proposal.md. */
   docs: string;
   group: ComponentGroupId;
+  /**
+   * What that link says, when "Documentation" is not what is on the other end
+   * of it. Only the unshipped component has anything else.
+   */
+  linkLabel?: string;
+  /**
+   * The link's accessible name, for a row whose own name cannot supply one: a
+   * screen reader reaching "GitHub repository" in the Control row would
+   * otherwise be told it belongs to "TBD".
+   */
+  linkAriaLabel?: string;
 };
 
 export const components: OvertureComponent[] = [
@@ -113,19 +126,43 @@ export const components: OvertureComponent[] = [
     docs: STAGE_DOCS_LINK,
     group: "explore",
   },
+  {
+    // The eighth row, and the only one that is not a thing you can deploy
+    // today. It is here rather than left as the prose section it used to be so
+    // that what is coming sits in the same inventory as what has shipped,
+    // named TBD until it has a name to announce. Its own artwork is the lock
+    // the home hero's diagram already gives Control.
+    id: "control",
+    name: "TBD",
+    codename: "",
+    summary:
+      "In development: an authorization service that works with Keycloak, so administrators can define their data access policy declaratively, in common spoken language, across every Overture component.",
+    docs: USHER_GITHUB_LINK,
+    linkLabel: "GitHub repository",
+    linkAriaLabel: "Control service GitHub repository",
+    group: "control",
+  },
 ];
 
 export type ComponentGroup = {
-  id: ComponentGroupId | "control";
+  id: ComponentGroupId;
   title: string;
   /** The one line that says why these components belong together. */
   blurb: string;
+  /**
+   * Where the group's own how-to lives, when the group has one that no single
+   * row owns. Only Control does: configuring access is a deployment task
+   * spread across every component rather than a page about one of them.
+   */
+  link?: { to: string; label: string };
 };
 
 /**
- * Collect and Explore each hold components. Control holds none, deliberately:
- * it is the band the diagram draws around the other two rather than a service
- * we ship, so the page renders it as prose.
+ * The three groups the products table is built from. Control used to hold no
+ * components at all, because it is the band the diagram draws around the other
+ * two rather than a service we ship; its blurb still says what a deployment
+ * does about access today, and the one row under it is the service that will
+ * replace that arrangement.
  */
 export const groups: ComponentGroup[] = [
   {
@@ -145,6 +182,10 @@ export const groups: ComponentGroup[] = [
     title: "Control",
     blurb:
       "Access and authorization sit around both groups rather than inside them. Every component delegates to Keycloak, so a deployment applies its own institution's identity rules across the whole stack, and an Overture provider extension adds API keys for command line and programmatic access.",
+    link: {
+      to: KEYCLOAK_DEPLOY_LINK,
+      label: "Configuring access and authorization",
+    },
   },
 ];
 
@@ -152,7 +193,20 @@ export function componentsIn(group: ComponentGroupId): OvertureComponent[] {
   return components.filter((component) => component.group === group);
 }
 
-export const CONTROL_DOCS_LINK = KEYCLOAK_DEPLOY_LINK;
+/**
+ * The icon for a component.
+ *
+ * The files live under the home directory because the home hero's diagram was
+ * the first thing to use them; the products table uses the same artwork for the
+ * same component rather than a second set, so the path is named once here.
+ *
+ * The eight are drawn at different aspect ratios, from 167x147 to 584x788, so a
+ * caller has to fit them into a box rather than set one dimension and let the
+ * other follow.
+ */
+export function componentIcon(id: string): string {
+  return `/img/marketing/home/diagram/${id}.png`;
+}
 
 export type AdjacentProject = {
   name: string;
@@ -199,30 +253,5 @@ export const adjacentProjects: AdjacentProject[] = [
     what: "A widely used research data transfer and sharing service, free for non-profits at the basic tier with paid tiers above it. Its central management infrastructure is operated by a US institution and Globus Connect Server v5 is distributed under a proprietary license. It does not carry the metadata management, access control or portal layers a full platform needs.",
     stronger:
       "Stronger at high-volume transfer between established institutional endpoints, which is the problem it was built for.",
-  },
-];
-
-export type Distinction = {
-  title: string;
-  text: string;
-};
-
-/**
- * What Overture is, stated as the three pillars the home page also uses, so the
- * two pages make the same argument in the same words. See .dev/ia-proposal.md
- * finding 8.
- */
-export const distinctions: Distinction[] = [
-  {
-    title: "Modular",
-    text: "Each component has one narrow responsibility and can be deployed alone or as the full stack. The same parts serve a single lab and a multi-institution consortium, across genomics, pathogen surveillance, clinical and drug-discovery data.",
-  },
-  {
-    title: "Open",
-    text: "Every component is freely available and documented under an open-source license. There is no commercial tier, no gated feature set, and nothing to migrate off if your funding changes.",
-  },
-  {
-    title: "Yours to host",
-    text: "Overture runs on infrastructure you control, in the jurisdiction your data has to stay in. Nothing depends on a service we operate, which is what makes a platform outlive the grant that started it.",
   },
 ];

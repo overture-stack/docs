@@ -11,8 +11,11 @@ import { partnerLogos, type PartnerLogo } from "../data/partnerLogos";
 import { componentUsage } from "../data/componentUsage";
 import { useComponentHighlight } from "../context/ComponentHighlightContext";
 import { floatingTooltipPosition } from "../utils/floatingTooltip";
+import { OVERTURE_DOCUMENTATION_FUNDING } from "../constants/externalLinks";
 
-const HINT =
+// The one line under the heading. Only shown where the interaction it describes
+// is possible: tablet-up (see _logo-carousel.scss).
+const HOVER_HINT =
   "Hover a component above, or a platform below, to see how they connect";
 
 // Pixels per millisecond. Slow enough that a logo is legible for a couple of
@@ -335,8 +338,19 @@ export default function LogoCarousel() {
         <div className="container">
           <div className="LogoCarousel__band">
             <div className="LogoCarousel__heading">
-              <H3 className="LogoCarousel__title">Powered by Overture</H3>
-              <p className="LogoCarousel__hint">{HINT}</p>
+              {/* The figures are the heading now. "Powered by Overture" was,
+                  and it labelled the band without telling a visitor anything
+                  the row of logos underneath doesn't already say; the section's
+                  own aria-label still carries that wording for a screen reader.
+                  Still an H3 for the outline, but set at the size the figures
+                  line already had rather than at heading size (see
+                  _logo-carousel.scss): the sentence is long, and at 28px it took
+                  the band over. Copy is written out here rather than held in a
+                  constant so it stays editable in place. */}
+              <H3 className="LogoCarousel__title">
+                7+ active projects, with 8+ years of stable releases
+              </H3>
+              <p className="LogoCarousel__hint">{HOVER_HINT}</p>
             </div>
 
             <div className="LogoCarousel__stage" ref={stageRef}>
@@ -432,12 +446,8 @@ export default function LogoCarousel() {
             estimatedHeight: 110,
           })}
         >
-          <strong className="LogoCarousel__tooltipName">
-            {tooltip.name}
-          </strong>
-          <span className="LogoCarousel__tooltipImpact">
-            {tooltip.impact}
-          </span>
+          <strong className="LogoCarousel__tooltipName">{tooltip.name}</strong>
+          <span className="LogoCarousel__tooltipImpact">{tooltip.impact}</span>
         </div>
       )}
     </LogoTooltipContext.Provider>

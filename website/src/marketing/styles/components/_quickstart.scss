@@ -1,40 +1,121 @@
-// HomeQuickstart: the Prelude quickstart at the foot of the home page.
+// HomeQuickstart: the demo quickstart at the foot of the home page.
 //
-// A partial rather than `ow:` utilities alone, unlike the other home sections:
-// the numbered-step markers are a `::before`-free counter layout, and the
-// screenshot column needs a sticky offset, neither of which a utility set
-// expresses. The spacing inside it is still utilities where a utility does the
-// job.
+// A partial rather than `ow:` utilities alone, unlike most home sections: the
+// screenshot straddles the seam between two backgrounds, and the numbered-step
+// markers are a counter layout. Neither is expressible from the markup.
 
 .HomeQuickstart {
-  &__body {
-    margin-top: 2.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
+  // How far the screenshot sticks up above the blue band, over the white
+  // introduction. One number, referenced twice below.
+  --portal-overhang: 40px;
 
-    @include breakpoint(desktop-up) {
-      flex-direction: row;
-      align-items: flex-start;
-      gap: 3.5rem;
+  @include breakpoint(tablet-up) {
+    --portal-overhang: 70px;
+  }
+
+  @include breakpoint(desktop-up) {
+    --portal-overhang: 90px;
+  }
+
+  &__intro {
+    text-align: center;
+
+    // The lower padding that keeps the overhanging screenshot off the lede is
+    // in _home.scss, where every other `.container` override on this page lives
+    // and where it can actually outrank `.HomePage .container`.
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
   }
 
-  // The commands are the content, so they take the wider column. Below
-  // `desktop-up` the screenshot drops out entirely (see `&__figure`) and this
-  // is the whole width, which is what keeps a 60-character docker command from
-  // wrapping three times on a phone.
+  // The numerals are the claim, so they get the brand's own emphasis rather than
+  // the site's default inline-code treatment, which is a grey chip sized for a
+  // filename.
+  &__claim {
+    font-family: $font-sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.6;
+    color: $navy-black;
+    margin: 0.75em 0 0;
+
+    code {
+      font-family: $font-monospace;
+      font-size: 20px;
+      font-weight: 900;
+      color: $title-pink;
+      background-color: $blue-block;
+      border: 0;
+      border-radius: 5px;
+      margin: 0 5px;
+      padding: 2px 8px;
+    }
+  }
+
+  // Not `$lede-max-width` like the left-aligned bands above it: this
+  // introduction is centred (`&__intro`), so its cap is a line length either
+  // side of a centre line rather than a column with the container's empty right
+  // half beside it. Widening it here would only make a centred paragraph long.
+  &__lede {
+    margin-top: 0.6em;
+    max-width: 46em;
+  }
+
+  // The introduction is white, matching the documentation band above it, so this
+  // is the section's one colour change and the screenshot is what crosses it.
+  // It carried `grey-bg` while the documentation band was grey; the two moved
+  // together, and the point was always that the seam falls here rather than
+  // between the two bands.
+  &__band {
+    background-color: $blue-block;
+    // The figure's negative top margin has to stay inside this box. Without a
+    // block formatting context it collapses out to the band itself, which moves
+    // the blue background up along with the image rather than letting the image
+    // hang over the white above it.
+    display: flow-root;
+  }
+
+  // The portal is the payoff, so it straddles the seam: part over the white
+  // introduction, the rest over the blue band it belongs to.
+  //
+  // A negative margin rather than the Gatsby site's `position: relative;
+  // bottom`, which moved the image without changing layout height. That left
+  // the band with dead blue at its foot and made every element under the image
+  // need the same offset applied by hand.
+  &__figure {
+    margin: calc(-1 * var(--portal-overhang)) auto 0;
+    width: 100%;
+    max-width: 944px;
+    padding: 0 32px;
+  }
+
+  &__screenshot {
+    display: block;
+    width: 100%;
+    height: auto;
+    // The Gatsby site's own treatment: this is a screenshot of a UI, so the
+    // browser's smoothing on a downscale reads as blur rather than as detail.
+    image-rendering: crisp-edges;
+  }
+
+  // The commands sit in a narrower column than the screenshot above them: a
+  // full-container line length is uncomfortable for prose and pointless for a
+  // terminal block, which does not wrap (see _terminal.scss). The space above
+  // comes from `.HomePage .container`'s own top padding.
+  &__body {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
   &__steps {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-
-    @include breakpoint(desktop-up) {
-      flex: 1 1 60%;
-    }
+    gap: 2.25rem;
   }
 
   &__step {
@@ -45,7 +126,7 @@
 
   &__stepTitle {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     gap: 12px;
   }
 
@@ -54,7 +135,7 @@
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: $blue-block;
+    background-color: $white;
     color: $navy-black;
     font-family: $font-sans-serif;
     font-size: 1rem;
@@ -62,6 +143,15 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    // `align-items: baseline` on the row aligns this circle by the digit inside
+    // it, which sits it low against the heading beside it.
+    align-self: flex-start;
+    position: relative;
+    top: 2px;
+  }
+
+  &__stepLink {
+    text-decoration: underline;
   }
 
   &__note {
@@ -73,27 +163,50 @@
     max-width: 46em;
   }
 
-  // Decoration, and the first thing to go when there is not room for it: at
-  // `desktop-up` and below, two columns leave the terminal blocks too narrow to
-  // read a command in one line, and this is a screenshot of a portal rather
-  // than anything a visitor needs to follow the steps.
-  &__figure {
-    display: none;
-
-    @include breakpoint(desktop-up) {
-      display: block;
-      flex: 1 1 40%;
-      position: sticky;
-      // Clears the fixed navbar, matching `ow:scroll-mt-20` elsewhere.
-      top: 96px;
-    }
+  &__settings {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px 16px;
   }
 
-  &__screenshot {
-    width: 100%;
-    height: auto;
-    border-radius: 6px;
-    box-shadow: 0 2px 12px rgba(0, 48, 85, 0.18);
+  &__cog {
+    flex: 0 0 auto;
+  }
+
+  &__settingsList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    margin: 0;
+  }
+
+  &__setting {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    dt {
+      font-family: $font-sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: $navy-black;
+    }
+
+    dd {
+      margin: 0;
+    }
+
+    code {
+      font-family: $font-monospace;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: $navy-black;
+      background-color: $white;
+      border: 0;
+      border-radius: 4px;
+      padding: 3px 8px;
+    }
   }
 
   &__outcome {
@@ -110,10 +223,16 @@
       font-family: $font-monospace;
       font-size: 0.95em;
       color: $navy-black;
-      background-color: $grey-2;
+      background-color: $white;
       border: 0;
       border-radius: 4px;
       padding: 2px 6px;
     }
+  }
+
+  &__cta {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
   }
 }

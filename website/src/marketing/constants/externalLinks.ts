@@ -36,8 +36,27 @@ export const DEPLOYMENT_GUIDES = `${DOCS}/deploy/deployment`;
 export const DOWNLOAD_GUIDES = `${DOCS}/use/cli-downloads`;
 export const SUBMISSION_GUIDES = `${DOCS}/use/cli-submissions`;
 export const USER_GUIDES = `${DOCS}/use`;
+
+// Named destinations for the home page's documentation band, one journey per
+// column. `contributing` is the Develop journey's own standards page, which is a
+// different document from `OVERTURE_DOCUMENTATION_CONTRIBUTION_LINK` above
+// (that one is the community journey's guide to contributing documentation).
+export const DEVELOP_CONTRIBUTING_LINK = `${DOCS}/develop/contributing`;
+export const ARRANGER_MCP_DEPLOY_LINK = `${DOCS}/deploy/deployment/arranger-mcp-server`;
+export const AI_DISCOVERY_LINK = `${DOCS}/use/ai-assisted-data-discovery`;
+// The workshop has no index page of its own: its Prerequisites page is the
+// entry point, which is how the Use journey's own landing page links it.
+export const WORKSHOP_DOCS_LINK = `${DOCS}/use/workshop/prerequisites`;
 export const OVERTURE_DOCUMENTATION_CORE_SOFTWARE = `${DOCS}/develop`;
 export const OVERTURE_DOCUMENTATION_LICENSING = `${DOCS}/community/licensing`;
+// Funding and citation, both canonical on the docs site and both linked from the
+// footer's Impact column as well as from the home page's "Powered by Overture"
+// band. There is no marketing page for either any more: /about/funding/ and
+// /impact/publications/ held second copies of these two documents and were
+// removed, so `docs/community-docs/02-funding.md` and `06-citing-us.md` are the
+// only versions and are no longer pointers to here.
+export const OVERTURE_DOCUMENTATION_FUNDING = `${DOCS}/community/funding`;
+export const OVERTURE_DOCUMENTATION_CITING = `${DOCS}/community/citing-us`;
 export const OVERTURE_SUPPORT = `${DOCS}/community/support`;
 
 // Case Study Links
@@ -103,8 +122,14 @@ export const LECTERN_DOCS_LINK = `${DOCS}/develop/Lectern/overview`;
 export const LYRIC_DOCS_LINK = `${DOCS}/develop/Lyric/overview`;
 
 // Access and authorization, which is configured rather than shipped: the stack
-// delegates to Keycloak. This is the Control band's destination on /products/.
+// delegates to Keycloak. This is what the Control group on /products/ points at
+// for what a deployment can do today.
 export const KEYCLOAK_DEPLOY_LINK = `${DOCS}/deploy/deployment/keycloak`;
+
+// The authorization service being built on top of that, still unnamed and
+// undocumented, so the repository is the only thing there is to link to. Swap
+// this for its documentation once there is some.
+export const USHER_GITHUB_LINK = "https://github.com/overture-stack/usher";
 
 // prelude, the development environment that replaced the Quickstart
 export const PRELUDE_DOCS_LINK = `${DOCS}/deploy/prelude`;

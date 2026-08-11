@@ -123,10 +123,27 @@
   to = "https://docs.overture.bio/deploy/prelude"
   status = 301
 
-# Retired in rebuild phase 1, folded into the funding page.
+# Retired in rebuild phase 1, folded into the funding page. That page has since
+# been retired too, so this goes straight to the docs site rather than chaining
+# through /about/funding/, which no longer exists.
 [[redirects]]
   from = "/acknowledgements/*"
-  to = "/about/funding/"
+  to = "https://docs.overture.bio/community/funding"
+  status = 301
+
+# The two pages phase 1 moved out of `docs/community-docs/` and onto the
+# marketing site, moved back. Each held a second copy of a document whose
+# maintained version is on the docs site: five grants, and one paper with its
+# citation formats. The docs pages carry that content again and are no longer
+# pointers here, so these two routes go to them, cross-host.
+[[redirects]]
+  from = "/about/funding/*"
+  to = "https://docs.overture.bio/community/funding"
+  status = 301
+
+[[redirects]]
+  from = "/impact/publications/*"
+  to = "https://docs.overture.bio/community/citing-us"
   status = 301
 
 # Renamed in rebuild phase 4. "Services" read commercial for a not-for-profit.
@@ -138,16 +155,57 @@
 # Renamed in rebuild phase 4. This is the one that matters: it is the only
 # retired route with inbound fragment links (`#icgcargo` and its siblings).
 # Browsers preserve the fragment across a 301 and do not send it to the server,
-# so what makes those links land is the matching ids kept on the /impact/ hub
-# cards, not anything in this file. Do not renumber or tidy those ids.
+# so what makes those links land is the matching ids kept on the /impact/ hub,
+# not anything in this file. Do not renumber or tidy those ids.
 [[redirects]]
   from = "/case-studies/*"
   to = "/impact/"
   status = 301
 
+# The four platform pages, retired when the hub absorbed their write-ups: the
+# content did not move sites, it moved up one level into a section of /impact/.
+# The fragment is written out here, unlike the /case-studies/ rule above, because
+# an inbound link to one of these carries no fragment of its own to preserve.
+#
+# The ids are `Platform.id` in data/platforms.ts, which is why two of them do not
+# match their old slug: /imicroseq/ is `#virusseq` and /hcmi/ is
+# `#humanCancerModels`, both older spellings kept so existing links still land.
+[[redirects]]
+  from = "/impact/icgc-argo/*"
+  to = "/impact/#icgcargo"
+  status = 301
+
+[[redirects]]
+  from = "/impact/imicroseq/*"
+  to = "/impact/#virusseq"
+  status = 301
+
+[[redirects]]
+  from = "/impact/ihcc/*"
+  to = "/impact/#ihcc"
+  status = 301
+
+[[redirects]]
+  from = "/impact/hcmi/*"
+  to = "/impact/#humanCancerModels"
+  status = 301
+
+# Removed rather than renamed. /about-us/ was a page; what it said is now the
+# "What we do" band on the home page, so this lands on that band rather than on
+# the top of the page. The fragment is the `id` on the band's own heading
+# (HomeCollaborate.tsx) and is the same address the footer's Our story uses,
+# spelled once as `ABOUT_BAND` in constants/pages.ts. The navbar's About item was
+# the third user of it and is gone; this rule is unaffected.
+#
+# The fragment is in this file rather than left to the browser because there is
+# nothing to preserve: an inbound /about-us/ link carries no fragment of its own,
+# unlike the /case-studies/ rule above.
+[[redirects]]
+  from = "/about-us/*"
+  to = "/home/#collaborate-heading"
+  status = 301
+
 # Not included, deliberately:
 #
-#   /about-us/ -> /about/   The IA calls this rename optional and it has not
-#                           happened; /about-us/ is still a live route.
 #   /home/     -> /         Not a redirect. Stage 3 gives the marketing build
 #                           its own `url`, which makes /home/ the root.
