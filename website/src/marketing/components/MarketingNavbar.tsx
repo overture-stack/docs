@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useLocation } from "@docusaurus/router";
 import SearchBar from "@theme/SearchBar";
-import Button from "./Button";
 import Link from "./Link";
 import {
   HOME_PATH,
@@ -12,12 +11,11 @@ import {
 import {
   DOCUMENTATION_LINK,
   OVERTURE_GITHUB_LINK,
-  PRELUDE_DOCS_LINK,
 } from "../constants/externalLinks";
 
 const LOGO = "/img/marketing/chrome/overture_logo.svg";
 
-// Three items plus three actions, per `ia-proposal.md` § Navigation, replacing
+// Three items plus two actions, per `ia-proposal.md` § Navigation, replacing
 // the five plus two the Gatsby site carried. Two things leave the primary nav
 // rather than being renamed: `Documentation` moves right into the actions group,
 // since it leaves the site, and `Support` drops out entirely and becomes
@@ -37,10 +35,10 @@ const navLinks = [
   { name: "Collaborate", url: COLLABORATE_PATH },
 ];
 
-// Two of the three actions. Both leave the site, so both carry the arrow the IA
-// writes them with. `Get Started` is the third and the only one rendered as a
-// button; it points at the docs quickstart rather than a marketing page, which is
-// the handoff that let `/getting-started/` retire.
+// Both leave the site, so both carry the external-link icon the IA writes them
+// with. `Get Started` no longer sits beside them: the button read as a second
+// call to action next to the primary nav's own, and the docs quickstart it
+// pointed at is already one click away via `Docs`.
 const navActions = [
   { name: "Docs", url: DOCUMENTATION_LINK },
   { name: "GitHub", url: OVERTURE_GITHUB_LINK },
@@ -114,14 +112,6 @@ export default function MarketingNavbar() {
               ))}
             </div>
             <div className="navbar-end ">
-              {/* The same Algolia search the documentation navbar carries, and
-                  the same index: these pages are one build with the docs, so a
-                  visitor who arrives on the marketing site can search it from
-                  here rather than having to cross over first. It leads the
-                  actions group so the row still ends on `Get Started`. */}
-              <div className="navbar-item nav-link navbar-search">
-                <SearchBar />
-              </div>
               {navActions.map((action) => (
                 <Link
                   key={action.name}
@@ -150,13 +140,14 @@ export default function MarketingNavbar() {
                   </svg>
                 </Link>
               ))}
-              <div className="navbar-item nav-link navbar-buttons">
-                {/* Points into the docs rather than at a marketing funnel:
-                    /getting-started/ duplicated the documentation and went
-                    stale, so rebuild phase 1 retired it. */}
-                <Button link={PRELUDE_DOCS_LINK} size="medium" type="primary">
-                  Get Started
-                </Button>
+              {/* The same Algolia search the documentation navbar carries, and
+                  the same index: these pages are one build with the docs, so a
+                  visitor who arrives on the marketing site can search it from
+                  here rather than having to cross over first. Trailing rather
+                  than leading, so it sits where the documentation navbar's own
+                  search box sits: the last thing in the row. */}
+              <div className="navbar-item nav-link navbar-search">
+                <SearchBar />
               </div>
             </div>
           </div>

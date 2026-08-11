@@ -195,88 +195,37 @@
     }
   }
 
-  // Docs and GitHub. Styled as nav links rather than buttons, so the row has one
-  // button in it and that button is the only call to action, which is the
-  // distinction the IA's `Docs [icon]  GitHub [icon]  [Get Started]` is drawing.
-  //
-  // This is also what retired the overflow fix that used to sit here. The old row
-  // carried a "Check us out on GitHub" button, and between the navmenu breakpoint
-  // and roughly 1300px its intrinsic width exceeded the viewport: `_layout.scss`
-  // gives both `.navbar-menu` and `.navbar-item` `flex-shrink: 0`, so nothing
-  // gave, "Get Started" went off the right edge, and the burger was already hidden
-  // above the breakpoint. Four short labels plus two short actions fit at the
-  // breakpoint with room to spare, so the media query that hid the long label is
-  // gone rather than kept as decoration. If a future label lengthens this row,
-  // that failure mode is the one to expect.
+  // Docs and GitHub. Styled as nav links rather than buttons, so the row carries
+  // no call to action at all — `Get Started` used to sit at the end of it, but
+  // it read as competing with the primary nav's own, and everything it pointed
+  // at is one click away via `Docs`.
   .nav-action {
     white-space: nowrap;
   }
 
-  // Algolia's button, leading the actions group. Restyled rather than left at
-  // the theme's default: Infima's version is a square-cornered box tuned to the
-  // documentation navbar's own metrics, and next to a pill button and two plain
-  // links it read as a form field dropped into the row.
-  //
-  // This is the row that the comment above warns is width-sensitive between the
-  // navmenu breakpoint and roughly 1300px. The button is allowed to shrink to
-  // its icon there (the placeholder and the ⌘K hint drop out below 1260px), so
-  // the search takes space from itself rather than from `Get Started`.
+  // Algolia's button, trailing the row exactly where the documentation navbar's
+  // own copy of it sits. Left at `@docsearch/css`'s and
+  // `@docusaurus/theme-search-algolia`'s defaults rather than restyled, so the
+  // two navbars carry the same search box rather than two different ones.
   .navbar-search {
     display: flex;
     align-items: center;
 
-    // No width of its own in the open mobile menu: `.navbar-menu.is-active` is a
-    // flex column, so this row already stretches to it. `width: 100%` here is
-    // 100% of that column *plus* `.navbar-item`'s own 0.75rem padding, and the
-    // button hangs 24px off the right edge.
-
     .DocSearch-Button {
       // `@docsearch/css` opens this rule with `all: unset`, which takes
-      // `box-sizing` back to `content-box` with it. Without this, a width of
-      // 100% is 100% *plus* the padding below and the pill hangs off the end of
-      // the open mobile menu.
+      // `box-sizing` back to `content-box` with it. Without this, `width: 100%`
+      // in the open mobile menu is 100% *plus* the button's own padding and
+      // border, and it hangs off the right edge. Above the navmenu breakpoint
+      // the button goes back to its natural content width, same as it has on
+      // the documentation navbar.
       box-sizing: border-box;
       width: 100%;
-      height: 36px;
       margin: 0;
-      padding: 0 0.6rem;
-      background-color: $grey-2;
-      border: 1px solid $grey-3;
-      border-radius: 18px;
+      transition: all var(--ifm-transition-fast)
+        var(--ifm-transition-timing-default);
 
       @include breakpoint(navmenu-up) {
-        width: 200px;
-      }
-
-      &:hover,
-      &:focus-visible {
-        background-color: $white;
-        border-color: $blue-light;
-        box-shadow: none;
-      }
-    }
-
-    .DocSearch-Button-Placeholder {
-      font-family: $font-sans-serif;
-      font-size: 0.9375rem;
-      color: $navy-black;
-      padding: 0 0.5rem;
-    }
-
-    .DocSearch-Search-Icon {
-      color: $navy-black;
-      width: 16px;
-      height: 16px;
-    }
-
-    @media (max-width: 1260px) and (min-width: 1160px) {
-      .DocSearch-Button {
         width: auto;
-      }
-
-      .DocSearch-Button-Placeholder,
-      .DocSearch-Button-Keys {
-        display: none;
       }
     }
   }
@@ -287,16 +236,6 @@
   .nav-action__icon {
     margin-left: 0.3rem;
     align-self: center;
-  }
-
-  // Holds `Get Started`, and nothing else since GitHub became a nav action. The
-  // gap, the column direction under 400px and the `.github-button` overrides that
-  // used to be here were all about spacing two buttons against each other, so they
-  // went with the second button rather than staying as rules with one child.
-  .navbar-buttons {
-    display: flex;
-    flex-grow: 1;
-    justify-content: center;
   }
 
   .navbar-mid {
@@ -343,11 +282,6 @@
     @include breakpoint(navmenu-up) {
       background: white;
     }
-  }
-
-  .custom-button.button.is-medium {
-    font-size: 1rem;
-    font-weight: 600;
   }
 
   //
