@@ -51,16 +51,16 @@ function LogoItem({
       draggable={false}
     />
   );
-  const date = logo.date && (
-    <span className="LogoCarousel__date" aria-hidden={hiddenForLoop}>
-      {logo.date}
-    </span>
-  );
+  // No production date under the logo any more, on the developer's call: each
+  // one added a line of text plus its gap under every chip, and the band has to
+  // finish above the fold together with the hero. `date` is still in
+  // data/partnerLogos.ts (it reads as the record of when each platform ran, and
+  // `startYear` next to it still orders this list), just not rendered here.
   // The impact tooltip (below) replaces the plain title for a logo that has
   // one, rather than stacking a duplicate browser tooltip a second after the
   // custom one; a logo without an impact statement yet still gets the plain
   // title, same as before.
-  const title = logo.date ? `${logo.name} — ${logo.date}` : logo.name;
+  const title = logo.name;
   const itemClassName = `LogoCarousel__item${
     highlighted ? " LogoCarousel__item--highlighted" : ""
   }`;
@@ -104,7 +104,6 @@ function LogoItem({
         >
           {content}
         </span>
-        {date}
       </li>
     );
   }
@@ -121,7 +120,6 @@ function LogoItem({
       >
         {content}
       </Link>
-      {date}
     </li>
   );
 }
@@ -338,18 +336,6 @@ export default function LogoCarousel() {
         <div className="container">
           <div className="LogoCarousel__band">
             <div className="LogoCarousel__heading">
-              {/* The figures are the heading now. "Powered by Overture" was,
-                  and it labelled the band without telling a visitor anything
-                  the row of logos underneath doesn't already say; the section's
-                  own aria-label still carries that wording for a screen reader.
-                  Still an H3 for the outline, but set at the size the figures
-                  line already had rather than at heading size (see
-                  _logo-carousel.scss): the sentence is long, and at 28px it took
-                  the band over. Copy is written out here rather than held in a
-                  constant so it stays editable in place. */}
-              <H3 className="LogoCarousel__title">
-                7+ active projects, with 8+ years of stable releases
-              </H3>
               <p className="LogoCarousel__hint">{HOVER_HINT}</p>
             </div>
 

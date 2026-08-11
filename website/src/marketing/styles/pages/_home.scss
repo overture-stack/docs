@@ -1,4 +1,3 @@
-
 .HomePage {
   max-width: 100%;
   .Hero {
@@ -28,10 +27,16 @@
       // Was `max-height: 470px`, which capped the box while the phase 4 hero
       // heading grew past it. `min-height` keeps the old proportions when the
       // copy is short and lets the box grow when it is not. Both this and
-      // the padding below have come down three times now, each time on
+      // the padding below have come down four times now, each time on
       // request: with LogoCarousel reading as an extension of the hero right
       // underneath it, the hero doesn't need to carry much air of its own
       // between the diagram and the carousel below.
+      //
+      // The floor is only a floor. Above roughly 1024px the diagram
+      // (_hero-diagram.scss) is taller than this and it, not this figure, is
+      // what the row measures; what this still decides is the height between
+      // 768 and 1024, where the diagram is at its smallest and the copy beside
+      // it is at its narrowest.
       min-height: 320px;
       padding: 0.9em var(--band-outset-x);
 
@@ -242,16 +247,31 @@
   // colours above rather than travelling with its band, which is what keeps the
   // yellow cube on the carousel's bottom edge and the teal one on the white/grey
   // seam below it.
+  // Straddles the carousel's bottom edge from exactly the band's own bottom
+  // padding (`$carousel-band-y`, components/_logo-carousel.scss), not the 44px
+  // it hung by before: that padding used to be 64px deep, and once the carousel
+  // was tightened to open and close on the same figure the old overhang reached
+  // 16px past it and sat on the corner of whichever logo chip was under it at
+  // 1024px. Kept in the blue by a third of its height, which is what makes it
+  // read as straddling the seam rather than as sitting on the white band.
   .HomeCapabilities::before {
     @extend %cube;
     @include cube-art("cube_yellow", 100px, 91px, 0.114, 0.599, 0.165, 0.561);
-    top: -44px;
+    top: -45px;
     right: 0;
   }
 
   .HomeCollaborate::before {
     @extend %cube;
-    @include cube-art("cube_bright_teal_inverted", 100px, 100px, 0.086, 0.88, 0.222, 0.921);
+    @include cube-art(
+      "cube_bright_teal_inverted",
+      100px,
+      100px,
+      0.086,
+      0.88,
+      0.222,
+      0.921
+    );
     top: -50px;
     left: -14px;
   }
@@ -290,7 +310,15 @@
   // instead would put decoration over real content.
   .HomeQuickstart::after {
     @extend %cube;
-    @include cube-art("cube_bright_teal", 100px, 100px, 0.12, 0.914, 0.222, 0.921);
+    @include cube-art(
+      "cube_bright_teal",
+      100px,
+      100px,
+      0.12,
+      0.914,
+      0.222,
+      0.921
+    );
     bottom: 22px;
     left: -20px;
   }

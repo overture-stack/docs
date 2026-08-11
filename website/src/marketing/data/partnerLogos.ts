@@ -6,7 +6,12 @@ export type PartnerLogo = {
   icon: string;
   name: string;
   href?: string;
-  /** Shown under the logo in LogoCarousel: "Since 2019", "2007-2024", "In development". Absent renders no date rather than a guess. */
+  /**
+   * When each platform ran: "Since 2019", "2007-2024", "In development".
+   * LogoCarousel showed this under the logo until 2026-08-11, when the band was
+   * cut down to finish above the fold; kept as the record (and as the wording to
+   * put back if the line returns), not currently rendered anywhere.
+   */
   date?: string;
   /** Start year, for ordering only (most recent first). Absent (in development) sorts first. */
   startYear?: number;

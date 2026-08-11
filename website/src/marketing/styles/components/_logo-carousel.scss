@@ -7,12 +7,21 @@
 // `&__band` is just a vertical-padding wrapper now; `.LogoCarousel
 // .container`'s own horizontal padding (_home.scss) is what indents the
 // content and lines it up with the hero's.
+// One figure, `$carousel-band-y`, above the heading and below the logos: the
+// band used to carry 28px over the title and 24px under the logos with a
+// further 40px of section padding beneath that, so it finished with more than
+// twice the air it opened with and pushed the whole band past the fold. The
+// section's own vertical padding is zero now and the band is the only thing
+// setting it, which is what keeps the two ends equal by construction rather
+// than by two numbers that have to be kept in step.
+$carousel-band-y: 28px;
+
 .LogoCarousel {
-  padding: 0px 0 40px;
+  padding: 0;
   background-color: $blue-block;
 
   &__band {
-    padding: 28px 0 24px;
+    padding: $carousel-band-y 0;
   }
 
   // The figures heading plus the interaction hint underneath it, stacked as
@@ -276,11 +285,12 @@
     }
   }
 
+  // One child now that the date line is gone, so no column gap left to set;
+  // still a flex item so the chip inside it keeps its own height rather than
+  // stretching to the tallest logo in the row.
   &__item {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 8px;
   }
 
   &__link {
@@ -343,16 +353,6 @@
     width: auto;
     max-width: 220px;
     object-fit: contain;
-  }
-
-  // The developer's own production dates, editable in data/partnerLogos.ts;
-  // absent for logos that don't have one yet rather than showing a guess.
-  &__date {
-    font-family: $font-sans-serif;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: $navy-black;
-    white-space: nowrap;
   }
 
   // A fixed line saying what the interaction is; it stays put rather than

@@ -70,7 +70,9 @@
     justify-content: center;
     transform: translate(-50%, -50%);
     border-radius: 50%;
-    transition: transform 120ms ease-out, opacity 150ms ease-out,
+    transition:
+      transform 120ms ease-out,
+      opacity 150ms ease-out,
       filter 150ms ease-out;
     cursor: pointer;
 
