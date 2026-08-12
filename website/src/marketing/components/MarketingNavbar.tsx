@@ -32,7 +32,7 @@ const LOGO = "/img/marketing/chrome/overture_logo.svg";
 const navLinks = [
   { name: "Products", url: PRODUCTS_PATH },
   { name: "Impact", url: IMPACT_PATH },
-  { name: "Collaborate", url: COLLABORATE_PATH },
+  { name: "Collaboration", url: COLLABORATE_PATH },
 ];
 
 // Both leave the site, so both carry the external-link icon the IA writes them

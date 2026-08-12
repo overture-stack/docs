@@ -59,6 +59,17 @@ export const OVERTURE_DOCUMENTATION_FUNDING = `${DOCS}/community/funding`;
 export const OVERTURE_DOCUMENTATION_CITING = `${DOCS}/community/citing-us`;
 export const OVERTURE_SUPPORT = `${DOCS}/community/support`;
 
+// The Overture platform paper: peer reviewed, gold open access, 38 authors. Here
+// rather than in data/publications.ts, which holds the other four, because two
+// pages cite this one (the home page's "What we do" band and the /impact/
+// publication list) and a shared link belongs in the shared file.
+//
+// Linked by DOI rather than by the publisher's own URL. The DOI is the citable,
+// permanent address and is what docs/community/citing-us gives as well, so a
+// reader who follows either lands in the same place.
+export const GIGASCIENCE_PAPER_LINK =
+  "https://doi.org/10.1093/gigascience/giaf038";
+
 // Case Study Links
 
 export const GDC_LINK = "https://portal.gdc.cancer.gov/";
@@ -69,9 +80,18 @@ export const IHCC_LINK = "https://ihccglobal.org/";
 export const IHCC_PORTAL_LINK = "https://atlas.ihccglobal.org/";
 export const KIDS_FIRST_LINK =
   "https://portal.kidsfirstdrc.org/login?redirect_path=/dashboard?";
-// iMicroSeq, published as VirusSeq until 2026-08-07. The portal URL still
-// carries the old name; [NEEDS: URL] confirmation of whether it moves.
-export const VIRUSSEQ_PORTAL_LINK = "https://virusseq-dataportal.ca/explorer";
+// iMicroSeq, published as VirusSeq until 2026-08-07. The portal moved to match
+// the platform's name, confirmed by the developer 2026-08-12; the constant was
+// renamed with it, since the old spelling was the last place on the site still
+// calling the platform VirusSeq outside the deliberately-preserved `virusseq`
+// anchor id. `/explorer` is kept from the old URL and still resolves: it
+// redirects to `/explorer/clinical`, checked 2026-08-12.
+export const IMICROSEQ_PORTAL_LINK = "https://imicroseq-dataportal.ca/explorer";
+// OHCRN and PCGL, both live and both verified 2026-08-12. These are the two
+// portal URLs .dev/roadmap.md carried as `[NEEDS: URLs]` from the start of the
+// rebuild: their cards were the only ones on /impact/ that linked nowhere.
+export const OHCRN_PORTAL_LINK = "https://ohcrn.ca";
+export const PCGL_PORTAL_LINK = "https://genomelibrary.ca";
 export const ICGC_ARGO_LINK = "https://www.icgc-argo.org/";
 export const ICGC_ARGO_PORTAL_LINK = "https://platform.icgc-argo.org/";
 export const CGC_LINK = "https://cancercollaboratory.org/";

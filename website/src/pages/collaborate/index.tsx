@@ -42,11 +42,11 @@ export default function CollaboratePage() {
   return (
     <MarketingPage
       className="CollaboratePage"
-      title="Collaborate with Overture"
+      title="Collaboration with Overture"
       description="Academic partnership, consulting and technical support from the team that builds Overture. We are a not-for-profit: funds are reinvested into the software."
     >
       <Hero
-        title="Collaborate"
+        title="Collaboration"
         subtitle="Work with the team that builds Overture, on a grant proposal, a deployment, or a problem you are stuck on."
       />
 

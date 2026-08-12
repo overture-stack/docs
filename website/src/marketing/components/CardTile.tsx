@@ -21,12 +21,14 @@ import { H3 } from "./Typography";
  * nor navigable, and the whole point of the tile is that the whole tile is
  * clickable.
  *
- * `image` puts a screenshot across the top of the tile, inside the anchor and
- * bled to its edges. Inside rather than behind and overhanging, which is the
- * other way a card band shows one: the tiles here sit two by two, so an
- * overhang on the second row has to clear the first row's floor, and every
- * screenshot the site holds is already drawn with its own browser chrome and
- * shadow, which is the raised look a second frame behind it would only repeat.
+ * `image` puts a screenshot across the top of the tile, inside the anchor.
+ * Inside rather than behind and overhanging, which is the other way a card band
+ * shows one: the tiles here sit two by two, so an overhang on the second row has
+ * to clear the first row's floor, and every screenshot the site holds is already
+ * drawn with its own browser chrome and shadow, which is the raised look a
+ * second frame behind it would only repeat. That shadow is also why the shot is
+ * inset on a pale blue field rather than bled to the tile's edges; see
+ * `.CardTile__media` in styles/components/_card-tile.scss.
  */
 export type CardTileProps = {
   title: string;

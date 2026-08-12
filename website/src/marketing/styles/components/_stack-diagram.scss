@@ -1,0 +1,367 @@
+// The products page's flow diagram. See StackDiagram.tsx and
+// data/componentFlow.ts.
+//
+// Nodes are fixed-size cards (text has to stay legible at any container
+// width) positioned by percentage over an SVG edge layer that stretches to
+// fill the same box via `viewBox="0 0 100 100"` and
+// `preserveAspectRatio="none"` — both layers share one 0-100 coordinate
+// space, so they move together on resize without any JS recomputing
+// anything.
+.StackDiagram {
+  // The card the diagram sits inside. Without it, the diagram's own compact
+  // height (~400px) inside the page's normal section padding (Hero and
+  // ComponentTable both carry ~75px top/bottom) reads as an oversized,
+  // accidental gap rather than a designed one — flagged from the live page,
+  // not assumed. A visible boundary is what turns "why is there nothing
+  // here" into "this is a padded card": the total space doesn't shrink much,
+  // what changes is whether it belongs to something.
+  &__frame {
+    background: $grey-1;
+    border-radius: 20px;
+    padding: 40px 24px;
+
+    @include breakpoint(tablet-up) {
+      padding: 48px 40px;
+    }
+  }
+
+  &__diagram {
+    position: relative;
+    width: 100%;
+
+    // Two renderings of the same seven components (StackDiagram.tsx renders
+    // both from data/componentFlow.ts's two node lists), one shown at a
+    // time. Node cards are fixed pixel sizes, not percentages — text has to
+    // stay legible at any width — so the wide desktop layout cannot simply
+    // scale down into a phone screen; checked against a real 375px
+    // screenshot, where it ran off the right edge, before building the
+    // second layout rather than assuming it was needed.
+    &--desktop {
+      display: none;
+
+      @include breakpoint(tablet-up) {
+        display: block;
+        // Wide rather than square, per the plan's left-to-right form: the
+        // top lane runs Lectern through Stage, the bottom lane Song and
+        // Score beneath it.
+        aspect-ratio: 1000 / 460;
+        // Capped rather than filling `.container` at its own widest (up to
+        // 1344px there): node cards are a fixed pixel size regardless of
+        // container width, so a wider box does not show more diagram, only
+        // more empty margin around the same seven cards and a taller gap
+        // between the two lanes — measured at 562px tall on a 1440px
+        // viewport before this cap, against ~400px of actual card content.
+        max-width: 880px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    &--mobile {
+      display: block;
+      // Tall rather than wide: the two lanes rotate from top/bottom into
+      // left/right (data/componentFlow.ts's flowNodesMobile), so the flow
+      // reads down the page.
+      aspect-ratio: 340 / 640;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+
+      @include breakpoint(tablet-up) {
+        display: none;
+      }
+
+      // Both node kinds shrink to fit two lanes side by side within a phone
+      // width; see __node and __controlTag below for the tablet-up sizes
+      // these override.
+      .StackDiagram__node {
+        width: 108px;
+        padding: 9px 8px;
+      }
+
+      .StackDiagram__nodeIcon {
+        width: 28px;
+        height: 28px;
+      }
+
+      .StackDiagram__nodeName {
+        font-size: 11.5px;
+      }
+
+      .StackDiagram__controlTag {
+        padding: 5px 12px 5px 8px;
+        font-size: 11px;
+      }
+
+      .StackDiagram__controlTagIcon {
+        width: 13px;
+        height: 13px;
+      }
+
+      .StackDiagram__indexTag {
+        width: 96px;
+        font-size: 10px;
+      }
+
+      .StackDiagram__indexTagIcon {
+        width: 12px;
+        height: 12px;
+      }
+    }
+  }
+
+  &__svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__band {
+    fill: none;
+    stroke: $grey-4;
+    stroke-width: 1;
+    stroke-dasharray: 5 4;
+    vector-effect: non-scaling-stroke;
+    transition: stroke 150ms ease-out;
+
+    &--active {
+      stroke: $yellow;
+      stroke-width: 2;
+      stroke-dasharray: none;
+    }
+  }
+
+  &__edge {
+    fill: none;
+    stroke: $grey-4;
+    stroke-width: 1.5;
+    transition:
+      stroke 150ms ease-out,
+      stroke-width 150ms ease-out,
+      opacity 150ms ease-out;
+
+    &--active {
+      stroke: $blue-outline;
+      stroke-width: 2.5;
+    }
+
+    &--dimmed {
+      opacity: 0.3;
+    }
+  }
+
+  &__node {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 122px;
+    padding: 12px 10px;
+    transform: translate(-50%, -50%);
+    background: $white;
+    border: 1.5px solid $grey-3;
+    border-radius: 12px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      transform 120ms ease-out,
+      border-color 150ms ease-out,
+      box-shadow 150ms ease-out,
+      opacity 150ms ease-out;
+
+    &:hover,
+    &:focus-visible {
+      z-index: 4;
+      transform: translate(-50%, -50%) scale(1.06);
+      border-color: $yellow;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $yellow;
+      outline-offset: 3px;
+    }
+
+    &--active {
+      z-index: 4;
+      transform: translate(-50%, -50%) scale(1.06);
+      border-color: $yellow;
+      box-shadow: 0 0 0 3px rgba($yellow, 0.25);
+    }
+
+    &--dimmed {
+      opacity: 0.35;
+    }
+  }
+
+  &__nodeIcon {
+    display: block;
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+  }
+
+  &__nodeName {
+    font-family: $font-sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: $navy-black;
+  }
+
+  // The database backing a card, printed smaller and muted underneath its
+  // name rather than as a separate node — see `flowNodeStorage` in
+  // componentFlow.ts for why it isn't drawn as one.
+  &__nodeStorage {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: $font-sans-serif;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: $c-grey-500;
+  }
+
+  &__nodeStorageIcon {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    color: $c-grey-500;
+  }
+
+  &__controlTag {
+    position: absolute;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transform: translate(-50%, -50%);
+    padding: 6px 16px 6px 10px;
+    background: $white;
+    border: 1.5px dashed $grey-4;
+    border-radius: 999px;
+    font-family: $font-sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $navy-black;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      border-color 150ms ease-out,
+      box-shadow 150ms ease-out;
+
+    &:hover,
+    &:focus-visible {
+      border-color: $yellow;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $yellow;
+      outline-offset: 3px;
+    }
+
+    &--active {
+      border-style: solid;
+      border-color: $yellow;
+      box-shadow: 0 0 0 3px rgba($yellow, 0.25);
+    }
+  }
+
+  &__controlTagIcon {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+  }
+
+  // The index between Maestro and Arranger: not a component, so it's a
+  // muted chip rather than a card — both marks it's built on (see
+  // `flowSearchIndex` in componentFlow.ts), no link, no tooltip, since the
+  // label is already the whole of what there is to say about it.
+  &__indexTag {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    transform: translate(-50%, -50%);
+    width: 108px;
+    padding: 7px 10px;
+    background: $white;
+    border: 1.5px solid $grey-3;
+    border-radius: 8px;
+    font-family: $font-sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.25;
+    text-align: center;
+    color: $c-grey-500;
+    transition:
+      border-color 150ms ease-out,
+      color 150ms ease-out,
+      opacity 150ms ease-out;
+
+    &--active {
+      border-color: $blue-outline;
+      color: $navy-black;
+    }
+
+    &--dimmed {
+      opacity: 0.35;
+    }
+  }
+
+  &__indexTagIcons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  &__indexTagIcon {
+    flex: none;
+    width: 14px;
+    height: 14px;
+    color: inherit;
+  }
+
+  // `position: fixed`, positioned in JS from the hovered element's own
+  // `getBoundingClientRect()` — see utils/floatingTooltip.ts and the same
+  // note in _hero-diagram.scss, which this mirrors.
+  &__tooltip {
+    position: fixed;
+    z-index: 20;
+    transform: translateX(-50%);
+    width: 220px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: $navy-black;
+    color: $white;
+    font-family: $font-sans-serif;
+    text-align: left;
+    pointer-events: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  &__tooltipName {
+    display: block;
+    // `_defaults.scss` sets `strong { color: $navy-black !important; }`
+    // site-wide; only another !important wins it back.
+    color: $white !important;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  &__tooltipSummary {
+    display: block;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: $grey-2;
+  }
+}

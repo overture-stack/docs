@@ -59,49 +59,458 @@
     }
   }
 
-  // The aggregate band is three short figures, not prose, so it wants far less
+  // The aggregate band is six short figures, not prose, so it wants far less
   // height than a content section: it is a strip between the hero and the link
-  // tree rather than a section of its own.
+  // tree rather than a section of its own. It was four figures on one row and is
+  // now six on two, so the vertical padding is a little more generous than the
+  // 24px a single row wanted.
   .ImpactAggregate .container {
-    padding-top: 24px;
-    padding-bottom: 24px;
+    padding-top: 32px;
+    padding-bottom: 32px;
   }
 
-  // A write-up and its way back up to the link tree are one band, so the two
-  // containers inside it share a single section's height rather than each
-  // taking the full one.
-  .ImpactWriteUp {
-    .Case-Study .container {
-      padding-bottom: 32px;
+  // The deployments section runs up close under the hero and the figures
+  // strip, the same way `/products/`'s component table does under its own
+  // hero (see `.ProductsTable .container` in pages/_products.scss): a full
+  // section's worth of top padding here would read as a gap between the
+  // strip and this section's own heading. Only the top side, so the space
+  // below the table is untouched and `#publications` still starts as its own
+  // band.
+  .ImpactDeployments .container {
+    padding-top: 32px;
+
+    @include breakpoint(desktop-up) {
+      padding-top: 1.5em;
+    }
+  }
+
+  // The lede under a section heading, and the smaller note that follows a
+  // subhead or precedes a table. Shared across the three sections added in the
+  // evidence rebuild rather than declared three times: they are the same two
+  // roles in each of them.
+  //
+  // Named for `.ImpactBeyond` because that section was written first and the
+  // other two reuse its classes rather than aliasing them. Rename all four
+  // together if this ever stops being worth the indirection.
+  .ImpactBeyond__lede {
+    max-width: 62rem;
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: $navy-black;
+  }
+
+  .ImpactBeyond__note {
+    max-width: 62rem;
+    margin: 1.5rem 0 0;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: $navy-black;
+  }
+
+  // A subhead inside a section, under that section's own title. Both are `H3`
+  // in the markup, and until 2026-08-12 that was fine: section titles were `H2`
+  // and the two were a step apart on their own. The developer had the titles
+  // dropped to bold `.t-h3` text that day, which left "Distribution and release
+  // history" set identically to "Packages" underneath it, so the step is taken
+  // here instead. Same family and weight, one size down: a subhead should read
+  // as inside its section rather than beside it.
+  .ImpactBeyond__subhead {
+    margin: 3rem 0 0;
+    text-align: left;
+    font-size: 18px;
+    line-height: 28px;
+
+    @include breakpoint(mobile) {
+      font-size: 17px;
+      line-height: 26px;
+    }
+  }
+
+  // Published work. One block per paper, ruled between rather than boxed: five
+  // entries of four lines each is a list, and cards would put ten borders around
+  // it.
+  .ImpactPublications {
+    &__list {
+      list-style: none;
+      margin: 2.5rem 0 0;
+      padding: 0;
     }
 
-    &__back .container {
-      padding-top: 0;
+    &__item {
+      padding: 1.5rem 0;
+      border-top: 1px solid $grey-3;
+      max-width: 62rem;
+
+      &:last-child {
+        border-bottom: 1px solid $grey-3;
+      }
     }
 
-    // The write-up heading is `.t-h2`, which centres, and it carried no rule
-    // under it. That was right when each of these was its own page; here they
-    // are sections of one, and every other section heading on the page is left
-    // aligned over a yellow bar. The bar is generated rather than marked up
-    // because the markup belongs to `CaseStudy`, which /impact/ is now the only
-    // caller of but which should not have to know that.
-    .case-heading {
-      text-align: left;
-      margin-bottom: 2.4em;
+    &__authors {
+      margin: 0;
+      font-size: 1rem;
+      color: $c-grey-500;
+    }
 
-      .t-h2 {
-        text-align: left;
+    &__title {
+      margin: 0.25rem 0 0;
+      font-size: 1.125rem;
+      font-weight: 700;
+      line-height: 1.5;
+      color: $navy-black;
 
-        &::after {
-          content: "";
-          display: block;
-          max-width: 80px;
-          min-width: 48px;
-          height: 4px;
-          margin-top: 24px;
-          background-color: $yellow;
+      a {
+        color: $blue-links;
+      }
+    }
+
+    &__venue {
+      margin: 0.35rem 0 0;
+      font-size: 0.9375rem;
+      color: $c-grey-500;
+    }
+
+    &__relevance {
+      margin: 0.5rem 0 0;
+      font-size: 1.0625rem;
+      line-height: 1.7;
+      color: $navy-black;
+    }
+  }
+
+  // Distribution: two figures, packages and container images, each with its
+  // own caption and breakdown. Stacked rather than side by side: each
+  // breakdown (thirteen packages, two registries) reads better at full page
+  // width than squeezed into a half column.
+  .ImpactDistribution {
+    &__figures {
+      display: grid;
+      gap: 2.5rem;
+      margin-top: 2rem;
+
+      // The heading inside each column is the first thing in it, so it does not
+      // want the top margin the shared subhead rule gives one following prose.
+      .ImpactBeyond__subhead {
+        margin-top: 0;
+      }
+    }
+
+    &__figure {
+      margin: 0.75rem 0 0;
+      font-size: 2rem;
+      font-weight: 900;
+      line-height: 1.1;
+      color: $navy-black;
+    }
+
+    &__caption {
+      margin: 0.5rem 0 0;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: $navy-black;
+
+      a {
+        color: $blue-links;
+      }
+    }
+
+    // Thirteen packages, name against count. Full page width now that this
+    // sits in a stacked column rather than a third of one, so it flows into
+    // several columns instead of one long list; auto-fill lets it drop
+    // columns as the viewport narrows without a breakpoint of its own.
+    &__packages {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      column-gap: 2rem;
+      margin: 1.25rem 0 0;
+      font-size: 0.9375rem;
+
+      > div {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.4rem 0;
+        border-top: 1px solid $grey-3;
+      }
+
+      dt {
+        margin: 0;
+        font-weight: 400;
+
+        a {
+          color: $blue-links;
         }
+      }
+
+      dd {
+        margin: 0;
+        color: $c-grey-500;
+        font-variant-numeric: tabular-nums;
       }
     }
   }
+
+  // The two data tables, adapted from `.ProductsTable` in pages/_products.scss
+  // and fighting the same fight: Infima styles every `table` on the site with
+  // `display: block`, zebra striping and cell borders, which turns a table into
+  // a scrolling box and drops column alignment, the one thing the element is
+  // for. Nested under `.ImpactPage` so specificity alone beats those rules; a
+  // utility would have needed `!important` in this build and could then never be
+  // overridden again. See the longer note in _products.scss.
+  .ImpactTable {
+    display: table;
+    width: 100%;
+    margin: 1.5rem 0 0;
+    overflow: visible;
+    font-family: $font-sans-serif;
+    font-size: 1rem;
+
+    tr {
+      background-color: transparent;
+      border-top: 0;
+    }
+
+    th,
+    td {
+      border: 0;
+      padding: 1rem 1.25rem 1rem 0;
+      vertical-align: top;
+      text-align: left;
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+
+    thead {
+      background-color: transparent;
+    }
+
+    thead th {
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid $grey-3;
+      color: $c-grey-500;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    tbody th[scope='row'] {
+      border-top: 1px solid $grey-3;
+      font-weight: 700;
+      color: $navy-black;
+
+      a {
+        color: $blue-links;
+      }
+    }
+
+    tbody td {
+      border-top: 1px solid $grey-3;
+      color: $navy-black;
+      line-height: 1.6;
+
+      a {
+        color: $blue-links;
+      }
+    }
+
+    // Two and three repositories per organization in the dependents table.
+    // Stacked, so the component column beside them stays aligned to the row
+    // rather than to whichever line of repositories happened to wrap.
+    &__repos {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      li + li {
+        margin-top: 0.25rem;
+      }
+    }
+
+    // The consolidated deployments table (`#platforms`). An `&__badge` rule
+    // stood here, an outlined pill reading `Independent` on the two rows that
+    // are not ours, which was how the table carried a distinction the two card
+    // grids before it had carried by position. Both the badge and the row order
+    // that put those rows first went on 2026-08-12, on the developer's
+    // instruction; the Led by column names the institution behind every row and
+    // is what carries it now.
+
+    // A row's name, where a screenshot exists to preview: underlined like a
+    // link so the hover/focus target is visible before it is tried, but not
+    // `$blue-links` — it goes nowhere, and a link-blue name next to real
+    // links in the row's own Link column would promise a click this one
+    // cannot deliver.
+    // A row's name. A dotted underline and `cursor: default` until 2026-08-12,
+    // when the developer had it made a link to the deployment itself: it is a
+    // real destination now, so it takes the site's link colour and a solid
+    // rule like every other link in the table. The hover preview it also
+    // carries is a second thing it does, not a reason to dress it as a
+    // non-link.
+    &__nameTrigger {
+      color: $blue-links;
+      text-underline-offset: 3px;
+
+      &:focus-visible {
+        outline: 2px solid $yellow;
+        outline-offset: 2px;
+      }
+    }
+
+    // The Runs cell: one icon per component, each a link to that component on
+    // /products/. A flex row that wraps, because iMicroSeq runs seven and the
+    // column is not seven icons wide at every width.
+    &__runs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    &__runsLink {
+      display: block;
+      border-radius: 6px;
+      // The artwork is drawn at eight different aspect ratios (see
+      // `componentIcon` in data/components.ts), so both dimensions are set and
+      // the image is fitted inside rather than filling the box.
+      padding: 2px;
+
+      img {
+        display: block;
+        width: 30px;
+        height: 30px;
+        object-fit: contain;
+      }
+
+      &:hover,
+      &:focus-visible {
+        background-color: $c-blue-100;
+      }
+
+      &:focus-visible {
+        outline: 2px solid $yellow;
+        outline-offset: 1px;
+      }
+    }
+
+    // The link column. A list rather than a sentence of commas, the same
+    // reasoning `&__repos` above was built on: an independent adopter row
+    // carries two or three source links, and a reader checking one wants to
+    // see at a glance how many there are.
+    &__linkList {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    // The screenshot preview. `position: fixed` and positioned from the
+    // hovered name's own `getBoundingClientRect()` (`floatingTooltipPosition`,
+    // shared with LogoCarousel and StackDiagram): a table row has no
+    // `overflow` of its own to clip this, but a table this wide already
+    // scrolls horizontally below tablet (see the mobile rules further down),
+    // and `fixed` is the same fix that pattern uses for a clipping ancestor
+    // either way.
+    // One element, two jobs: a portal screenshot from a row's name, and a
+    // component's name from an icon in its Runs cell. The shared part is the
+    // dark card and the fixed positioning; the width is per kind, since a
+    // screenshot wants a box and a name wants a line.
+    &__tooltip {
+      position: fixed;
+      z-index: 20;
+      transform: translateX(-50%);
+      border-radius: 8px;
+      background: $navy-black;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      pointer-events: none;
+
+      &--shot {
+        width: 280px;
+        padding: 6px;
+
+        img {
+          display: block;
+          width: 100%;
+          border-radius: 4px;
+        }
+      }
+
+      &--label {
+        max-width: 220px;
+        padding: 6px 10px;
+        color: $white;
+        font-family: $font-sans-serif;
+        font-size: 13px;
+        line-height: 1.4;
+        text-align: center;
+      }
+    }
+  }
+
+  // `.ImpactTable`'s default sizing is `table-layout: auto`, which the release
+  // history table wants: five columns of short, similar-length values, sized
+  // to fit each. This table's six columns are not similar lengths — AGARI and
+  // CQDG's "What it is" cells run to eight sentences of prose next to a
+  // one-line platform summary — and `auto` layout let the short columns push
+  // "What it is" down to a sliver a few words wide, wrapping AGARI's paragraph
+  // to fifty-odd lines. Fixed widths, keyed to position rather than content,
+  // fix the column at a reasonable measure regardless of what any one row
+  // puts in it.
+  .ImpactTable--deployments {
+    table-layout: fixed;
+
+    tr > *:nth-child(1) {
+      width: 14%;
+    }
+    tr > *:nth-child(2) {
+      width: 30%;
+    }
+    tr > *:nth-child(3) {
+      width: 15%;
+    }
+    tr > *:nth-child(4) {
+      width: 19%;
+    }
+    tr > *:nth-child(5) {
+      width: 9%;
+    }
+    tr > *:nth-child(6) {
+      width: 13%;
+    }
+  }
+
+  // Both tables carry four and five columns of short values, which do not fit a
+  // phone. Scrolling the table inside its own box is the one place the site
+  // wants Infima's `display: block` behaviour back, so it is asked for here
+  // explicitly rather than by leaving the rules above off at this width.
+  @media (max-width: 768px) {
+    .ImpactTable {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+
+      td,
+      th {
+        white-space: normal;
+        min-width: 9rem;
+      }
+    }
+  }
+
+  // An `.ImpactWriteUp` block stood here: the band around each long-form case
+  // study and the way back up to the table, plus the left-aligned heading and
+  // generated yellow rule that made `CaseStudy`'s own centred `.t-h2` sit right
+  // among this page's sections. The write-up sections were removed from
+  // pages/impact/index.tsx on 2026-08-12, on the developer's instruction, so
+  // every one of those selectors matched nothing. Deleted rather than left: a
+  // class that resolves to no markup is exactly as invisible as a class that
+  // resolves to no CSS, which .dev/roadmap.md has open as its highest-value
+  // item.
 }

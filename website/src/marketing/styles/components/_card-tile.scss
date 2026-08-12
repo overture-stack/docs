@@ -100,6 +100,20 @@
   // as the band the tiles sit on.
   background-color: $c-blue-100;
   border-bottom: 1px solid $c-grey-300;
+  // The blue read as a backing colour rather than a field until this padding
+  // arrived: every shot but the quickstart's is cropped tight to its own browser
+  // window, so `cover` filled the box edge to edge and the colour behind it was
+  // only ever visible in the seams. The quickstart shot carries a wide
+  // transparent margin of its own, which is why that one card looked different,
+  // and which is the look this generalizes: the portal sits on the blue instead
+  // of being pasted over it, and the drop shadow each shot already has lands on
+  // something.
+  // Open on the right only, which is the edge the shot is cropped at anyway:
+  // inset on all four and the portal reads as a thumbnail of a window, inset on
+  // three and it reads as a window continuing past the card, which is what it
+  // is. The right edge is also the one with the divider or the tile's own corner
+  // on it, so it is the side with the least blue to give.
+  padding: 0.9rem 0 0.9rem 0.9rem;
 }
 
 .CardTile__shot {
@@ -109,6 +123,24 @@
   object-fit: cover;
   object-position: top center;
   transition: transform 0.3s ease;
+  // Corners on the shot itself, since it no longer reaches the tile's own
+  // rounded edge to borrow them. Square on the right, where it runs off.
+  border-radius: 8px 0 0 8px;
+  // `filter: drop-shadow` rather than `box-shadow`, because these are cut-outs
+  // on transparency rather than rectangles: drop-shadow follows the alpha
+  // channel and so traces the browser window each shot actually contains, while
+  // box-shadow would trace the `<img>` box and, on any shot whose own
+  // transparent margin is showing, draw a second edge out in the blue with a gap
+  // between it and the window it is meant to be under.
+  //
+  // The quickstart shot already carries a baked-in shadow of its own, which is
+  // the look this is copying onto the other three; on that one the two stack,
+  // which reads as a slightly deeper shadow rather than as two, and it is a
+  // placeholder due to be swapped anyway.
+  //
+  // Clipped on the right by `__media`'s `overflow: hidden`, correctly: that edge
+  // is where the shot runs off the card rather than ending.
+  filter: drop-shadow(0 3px 8px rgba(21, 38, 61, 0.22));
 }
 
 // Shot beside the text rather than above it, from the width where a two-column

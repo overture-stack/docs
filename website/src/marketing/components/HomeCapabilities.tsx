@@ -55,8 +55,8 @@ export default function HomeCapabilities() {
             HomeCollaborate: the two bands open identically. */}
         <div className="yellow-bar ow:my-6" />
         <P1 className="HomeCapabilities__lede">
-          Four things research groups already do with these components, on
-          platforms they own and operate themselves.
+          Modular, flexible and reusable components, built for problems of all
+          shapes and sizes.
         </P1>
 
         {/* Four cards on a two-by-two grid, the same `CardTile` the

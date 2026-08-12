@@ -73,6 +73,19 @@
       }
     }
 
+    // And a step down from `.t-h1`'s own top size (50px on a 70px line) from
+    // 1024 up, on request. Scoped here for the same reason as the two bands
+    // above: the other pages' heroes carry one short line each, and this one
+    // runs to three, so the size that suits them overpowers the top of this
+    // page. `1.2` rather than a second px figure keeps the leading tracking
+    // the size, as the two steps above already do.
+    @include breakpoint(desktop-up) {
+      .t-h1 {
+        font-size: 44px;
+        line-height: 1.2;
+      }
+    }
+
     &__section {
       max-width: 430px;
       display: flex;

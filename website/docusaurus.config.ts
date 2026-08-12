@@ -426,16 +426,6 @@ const config: Config = {
           label: "GitHub",
           position: "right",
         },
-        // The only route from the documentation back to the website. Before
-        // this, the two sites pointed one way: overture.bio linked into the
-        // docs from its navbar, and the docs linked back only from two legal
-        // items in the footer. Absolute and correct in both states, since it
-        // resolves to the Gatsby site today and to the ported one after stage 3.
-        {
-          href: "https://www.overture.bio/",
-          label: "overture.bio",
-          position: "right",
-        },
       ],
     },
     footer: {

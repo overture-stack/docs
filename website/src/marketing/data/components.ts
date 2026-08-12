@@ -194,6 +194,24 @@ export function componentsIn(group: ComponentGroupId): OvertureComponent[] {
 }
 
 /**
+ * A component's name in the house style: functional name, codename in brackets.
+ *
+ * Here rather than written out at each call site so that the one row with no
+ * codename cannot be rendered as "TBD ()". Control is named for what it does
+ * instead, and marked as unshipped, which is the only honest label for a row a
+ * platform is listed as using before the component exists. /impact/ is the first
+ * caller: it prints the components each deployment runs.
+ */
+export function componentLabel(id: string): string {
+  const component = components.find((candidate) => candidate.id === id);
+  if (!component) return id;
+  if (!component.codename) {
+    return "Access and authorization (in development)";
+  }
+  return `${component.name} (${component.codename})`;
+}
+
+/**
  * The icon for a component.
  *
  * The files live under the home directory because the home hero's diagram was

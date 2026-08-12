@@ -100,7 +100,15 @@ $carousel-band-y: 28px;
     overflow-x: auto;
     overflow-y: hidden;
     cursor: grab;
-    touch-action: pan-x;
+    // Was `pan-x`, which does not mean "let a horizontal swipe scroll this" —
+    // it means "horizontal only", and a vertical swipe that started anywhere
+    // inside the box is dropped rather than passed up. This band is full
+    // width and sits directly under the hero, so on a phone it was a stripe
+    // across the top of the page that the page would not scroll from. Naming
+    // both axes lets the browser pick from the gesture's own direction, which
+    // is what it does everywhere else; `pinch-zoom` keeps zooming, which
+    // neither this nor the `pan-x` before it should ever have taken away.
+    touch-action: pan-x pan-y pinch-zoom;
     scrollbar-width: none;
     -ms-overflow-style: none;
     // Crossfades with `&__filtered` rather than snapping: `visibility` (the

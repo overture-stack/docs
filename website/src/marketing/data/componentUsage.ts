@@ -4,10 +4,10 @@
  * platform's "How was Overture used?" list in caseStudies.tsx (component
  * names there are functional, e.g. "File Manager (Song)"; matched to
  * data/components.ts's ids by codename); Stage on those same five plus the
- * remaining four (OHCRN, PCGL, ICGC 25K, GDC), which have no such list
- * anywhere in the codebase, came directly from the developer 2026-08-10.
- * Not guessed at either way: this is factual content about real
- * deployments.
+ * remaining platforms (OHCRN, PCGL, ICGC 25K, GDC, the Drug Discovery
+ * Portal), which have no such list anywhere in the codebase, came directly
+ * from the developer. Not guessed at either way: this is factual content
+ * about real deployments.
  *
  * ICGC-ARGO's case study also names a generic "access and authorization"
  * capability; excluded here. It isn't Control (an unshipped, distinct
@@ -20,13 +20,21 @@
  * platform here is mapped to a component before that component has shipped.
  */
 export const componentUsage: Record<string, string[]> = {
-  icgcargo: ["song", "score", "maestro", "arranger", "stage"],
+  // Lectern added 2026-08-12, from the developer directly. The case study's own
+  // "How was Overture used?" list, which this row started from, never named it;
+  // the RSMF Phase 2 supporting-evidence deployment table does, and the
+  // developer confirmed it. caseStudies.tsx now names it too.
+  icgcargo: ["song", "score", "lectern", "maestro", "arranger", "stage"],
   virusseq: ["score", "song", "maestro", "arranger", "lectern", "lyric", "control"],
   kidsFirst: ["song", "score", "arranger"],
   ihcc: ["arranger", "stage"],
   humanCancerModels: ["arranger", "stage"],
   ohcrn: ["arranger", "control"],
+  drugDiscovery: ["arranger", "stage"],
   pcgl: ["song", "score", "lectern", "lyric"],
   icgc25k: ["song", "score", "arranger", "maestro", "stage"],
   gdc: ["maestro", "arranger", "stage"],
+  // CQDG's own fork list (dependents.ts `uses`), not the developer: Ferlab's
+  // repositories are the source, named there.
+  ferlab: ["lectern", "arranger"],
 };

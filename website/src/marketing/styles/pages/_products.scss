@@ -4,6 +4,16 @@
 // utilities in ComponentTable.tsx and the route file, per .dev/roadmap.md;
 // `_productspagesection.scss` went with the component it styled.
 
+// A row's "you were just sent here" marker — see `tbody tr:target` below.
+@keyframes ProductsTable-target-flash {
+  from {
+    background-color: rgba($yellow, 0.35);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
 .ProductsPage {
   // The phase 3 markup is bare elements plus utilities, and `.marketing` sets
   // font size, weight and colour but not family: Bulma's rule lived on `body`,
@@ -63,6 +73,19 @@
     }
   }
 
+  // Tighter than the shared rhythm above, on request: the table is the only
+  // other thing on this page besides the hero, so there's no second section
+  // to visually separate it from — closer reads as one page, not two bands.
+  // Only the top side; the side and bottom padding above still apply, since
+  // this overrides one longhand rather than the shorthand.
+  .ProductsTable .container {
+    padding-top: 32px;
+
+    @include breakpoint(desktop-up) {
+      padding-top: 1.5em;
+    }
+  }
+
   // The seven components, as one table. See ComponentTable.tsx.
   //
   // This is SCSS rather than `ow:` utilities, against the phase 2 default for
@@ -80,7 +103,7 @@
       // column alignment entirely, which is the whole point of the element.
       display: table;
       width: 100%;
-      margin: 2.5em 0 0;
+      margin: 1.2em 0 0;
       overflow: visible;
       table-layout: fixed;
       font-family: $font-sans-serif;
@@ -182,6 +205,17 @@
       color: $navy-black;
       font-size: 17px;
       line-height: 1.7;
+    }
+
+    // A row jumped to directly — a bookmarked or externally-linked
+    // `/products/#<id>` (see data/components.ts's note on `id`: these predate
+    // this rewrite and are linked from outside the site) — gets a brief
+    // marker, since an anchor jump otherwise lands with no visual cue at all
+    // for which row it was aiming at. `:target` matches whichever row's `id`
+    // is in the URL right now, no JS required, and fades on its own rather
+    // than sitting highlighted forever.
+    tbody tr:target {
+      animation: ProductsTable-target-flash 2400ms ease-out;
     }
 
     // Icon beside the name, and the name wrapping inside its own column rather

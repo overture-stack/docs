@@ -22,7 +22,40 @@ const HOVER_HINT =
 // seconds as it drifts past, not just a blur you have to stop to read.
 const SPEED = 0.015;
 
+// How long the loop keeps its hands off `scrollLeft` after something other
+// than itself last moved it. A touch swipe hands over to momentum once the
+// finger lifts, and every momentum frame refreshes this, so the figure only
+// has to outlast the gap between two frames of that glide rather than the
+// whole of it.
+const EXTERNAL_SCROLL_HOLD = 700;
+
 type TooltipInfo = { id: string; name: string; impact: string; rect: DOMRect };
+
+/**
+ * Whether a `focus` event is one the hover treatments should answer to.
+ *
+ * Not every focus is a visitor asking to be shown something: a tap focuses
+ * whatever link it lands on, and that focus then stays exactly where it is
+ * until they touch something else. Treating it as hover left the marquee
+ * stopped and an impact tooltip on screen for as long after the tap as the
+ * visitor cared to keep reading — the same "no matching leave event" shape
+ * as the compatibility `mouseenter` a tap also fires, arrived at from the
+ * other side.
+ *
+ * `:focus-visible` is the browser's own answer to which focus wants showing —
+ * keyboard yes, pointer no — so this asks it rather than guessing from the
+ * event. The keyboard path is unaffected, which is the point: it is the only
+ * way to reach any of this without a mouse.
+ */
+function wantsFocusHint(element: HTMLElement): boolean {
+  try {
+    return element.matches(":focus-visible");
+  } catch {
+    // A browser old enough not to know the selector throws on it. There,
+    // every focus counts, which is exactly the behaviour this replaced.
+    return true;
+  }
+}
 
 // Internal to this file, not exported: a way for any LogoItem, however deep
 // (the marquee's two lists, or the filtered view), to hand its impact
@@ -70,14 +103,14 @@ function LogoItem({
   // (for its hover-preload behaviour), silently discarding whatever the
   // caller passed in. Pointer events are untouched by it. See HeroDiagram,
   // where the same bug showed up first.
-  const handleEnter = (event: React.SyntheticEvent<HTMLElement>) => {
+  const handleEnter = (element: HTMLElement) => {
     setHighlightedPlatform(logo.id);
     if (logo.impact) {
       setTooltip({
         id: logo.id,
         name: logo.name,
         impact: logo.impact,
-        rect: event.currentTarget.getBoundingClientRect(),
+        rect: element.getBoundingClientRect(),
       });
     }
   };
@@ -85,10 +118,29 @@ function LogoItem({
     setHighlightedPlatform(null);
     setTooltip(null);
   };
+  // Mouse only, on the pointer path. `pointerenter` fires for a finger too,
+  // at the moment it touches down and before the browser has decided whether
+  // the gesture is a tap or a swipe: on a phone that put the impact tooltip
+  // on screen under the visitor's own finger for the length of every swipe
+  // across the logos, cleared again by the `pointercancel` that ends it.
+  // There is nothing for it to do there in any case — a touchscreen has no
+  // hover, which is why the hint line above the logos and the diagram this
+  // highlights are both `display: none` below tablet-up (_logo-carousel.scss,
+  // _home.scss). A tap on a logo follows its link, as it did before.
+  //
+  // The keyboard path keeps calling this unconditionally: a `focus` event
+  // carries no pointer type because no pointer caused it.
+  const handlePointerEnter = (event: React.PointerEvent<HTMLElement>) => {
+    if (event.pointerType !== "mouse") return;
+    handleEnter(event.currentTarget);
+  };
   const highlightHandlers = {
-    onPointerEnter: handleEnter,
+    onPointerEnter: handlePointerEnter,
     onPointerLeave: handleLeave,
-    onFocus: handleEnter,
+    onFocus: (event: React.FocusEvent<HTMLElement>) => {
+      if (!wantsFocusHint(event.currentTarget)) return;
+      handleEnter(event.currentTarget);
+    },
     onBlur: handleLeave,
   };
 
@@ -160,6 +212,16 @@ const LogoList = React.forwardRef<HTMLUListElement, { hidden: boolean }>(
  * slowing it, so the visitor's own scroll position is never being fought
  * from underneath them.
  *
+ * A touch swipe is the fourth way in and the one none of that covered, since
+ * a finger neither hovers nor focuses: the loop went on writing `scrollLeft`
+ * a frame at a time throughout the gesture. Two things stop it now — the
+ * contact itself (`touchHoldRef`, so a finger resting on the row is enough,
+ * even before it moves) and any movement of `scrollLeft` this loop did not
+ * write, which is what covers the momentum still gliding after the finger
+ * has gone. Both branches resync `position` from the real scroll offset, so
+ * the marquee picks up from wherever the visitor left it rather than
+ * snapping back.
+ *
  * The second copy is `aria-hidden` and every one of its links is
  * `tabIndex={-1}`: it exists only to make the loop seamless, never as
  * content to tab into or hear twice. Under `prefers-reduced-motion` the loop
@@ -197,6 +259,11 @@ export default function LogoCarousel() {
   const filteredListRef = useRef<HTMLUListElement>(null);
   const pausedRef = useRef(false);
   const draggingRef = useRef(false);
+  // A finger (or pen) resting on the viewport. Separate from `draggingRef`,
+  // which is the mouse drag this component runs itself: touch scrolling is
+  // the browser's, and all this loop has to do about it is keep out of the
+  // way for as long as the contact lasts, whether or not it ever moves.
+  const touchHoldRef = useRef(false);
   const dragStartRef = useRef({ x: 0, scrollLeft: 0 });
   const highlightedComponentRef = useRef<string | null>(null);
   const { highlightedComponent } = useComponentHighlight();
@@ -249,6 +316,15 @@ export default function LogoCarousel() {
     // real position in a float here, and only ever writing the rounded
     // result to the DOM, is what lets the sub-pixel amounts actually add up.
     let position = viewport.scrollLeft;
+    // What `scrollLeft` read at the end of the previous frame, which is the
+    // only way to tell this loop's own scrolling apart from everyone else's:
+    // if the value moved between two frames by more than this loop wrote, the
+    // visitor moved it.
+    let lastSeen: number | null = null;
+    // `-Infinity` and not `0`: `now` is milliseconds since the page loaded, so
+    // a plain zero would read as "scrolled a moment ago" for the first
+    // `EXTERNAL_SCROLL_HOLD` of the page's life.
+    let externalScrollAt = Number.NEGATIVE_INFINITY;
 
     const tick = (now: number) => {
       const elapsed = last === null ? 0 : now - last;
@@ -259,16 +335,29 @@ export default function LogoCarousel() {
         return;
       }
 
+      // Native scrolling — a touch swipe and the momentum that follows it, a
+      // trackpad or shift+wheel gesture — announces itself only by having
+      // moved `scrollLeft` since the last frame. Nothing here paused for it,
+      // so on a phone this loop spent the whole swipe writing its own
+      // position back over the visitor's, a frame at a time: the row fought
+      // the finger on the way and snapped back the moment it lifted.
+      const actual = viewport.scrollLeft;
+      if (lastSeen !== null && Math.abs(actual - lastSeen) > 1) {
+        externalScrollAt = now;
+      }
+
       if (
         pausedRef.current ||
         draggingRef.current ||
+        touchHoldRef.current ||
+        now - externalScrollAt < EXTERNAL_SCROLL_HOLD ||
         highlightedComponentRef.current !== null
       ) {
-        // A drag, native scrolling while paused, or the filtered view being
-        // shown over this may have moved (or simply frozen) the real
-        // scrollLeft; resync so resuming continues from there instead of
-        // snapping back to wherever this was before the interruption.
-        position = viewport.scrollLeft;
+        // A drag, native scrolling, or the filtered view being shown over
+        // this may have moved (or simply frozen) the real scrollLeft; resync
+        // so resuming continues from there instead of snapping back to
+        // wherever this was before the interruption.
+        position = actual;
       } else {
         position += SPEED * elapsed;
         if (position >= listWidth) {
@@ -279,6 +368,12 @@ export default function LogoCarousel() {
         viewport.scrollLeft = position;
       }
 
+      // After the write, not before: `scrollLeft` is integer-quantized and
+      // clamped to the scrollable range, so what the element actually holds
+      // is what the next frame has to compare against. Reading back what was
+      // asked for instead would show a difference of its own every frame and
+      // read as the visitor scrolling.
+      lastSeen = viewport.scrollLeft;
       frame = requestAnimationFrame(tick);
     };
 
@@ -286,17 +381,43 @@ export default function LogoCarousel() {
     return () => cancelAnimationFrame(frame);
   }, []);
 
-  const pause = () => {
+  // Hover, and only hover: a touchscreen has none, and the compatibility
+  // `mouseenter` a browser fires after a tap is not it. That event has no
+  // matching `mouseleave` until the visitor taps something else entirely, so
+  // `onMouseEnter={pause}` (what this was) left the marquee stopped for good
+  // after a single tap anywhere on it — the most visible half of the bug this
+  // pair was reported for. `pointerenter` carries the device that caused it.
+  const pause = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType !== "mouse") return;
     pausedRef.current = true;
   };
-  const resume = () => {
+  const resume = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType !== "mouse") return;
+    pausedRef.current = false;
+  };
+  // `event.target`, not `currentTarget`: React's `onFocus` is `focusin`, so
+  // what arrives here is the viewport with the focus sitting on a link
+  // somewhere inside it, and the link is what has to be asked. Blur stays
+  // unconditional — clearing a pause that was never set costs nothing, and
+  // there is no version of "stop pausing" worth being selective about.
+  const pauseForFocus = (event: React.FocusEvent<HTMLDivElement>) => {
+    if (!wantsFocusHint(event.target as HTMLElement)) return;
+    pausedRef.current = true;
+  };
+  const resumeFromFocus = () => {
     pausedRef.current = false;
   };
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     // Touch and pen already get native drag-to-scroll from `overflow-x:
-    // auto`; only a mouse drag needs to be done by hand here.
-    if (event.pointerType !== "mouse") return;
+    // auto`; only a mouse drag needs to be done by hand here. The loop above
+    // still has to know the contact exists, though: a finger held still on
+    // the row scrolls nothing for it to notice, and without this the marquee
+    // carried on sliding out from under it.
+    if (event.pointerType !== "mouse") {
+      touchHoldRef.current = true;
+      return;
+    }
     const viewport = viewportRef.current;
     if (!viewport) return;
     draggingRef.current = true;
@@ -315,7 +436,12 @@ export default function LogoCarousel() {
     viewport.scrollLeft = scrollLeft - (event.clientX - x);
   };
 
+  // Before the `draggingRef` guard, not after it: a touch never sets that ref
+  // (the browser does its scrolling), so an early return would leave the hold
+  // set for good and the marquee stopped from the first tap onwards — the same
+  // failure `pause` had, arrived at from the other end.
   const endDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    touchHoldRef.current = false;
     if (!draggingRef.current) return;
     draggingRef.current = false;
     viewportRef.current?.releasePointerCapture(event.pointerId);
@@ -345,10 +471,10 @@ export default function LogoCarousel() {
                   matches ? " LogoCarousel__viewport--hidden" : ""
                 }`}
                 ref={viewportRef}
-                onMouseEnter={pause}
-                onMouseLeave={resume}
-                onFocus={pause}
-                onBlur={resume}
+                onPointerEnter={pause}
+                onPointerLeave={resume}
+                onFocus={pauseForFocus}
+                onBlur={resumeFromFocus}
                 onPointerDown={handlePointerDown}
                 onPointerMove={handlePointerMove}
                 onPointerUp={endDrag}

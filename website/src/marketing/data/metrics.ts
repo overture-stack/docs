@@ -40,10 +40,16 @@ const metrics = {
     note: "Platforms the team builds and runs, excluding lineage deployments such as Kids First.",
   },
   stableReleaseHistory: {
-    value: "8+ years",
+    value: "11 years",
     source: "Overture component release histories",
-    verified: "2026-08-07",
-    note: "Applies to the mature components; each follows independent semantic versioning.",
+    verified: "2026-08-11",
+    note: "Counted from Score's first tag, 2015-07-06, to the most recent release. Was published as `8+ years` until 2026-08-11, which was an understatement rather than a different measurement: nothing sourced said where the eight came from, and the git histories put it at eleven. Each component follows independent semantic versioning; `releaseTags` is the count across all seven.",
+  },
+  releaseTags: {
+    value: "675",
+    source: "Overture component git histories",
+    verified: "2026-08-11",
+    note: "Version tags across the seven components, counted from each repository's git history rather than from its GitHub Releases page. The Releases pages are a curated subset and would undercount badly: Lectern and Lyric publish none at all and Arranger publishes two. data/distribution.ts holds the per-component breakdown this totals.",
   },
   firstDeployment: {
     value: "2016",
@@ -70,11 +76,54 @@ const metrics = {
     note: "Stakeholder engagements a year: platform demonstrations, needs assessments and technical guidance. An average, rounded down from the sixteen named engagements the program tracks.",
   },
 
+  // Distribution and independent adoption. Collected 2026-08-11 for the RSMF
+  // Phase 2 supporting-evidence submission, and published here because every one
+  // of them is checkable from a public source: /impact/ renders each figure next
+  // to the link it came from, which is the rule that section is built on.
+  //
+  // These are live counters, unlike the launch years below them. They will move.
+  // Re-read them from the sources named here rather than adjusting them upward
+  // by guesswork.
+  externalProjects: {
+    value: "2",
+    source: "Africa CDC / ASLM, Ferlab",
+    verified: "2026-08-12",
+    note: "Organizations outside OICR that have documented, in their own tender or commit history, that they build on an Overture component: AGARI (Africa CDC) and CQDG (Ferlab). Counted from data/dependents.ts. Narrowed from a wider list of ten repositories on 2026-08-12, on the developer's instruction, to the two with the clearest and most durable evidence.",
+  },
+  npmDownloads: {
+    value: "48,854",
+    source: "api.npmjs.org",
+    verified: "2026-08-09",
+    note: "Downloads across all thirteen @overture-stack packages in the twelve months to 2026-08-09. Verified against the registry API rather than the web UI. data/distribution.ts holds the per-package breakdown this totals.",
+  },
+  npmPackages: {
+    value: "13",
+    source: "npm registry",
+    verified: "2026-08-09",
+    note: "Published packages under the @overture-stack scope.",
+  },
+  containerPulls: {
+    value: "611,411",
+    source: "Docker Hub",
+    verified: "2026-08-11",
+    note: "Cumulative pulls of the seven components' images on Docker Hub, led by Lectern, Song and Score. Docker Hub is the historical registry: current distribution is the GitHub Container Registry, which publishes no pull count, so this figure stops growing at the point distribution moved and understates total use rather than overstating it.",
+  },
+  docsVisitors: {
+    value: "8,703",
+    source: "Matomo analytics on overture.bio and docs.overture.bio",
+    verified: "2026-08-11",
+    note: "Unique visitors since 2024: 2,546 in 2024, 3,791 in 2025, 2,366 to mid-2026. The one figure on /impact/ that a reader cannot check for themselves, since the analytics are ours; the page says so beside it rather than presenting it like the linked figures around it.",
+  },
+  docsCountries: {
+    value: "46+",
+    source: "Matomo analytics on overture.bio and docs.overture.bio",
+    verified: "2026-08-11",
+    note: "Countries those visitors came from. Same caveat as `docsVisitors`.",
+  },
+
   // Launch years, one per platform the team builds and runs. Added for the
   // /impact/ hub, which dates every card. iMicroSeq's is further down, with the
-  // rest of that platform's figures. PCGL has no entry on purpose: its launch is
-  // in the future, and announcing another institution's date is not ours to do
-  // until someone confirms it. See .dev/roadmap.md § Inputs needed.
+  // rest of that platform's figures.
   icgcArgoLaunch: {
     value: "2019",
     source: "OICR Genome Informatics program",
@@ -96,6 +145,17 @@ const metrics = {
     source: "OICR Genome Informatics program",
     verified: "2026-08-07",
   },
+  ddpLaunch: {
+    value: "2025",
+    source: "OICR Genome Informatics program",
+    verified: "2026-08-07",
+  },
+  pcglLaunch: {
+    value: "2026",
+    source: "OICR Genome Informatics program",
+    verified: "2026-08-12",
+    note: "This file deliberately had no PCGL entry until 2026-08-12, on the grounds that the launch was in the future and another institution's date to announce. The developer confirmed the submission portal is live and that launching it was our own directive, so the card dates it like every other platform rather than reading `In development`.",
+  },
 
   // ICGC-ARGO
   icgcArgoParticipants: {
@@ -114,12 +174,20 @@ const metrics = {
     source: "ICGC-ARGO Data Platform",
     verified: "2026-08-07",
   },
-  icgcArgoRegisteredUsers: {
-    value: "3,500+",
-    source: "ICGC-ARGO Data Platform",
-    verified: "2026-08-07",
-    note: "Registered users, a subset of whom are approved for controlled-access data. Also the external-user figure in the /impact/ aggregate band, where the label names ICGC-ARGO on purpose: it is the largest platform the team runs directly and the only one whose user count we hold. The platforms other institutions own and run do not report theirs, so no honest platform-wide total exists to publish in its place.",
-  },
+  // `icgcArgoRegisteredUsers` was here, published as `3,500+` from 2026-08-07 to
+  // 2026-08-12: the /impact/ aggregate band's user figure, and a bullet in the
+  // ICGC-ARGO write-up. Removed on the developer's instruction, not edited.
+  //
+  // The RSMF Phase 2 alignment document flags this figure as contested between
+  // the submitted LOI and Phase 1's alignment document, and there was no second
+  // platform to reconcile it against: the platforms other institutions own and
+  // run do not report their user counts, so there was never an honest
+  // platform-wide total to put in its place either. The band runs on npm
+  // downloads instead, which is a distribution figure a reader can check rather
+  // than a user figure only we can assert.
+  //
+  // The value is recorded here rather than in the git history alone so that
+  // whoever resolves the disagreement knows what was published while it stood.
 
   // iMicroSeq, published as VirusSeq until 2026-08-07
   imicroseqPathogenGenomes: {
@@ -142,6 +210,29 @@ const metrics = {
     value: "2021",
     source: "iMicroSeq",
     verified: "2026-08-07",
+  },
+
+  // OICR Drug Discovery Portal. This site already publishes all three, in
+  // docs/use-docs/ai-assisted-data-discovery/01-testing-environment.md, which
+  // describes the demo instance's sample as a slice of this portal and gives the
+  // upstream totals it was drawn from. They are lifted here rather than restated
+  // there so the home page reads them the same way every other figure is read.
+  ddpRecords: {
+    value: "~405 million",
+    source: "OICR Drug Discovery Portal",
+    verified: "2026-07-27",
+    note: "Records across gene correlations, mutations, expression profiles and protein interactions.",
+  },
+  ddpGenes: {
+    value: "~20,000",
+    source: "OICR Drug Discovery Portal",
+    verified: "2026-07-27",
+  },
+  ddpCancerTypes: {
+    value: "32",
+    source: "OICR Drug Discovery Portal",
+    verified: "2026-07-27",
+    note: "Datasets are related by gene (HUGO symbol), so a list filtered in one catalogue can be refined against the others.",
   },
 
   // Carried forward from the Gatsby site. No traceable source, so they are

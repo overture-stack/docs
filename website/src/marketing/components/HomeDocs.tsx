@@ -1,4 +1,5 @@
 import React from "react";
+import useBrokenLinks from "@docusaurus/useBrokenLinks";
 import CardTile from "./CardTile";
 import { H2, P1 } from "./Typography";
 import { docJourneys } from "../data/docJourneys";
@@ -29,9 +30,15 @@ import { docJourneys } from "../data/docJourneys";
  * cannot validate, so they go through the URL-check script instead.
  */
 export default function HomeDocs() {
+  // The hero's second button is an in-page link to `#docs`, and Docusaurus's
+  // broken-anchor check only knows about anchors something registers. A plain
+  // React page registers none on its own; same reason HomeQuickstart does this.
+  useBrokenLinks().collectAnchor("docs");
+
   return (
     <section
       className="HomeDocs section"
+      id="docs"
       aria-labelledby="docs-heading"
     >
       <div className="container">

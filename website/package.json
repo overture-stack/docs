@@ -36,6 +36,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "sass": "^1.102.0",
+    "simple-icons": "^16.28.0",
     "swagger-ui-react": "^5.29.2",
     "tailwindcss": "^4.3.3"
   },

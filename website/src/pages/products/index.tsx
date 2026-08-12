@@ -25,10 +25,17 @@ import ComponentTable from "../../marketing/components/ComponentTable";
  * The copy is data, in src/marketing/data/components.ts, so this file is a
  * layout and nothing on it needs a code change to reword.
  *
- * Still owed here: the Collect / Explore / Control diagram itself, which the
- * proposal puts at the top of this page and on the home page. It is blocked on
- * the source file, see .dev/roadmap.md § Inputs needed. The page is written to
- * read correctly without it rather than to hold a gap open.
+ * `StackDiagram` (a flow diagram of the same seven components, drawn per
+ * .dev/products-diagram-plan.md) lived here briefly and was pulled on
+ * request: the click-through to a table row cut instantly with no visual
+ * continuity ("loses my place"), and the diagram's own footprint read as
+ * unexplained empty space even after two rounds of tightening it. Not
+ * deleted — `components/StackDiagram.tsx`, `data/componentFlow.ts`,
+ * `data/techIcons.ts` and `styles/components/_stack-diagram.scss` are still
+ * in the tree, just unreferenced — in case it's reworked or finds a home
+ * elsewhere (the plan's own open question was always whether it belonged on
+ * `/home/` instead). `ComponentTable`'s hover/focus row highlighting, which
+ * existed only to sync with the diagram, was reverted with it.
  */
 export default function ProductsPage() {
   return (

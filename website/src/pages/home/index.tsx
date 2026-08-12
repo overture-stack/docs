@@ -9,7 +9,6 @@ import HomeQuickstart from "../../marketing/components/HomeQuickstart";
 import LogoCarousel from "../../marketing/components/LogoCarousel";
 import { ComponentHighlightProvider } from "../../marketing/context/ComponentHighlightContext";
 import { H1, P1 } from "../../marketing/components/Typography";
-import { DOCUMENTATION_LINK } from "../../marketing/constants/externalLinks";
 
 /**
  * The marketing home page. One job, unchanged since .dev/ia-proposal.md § Home:
@@ -77,9 +76,11 @@ export default function HomePage() {
                 <Button link="#quickstart" size="medium" type="primary">
                   Run Quickstart
                 </Button>
-                {/* Straight to the docs homepage, so the second hero CTA is
-                    documentation itself rather than another marketing page. */}
-                <Button link={DOCUMENTATION_LINK} size="medium" type="primary">
+                {/* Points at the documentation band further down this page,
+                    not out to the docs site: same in-page pattern as Run
+                    Quickstart above. A bare hash goes to the browser rather
+                    than the router, see Link.tsx. */}
+                <Button link="#docs" size="medium" type="primary">
                   Read Documentation
                 </Button>
               </div>

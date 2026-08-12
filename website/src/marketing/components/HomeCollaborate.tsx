@@ -7,6 +7,7 @@ import { offers } from "../data/collaboration";
 import metrics from "../data/metrics";
 import { COLLABORATE_PATH, IMPACT_PATH } from "../constants/pages";
 import {
+  GIGASCIENCE_PAPER_LINK,
   GI_PROGRAM_LINK,
   OVERTURE_DOCUMENTATION_TEAM_LINK,
   OVERTURE_GITHUB_LINK,
@@ -122,6 +123,19 @@ export default function HomeCollaborate() {
             Overture lets our engineers and teams elsewhere build systems that
             help researchers and consortiums across disciplines collect,
             organize and share their research data.
+          </p>
+          {/* The one credential on this page, and one sentence of it. The home
+              page carries no citation anywhere else: the footer links "How to
+              cite us" on the documentation site, which is two hops from here and
+              is a page about citing rather than a statement that the platform
+              has been reviewed at all. This is the cheapest thing the page can
+              say to a reader who wants to know whether this is a real project,
+              and it is a sentence rather than a band on purpose. `/impact/`
+              carries the other four papers. */}
+          <p className="HomeCollaborate__prose">
+            The platform is described in{" "}
+            <Link to={GIGASCIENCE_PAPER_LINK}>GigaScience (2025)</Link>, peer
+            reviewed and open access.
           </p>
         </div>
 

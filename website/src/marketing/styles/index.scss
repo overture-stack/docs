@@ -56,6 +56,22 @@
   z-index: 200;
 }
 
+// Also outside `.marketing`, for the same reason: `scroll-behavior` has to
+// land on the scrolling box itself (`html`), which no selector nested under
+// `.marketing` can reach. Without it, any plain in-page `#id` link — e.g. one
+// of ComponentTable's own rows on /products/, linked from outside the site —
+// cuts instantly from wherever the reader was to wherever the target is, with
+// no visual continuity between the two, which on a page as tall as this one
+// reads as leaving the page rather than moving down it. Guarded by
+// `prefers-reduced-motion` since this is a whole-page motion default, not a
+// one-off animation. Scoped to marketing routes because this file loads only
+// from `MarketingPage.tsx`.
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 .marketing {
   // Keep first: this is where Bulma used to sit in the cascade.
   @import "layout";
@@ -77,6 +93,7 @@
   // No components/notebox: `NoteBox` was dead before the rebuild and was
   // deleted with the home page's quickstart work, so its partial went too.
   @import "components/quickstart";
+  @import "components/stack-diagram";
   @import "components/terminal";
   @import "components/typography";
 

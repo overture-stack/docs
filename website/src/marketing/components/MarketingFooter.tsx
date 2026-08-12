@@ -80,7 +80,7 @@ const columns: FooterColumn[] = [
   {
     heading: "Connect",
     links: [
-      { name: "Collaborate", url: COLLABORATE_PATH },
+      { name: "Collaboration", url: COLLABORATE_PATH },
       { name: "Support forum", url: OVERTURE_SUPPORT, external: true },
       { name: "Community", url: DOCS_COMMUNITY, external: true },
       { name: "Contact", url: EMAIL_LINK },

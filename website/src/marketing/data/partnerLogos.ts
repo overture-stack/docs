@@ -63,9 +63,10 @@ function platformLogo(
 }
 
 /**
- * Who runs Overture, scrolling in LogoCarousel below the hero: in
- * development first (no start year to sort by), then most recent start year
- * to oldest. EU CanCan (removed 2026-08-10) had neither a confirmed
+ * Who runs Overture, scrolling in LogoCarousel below the hero: most recent
+ * start year to oldest. Every entry has one as of 2026-08-12; the sort still
+ * handles a missing year, since the next platform added may well be announced
+ * before it launches. EU CanCan (removed 2026-08-10) had neither a confirmed
  * relationship to Overture nor a date, so it isn't here rather than being
  * guessed into a position.
  *
@@ -91,15 +92,17 @@ function platformLogo(
  * .dev/roadmap.md tracks which ones are still borrowed text.
  */
 export const partnerLogos: PartnerLogo[] = [
+  // PCGL read "In development" with no start year until 2026-08-12, when the
+  // developer confirmed its submission portal is live and that launching it was
+  // our own directive. It has a launch year in metrics.ts now, so it sorts with
+  // the rest rather than ahead of them, and no entry here needs the
+  // no-start-year branch of the sort below any more.
+  platformLogo("pcgl"), // 2026
   platformLogo("ohcrn"), // 2025
   platformLogo("virusseq"), // 2021
   platformLogo("ihcc"), // 2020
   platformLogo("icgcargo"), // 2019
   platformLogo("humanCancerModels"), // 2016
-  // In development: not yet running, so no start year to sort by. metrics.ts
-  // has no public launch date for this one on purpose (another
-  // institution's to announce), so this is stated, not a stand-in for one.
-  platformLogo("pcgl", { date: "In development" }),
   platformLogo("icgc25k", { startYear: 2007, date: "2007–2024" }),
   platformLogo("gdc", { startYear: 2016, date: "Originally 2016" }),
   platformLogo("kidsFirst", { startYear: 2018, date: "Originally 2018" }),

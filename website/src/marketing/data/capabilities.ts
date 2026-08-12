@@ -15,10 +15,25 @@ import metrics from "./metrics";
 import { AI_DISCOVERY_LINK } from "../constants/externalLinks";
 
 /**
- * Where a capability keeps a screenshot of its own. Only one does: the other
- * three show their platform's portal, which data/platforms.ts already names.
+ * Where a capability keeps a screenshot of its own. Only one does. Two of the
+ * rest show their platform's portal, which data/platforms.ts already names, and
+ * the fourth borrows the quickstart's, below.
  */
 const CAPABILITY_SHOTS = "/img/marketing/home/capabilities";
+
+/**
+ * The quickstart demo portal, the same file HomeQuickstart shows at the foot of
+ * this page, standing in on the lab-scale card until a shot of the Drug
+ * Discovery Portal exists. That portal is internal, so nobody outside the group
+ * can capture one; `[NEEDS: screenshot]` in .dev/roadmap.md tracks it.
+ *
+ * Deliberately unbadged. It carried a "Quickstart portal" pill for one round, on
+ * the reasoning that the band's other shots are the interface their card is
+ * about; the developer had it removed, because a placeholder waiting to be
+ * swapped is not a claim the page is making and labelling it as one gives it a
+ * permanence it is not meant to have. Swap the file, not the label.
+ */
+const QUICKSTART_SHOT = "/img/marketing/home/overtureQuickstartPortal.webp";
 
 export type Capability = {
   id: string;
@@ -32,7 +47,11 @@ export type Capability = {
    * `note` instead of as a platform.
    */
   platform?: string;
-  /** Stands in for the platform line where there is no platform. */
+  /**
+   * Stands in for the platform line where there is no platform, and caveats it
+   * where there is one: the lab-scale card names its platform and still has to
+   * say that the reader cannot go and open it.
+   */
   note?: string;
   /** Only where the target is not the platform's own page. */
   href?: string;
@@ -67,10 +86,22 @@ export const capabilities: Capability[] = [
     platform: "virusseq",
   },
   {
-    id: "catalogue",
-    action: "Publish a catalogue others can search and build on",
-    outcome: `${metrics.hcmiCancerModels.value} unique cancer models with their genomic and clinical annotation, open to anyone and running since ${metrics.hcmiLaunch.value}.`,
-    platform: "humanCancerModels",
+    // HCMI held this slot until 2026-08-12, as "Publish a catalogue others can
+    // search and build on". It was the third card in a row about a consortium
+    // or a national programme, so the band answered "what can a large
+    // collaboration do with this" three times and never once answered the
+    // question most visitors arrive with, which is whether any of it is worth
+    // standing up at their own size. HCMI is unaffected on /impact/, where it
+    // keeps its card and its write-up; what changed is which platform the home
+    // page picks to make this argument.
+    id: "labScale",
+    action: "Stand up a portal at one lab's scale",
+    outcome: `The OICR Drug Discovery Portal is a single research group's own deployment: ${metrics.ddpRecords.value} records across ${metrics.ddpGenes.value} genes and ${metrics.ddpCancerTypes.value} cancer types, filtered down to candidate gene lists for drug targets.`,
+    platform: "drugDiscovery",
+    // Said on the card rather than left for the reader to discover, because the
+    // other three cards link to portals anyone can open and this one cannot.
+    note: "Access is internal to the group; a public release is planned.",
+    screenshot: QUICKSTART_SHOT,
   },
   {
     id: "conversational",

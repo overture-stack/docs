@@ -25,7 +25,7 @@ import metrics from "./metrics";
 import {
   ICGC_ARGO_LINK,
   ICGC_ARGO_PORTAL_LINK,
-  VIRUSSEQ_PORTAL_LINK,
+  IMICROSEQ_PORTAL_LINK,
   KIDS_FIRST_LINK,
   IHCC_LINK,
   IHCC_PORTAL_LINK,
@@ -72,10 +72,19 @@ const caseStudies: CaseStudyData[] = [
     listItems: [
       [
         `${metrics.icgcArgoParticipants.value} participants across ${metrics.icgcArgoPrograms.value} programs representing ${metrics.icgcArgoCountries.value} countries`,
-        `${metrics.icgcArgoRegisteredUsers.value} registered users, a subset of whom are approved for controlled-access data`,
+        // A registered-user count sat here until 2026-08-12. Removed on the
+        // developer's instruction along with the metric behind it; see the note
+        // where `icgcArgoRegisteredUsers` used to be in data/metrics.ts.
         "ICGC DACO governs the responsible sharing of this data for use in research",
       ],
       [
+        {
+          // Added 2026-08-12: this list never named Lectern, and the platform
+          // runs it. See data/componentUsage.ts, which took its ICGC-ARGO row
+          // from this list and has the same correction.
+          "Dictionary Manager (Lectern):":
+            "Holds the ARGO data dictionary that submissions are validated against",
+        },
         {
           "File Manager (Song):":
             "Validates all submitted sequence meta(data) against a custom data model",
@@ -121,10 +130,10 @@ const caseStudies: CaseStudyData[] = [
     // until iMicroSeq artwork exists.
     title: "iMicroSeq",
     slug: "virusseq",
-    portalLink: VIRUSSEQ_PORTAL_LINK,
+    portalLink: IMICROSEQ_PORTAL_LINK,
     description: (
       <P2>
-        <Link to={VIRUSSEQ_PORTAL_LINK}>iMicroSeq</Link> is an open-access
+        <Link to={IMICROSEQ_PORTAL_LINK}>iMicroSeq</Link> is an open-access
         Canadian database of microbial sequences and harmonized contextual
         metadata, built on the platform that began as the Canadian VirusSeq Data
         Portal. It harmonizes and validates submissions, automates deposit into
@@ -157,7 +166,7 @@ const caseStudies: CaseStudyData[] = [
         `iMicroSeq is an open-access Canadian database of microbial sequences, launched in ${metrics.imicroseqLaunch.value} as the VirusSeq Data Portal and since broadened to pathogen genomes and wastewater surveillance. Overture's scalable indexing carries ${metrics.imicroseqPathogenGenomes.value} genomes alongside their contextual metadata.`,
       ],
     ],
-    clientLink: VIRUSSEQ_PORTAL_LINK,
+    clientLink: IMICROSEQ_PORTAL_LINK,
     details: [
       {
         title: "Chart",
