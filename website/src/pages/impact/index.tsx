@@ -173,20 +173,40 @@ export default function ImpactPage() {
   const [highlightedComponent, setHighlightedComponent] = useState<
     string | null
   >(null);
+  /**
+   * A single row's own anchor id to highlight on arrival, from the home
+   * page's logo carousel (data/partnerLogos.ts): every logo there is exactly
+   * one deployment, so it carries that deployment's own id as `?highlight=`
+   * — the same param name and "highlight this one thing" meaning
+   * ComponentTable.tsx's own `?highlight=` gives a component on /products/ —
+   * rather than `used-by` above, which is for a component with several
+   * deployments to fan out to. Kept separate from `highlightedComponent`
+   * rather than folded into one id, since they answer different questions (a
+   * component id vs. a row's own id) and a visitor could in principle arrive
+   * with either.
+   */
+  const [highlightedDeployment, setHighlightedDeployment] = useState<
+    string | null
+  >(null);
   useEffect(() => {
-    const componentId = new URLSearchParams(window.location.search).get(
-      "used-by",
-    );
+    const params = new URLSearchParams(window.location.search);
+    const componentId = params.get("used-by");
     if (componentId) setHighlightedComponent(componentId);
+    const deploymentId = params.get("highlight");
+    if (deploymentId) setHighlightedDeployment(deploymentId);
   }, []);
 
-  const highlightedRowIds = highlightedComponent
-    ? new Set(
-        deploymentRows
-          .filter((row) => row.runs.includes(highlightedComponent))
-          .map((row) => row.anchorId),
-      )
-    : null;
+  const highlightedRowIds =
+    highlightedComponent || highlightedDeployment
+      ? new Set([
+          ...(highlightedComponent
+            ? deploymentRows
+                .filter((row) => row.runs.includes(highlightedComponent))
+                .map((row) => row.anchorId)
+            : []),
+          ...(highlightedDeployment ? [highlightedDeployment] : []),
+        ])
+      : null;
 
   // Clears the highlight on a click outside every highlighted row's own
   // bounds, rather than fading it on a timer: with several rows lit at once
@@ -195,16 +215,17 @@ export default function ImpactPage() {
   // something is actually highlighted, and a click inside a highlighted
   // row — its deployment name, a Runs icon — leaves it lit.
   useEffect(() => {
-    if (!highlightedComponent) return;
+    if (!highlightedComponent && !highlightedDeployment) return;
     const clearOnOutsideClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       if (!target.closest(".ImpactTable__highlight")) {
         setHighlightedComponent(null);
+        setHighlightedDeployment(null);
       }
     };
     document.addEventListener("click", clearOnOutsideClick);
     return () => document.removeEventListener("click", clearOnOutsideClick);
-  }, [highlightedComponent]);
+  }, [highlightedComponent, highlightedDeployment]);
 
   return (
     <MarketingPage

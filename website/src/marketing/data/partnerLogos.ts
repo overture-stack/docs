@@ -32,16 +32,17 @@ function platformLogo(
       id: platform.id,
       icon: platform.logo,
       name: platform.name,
-      // `platform.href` only exists for the four platforms with a
-      // case-study write-up (`IMPACT_PATH` plus their own anchor — see the
-      // field's own comment in platforms.ts); OHCRN and PCGL have neither, so
-      // without this fallback they linked to the bare `/impact/` page rather
-      // than their own row. Building the identical `IMPACT_PATH#<id>`
-      // address by hand for them lands there exactly like the other four
-      // already do, and `:target` (_impact.scss) flashes the row on
-      // arrival — the same cue a single-deployment "Used by" link on
-      // /products/ gives (ComponentTable.tsx).
-      href: platform.href ?? `${IMPACT_PATH}#${platform.id}`,
+      // /impact/'s own row for this platform, carrying `?highlight={id}` —
+      // the same param name and "highlight this one row" meaning
+      // heroDiagram.ts's hotspots and impact/index.tsx's own Runs icons
+      // carry into /products/ (ComponentTable.tsx's `highlightedComponentId`)
+      // — rather than `platform.href`, the plain `IMPACT_PATH#<id>` address
+      // only the four case-study platforms carry (platforms.ts). Every logo
+      // here is exactly one deployment, so every one of them gets impact/
+      // index.tsx's persistent `ImpactTable__highlight` on arrival, not just
+      // the brief `:target` flash a bare fragment gives, and not only the
+      // four that happened to already carry their own `href`.
+      href: `${IMPACT_PATH}?highlight=${platform.id}#${platform.id}`,
       date: opts.date ?? (platform.launched ? `Since ${platform.launched}` : undefined),
       startYear: opts.startYear ?? (platform.launched ? Number(platform.launched) : undefined),
       // `platform.summary`, not the case study's own long-form paragraph:
