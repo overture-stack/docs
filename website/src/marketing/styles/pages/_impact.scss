@@ -6,6 +6,23 @@
 // rather than scoped to a page. What is left is the few things utilities cannot
 // supply from the markup.
 
+// A deployment row's "you were just sent here" marker, for a single row
+// landed on directly — see `.ImpactTable--deployments tbody tr:target`
+// below. The same cue `ProductsTable-target-flash` in _products.scss gives a
+// component row, now that /products/'s Used by column links into this table
+// for the first time. Not used by `.ImpactTable__highlight`, the other case
+// that column can produce: several rows lit from one link need to stay lit
+// until a reader has found them all, not fade on a timer — see that rule
+// further down.
+@keyframes ImpactTable-target-flash {
+  from {
+    background-color: rgba($yellow, 0.35);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
 .ImpactPage {
   // `.marketing` sets font size, weight and colour but not family: Bulma's rule
   // lived on `body` and had nowhere to land once the styles were nested (see
@@ -396,6 +413,19 @@
         outline: 2px solid $yellow;
         outline-offset: 1px;
       }
+
+      // The one icon in a row's Runs cell that matches the component a
+      // reader arrived asking about, from /products/'s "N deployments" link
+      // (`highlightedComponent` in impact/index.tsx). Same glow the home
+      // hero's diagram gives a highlighted hotspot (`_hero-diagram.scss`'s
+      // `--highlighted`, `filter: drop-shadow(...)` twice at different
+      // radii for a softer edge than one pass gives), plus a yellow
+      // background of its own: this box has one to give, where a hotspot on
+      // the diagram floats with none.
+      &--highlighted {
+        background-color: rgba($yellow, 0.35);
+        filter: drop-shadow(0 0 3px $yellow) drop-shadow(0 0 5px $yellow);
+      }
     }
 
     // The link column. A list rather than a sentence of commas, the same
@@ -483,6 +513,51 @@
     }
     tr > *:nth-child(6) {
       width: 13%;
+    }
+
+    // A single row jumped to directly, whether from /products/'s Used by
+    // column (exactly one deployment) or an external `/impact/#icgcargo`
+    // link: an anchor jump otherwise lands with no visual cue for which row
+    // it was aiming at, on a table this long. Fades on its own, no JS
+    // required — see the note on the keyframe above.
+    tbody tr:target {
+      animation: ImpactTable-target-flash 2400ms ease-out;
+    }
+
+    // The other case a Used by link can produce: "N deployments" on
+    // /products/ can't point `:target` at several rows from one URL, so
+    // impact/index.tsx flags them all with this class instead (its
+    // `highlightedComponent` state). Persistent rather than the fade above —
+    // several rows lit at once and then fading on a fixed timer risked going
+    // dark before a reader had scrolled to find them all — so this stays
+    // until a click outside every highlighted row's bounds clears it, which
+    // is also handled there.
+    //
+    // Blue, not the yellow the lone-row flash above uses: the Runs cell's own
+    // `--highlighted` icon (below) carries the yellow glow now, matching the
+    // one the home hero's diagram gives a highlighted hotspot, and the two
+    // needed to read as different cues rather than the same colour twice.
+    //
+    // The background sits on the cells rather than the row, because a `tr`'s
+    // own background does not reliably paint past its cells in every
+    // browser; the box-shadow on the first and last cell then bleeds that
+    // colour past the row's actual edge; it read as clipped square against
+    // it otherwise.
+    tbody tr.ImpactTable__highlight {
+      td,
+      th {
+        background-color: $c-blue-100;
+      }
+
+      td:first-child,
+      th:first-child {
+        box-shadow: -16px 0 0 $c-blue-100;
+      }
+
+      td:last-child,
+      th:last-child {
+        box-shadow: 16px 0 0 $c-blue-100;
+      }
     }
   }
 

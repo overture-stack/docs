@@ -29,6 +29,12 @@ const SPEED = 0.015;
 // whole of it.
 const EXTERNAL_SCROLL_HOLD = 700;
 
+// Pixels of mouse movement past a mousedown before this treats the gesture
+// as a drag rather than a click. Below this, nothing here touches
+// `scrollLeft` or captures the pointer, so a plain click still reaches
+// whatever logo link is under it — see the note on `handlePointerDown`.
+const DRAG_THRESHOLD = 4;
+
 type TooltipInfo = { id: string; name: string; impact: string; rect: DOMRect };
 
 /**
@@ -265,6 +271,14 @@ export default function LogoCarousel() {
   // way for as long as the contact lasts, whether or not it ever moves.
   const touchHoldRef = useRef(false);
   const dragStartRef = useRef({ x: 0, scrollLeft: 0 });
+  // A mousedown that hasn't yet proven itself a drag: recorded here instead
+  // of `dragStartRef`/`draggingRef` directly so a plain click never captures
+  // the pointer at all — see `DRAG_THRESHOLD` and `handlePointerDown`.
+  const dragCandidateRef = useRef<{
+    pointerId: number;
+    x: number;
+    scrollLeft: number;
+  } | null>(null);
   const highlightedComponentRef = useRef<string | null>(null);
   const { highlightedComponent } = useComponentHighlight();
   const [tooltip, setTooltip] = useState<TooltipInfo | null>(null);
@@ -420,20 +434,38 @@ export default function LogoCarousel() {
     }
     const viewport = viewportRef.current;
     if (!viewport) return;
-    draggingRef.current = true;
-    viewport.setPointerCapture(event.pointerId);
-    dragStartRef.current = {
+    // Not yet a drag: recorded, but `draggingRef` stays false and the
+    // pointer stays uncaptured until `handlePointerMove` sees real movement
+    // past `DRAG_THRESHOLD`. Doing either here instead, on every mousedown
+    // before it is known to be a drag rather than a click, retargets the
+    // browser's own `click` — and with it a logo's native navigation — away
+    // from the link under the pointer and onto this viewport, which made
+    // every logo here unclickable by mouse.
+    dragCandidateRef.current = {
+      pointerId: event.pointerId,
       x: event.clientX,
       scrollLeft: viewport.scrollLeft,
     };
   };
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (!draggingRef.current) return;
     const viewport = viewportRef.current;
     if (!viewport) return;
-    const { x, scrollLeft } = dragStartRef.current;
-    viewport.scrollLeft = scrollLeft - (event.clientX - x);
+    if (draggingRef.current) {
+      const { x, scrollLeft } = dragStartRef.current;
+      viewport.scrollLeft = scrollLeft - (event.clientX - x);
+      return;
+    }
+    const candidate = dragCandidateRef.current;
+    if (!candidate || candidate.pointerId !== event.pointerId) return;
+    if (Math.abs(event.clientX - candidate.x) < DRAG_THRESHOLD) return;
+    // Crossed the slop: a drag, not a click. Captured only now, so capture —
+    // and the click-retargeting it causes — only ever applies to a gesture
+    // that has already proven itself a drag.
+    draggingRef.current = true;
+    viewport.setPointerCapture(event.pointerId);
+    dragStartRef.current = { x: candidate.x, scrollLeft: candidate.scrollLeft };
+    viewport.scrollLeft = candidate.scrollLeft - (event.clientX - candidate.x);
   };
 
   // Before the `draggingRef` guard, not after it: a touch never sets that ref
@@ -442,6 +474,7 @@ export default function LogoCarousel() {
   // failure `pause` had, arrived at from the other end.
   const endDrag = (event: React.PointerEvent<HTMLDivElement>) => {
     touchHoldRef.current = false;
+    dragCandidateRef.current = null;
     if (!draggingRef.current) return;
     draggingRef.current = false;
     viewportRef.current?.releasePointerCapture(event.pointerId);

@@ -52,7 +52,12 @@ function componentHotspot(
     name: component.name,
     codename: component.codename,
     summary: component.summary,
-    href: `${PRODUCTS_PATH}#${component.id}`,
+    // `?highlight={id}` mirrors /impact/'s Runs icons (impact/index.tsx) and
+    // /products/'s own "N deployments" link (`used-by`, ComponentTable.tsx):
+    // ComponentTable.tsx reads it back client-side and gives the matching
+    // row the same persistent highlight those two get, rather than only the
+    // brief `:target` flash the fragment alone gives an anchor jump.
+    href: `${PRODUCTS_PATH}?highlight=${component.id}#${component.id}`,
   };
 }
 

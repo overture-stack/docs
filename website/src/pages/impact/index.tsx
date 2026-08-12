@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MarketingPage from "../../marketing/MarketingPage";
 import Hero from "../../marketing/components/Hero";
 import Link from "../../marketing/components/Link";
@@ -10,8 +10,10 @@ import {
 } from "../../marketing/constants/externalLinks";
 import { PRODUCTS_PATH } from "../../marketing/constants/pages";
 import { componentIcon, componentLabel } from "../../marketing/data/components";
-import { componentUsage } from "../../marketing/data/componentUsage";
-import { independentAdopters } from "../../marketing/data/dependents";
+import {
+  DEPLOYMENTS_ANCHOR,
+  deploymentRows,
+} from "../../marketing/data/deployments";
 import {
   DOCKER_HUB_LINK,
   GHCR_PACKAGES_LINK,
@@ -23,7 +25,6 @@ import {
   releaseHistory,
 } from "../../marketing/data/distribution";
 import metrics from "../../marketing/data/metrics";
-import { platforms } from "../../marketing/data/platforms";
 import publications from "../../marketing/data/publications";
 import { floatingTooltipPosition } from "../../marketing/utils/floatingTooltip";
 
@@ -34,7 +35,7 @@ import { floatingTooltipPosition } from "../../marketing/utils/floatingTooltip";
  *   - **Deployments** (`#platforms`), one table of every deployment there is,
  *     ours and other people's. It was two card grids, `#beyond` above
  *     `#platforms`, until 2026-08-12, when the developer had them consolidated
- *     into `deploymentRows` below: one table reads faster than two.
+ *     into `deploymentRows`: one table reads faster than two.
  *   - **Publications** (`#publications`), five papers.
  *   - **Distribution and release history** (`#distribution`), the registries
  *     and the release table.
@@ -46,8 +47,11 @@ import { floatingTooltipPosition } from "../../marketing/utils/floatingTooltip";
  * figure rather than letting it sit among the linked ones.
  *
  * Rows are ordered by launch year, most recent first, with the undated at the
- * foot: see the sort under `deploymentRows`. That replaced an order that put
- * other people's deployments above our own, and a badge on those rows saying
+ * foot: see the sort in `data/deployments.ts`, which is also where the type
+ * and the row-building live now — moved out of this file so /products/'s
+ * "Used by" column (see ComponentTable.tsx) can read the same rows and never
+ * link to one that isn't actually here. That replaced an order that put other
+ * people's deployments above our own, and a badge on those rows saying
  * `Independent`, both removed 2026-08-12 on the developer's instruction. What
  * still marks a deployment as somebody else's is the Led by column, which names
  * the institution behind every row.
@@ -68,96 +72,6 @@ import { floatingTooltipPosition } from "../../marketing/utils/floatingTooltip";
  * is gone from that file entirely, replaced by `data/dependents.ts`, which is
  * where the AGARI and CQDG rows come from.
  */
-
-type DeploymentLink = { label: string; href: string };
-
-type DeploymentRow = {
-  id: string;
-  /** Every row carries one; see the note at the top of this file. */
-  anchorId: string;
-  name: string;
-  /**
-   * The deployment itself: the running portal for a platform, and for the two
-   * rows that are not ours, the first of the sources documenting them, since
-   * neither publishes a portal we can send a reader to. The name is a link to
-   * it. Absent only where there is nowhere to go, which today is the Drug
-   * Discovery Portal, whose access is internal.
-   */
-  href?: string;
-  institution?: string;
-  where?: string;
-  /** Launch year. Absent on a deployment with no public date, which sorts last. */
-  since?: string;
-  summary: React.ReactNode;
-  /**
-   * Component ids, not a rendered string: the Runs cell is a row of icons that
-   * each link to their component on /products/, so it needs the ids to build
-   * both the artwork path and the anchor.
-   */
-  runs: string[];
-  /** Absolute path into static/. Drives the hover preview; most rows have none. */
-  screenshot?: string;
-  links: DeploymentLink[];
-};
-
-/**
- * One table, two kinds of row, consolidated on 2026-08-12 on the developer's
- * instruction: the site used to argue "other people chose this" and "we built
- * seven things" in two separate card grids, and a reader had to already know to
- * look for the distinction.
- *
- * Sorted by launch year, most recent first, with the undated at the foot. That
- * is the only thing deciding order now: the rows that are not ours carried an
- * `Independent` badge and sat above the rest until the same day, and both went
- * on the developer's instruction. The Led by column still names the institution
- * behind every row, which is where a reader now sees that AGARI is Africa CDC's
- * and CQDG is Ferlab's.
- *
- * `Number()` on the year rather than a string compare, so a four-digit year is
- * ordered as a number and not by its first character. Ties hold their source
- * order, `Array.prototype.sort` being stable.
- */
-const deploymentRows: DeploymentRow[] = [
-  ...independentAdopters.map(
-    (adopter): DeploymentRow => ({
-      id: `beyond-${adopter.id}`,
-      anchorId: adopter.id,
-      name: adopter.name,
-      // The first source, which is the closest thing to "the deployment" these
-      // two have: AGARI's launch announcement and Ferlab's own repository.
-      href: adopter.sources[0]?.href,
-      institution: adopter.institution,
-      where: adopter.where,
-      since: adopter.launched,
-      summary: adopter.body,
-      runs: componentUsage[adopter.id] ?? [],
-      links: adopter.sources,
-    }),
-  ),
-  ...platforms.map((platform): DeploymentRow => {
-    const links: DeploymentLink[] = [];
-    if (platform.portal) {
-      links.push({ label: "Visit the platform", href: platform.portal });
-    }
-    return {
-      id: `platform-${platform.id}`,
-      anchorId: platform.id,
-      name: platform.name,
-      href: platform.portal,
-      institution: platform.institution,
-      where: platform.country,
-      since: platform.launched,
-      summary: platform.summary,
-      runs: componentUsage[platform.id] ?? [],
-      screenshot: platform.screenshot,
-      links,
-    };
-  }),
-].sort((a, b) => {
-  if (!a.since) return b.since ? 1 : 0;
-  if (!b.since) return -1;
-  return Number(b.since) - Number(a.since);
-});
 
 /**
  * The aggregate band, three figures.
@@ -185,7 +99,8 @@ const aggregates: { key: string; figure: string; label: React.ReactNode }[] = [
     figure: metrics.activePlatforms.value,
     label: (
       <>
-        <Link to="#platforms">platforms in production</Link> today
+        <Link to={`#${DEPLOYMENTS_ANCHOR}`}>platforms in production</Link>{" "}
+        today
       </>
     ),
   },
@@ -239,6 +154,58 @@ export default function ImpactPage() {
     };
   const hideTooltip = () => setTooltip(null);
 
+  /**
+   * The component id to highlight on arrival, from /products/'s "N
+   * deployments" link (ComponentTable.tsx): that link can't point `:target`
+   * at several rows at once, so it carries the component id as a query param
+   * instead — `?used-by=arranger#platforms` — and this reads it back
+   * client-side. Read in an effect rather than during render, so the page's
+   * initial markup is the same with or without the param and only gains the
+   * highlight after mount, the same way `tooltip` above starts closed on
+   * both server and client.
+   *
+   * The id itself, not a precomputed row list: it drives two things a row id
+   * alone couldn't — which rows light up (`highlightedRowIds` below) and
+   * which icon in each of those rows' Runs cell gets the glow, the same one
+   * the home hero's diagram gives a highlighted hotspot (see
+   * `HeroDiagram.tsx`'s `--highlighted` and `_hero-diagram.scss`).
+   */
+  const [highlightedComponent, setHighlightedComponent] = useState<
+    string | null
+  >(null);
+  useEffect(() => {
+    const componentId = new URLSearchParams(window.location.search).get(
+      "used-by",
+    );
+    if (componentId) setHighlightedComponent(componentId);
+  }, []);
+
+  const highlightedRowIds = highlightedComponent
+    ? new Set(
+        deploymentRows
+          .filter((row) => row.runs.includes(highlightedComponent))
+          .map((row) => row.anchorId),
+      )
+    : null;
+
+  // Clears the highlight on a click outside every highlighted row's own
+  // bounds, rather than fading it on a timer: with several rows lit at once
+  // (see above), a reader scrolling down the table to find all of them could
+  // otherwise arrive after the fade had already finished. Only listens while
+  // something is actually highlighted, and a click inside a highlighted
+  // row — its deployment name, a Runs icon — leaves it lit.
+  useEffect(() => {
+    if (!highlightedComponent) return;
+    const clearOnOutsideClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest(".ImpactTable__highlight")) {
+        setHighlightedComponent(null);
+      }
+    };
+    document.addEventListener("click", clearOnOutsideClick);
+    return () => document.removeEventListener("click", clearOnOutsideClick);
+  }, [highlightedComponent]);
+
   return (
     <MarketingPage
       className="ImpactPage"
@@ -291,7 +258,7 @@ export default function ImpactPage() {
           heads say what the table is. */}
       <section
         className="ImpactDeployments ow:scroll-mt-20"
-        id="platforms"
+        id={DEPLOYMENTS_ANCHOR}
         aria-labelledby="deployments-heading"
       >
         <div className="container">
@@ -313,7 +280,15 @@ export default function ImpactPage() {
             </thead>
             <tbody>
               {deploymentRows.map((row) => (
-                <tr key={row.id} id={row.anchorId}>
+                <tr
+                  key={row.id}
+                  id={row.anchorId}
+                  className={
+                    highlightedRowIds?.has(row.anchorId)
+                      ? "ow:scroll-mt-20 ImpactTable__highlight"
+                      : "ow:scroll-mt-20"
+                  }
+                >
                   <th scope="row">
                     {/* The name is the deployment: hovering it previews the
                         running portal where there is a shot of one, and
@@ -363,15 +338,27 @@ export default function ImpactPage() {
                       moves to the hover, and each icon links to its component
                       on /products/, which the words never did. Same artwork the
                       home hero's diagram and the products table use, by id, so
-                      no icon here can drift from the component it names. */}
+                      no icon here can drift from the component it names.
+
+                      The link also carries `?highlight={componentId}`, the
+                      mirror of this table's own `used-by` param (see above):
+                      ComponentTable.tsx reads it back client-side and gives
+                      the matching row the same persistent highlight this
+                      page's `ImpactTable__highlight` gives a row lit from
+                      /products/, rather than only the brief `:target` flash
+                      an anchor jump gets on its own. */}
                   <td>
                     {row.runs.length > 0 ? (
                       <ul className="ImpactTable__runs">
                         {row.runs.map((componentId) => (
                           <li key={componentId}>
                             <Link
-                              to={`${PRODUCTS_PATH}#${componentId}`}
-                              className="ImpactTable__runsLink"
+                              to={`${PRODUCTS_PATH}?highlight=${componentId}#${componentId}`}
+                              className={
+                                componentId === highlightedComponent
+                                  ? "ImpactTable__runsLink ImpactTable__runsLink--highlighted"
+                                  : "ImpactTable__runsLink"
+                              }
                               // The icon is decorative and the visible label
                               // only appears on hover, so the accessible name
                               // has to be the whole of it here.
