@@ -2,41 +2,35 @@
   max-width: 100%;
   .Hero {
     background-color: $blue-top;
-    // `.section`'s horizontal padding, which the hero does not get from the
-    // class because it is not one.
-    //
-    // Longhands, not `padding: 0 var(--band-outset-x)`. That shorthand also set
-    // the vertical to zero, and it outranks `_hero.scss`'s own
-    // `padding: 50px 0` at mobile, so below 768px the heading sat against the
-    // navbar and the second button against the carousel. The vertical padding
-    // belongs to the hero component; only the horizontal is this file's.
+    // `.section`'s horizontal padding, since the hero isn't one. Longhands,
+    // not the shorthand `padding: 0 var(--band-outset-x)`: that also
+    // zeroed the vertical, outranking `_hero.scss`'s own mobile padding
+    // and pushing the heading against the navbar below 768px. Vertical
+    // padding belongs to the hero component; only horizontal is this
+    // file's.
     padding-left: var(--band-outset-x);
     padding-right: var(--band-outset-x);
 
-    // The orbit diagram is a real focusable/hoverable component (HeroDiagram),
-    // not decoration, so it is hidden outright below tablet-up rather than
-    // just visually: `display: none` also drops it from the tab order on a
-    // viewport where it never appears. Its own sizing (a `clamp()` matching
-    // the viewport) lives in _hero-diagram.scss.
+    // The orbit diagram (HeroDiagram) is focusable/hoverable, not
+    // decoration, so it's hidden outright below tablet-up: `display: none`
+    // also drops it from the tab order where it never appears. Its own
+    // sizing lives in _hero-diagram.scss.
     .HeroDiagram {
       display: none;
     }
 
     @include breakpoint(tablet-up) {
       height: fit-content;
-      // Was `max-height: 470px`, which capped the box while the hero heading
+      // Was `max-height: 470px`, capping the box while the hero heading
       // grew past it. `min-height` keeps the old proportions when the copy
-      // is short and lets the box grow when it is not. Both this and the
-      // padding below have come down four times now: with LogoCarousel
-      // reading as an extension of the hero right underneath it, the hero
-      // doesn't need to carry much air of its own between the diagram and
-      // the carousel below.
+      // is short and lets the box grow when it isn't; both this and the
+      // padding below have come down four times as LogoCarousel reads as
+      // an extension of the hero, needing less air between them.
       //
-      // The floor is only a floor. Above roughly 1024px the diagram
-      // (_hero-diagram.scss) is taller than this and it, not this figure, is
-      // what the row measures; what this still decides is the height between
-      // 768 and 1024, where the diagram is at its smallest and the copy beside
-      // it is at its narrowest.
+      // The floor is only a floor: above ~1024px the diagram
+      // (_hero-diagram.scss) is taller and decides the row's height
+      // instead. This still decides the height between 768 and 1024, where
+      // the diagram is smallest and the copy narrowest.
       min-height: 320px;
       padding: 0.9em var(--band-outset-x);
 
@@ -45,15 +39,12 @@
       }
     }
 
-    // The heading steps down below 1024, where this hero has the least room and
-    // `.t-h1` gives it the most type. Scoped to this hero rather than fixed in
-    // `.t-h1` itself, because the other pages' heroes carry one short line each
-    // and are not what this is about.
-    //
-    // Under 768 the hero is a single centred column with the diagram gone, and
-    // `.t-h1`'s own mobile size is 40px on a 55px line: a 1.4 leading on type
-    // that already wraps to three lines in a 430px column, which made the
-    // heading alone most of the first screen.
+    // The heading steps down below 1024, where this hero has the least
+    // room and `.t-h1` gives it the most type. Scoped here, not in `.t-h1`
+    // itself, since the other pages' heroes carry one short line each.
+    // Under 768, `.t-h1`'s own mobile size (40px/55px, 1.4 leading) already
+    // wrapped to three lines in a 430px column, making the heading alone
+    // most of the first screen.
     @include breakpoint(mobile) {
       .t-h1 {
         font-size: 32px;
@@ -61,11 +52,11 @@
       }
     }
 
-    // Between 768 and 1024 the diagram is back and the copy is down to 63% of
-    // the container, while `.t-h1` has already stepped up to 48px on a 70px
-    // line. Measured at 768: three lines, 210px of heading above a 420px hero.
-    // The band is bounded at the top rather than using `tablet-up`, so `.t-h1`'s
-    // own desktop-up size still applies from 1024 and is not restated here.
+    // Between 768 and 1024 the diagram is back and the copy drops to 63%
+    // of the container, while `.t-h1` has stepped up to 48px/70px — three
+    // lines, 210px of heading above a 420px hero at 768. Bounded at the
+    // top (not `tablet-up`) so `.t-h1`'s own desktop-up size still applies
+    // from 1024 unrestated.
     @media screen and (min-width: 768px) and (max-width: 1023px) {
       .t-h1 {
         font-size: 36px;
@@ -73,12 +64,11 @@
       }
     }
 
-    // And a step down from `.t-h1`'s own top size (50px on a 70px line) from
-    // 1024 up, on request. Scoped here for the same reason as the two bands
-    // above: the other pages' heroes carry one short line each, and this one
-    // runs to three, so the size that suits them overpowers the top of this
-    // page. `1.2` rather than a second px figure keeps the leading tracking
-    // the size, as the two steps above already do.
+    // A step down from `.t-h1`'s own top size (50px/70px) from 1024 up,
+    // for the same reason as the two bands above: this heading runs to
+    // three lines, and the size that suits a one-line hero overpowers it.
+    // `1.2` rather than a px figure keeps the leading tracking the size,
+    // matching the two steps above.
     @include breakpoint(desktop-up) {
       .t-h1 {
         font-size: 44px;
@@ -102,24 +92,21 @@
 
       @include breakpoint(desktop-up) {
         max-width: 700px;
-        // Right only. This was `padding: 50px` on all sides, then `0 50px`; the
-        // left half of that is what put the hero's first line 50px inside every
-        // heading below it, on top of the 25px it also carried at tablet. The
-        // hero's left edge is `--band-inset-x` on its container now, the same
-        // one every band uses, and nothing sits between that and the text.
-        //
-        // The right half stays: it is the gap between the copy and the orbit
-        // diagram, which is a real element in the same row and not a margin.
+        // Right only: this was `padding: 50px` all sides, then `0 50px` —
+        // the left half put the hero's first line 50px inside every
+        // heading below it. The hero's left edge is `--band-inset-x` now,
+        // the same one every band uses. The right half stays: it's the gap
+        // between the copy and the orbit diagram, a real element, not a
+        // margin.
         padding: 0 50px 0 0;
       }
     }
 
-    // Reads as a caption under the hero copy rather than a third paragraph
+    // Reads as a caption under the hero copy, not a third paragraph
     // competing with it. The negative top margin pulls it back inside the
-    // section's 18px gap, so the hero keeps the fixed height _hero.scss sets.
-    // No opacity: this sits on the hero's light blue, and the site carries a
-    // WCAG 2.1 AA obligation. Smaller type is what makes it subtle, not
-    // washing out the contrast.
+    // section's 18px gap, keeping _hero.scss's fixed height. No opacity:
+    // smaller type makes it subtle without washing out the WCAG AA
+    // contrast this site needs.
     &__attribution {
       color: inherit;
       font-size: 0.9rem;
@@ -169,28 +156,25 @@
   // no longer exists, which also meant every cube announced itself to a
   // screen reader as "Floating Maroon Cube".
   //
-  // Here they are pseudo-elements on the sections they sit between, so each one
-  // is positioned against its own section's box and cannot be knocked out of
-  // place by a content change two bands away. Being pseudo-elements also keeps
-  // them out of the accessibility tree, which is correct: they are decoration.
+  // Pseudo-elements on the sections they sit between, so each is positioned
+  // against its own section's box and can't be knocked out of place by a
+  // content change elsewhere. Also keeps them out of the accessibility
+  // tree, correctly, since they're decoration.
   //
-  // Only the left-hand cubes hang past the edge. A box left of the origin is
-  // clipped by the viewport and does not scroll, but the same overhang on the
-  // right extends the scrollable area and adds a horizontal scrollbar, and
-  // clipping this page to prevent that would break the sticky navbar above it.
-  // The right-hand cubes therefore sit flush at `right: 0` instead. `cube_teal_blue`
-  // is the exception that needs nothing: its artwork is already clipped inside
-  // its own file, so flush against the right edge is the overhang.
+  // Only the left-hand cubes hang past the edge: a box left of the origin
+  // is clipped by the viewport, but the same overhang on the right adds a
+  // horizontal scrollbar (and clipping the page to prevent that would
+  // break the sticky navbar). Right-hand cubes sit flush at `right: 0`
+  // instead. `cube_teal_blue` needs nothing extra: its artwork is already
+  // clipped inside its own file, so flush is the overhang.
   //
-  // Each cube declares where its artwork actually sits inside its file, because
-  // none of these SVGs is trimmed to its own drawing. `cube_yellow` is the worst:
-  // its cube fills 48% by 40% of the file, in the top-left corner, so sizing the
-  // element to the file renders a cube less than half the size asked for and
-  // leaves it nowhere near the edge it is anchored to. Sized this way the element
-  // box *is* the artwork, so `right: 0` puts the cube on the page edge and
-  // `width` is the size it draws at. Fractions measured with `getBBox()` against
-  // each file's viewBox; `cube_teal_blue`'s `x1` is its clip at 100%, not the
-  // 106% its path reaches.
+  // Each cube declares where its artwork sits inside its file, since none
+  // of these SVGs is trimmed to its own drawing (`cube_yellow`'s cube
+  // fills just 48%x40% of the file, top-left). Sized this way the element
+  // box is the artwork, so `right: 0` puts the cube on the page edge and
+  // `width` is its drawn size. Fractions measured with `getBBox()` against
+  // each file's viewBox; `cube_teal_blue`'s `x1` is its clip at 100%, not
+  // the 106% its path reaches.
   // ---------------------------------------------------------------------------
   @mixin cube-art($file, $w, $h, $x0, $x1, $y0, $y1) {
     $sx: $x1 - $x0;
@@ -233,12 +217,11 @@
   // is how its tiles stay white.
   //
   // Stated on the section rather than passed as a prop because it is a fact
-  // about the band, not about any one card: a band that changes colour should
-  // not need four cards edited to follow it.
-  //
-  // This list and the `grey-bg` in the markup are the whole cost of swapping the
-  // first two bands, which has now happened twice: the colours belong to the
-  // slots, so they stay put and the two names here trade places.
+  // about the band, not about any one card: a band that changes colour
+  // shouldn't need four cards edited to follow it. This list and `grey-bg`
+  // in the markup are the whole cost of swapping the first two bands
+  // (twice now) — colours belong to the slots and stay put; only the two
+  // names here trade places.
   .HomeCapabilities,
   .HomeDocs {
     --card-tile-bg: #{$grey-2};
@@ -254,19 +237,17 @@
     z-index: 1;
   }
 
-  // The cubes belong to the slots, not to the bands: each one is drawn to
-  // straddle a particular seam on the way down the page, and the seams did not
-  // move when these two bands swapped. So the art traded selectors with the
-  // colours above rather than travelling with its band, which is what keeps the
-  // yellow cube on the carousel's bottom edge and the teal one on the white/grey
-  // seam below it.
-  // Straddles the carousel's bottom edge from exactly the band's own bottom
-  // padding (`$carousel-band-y`, components/_logo-carousel.scss), not the 44px
-  // it hung by before: that padding used to be 64px deep, and once the carousel
-  // was tightened to open and close on the same figure the old overhang reached
-  // 16px past it and sat on the corner of whichever logo chip was under it at
-  // 1024px. Kept in the blue by a third of its height, which is what makes it
-  // read as straddling the seam rather than as sitting on the white band.
+  // The cubes belong to the slots, not the bands: each is drawn to
+  // straddle a particular seam, and the seams didn't move when these two
+  // bands swapped — so the art traded selectors with the colours above
+  // instead of travelling with its band.
+  //
+  // Straddles the carousel's bottom edge from exactly the band's own
+  // bottom padding (`$carousel-band-y`, components/_logo-carousel.scss):
+  // the old fixed 44px overhang, measured against a since-tightened 64px
+  // padding, used to reach 16px past it and sit on a logo chip's corner at
+  // 1024px. Kept in the blue by a third of its height, reading as
+  // straddling the seam rather than sitting on the white band.
   .HomeCapabilities::before {
     @extend %cube;
     @include cube-art("cube_yellow", 100px, 91px, 0.114, 0.599, 0.165, 0.561);
@@ -298,18 +279,16 @@
     left: -16px;
   }
 
-  // No cube left of the quickstart's introduction: `cube_chartreuse` sat there
-  // and read as a second yellow cube after `cube_yellow` on the first band above,
-  // so the page had the same colour twice on the way down. `cube_yellow`
-  // is the one that stays. `.HomeQuickstart::after` further down is unaffected.
+  // No cube left of the quickstart's introduction: `cube_chartreuse` sat
+  // there and read as a second yellow cube after `cube_yellow` above — the
+  // page had the same colour twice. `cube_yellow` is the one that stays;
+  // `.HomeQuickstart::after` further down is unaffected.
 
-  // Flush against the right edge, on the blue band's own top edge, which is the
-  // section's only colour change now that its introduction shares the grey above.
-  // This is the cube whose file clips its own right face, so the page edge has to
-  // finish it: anywhere else it reads as a cube with a slice taken off.
-  //
-  // The right gutter is free even though the screenshot crosses the same edge:
-  // the figure is centred and capped at 944px, so it never reaches this far out.
+  // Flush against the right edge, on the blue band's top edge — the
+  // section's only colour change now that its introduction shares the grey
+  // above. This cube's file clips its own right face, so the page edge has
+  // to finish it or it reads as sliced. The right gutter stays free: the
+  // screenshot is centred and capped at 944px, never reaching this far out.
   .HomeQuickstart__band::before {
     @extend %cube;
     @include cube-art("cube_teal_blue", 104px, 104px, 0.19, 1, 0.249, 0.875);
@@ -318,9 +297,9 @@
   }
 
   // Stays inside its band rather than hanging over the footer, which is
-  // `position: relative` with a white background of its own and paints over
-  // anything at this z-index reaching into it. Raising the cube above the footer
-  // instead would put decoration over real content.
+  // `position: relative` with its own white background and paints over
+  // anything at this z-index — raising the cube instead would put
+  // decoration over real content.
   .HomeQuickstart::after {
     @extend %cube;
     @include cube-art(
@@ -346,47 +325,43 @@
     font-family: $font-sans-serif;
   }
 
-  // How far every band's content sits inside its container, and the one number
-  // that puts the hero, the carousel and the six bands below them on a single
-  // left edge. It used to be three numbers: the bands took 3.8em, the hero and
-  // the carousel overrode it to 32px, and the hero copy added 50px more on top
-  // of that. At 1440px that was 108.8, 80 and 130 -- three left edges down one
-  // page, none of them agreeing with the next.
+  // How far every band's content sits inside its container — one number
+  // that puts the hero, carousel and six bands below on a single left
+  // edge. It used to be three numbers (3.8em for bands, a 32px override
+  // for hero/carousel, plus 50px more on the hero copy) that disagreed at
+  // every size.
   //
-  // `rem` rather than the `em` the bands used to carry: an `em` inside a custom
-  // property is resolved against whichever element ends up using the property,
-  // so the same declaration would mean different distances in two containers
-  // with different type sizes. 3.8rem is what 3.8em measured here anyway.
+  // `rem`, not the `em` the bands used to carry: an `em` inside a custom
+  // property resolves against whichever element uses it, so the same
+  // declaration meant different distances in containers with different
+  // type sizes. 3.8rem is what 3.8em measured here anyway.
   --band-inset-x: 2rem;
 
   @include breakpoint(desktop-up) {
     --band-inset-x: 3.8rem;
   }
 
-  // The other half of the same alignment, and the reason matching the inset
-  // alone was not enough. A band's content starts at `.section`'s horizontal
-  // padding plus the container's own; the hero and the carousel are not
-  // `.section`s, so they were missing the outer half entirely.
+  // The other half of the same alignment: a band's content starts at
+  // `.section`'s horizontal padding plus the container's own, but the hero
+  // and carousel aren't `.section`s, so they were missing that outer half.
   //
-  // It only shows below 1216px. At and above it `.container` takes a max-width
-  // and centres itself, and the auto margins happen to absorb exactly what the
-  // section padding would have added -- which is why the hero looked aligned at
-  // 1440 and 1280 while sitting 24px out at 1024.
+  // Only shows below 1216px — above it, `.container`'s own max-width and
+  // auto margins absorb what the section padding would have added, which
+  // is why the hero looked aligned at 1440/1280 but sat 24px out at 1024.
   //
-  // These are `.section`'s own two values (_layout.scss), at its own breakpoint,
-  // which is Bulma's `$widescreen` rather than one of ours.
+  // These are `.section`'s own two values (_layout.scss), at Bulma's
+  // `$widescreen` breakpoint, not one of ours.
   --band-outset-x: 1.5rem;
 
   @media screen and (min-width: 1216px) {
     --band-outset-x: 3rem;
   }
 
-  // The band rhythm. This was `80px 32px` / `5.2em 3.8em`, which stacked with
-  // `.section`'s own 3rem to put roughly 166px of blank space between the
-  // content of one band and the next: measured at 1440px, every section on the
-  // page was about half empty, and six of them in a row read as a page that had
-  // run out of things to say rather than as generous spacing. The horizontal
-  // padding is unchanged; only the vertical came down.
+  // The band rhythm: was `80px`/`32px` (`5.2em`/`3.8em`), which stacked
+  // with `.section`'s own 3rem to leave ~166px of blank space between
+  // bands at 1440px — six of them in a row read as a page that had run
+  // out of things to say, not generous spacing. Horizontal padding is
+  // unchanged; only the vertical came down.
   .container {
     padding: 48px var(--band-inset-x);
 
@@ -496,26 +471,20 @@
     // and then to `$lede-max-width`; both left the paragraphs in a column
     // narrower than everything under them. Nothing sets a width here now.
 
-    // Every paragraph in this band's opening, at one size. It was a `.t-p1` lede
-    // (24px at desktop) over two 17px notes, and the three of them are one
-    // statement about the team, so the size steps read as a hierarchy that is not
-    // there.
+    // Every paragraph in this band's opening, at one size: it was a `.t-p1`
+    // lede (24px) over two 17px notes, reading as a hierarchy that isn't
+    // there for one statement about the team.
     //
-    // 1.25rem, up from 1rem at the developer's request, matching
-    // `.HomeCapabilities__lede` and `.HomeDocs__lede`: the paragraph under each of
-    // the three band headings below the carousel is set the same. That does put
-    // this a step above `&__values` and `&__selfServe`, which still carry the 1rem
-    // they shared with this rule -- deliberate now, since this is the band's
-    // opening statement and those two are notes hanging off the offers.
+    // 1.25rem, up from 1rem, matching `.HomeCapabilities__lede` and
+    // `.HomeDocs__lede` — the paragraph under each of the three band
+    // headings below the carousel. A step above `&__values` and
+    // `&__selfServe`, deliberately: those are notes hanging off the
+    // offers, not the band's opening statement.
     //
-    // The accessibility floor the old 1rem was reasoned against still holds and
-    // this only moves away from it: 16px is the browser default and the accepted
-    // floor for body copy; the unit is `rem` and not `px`, so a user's own text
-    // size carries (1.4.4 Resize Text, which a px size defeats in some browsers);
-    // the line height is 1.6, above the 1.5 a user must be able to set without
-    // breaking the layout (1.4.12 Text Spacing). Contrast is not what limits it:
-    // `$navy-black` on this band's `$grey-2` measures 12.17:1, against the 4.5:1
-    // that normal-size text has to clear.
+    // Still clears the accessibility floor the old 1rem met: `rem` not
+    // `px` (so a user's text-size setting carries, WCAG 1.4.4), 1.6 line
+    // height (above the 1.5 floor, 1.4.12), and `$navy-black` on this
+    // band's `$grey-2` measures 12.17:1 against the 4.5:1 contrast floor.
     &__prose {
       font-family: $font-sans-serif;
       font-size: 1.25rem;
@@ -524,22 +493,19 @@
       margin: 0;
     }
 
-    // Between paragraphs only, so the first one sits against the yellow bar above
-    // it at whatever gap the bar's own margin gives. `:first-child` cannot say
-    // this: the heading and the bar are the first two children of `&__intro`.
+    // Between paragraphs only, so the first sits against the yellow bar
+    // above it at the bar's own margin gap; `:first-child` can't say this
+    // since the heading and bar are `&__intro`'s first two children.
     //
-    // A paragraph gap has to beat the gap between two lines inside a paragraph or
-    // it is not read as a break at all, and at one size for every paragraph that
-    // is the only thing marking where one ends. 1.6 line height on the 20px type
-    // above puts 32px between lines, so this tracks the size: it was 1.5rem
-    // against 16px type, and 16px before that, which was less than a line gap and
-    // rendered the band's opening as a single block of text.
-    // The second half of the selector is the class written out, not a second
-    // `&`. `&` here carries the whole ancestor chain (`.HomePage
-    // .HomeCollaborate`), so `&__prose + &__prose` compiles to
-    // `.HomePage .HomeCollaborate__prose + .HomePage .HomeCollaborate__prose`:
-    // a descendant of `.HomePage` following a sibling, which nothing can match.
-    // It silently matched nothing and the paragraphs rendered with no gap at all.
+    // The gap has to beat the in-paragraph line gap (32px at this
+    // 1.6/20px type) or it doesn't read as a break — it was 1.5rem against
+    // 16px type before, less than a line gap.
+    //
+    // The second half of the selector is the class written out, not a
+    // second `&`: `&` here carries the whole ancestor chain, so
+    // `&__prose + &__prose` would compile to a descendant-of-`.HomePage`-
+    // following-a-sibling selector that matches nothing — which is exactly
+    // what silently happened before this fix.
     &__prose + .HomeCollaborate__prose {
       margin-top: 2rem;
     }
@@ -610,10 +576,10 @@
     // were both bare `.t-h3` at the same size on the same background. The
     // offers are boxed tiles now, so the thing that separates the heading
     // from them is the edge of the first card.
-    // On the container's left margin, with "What we do" above it and every
-    // other heading on the page. It carried the tile's own inset for one round,
-    // which lined it up with "Academic partnership" inside the first card but
-    // left it as the only heading on the page that started anywhere else.
+    // On the container's left margin, matching every other heading on the
+    // page. It carried the tile's own inset for one round, lining up with
+    // "Academic partnership" inside the first card but leaving it the only
+    // heading starting anywhere else.
     &__subhead.t-h3 {
       margin: 3rem 0 0;
     }
@@ -623,9 +589,9 @@
     // pick between now lay them out identically. The tile itself is
     // components/_card-tile.scss.
     //
-    // `&__offerTitle` is gone with the markup it styled. It was the `.t-h3` type
-    // scale copied out so an `<h4>` could keep it, and the tile's own
-    // `.CardTile__title` is that same scale, so the copy had nothing left to do.
+    // No `&__offerTitle`: it was the `.t-h3` scale copied out for an
+    // `<h4>`, and the tile's own `.CardTile__title` is that same scale
+    // now, so the copy had nothing left to do.
     &__offers {
       list-style: none;
       margin: 1.5rem 0 0;
@@ -682,11 +648,10 @@
       text-align: left;
     }
 
-    // Was `68em` measured against this element's own font size, which is where
-    // `$lede-max-width` came from: it is the width this band was widened to at
-    // the developer's request, now stated once in rem and shared by every band
-    // rather than re-derived per element -- so the size change below does not
-    // move the measure with it.
+    // Was `68em` measured against this element's own font size, which is
+    // where `$lede-max-width` came from: now stated once in rem and
+    // shared by every band rather than re-derived per element, so the
+    // size change below doesn't move the measure with it.
     //
     // 1.25rem, matching `.HomeCapabilities__lede` and `.HomeCollaborate__prose`
     // above: one size for the paragraph under all three band headings.

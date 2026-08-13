@@ -29,17 +29,13 @@ type FooterLink = { name: string; url: string; external?: boolean };
 type FooterColumn = { heading: string; links: FooterLink[] };
 
 /**
- * Four columns, per `ia-proposal.md` § Navigation, replacing the flat list of
- * eight links this carried through phases 1 to 3.
+ * Four columns, replacing a flat list of eight links with no way to group
+ * them as pages were added. The columns are the difference between a
+ * footer and a pile of links.
  *
- * The flat list was a holding pattern: Funding, Publications and Support Forum
- * were added to it as the pages they point at arrived, with no way to group
- * them. The columns are what the IA asked for and what makes the difference
- * between a footer and a pile of links.
- *
- * This is now the only navigation to the funding and citation content, and it
- * leaves the site to reach it: see the Impact column. It is also the only route
- * left to `ABOUT_BAND`, since the navbar's About item is gone.
+ * The only navigation left to the funding/citation content (Impact column,
+ * leaving the site) and to `ABOUT_BAND`, since the navbar's About item is
+ * gone.
  *
  * `external` drives the arrow, not a URL test: `Link` already decides how to
  * open a link, and marking these by hand keeps the two decisions independent.
@@ -59,13 +55,10 @@ const columns: FooterColumn[] = [
     ],
   },
   {
-    // Two of these three now leave the site. /impact/publications/ and
-    // /about/funding/ were marketing pages holding content whose maintained
-    // version is on the docs site under /community/, and keeping a second copy
-    // here meant a paper and five grants stated twice. Both pages are gone and
-    // these point at the docs, which is why they carry the arrow: "How to cite
-    // us" is the docs page's own subject, and it is a clearer label than
-    // "Publications" for a link a reader follows to get a citation string.
+    // Two of these three leave the site: /impact/publications/ and
+    // /about/funding/ are gone, their maintained content on the docs site
+    // instead. "How to cite us" is a clearer label than "Publications" for
+    // a link a reader follows to get a citation string.
     heading: "Impact",
     links: [
       { name: "Deployments", url: IMPACT_PATH },
@@ -89,9 +82,8 @@ const columns: FooterColumn[] = [
   {
     heading: "About",
     links: [
-      // /about-us/ is gone; the "What we do" band on the home page is what
-      // carries what it said. `ABOUT_BAND` in constants/pages.ts is the one
-      // spelling of that address, shared with the navbar's About item.
+      // /about-us/ is gone; the "What we do" band on the home page carries
+      // what it said, via `ABOUT_BAND` in constants/pages.ts.
       { name: "Our story", url: ABOUT_BAND },
       { name: "Team", url: OVERTURE_DOCUMENTATION_TEAM_LINK, external: true },
       { name: "OICR", url: OICR_LINK, external: true },

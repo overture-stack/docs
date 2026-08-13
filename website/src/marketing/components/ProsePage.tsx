@@ -5,22 +5,19 @@ import { H1 } from "./Typography";
 /**
  * The shell for the marketing site's prose routes (privacy, terms).
  *
- * These pages are a hero and a single column of words, so their copy lives in
- * Markdown under src/marketing/content/ and the route file is just a call to
- * this component. That is the whole point of the split: the prose is editable
- * without touching React, which it was not while it was 476 lines of JSX.
+ * Copy lives in Markdown under src/marketing/content/; the route file is
+ * just a call to this component. The prose is editable without touching
+ * React, which it wasn't at 476 lines of JSX.
  *
- * The Markdown is imported as a component and rendered as `children` rather than
- * the page being a `.mdx` file in src/pages/. Docusaurus does route `.mdx` there,
- * but its MDXPage theme component wraps the content in Infima's
- * `container container--fluid` plus a row/col grid and a table of contents, and
- * puts `wrapperClassName` on `<html>` rather than on the content wrapper. All
- * three fight this layout. Importing the Markdown instead keeps Docusaurus's
- * page pipeline out of it and costs one small file per route.
+ * Markdown is imported as a component and rendered as `children`, rather
+ * than as a `.mdx` page: Docusaurus's `MDXPage` theme wraps content in
+ * Infima's grid/TOC and puts `wrapperClassName` on `<html>`, all of which
+ * fights this layout. Importing instead keeps Docusaurus's page pipeline
+ * out of it.
  *
- * Markdown emits plain `h2`, `p`, `ul` and `ol`, so the per-page partials style
- * those element selectors. There is no `MDXComponents` override, deliberately:
- * that mapping is global and would reach the documentation pages too.
+ * Markdown emits plain `h2`, `p`, `ul` and `ol`, so the per-page partials
+ * style those element selectors. No `MDXComponents` override: that mapping
+ * is global and would reach the documentation pages too.
  */
 export type ProsePageProps = {
   /** The `h1` in the hero. Markdown files carry no `#` of their own. */

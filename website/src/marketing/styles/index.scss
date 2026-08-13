@@ -1,36 +1,22 @@
 // Entry point for every marketing style in the site.
 //
-// The one structural change the port makes to the styles: instead of each
-// component importing its own `styles.scss`, everything is pulled in here and
-// nested inside `.marketing`. These pages share one emitted stylesheet with the
-// documentation, so the nesting is what keeps their bare class names and element
-// rules off the docs pages. Only MarketingPage imports this file, and only
-// marketing routes render it.
+// Instead of each component importing its own `styles.scss`, everything is
+// pulled in here and nested inside `.marketing`. These pages share one
+// emitted stylesheet with the documentation, so the nesting keeps their
+// bare class names and element rules off the docs pages. Only MarketingPage
+// imports this file.
 //
-// Variables and mixins have to stay at the top level: Sass scopes a variable to
-// the block it is declared in, so anything declared inside `.marketing` would be
+// Variables and mixins stay at the top level: Sass scopes a variable to the
+// block it's declared in, so anything declared inside `.marketing` would be
 // invisible to the partials below.
 //
-// Bulma was removed here in rebuild phase 2. It used to be imported at the top
-// of the `.marketing` block, and `_layout.scss` now occupies exactly that
-// position: it carries the reset and the seven class families the ported markup
-// takes from it, so every later partial keeps overriding the same things at the
-// same specificity. Three things went with it:
+// `_layout.scss` carries the reset and class families this markup depends
+// on, occupying the position Bulma used to (removed, along with its own
+// variable overrides and imports — nothing in this tree still needs them).
 //
-//   - The `$navbar-breakpoint`, `$navbar-item-*`, `$link`, `$primary-invert` and
-//     `$family-*` overrides, which only ever configured Bulma. The values they
-//     set are written into `_layout.scss` directly.
-//   - `@import "bulma/sass/utilities/initial-variables"`. Nothing in this tree
-//     used a variable it defined; verified before removing it.
-//   - A second `@import "variables"` inside `.marketing`, which existed only
-//     because Bulma 0.9 defined its own `breakpoint($name)` mixin and silently
-//     clobbered the site's. With Bulma gone there is one `breakpoint()` mixin
-//     and no need to restore it.
-//
-// `@import` is still deprecated, and this file still depends on it: `@use`
-// cannot be nested inside a selector, so `.marketing { @import ... }` has no
-// modern equivalent. Removing Bulma did not resolve that, because the site's own
-// 2,800 lines still need the same scoping.
+// `@import` is deprecated but still needed here: `@use` can't nest inside a
+// selector, so `.marketing { @import ... }` has no modern equivalent, and
+// the site's own 2,800 lines still need that scoping.
 
 @import "color-codes";
 @import "colors";
@@ -86,14 +72,14 @@
   @import "components/footer";
   @import "components/hero";
   @import "components/hero-diagram";
-  @import "components/icon";
   @import "components/logo-carousel";
   @import "components/navbar";
   // No components/notebox: `NoteBox` was dead before the rebuild and was
   // deleted with the home page's quickstart work, so its partial went too.
   // No components/casestudy or components/stack-diagram: both partials styled
   // components with no caller left on the site (CaseStudy, StackDiagram), and
-  // were deleted with them.
+  // were deleted with them. No components/icon: `.Icons`/`.core` styled
+  // `Icon.tsx`'s `Core()`/`IconCommon`, deleted as dead code.
   @import "components/quickstart";
   @import "components/terminal";
   @import "components/typography";

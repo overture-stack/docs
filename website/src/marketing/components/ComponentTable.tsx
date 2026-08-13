@@ -22,56 +22,36 @@ import { hoverIntentHandlers } from "../utils/hoverIntent";
 const COLUMN_HEADERS = ["Component", "What it does", "Documentation", "Used by"];
 
 /**
- * The whole stack, as one table in one section.
+ * The whole stack, as one table: comparing two components no longer means
+ * scrolling past a section boundary. The Collect / Explore / Control
+ * grouping survives as a group row (`<th scope="colgroup">`), explained by
+ * the group blurbs below.
  *
- * This replaces ProductGroup, which rendered Collect and Explore as two
- * alternating full-width bands with a row list each, and the Control prose
- * section that followed them. One table reads as one inventory: a reader
- * comparing two components no longer scrolls past a section boundary to do it,
- * and the page lost two bands of chrome without losing a line of copy. The
- * Collect / Explore / Control grouping survives as a group row inside the table
- * (`<th scope="colgroup">`), which is what the group blurbs below explain.
+ * Control's blurb covers today's access delegation (Keycloak); its one row
+ * is the authorization service being built to replace it — named TBD,
+ * linked to its repo since there's no documentation yet.
  *
- * Control is the group that is not seven-eighths shipped: its blurb says what a
- * deployment does about access today (delegate to Keycloak) and links the how-to
- * for it, and its single row is the authorization service being built to replace
- * that arrangement, named TBD until it has a name and pointing at its repository
- * because there is no documentation to point at yet.
+ * Each icon is the same artwork the home hero's diagram uses
+ * (data/components.ts owns the path), fitted into a fixed square box since
+ * they're drawn at different aspect ratios.
  *
- * Each component now carries its icon, the same artwork the home hero's diagram
- * uses for the same component (data/components.ts owns the path). The icons are
- * drawn at different aspect ratios, so each sits in a fixed square box and is
- * fitted inside it rather than sized directly.
+ * A real `<table>`, not divs, since this is tabular data. Fighting Infima's
+ * global table styles is why the look lives in `_products.scss` rather than
+ * `ow:` utilities, which are `!important` here and couldn't be overridden
+ * from SCSS.
  *
- * A real `<table>`, not a grid of divs, because this is tabular: four columns,
- * one row per component, and a group row that spans them. That does mean fighting
- * Infima's global table styles (cell borders, striped rows, `display: block`),
- * which is why the table's look lives in `_products.scss` rather than in `ow:`
- * utilities here — see the note there. Utilities are `!important` in this build,
- * so anything set here could not be overridden from SCSS afterwards.
+ * Used by is the reverse of /impact/'s Runs column, reading `usedBy` from
+ * the same `data/deployments.ts` array /impact/ renders from, so a link here
+ * can never land on a missing row. Text links, not icons, since several
+ * deployments have no logo.
  *
- * The fourth column, Used by, is the reverse of /impact/'s Runs column: each
- * component links out to the deployments running it, `IMPACT_PATH#anchorId`,
- * reading `usedBy` from `data/deployments.ts` — the same array /impact/ renders
- * its own table from, so a component here can never link to a deployment that
- * has no row to land on. Text links rather than icons, unlike Runs: there is no
- * normalized deployment-logo set the way `componentIcon` normalizes every
- * component to one square box, and several deployments here (the two
- * independent adopters, three of the platforms) have no logo at all.
- *
- * A component used by more than one deployment (Arranger runs in seven)
- * collapses to a single "N deployments" link rather than naming each one: a
- * list that long made that row by far the tallest in the table, on the one
- * column where a reader is here to check "is this used anywhere real" rather
- * than to read every name. Hovering or focusing it opens a tooltip with the
- * full list, and clicking it goes to `IMPACT_PATH?used-by={component.id}#{DEPLOYMENTS_ANCHOR}`
- * — the Deployments section, there being no single row among several to send
- * a reader to instead. impact/index.tsx reads the `used-by` param back out
- * client-side (its `highlightedComponent` state) and highlights every
- * matching row and, in each, the one Runs icon the reader actually asked
- * about, since `:target` can only ever point at one element. A component used
- * by exactly one deployment still names it and links straight to that
- * deployment's own row, the same as before collapsing existed.
+ * More than one deployment collapses to a single "N deployments" link
+ * (Arranger runs in seven) rather than naming each — hover/focus opens a
+ * tooltip with the full list; clicking links to
+ * `IMPACT_PATH?used-by={component.id}#{DEPLOYMENTS_ANCHOR}`, which
+ * impact/index.tsx reads back to highlight every matching row (`:target`
+ * can only point at one). Exactly one deployment still links straight to
+ * its own row.
  *
  * The column headers repeat at the top of every group (`COLUMN_HEADERS`,
  * rendered again inside each `<tbody>`): with only the true `<thead>` at the
@@ -79,20 +59,16 @@ const COLUMN_HEADERS = ["Component", "What it does", "Documentation", "Used by"]
  * row entirely and a reader can no longer tell which column is which.
  */
 export default function ComponentTable() {
-  // MDX headings and list items register their own anchors as they render, so
-  // Docusaurus's broken-anchor check knows about them; a plain React page like
-  // this one never does that registration on its own, so anything linking to a
-  // group's or a component's id reads as broken even though the anchor is really
-  // there. HeroDiagram is the first internal link into these ids.
+  // MDX registers its own anchors for Docusaurus's broken-anchor check; a
+  // plain React page like this never does, so links to these ids would read
+  // as broken otherwise.
   const brokenLinks = useBrokenLinks();
 
   const componentGroups: ComponentGroupId[] = ["collect", "explore", "control"];
 
-  // The one tooltip a "N deployments" link opens: the full list of names, in
-  // the same floating-card style /impact/'s own tooltip uses for a
-  // component's name (`floatingTooltipPosition`, shared rather than
-  // reimplemented). Only one kind here, unlike that page's two, so state is
-  // just the text and the trigger's rect.
+  // The "N deployments" tooltip: the full name list, in the same
+  // floating-card style /impact/ uses (`floatingTooltipPosition`, shared).
+  // Only one kind here, so state is just text and the trigger's rect.
   const [tooltip, setTooltip] = useState<{
     content: string;
     rect: DOMRect;
@@ -103,21 +79,13 @@ export default function ComponentTable() {
   const hideTooltip = () => setTooltip(null);
 
   // The component id to highlight on arrival, from /impact/'s Runs column
-  // (impact/index.tsx): each icon there links here as
-  // `${PRODUCTS_PATH}?highlight={componentId}#{componentId}`, the mirror of
-  // this table's own "N deployments" link, which carries `used-by` the other
-  // way for the same reason — impact/index.tsx's `highlightedComponent`.
-  // Read in an effect rather than during render, so this page's initial
-  // markup is the same with or without the param and only gains the
-  // highlight after mount.
+  // linking here as `?highlight={id}#{id}` — the mirror of this table's own
+  // `used-by` link. Read in an effect, not during render, so initial markup
+  // is unaffected.
   //
-  // A row here is never one of several the way a "used-by" deployment can be,
-  // so the fragment alone would already scroll to the right row and give it
-  // the brief `:target` flash every anchor jump on this table gets (see
-  // `tbody tr:target` in pages/_products.scss). This state gives it the same
-  // persistent highlight /impact/'s own rows get instead, so a product
-  // followed from a Runs icon reads the same way a deployment followed from
-  // this table's Used by column does.
+  // A row here is never one of several, so the fragment alone already
+  // scrolls to it; this state adds the persistent highlight /impact/'s own
+  // rows get, instead of just the brief `:target` flash.
   const [highlightedComponentId, setHighlightedComponentId] = useState<
     string | null
   >(null);

@@ -22,16 +22,14 @@
   }
 }
 
-// The three subpage heroes — Products, Collaborate and Impact — are one band
-// with one text treatment, written once here instead of three times in the page
-// partials that each used to carry their own copy of it. The copies had
-// drifted: at 1440 the text started 148px, 119px and 108px from the left of the
-// same viewport, the subtitle was capped at 570px, 45% and 480px, and only one
-// of the three centred its text in the box. What stays in the page partials is
-// the artwork, which is the only genuinely per-page thing about these heroes.
+// The three subpage heroes — Products, Collaborate, Impact — are one band
+// with one text treatment, written once here rather than three times (the
+// copies had drifted: different left-offsets, subtitle caps, and only one
+// centred its text). Page partials keep only the artwork, the one
+// genuinely per-page thing.
 //
-// The home page is deliberately not in this list. Its hero is the full 470px
-// box with the diagram component in it, not a band with a title in one half.
+// The home page isn't in this list: its hero is the full 470px box with
+// the diagram component, not a band with a title in one half.
 .ProductsPage,
 .CollaboratePage,
 .ImpactPage {
@@ -61,11 +59,11 @@
       min-height: 360px;
     }
 
-    // One inset for the text on all three, and centred in the band rather than
-    // pushed down from the top by a padding figure written for a content
-    // section. `3.8em` is the horizontal rhythm the marketing pages' own
-    // `.container` rule uses, so the hero text lines up with the content under
-    // it as well as with the other two heroes.
+    // One inset for the text on all three, centred in the band rather than
+    // pushed down by a padding figure written for a content section.
+    // `3.8em` matches the marketing pages' own `.container` rhythm, so the
+    // hero text lines up with the content under it and with the other two
+    // heroes.
     .container {
       display: flex;
       align-items: center;
@@ -84,10 +82,9 @@
       gap: 0.8em;
       width: 100%;
 
-      // Just under half the band, which leaves the other half to the artwork
-      // all three of these pages put there. The column carries the title as
-      // well as the subtitle, so a long title wraps inside it instead of
-      // running out over the image on its own.
+      // Just under half the band, leaving the rest to the artwork. The
+      // column carries both title and subtitle, so a long title wraps
+      // inside it rather than running out over the image.
       @include breakpoint(tablet-up) {
         align-items: start;
         text-align: left;
@@ -95,9 +92,9 @@
       }
     }
 
-    // A step down from the shared `.t-h1` (40 to 50px), which is sized for a
-    // page whose hero has nothing under it competing: these three all have
-    // section headings immediately below. Still the largest text on the page.
+    // A step down from the shared `.t-h1` (40 to 50px), sized for a hero
+    // with nothing competing under it; these three all have section
+    // headings right below. Still the largest text on the page.
     .t-h1 {
       font-size: 36px;
       line-height: 44px;
@@ -113,10 +110,10 @@
       }
     }
 
-    // No width of its own from tablet up: the column above decides where this
-    // wraps, which is what keeps the three subtitles the same shape. `53vw`
-    // comes from the shared rule and is a viewport figure, so it ignored both
-    // the band's padding and the artwork.
+    // No width of its own from tablet up: the column above decides where
+    // this wraps, keeping the three subtitles the same shape. The shared
+    // rule's `53vw` is a viewport figure that ignored both the band's
+    // padding and the artwork.
     &__subtitle {
       width: auto;
       max-width: 330px;

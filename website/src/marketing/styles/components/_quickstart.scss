@@ -63,17 +63,16 @@
     max-width: 46em;
   }
 
-  // The introduction is white, matching the documentation band above it, so this
-  // is the section's one colour change and the screenshot is what crosses it.
-  // It carried `grey-bg` while the documentation band was grey; the two moved
-  // together, and the point was always that the seam falls here rather than
-  // between the two bands.
+  // The introduction is white, matching the documentation band above it, so
+  // this is the section's one colour change and the screenshot is what
+  // crosses it. It carried `grey-bg` while that band was grey; the two
+  // moved together — the seam falls here, not between the two bands.
   &__band {
     background-color: $blue-block;
-    // The figure's negative top margin has to stay inside this box. Without a
-    // block formatting context it collapses out to the band itself, which moves
-    // the blue background up along with the image rather than letting the image
-    // hang over the white above it.
+    // The figure's negative top margin has to stay inside this box:
+    // without a block formatting context, it collapses out to the band
+    // itself, moving the blue background up with the image instead of
+    // letting the image hang over the white above it.
     display: flow-root;
   }
 

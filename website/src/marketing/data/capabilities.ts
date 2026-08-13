@@ -1,15 +1,10 @@
-// What the home page's "What you can do with Overture" band says, in the four
-// entries it renders.
+// What the home page's "What you can do with Overture" band renders: each
+// heading is a thing a visitor can do, the platform underneath is the
+// evidence someone already does it — capability first, proof second.
 //
-// The heading of each entry is a thing a visitor can do; the platform underneath
-// is the evidence that someone already does it. That ordering is the whole point
-// of the band: the page it replaced led with the platform's name, which answered
-// "who uses this" rather than "what is this for".
-//
-// `platform` is an id into data/platforms.ts, never a name typed out here, so the
-// platform's own name, launch year and page stay a single source of truth with
-// /impact/. Figures are read from metrics.ts for the same reason, and because no
-// published figure on this site is ever written into a page.
+// `platform` is an id into data/platforms.ts, never a typed-out name, so it
+// stays a single source of truth with /impact/; figures likewise come from
+// metrics.ts, never written directly into a page.
 
 import metrics from "./metrics";
 import { AI_DISCOVERY_LINK } from "../constants/externalLinks";
@@ -22,16 +17,12 @@ import { AI_DISCOVERY_LINK } from "../constants/externalLinks";
 const CAPABILITY_SHOTS = "/img/marketing/home/capabilities";
 
 /**
- * The quickstart demo portal, the same file HomeQuickstart shows at the foot of
- * this page, standing in on the lab-scale card until a shot of the Drug
- * Discovery Portal exists. That portal is internal, so nobody outside the
- * group can capture one.
- *
- * Deliberately unbadged. It carried a "Quickstart portal" pill for one round, on
- * the reasoning that the band's other shots are the interface their card is
- * about; the developer had it removed, because a placeholder waiting to be
- * swapped is not a claim the page is making and labelling it as one gives it a
- * permanence it is not meant to have. Swap the file, not the label.
+ * The quickstart demo portal (same file HomeQuickstart shows below),
+ * standing in on the lab-scale card until a real Drug Discovery Portal shot
+ * exists — that portal is internal, so nobody outside the group can
+ * capture one. Deliberately unbadged: labelling it "Quickstart portal"
+ * would give a placeholder a permanence it isn't meant to have. Swap the
+ * file, not the label.
  */
 const QUICKSTART_SHOT = "/img/marketing/home/overtureQuickstartPortal.webp";
 
@@ -86,14 +77,9 @@ export const capabilities: Capability[] = [
     platform: "virusseq",
   },
   {
-    // HCMI held this slot until 2026-08-12, as "Publish a catalogue others can
-    // search and build on". It was the third card in a row about a consortium
-    // or a national programme, so the band answered "what can a large
-    // collaboration do with this" three times and never once answered the
-    // question most visitors arrive with, which is whether any of it is worth
-    // standing up at their own size. HCMI is unaffected on /impact/, where it
-    // keeps its card and its write-up; what changed is which platform the home
-    // page picks to make this argument.
+    // This card exists to answer "worth it at my own scale", which three
+    // consortium/national-programme cards in a row didn't. HCMI (which held
+    // this slot before) is unaffected on /impact/, still with its own card.
     id: "labScale",
     action: "Stand up a portal at one lab's scale",
     outcome: `The OICR Drug Discovery Portal is a single research group's own deployment: ${metrics.ddpRecords.value} records across ${metrics.ddpGenes.value} genes and ${metrics.ddpCancerTypes.value} cancer types, filtered down to candidate gene lists for drug targets.`,
@@ -106,21 +92,19 @@ export const capabilities: Capability[] = [
   {
     id: "conversational",
     action: "Let researchers ask a portal questions in plain language",
-    // Deliberately narrower than the other three. The capability is documented
-    // and reachable today through any MCP-compatible client; what is still in
-    // development is a researcher-facing host of our own, so the card claims the
-    // former and not the latter.
+    // Deliberately narrower than the other three: the capability is
+    // reachable today through any MCP-compatible client; what's still in
+    // development is a researcher-facing host of our own, so the card
+    // claims only the former.
     outcome:
       "The Arranger MCP server turns a question into a real search query against a portal's own indexed fields, so a researcher asks for a cohort instead of building one.",
     note: "In development",
     href: AI_DISCOVERY_LINK,
     linkLabel: "Read more",
-    // The workshop's mockup of the researcher-facing host, which is the part
-    // still in development, so it is labelled as a mockup on the card. The shot
-    // is cropped to its top, where a plain-language question goes in and the
-    // portal is queried back: that much is what the MCP server does today, and
-    // it is the sentence above it. The code execution further down the mockup
-    // is not claimed here and is below the crop.
+    // The workshop's mockup of the researcher-facing host still in
+    // development, labelled as such. Cropped to its top — the
+    // question-in, portal-queried-back part the MCP server actually does
+    // today; the code-execution part further down isn't claimed here.
     screenshot: `${CAPABILITY_SHOTS}/conversational-discovery.webp`,
     screenshotBadge: "Mockup",
   },

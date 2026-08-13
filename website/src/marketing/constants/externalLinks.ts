@@ -49,24 +49,19 @@ export const AI_DISCOVERY_LINK = `${DOCS}/use/ai-assisted-data-discovery`;
 export const WORKSHOP_DOCS_LINK = `${DOCS}/use/workshop/prerequisites`;
 export const OVERTURE_DOCUMENTATION_CORE_SOFTWARE = `${DOCS}/develop`;
 export const OVERTURE_DOCUMENTATION_LICENSING = `${DOCS}/community/licensing`;
-// Funding and citation, both canonical on the docs site and both linked from the
-// footer's Impact column as well as from the home page's "Powered by Overture"
-// band. There is no marketing page for either any more: /about/funding/ and
-// /impact/publications/ held second copies of these two documents and were
-// removed, so `docs/community-docs/02-funding.md` and `06-citing-us.md` are the
-// only versions and are no longer pointers to here.
+// Funding and citation, canonical on the docs site, linked from the
+// footer's Impact column and the home page's "Powered by Overture" band. No
+// marketing page for either any more: /about/funding/ and
+// /impact/publications/ held second copies and were removed.
 export const OVERTURE_DOCUMENTATION_FUNDING = `${DOCS}/community/funding`;
 export const OVERTURE_DOCUMENTATION_CITING = `${DOCS}/community/citing-us`;
 export const OVERTURE_SUPPORT = `${DOCS}/community/support`;
 
-// The Overture platform paper: peer reviewed, gold open access, 38 authors. Here
-// rather than in data/publications.ts, which holds the other four, because two
-// pages cite this one (the home page's "What we do" band and the /impact/
-// publication list) and a shared link belongs in the shared file.
-//
-// Linked by DOI rather than by the publisher's own URL. The DOI is the citable,
-// permanent address and is what docs/community/citing-us gives as well, so a
-// reader who follows either lands in the same place.
+// The Overture platform paper: peer reviewed, gold open access, 38 authors.
+// Here rather than in data/publications.ts (which holds the other four)
+// since two pages cite it — the home page's "What we do" band and the
+// /impact/ publication list. Linked by DOI, the citable permanent address,
+// matching what docs/community/citing-us gives too.
 export const GIGASCIENCE_PAPER_LINK =
   "https://doi.org/10.1093/gigascience/giaf038";
 
@@ -78,12 +73,11 @@ export const ICGC_LINK = "https://dcc.icgc.org/";
 export const IHCC_PORTAL_LINK = "https://atlas.ihccglobal.org/";
 export const KIDS_FIRST_LINK =
   "https://portal.kidsfirstdrc.org/login?redirect_path=/dashboard?";
-// iMicroSeq, published as VirusSeq until 2026-08-07. The portal moved to match
-// the platform's name, confirmed by the developer 2026-08-12; the constant was
-// renamed with it, since the old spelling was the last place on the site still
-// calling the platform VirusSeq outside the deliberately-preserved `virusseq`
-// anchor id. `/explorer` is kept from the old URL and still resolves: it
-// redirects to `/explorer/clinical`, checked 2026-08-12.
+// iMicroSeq, published as VirusSeq until 2026-08-07; renamed with the
+// platform, since the old spelling was the last place on the site still
+// calling it VirusSeq outside the deliberately-preserved `virusseq` anchor
+// id. `/explorer` is kept from the old URL: it redirects to
+// `/explorer/clinical`.
 export const IMICROSEQ_PORTAL_LINK = "https://imicroseq-dataportal.ca/explorer";
 // OHCRN and PCGL, both live and both verified 2026-08-12: until then, their
 // cards were the only ones on /impact/ that linked nowhere.

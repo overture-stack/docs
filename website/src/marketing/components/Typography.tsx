@@ -10,12 +10,10 @@ type TextProps = {
   children?: React.ReactNode;
   style?: React.CSSProperties;
   /**
-   * For headings a `<section aria-labelledby>` points at. Also, via
-   * `@theme/Heading` below, what turns the heading itself into a clickable,
-   * linkable anchor (a "#" that appears on hover, the same as every MDX
-   * heading on the documentation site) — see SiteMap.tsx and pages/index.tsx
-   * for the same pattern already in use elsewhere on this site. A heading
-   * with no `id` renders exactly as it did before this existed.
+   * For headings a `<section aria-labelledby>` points at; also what turns
+   * the heading into a clickable anchor via `@theme/Heading` (a "#" on
+   * hover, same as MDX headings). A heading with no `id` renders exactly as
+   * before this existed.
    */
   id?: string;
 };

@@ -69,10 +69,10 @@ const metrics = {
     note: "Stakeholder engagements a year: platform demonstrations, needs assessments and technical guidance. An average, rounded down from the sixteen named engagements the program tracks.",
   },
 
-  // Distribution and independent adoption. Collected 2026-08-11 for the RSMF
-  // Phase 2 supporting-evidence submission, and published here because every one
-  // of them is checkable from a public source: /impact/ renders each figure next
-  // to the link it came from, which is the rule that section is built on.
+  // Distribution and independent adoption. Collected 2026-08-11 for an
+  // internal evidence review, and published here because every one of them
+  // is checkable from a public source: /impact/ renders each figure next to
+  // the link it came from, which is the rule that section is built on.
   //
   // These are live counters, unlike the launch years below them. They will move.
   // Re-read them from the sources named here rather than adjusting them upward
@@ -171,10 +171,10 @@ const metrics = {
   // 2026-08-12: the /impact/ aggregate band's user figure, and a bullet in the
   // ICGC-ARGO write-up. Removed on the developer's instruction, not edited.
   //
-  // The RSMF Phase 2 alignment document flags this figure as contested between
-  // the submitted LOI and Phase 1's alignment document, and there was no second
-  // platform to reconcile it against: the platforms other institutions own and
-  // run do not report their user counts, so there was never an honest
+  // An internal review flagged this figure as contested between two
+  // internal sources, and there was no second platform to reconcile it
+  // against: the platforms other institutions own and run do not report
+  // their user counts, so there was never an honest
   // platform-wide total to put in its place either. The band runs on npm
   // downloads instead, which is a distribution figure a reader can check rather
   // than a user figure only we can assert.

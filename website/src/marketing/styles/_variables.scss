@@ -17,18 +17,15 @@ $desktop: 1216px;
 // breakpoint — it's a measured, navbar-specific squeeze.
 $navbar-tight-breakpoint: 1260px;
 
-// How wide the introduction under a section heading is allowed to run.
+// How wide the introduction under a section heading runs. One value
+// rather than the per-band `em` caps each home page section used to carry
+// (`44em` on a 1.05rem lede, `46em` on a note, `max-w-3xl` on a 1.5rem one
+// — three different widths, none reaching the container). `rem` keeps the
+// cap the same measured width regardless of type size.
 //
-// One value rather than the per-band `em` caps each home page section used to
-// carry: those were measured against each element's own font size, so `44em` on
-// a 1.05rem lede and `46em` on a 1.05rem note and `max-w-3xl` on a 1.5rem one
-// were three different widths on the page, and every one of them broke its
-// paragraph well short of the container. `rem` keeps the cap the same measured
-// width whatever type the paragraph is set in.
-//
-// Sized against the container, not against a reading-length rule: at 1440px the
-// container's own content box is a little under 1200px, so this fills it and
-// only starts capping on wider screens.
+// Sized against the container, not a reading-length rule: at 1440px the
+// container's content box is just under 1200px, so this fills it and only
+// caps on wider screens.
 $lede-max-width: 68rem;
 
 // No `$card-tile-inset`. It was declared here so `.HomeCollaborate__subhead`

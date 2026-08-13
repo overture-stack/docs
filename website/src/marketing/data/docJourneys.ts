@@ -1,14 +1,13 @@
 // The three hands-on journeys the home page's documentation band shows.
 //
 // `audience` is quoted verbatim from each journey's own landing page
-// (`website/docs/<journey>-docs/index.*`), so the home page cannot describe the
-// documentation as something other than what the documentation says it is. If a
-// landing page's opening line changes, change these.
+// (`website/docs/<journey>-docs/index.*`), so the home page can't describe
+// the documentation as something other than what it says about itself. If
+// a landing page's opening line changes, change these.
 //
-// Each journey used to carry three deep links, which the cards no longer show:
-// a card is a name, who it is for, and the way in, the same three parts as the
-// documentation site's own entry tiles. Every destination they named is one
-// click further on from `href`.
+// A card is a name, who it is for, and the way in — the same three parts as
+// the documentation site's own entry tiles. No deep links: every
+// destination they'd name is one click further on from `href`.
 //
 // The fourth journey, community, is not a card: it is already in the navbar
 // and the footer, and it is not hands-on in the sense these three are.

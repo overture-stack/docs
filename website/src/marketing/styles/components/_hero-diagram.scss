@@ -2,15 +2,14 @@
 //
 // Square aspect ratio, matching the 528x528 artwork it lays hotspots over.
 // Sized with clamp() rather than a fixed width: a fixed size collided with
-// the hero paragraph between roughly 768px and 1216px viewport width,
-// invisible against the diagram's own empty space, not against text. See
-// _home.scss history for the full account.
+// the hero paragraph between roughly 768px and 1216px viewport width —
+// invisible against the diagram's own empty space, not against text.
 .HeroDiagram {
   position: relative;
   flex-shrink: 0;
-  // The 450px ceiling came down to 400 on request: only the top of the range
-  // moves, so the middle of the clamp (where the collision below 1216px was)
-  // is untouched.
+  // The 450px ceiling came down to 400: only the top of the range moves, so
+  // the middle of the clamp (where the collision below 1216px was) is
+  // untouched.
   width: clamp(220px, 32vw, 400px);
   aspect-ratio: 1;
 
@@ -61,12 +60,11 @@
 
   &__hotspot {
     position: absolute;
-    // Baseline z-index so this participates in explicit stacking at all:
-    // eight of these sit in the same absolutely-positioned layer, so
-    // without it a later sibling (later in DOM, not necessarily further
-    // away on screen) paints over an earlier one's `scale()`-enlarged
-    // hover/focus state. Raised further on hover/focus so it clears every
-    // neighbour, not just earlier ones.
+    // Baseline z-index so this participates in explicit stacking: eight of
+    // these share one absolutely-positioned layer, and without it a later
+    // sibling would paint over an earlier one's `scale()`-enlarged hover
+    // state. Raised further on hover/focus to clear every neighbour, not
+    // just earlier ones.
     z-index: 1;
     display: flex;
     align-items: center;
@@ -98,10 +96,9 @@
       }
     }
 
-    // Hovering or focusing a LogoCarousel logo sets `highlightedPlatform`
+    // Hovering a LogoCarousel logo sets `highlightedPlatform`
     // (data/componentUsage.ts says which components it uses); every hotspot
-    // is always on screen at once here, unlike the carousel's own logos, so
-    // dimming the rest in place is enough — nothing needs filtering out.
+    // is always on screen here, so dimming the rest in place is enough.
     &--highlighted {
       z-index: 3;
       transform: translate(-50%, -50%) scale(1.14);
@@ -120,14 +117,11 @@
     object-fit: contain;
   }
 
-  // `position: fixed`, positioned in JS from the hovered hotspot's own
+  // `position: fixed`, positioned in JS from the hovered hotspot's
   // `getBoundingClientRect()` (utils/floatingTooltip.ts), not `position:
-  // absolute` anchored to the hotspot: a fixed offset from one hotspot
-  // could cover the rest of the diagram, or run off the browser window for
-  // a hotspot near the top of a shorter one, both caught by the developer
-  // using the real page. No `:hover`/`:focus-visible` trigger here either —
-  // visibility is React state (only rendered while a tooltip is set), not
-  // CSS.
+  // absolute`: a fixed offset could cover the rest of the diagram, or run
+  // off-window near a shorter viewport's top. No `:hover`/`:focus-visible`
+  // trigger: visibility is React state, not CSS.
   &__tooltip {
     @include floating-tooltip-card;
     width: 200px;

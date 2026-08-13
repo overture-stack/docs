@@ -16,20 +16,15 @@
     font-family: $font-sans-serif;
   }
 
-  // Box, text and inset come from the shared subpage-hero rules in
-  // `components/_hero.scss`. Only the artwork is this page's own.
-  //
-  // This illustration is much the widest of the three: a conveyor running the
-  // diagonal of the band rather than a picture sitting in its right half. At
-  // full height it is over 800px wide, so it needs two things the other two
-  // heroes do not.
-  //
-  // First it is anchored to the right edge rather than at a fixed offset from
-  // the left (82px, which ran it straight under the text at every width below
-  // `desktop-wide`). Second it is scaled below the band height until there is
-  // room for it beside the text column: the cubes are the solid part, and they
-  // sit a quarter of the way in from the image's left edge, so the pale tail is
-  // all that ever passes behind the subtitle.
+  // Box, text and inset come from the shared subpage-hero rules
+  // (components/_hero.scss); only the artwork is this page's own. This
+  // illustration is the widest of the three — a conveyor running the
+  // band's diagonal, over 800px wide at full height — so it needs two
+  // things the others don't: anchored to the right edge, not a fixed left
+  // offset (which ran it under the text below `desktop-wide`), and scaled
+  // below band height until there's room beside the text column. The
+  // cubes (the solid part) sit a quarter-in from the image's left edge, so
+  // only the pale tail ever passes behind the subtitle.
   .Hero {
     @include breakpoint(tablet-up) {
       background-image: url('/img/marketing/products/img_hero_products.svg');
@@ -63,11 +58,11 @@
     }
   }
 
-  // Tighter than the shared rhythm above, on request: the table is the only
-  // other thing on this page besides the hero, so there's no second section
-  // to visually separate it from — closer reads as one page, not two bands.
-  // Only the top side; the side and bottom padding above still apply, since
-  // this overrides one longhand rather than the shorthand.
+  // Tighter than the shared rhythm above: the table is the only other
+  // thing on this page besides the hero, so there's no second section to
+  // separate it from — closer reads as one page, not two. Top side only;
+  // the shared side/bottom padding still applies since this overrides one
+  // longhand.
   .ProductsTable .container {
     padding-top: 32px;
 
@@ -78,15 +73,13 @@
 
   // The seven components, as one table. See ComponentTable.tsx.
   //
-  // This is SCSS rather than `ow:` utilities, the usual default for new work,
-  // because a table is the one thing utilities cannot dress here.
-  // Infima styles every `table` on the site — `display: block`, a border on
-  // each cell, a background on every second row — and undoing that takes
-  // element selectors (`tr:nth-child(2n)` has no utility) on markup we do not
-  // own the class list of. `.ProductsPage .ProductsTable__table tr` outranks
-  // `table tr:nth-child(2n)` on specificity alone, so nothing here needs
-  // `!important`; a utility would have needed it and could then never be
-  // overridden again.
+  // SCSS rather than `ow:` utilities: Infima styles every `table`
+  // (`display: block`, cell borders, zebra striping) and undoing that
+  // needs element selectors (`tr:nth-child(2n)` has no utility) on markup
+  // we don't own the classes of. `.ProductsPage .ProductsTable__table tr`
+  // outranks Infima's rule on specificity alone, so nothing needs
+  // `!important` — a utility would have, and could never be overridden
+  // again.
   .ProductsTable {
     &__table {
       // Infima's `display: block` turns a table into a scrolling box and drops
@@ -129,13 +122,12 @@
     // rather than with `col`, which browsers honour for width but not for
     // padding or type.
     //
-    // `&__columnHeader th` repeats the same look at the top of every group
-    // (see ComponentTable.tsx's `COLUMN_HEADERS`), added on the developer's
-    // instruction: with only the true `thead` at the very top of the table,
-    // scrolling into Explore or Control loses the header row and a reader
-    // can no longer tell which column is which. Widths are set on the real
-    // `thead` only — `table-layout: fixed` takes the column widths from the
-    // first row of cells, so a second set on the repeat would be redundant.
+    // `&__columnHeader th` repeats the look at the top of every group
+    // (ComponentTable.tsx's `COLUMN_HEADERS`), since scrolling into
+    // Explore or Control would otherwise lose the header row entirely.
+    // Widths are set on the real `thead` only — `table-layout: fixed`
+    // takes them from the first row of cells, so repeating them would be
+    // redundant.
     thead th,
     &__columnHeader th {
       padding-bottom: 0.9em;
@@ -212,24 +204,18 @@
     }
 
     // A row jumped to directly — a bookmarked or externally-linked
-    // `/products/#<id>` (see data/components.ts's note on `id`: these predate
-    // this rewrite and are linked from outside the site) — gets a brief
-    // marker, since an anchor jump otherwise lands with no visual cue at all
-    // for which row it was aiming at. `:target` matches whichever row's `id`
-    // is in the URL right now, no JS required, and fades on its own rather
-    // than sitting highlighted forever.
+    // `/products/#<id>` — gets a brief marker, since an anchor jump
+    // otherwise lands with no visual cue. `:target` matches whichever
+    // row's `id` is in the URL, no JS required, fading on its own.
     tbody tr:target {
       animation: target-flash 2400ms ease-out;
     }
 
-    // The other case a row can be jumped to for: /impact/'s Runs column links
-    // straight to one component (impact/index.tsx), the same way this
-    // table's own Used by column links to specific deployments there.
-    // Persistent rather than the flash above, matching the highlight
-    // /impact/'s own table gives a row lit from this table's "N deployments"
-    // link (`.ImpactTable__highlight` in pages/_impact.scss) — cleared the
-    // same way, on a click outside the row, which ComponentTable.tsx's
-    // `highlightedComponentId` handles.
+    // The other case: /impact/'s Runs column links straight to one
+    // component, the same way this table's Used by column links to
+    // deployments there. Persistent rather than the flash above, matching
+    // /impact/'s own `.ImpactTable__highlight` — cleared the same way, on
+    // an outside click, via ComponentTable.tsx's `highlightedComponentId`.
     tbody tr.ProductsTable__highlight {
       @include table-row-highlight-bleed;
     }
@@ -274,13 +260,11 @@
       color: $blue-links;
     }
 
-    // The Used by cell: the deployment(s) running this component, linking to
-    // their row on /impact/ — the reverse of that page's Runs column, which
-    // links component icons the other way. One deployment names and links to
-    // it directly; more than one collapses to "N deployments" (see
-    // ComponentTable.tsx), which is why this is a single link rather than a
-    // list — Arranger alone runs in seven, and naming every one made that row
-    // by far the tallest in the table.
+    // The Used by cell: the deployment(s) running this component, the
+    // reverse of /impact/'s Runs column. One deployment links directly;
+    // more than one collapses to "N deployments" (ComponentTable.tsx) —
+    // Arranger alone runs in seven, and naming each made that row far the
+    // tallest.
     &__usedByLink {
       font-size: 17px;
       font-weight: 700;
@@ -296,17 +280,15 @@
       @include floating-tooltip-label-text;
     }
 
-    // Below tablet there is no room for three columns, so the table stops
-    // being one: every cell becomes a block and each row reads as the stacked
-    // card the old row list used to be. The rules move off the cells and onto
-    // the row with them, so a stacked row is separated once rather than three
-    // times.
+    // Below tablet there's no room for three columns, so every cell
+    // becomes a block and each row reads as a stacked card. The rules
+    // move off the cells onto the row, so a stacked row is separated
+    // once, not three times.
     @include breakpoint(mobile) {
-      // The table element stacks along with everything inside it. Leaving it
-      // as a table while its rows and cells are blocks puts the two layout
-      // models against each other: the browser wraps the stray blocks back
-      // into anonymous cells and then sizes the table from their content,
-      // which is not a width the phone can be held to.
+      // The table element stacks too: leaving it as a table while
+      // rows/cells are blocks puts two layout models against each other,
+      // and the browser wraps the stray blocks back into anonymous cells
+      // sized from their content — not a width the phone can be held to.
       &__table {
         display: block;
       }
@@ -323,15 +305,12 @@
         width: auto;
       }
 
-      // The repeated header row is the same "which column is this" aid the
-      // true `thead` gives desktop's multi-row groups; a stacked mobile card
-      // has no columns to lose track of, so it goes with `thead` rather than
-      // rendering as four bare labels above every group's first component.
-      // Written as `tbody tr.ProductsTable__columnHeader` rather than the
-      // bare class: the generic `tbody tr { display: block }` just above
-      // outweighs a class alone on specificity (two type selectors beat
-      // none), and had been quietly winning the cascade and keeping this
-      // row visible.
+      // The repeated header row aids desktop's multi-row groups; a
+      // stacked mobile card has no columns to lose track of, so it hides
+      // with `thead`. Written as `tbody tr.ProductsTable__columnHeader`,
+      // not the bare class: the generic `tbody tr { display: block }`
+      // above outranks a class alone on specificity, and had been
+      // quietly winning the cascade.
       tbody tr.ProductsTable__columnHeader {
         display: none;
       }

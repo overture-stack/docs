@@ -4,16 +4,13 @@
 // onBrokenLinks: "throw" checks every one of them at build time, so they are
 // written out literally.
 
-// No ABOUT_US_PATH: /about-us/ is gone. Everything it said is the "What we do"
-// band on the home page, which is where the footer's Our story and a 301 from the
-// old address both now land. `ABOUT_BAND` is that destination, written once so the
-// two of them cannot drift; the fragment is the `id` on the band's own H2 in
-// HomeCollaborate.tsx, which is what makes an inbound link arrive at the content
-// rather than at the top of the page.
-//
-// The navbar's About item used to be the third reader of this. It is gone, so the
-// footer is the only navigation that points here; the `id` is still load-bearing
-// for the redirect either way.
+// No ABOUT_US_PATH: /about-us/ is gone. Everything it said is the "What we
+// do" band on the home page, where the footer's Our story and the 301 from
+// the old address both land. `ABOUT_BAND` is that destination, written once
+// so the two can't drift; the fragment is the `id` on the band's own H2 in
+// HomeCollaborate.tsx, so an inbound link arrives at the content, not the
+// top of the page. The footer is now the only navigation pointing here;
+// the `id` stays load-bearing for the redirect regardless.
 export const ABOUT_BAND = "/home/#collaborate-heading";
 // No COMMUNITY_PATH: /community is already the routeBasePath of the community
 // documentation plugin instance in this build, and the marketing page that
@@ -27,15 +24,13 @@ export const ABOUT_BAND = "/home/#collaborate-heading";
 export const PRIVACY_PATH = "/privacy/";
 export const PRODUCTS_PATH = "/products/";
 
-// The /impact/ section, the successor to /case-studies/ and one route rather
-// than five: the four platform pages that lived under it are retired and
-// their write-ups render on the hub itself.
-//
-// So there are no per-platform paths here any more. The addresses that replaced
-// them are `IMPACT_PATH` plus a fragment, and the fragment is a `Platform.id`,
-// so they are written in data/platforms.ts next to the ids they depend on
-// rather than a second time here. Those ids keep their older camelCase
-// spellings, which is what makes today's inbound fragment links still land.
+// The /impact/ section, the successor to /case-studies/ and one route
+// rather than five: the four platform pages that lived under it are
+// retired, their write-ups on the hub itself. No per-platform paths here:
+// the replacement addresses are `IMPACT_PATH` plus a `Platform.id`
+// fragment, written in data/platforms.ts next to the ids they depend on.
+// Those ids keep their older camelCase spellings, which is what makes
+// inbound fragment links still land.
 export const IMPACT_PATH = "/impact/";
 // /services/ became /collaborate/, page and address both. The old route no
 // longer exists here, so it owes a 301 in whatever Netlify config stage 3
@@ -46,9 +41,9 @@ export const TERMS_PATH = "/terms-conditions/";
 // at /home/ until stage 3 gives the marketing build its own root.
 export const HOME_PATH = "/home/";
 
-// Eleven retired routes, all owed a redirect. The rules are written out in
-// `website/netlify/marketing-redirects.toml`, staged for the Netlify site stage
-// 3 creates; this list is the same set, kept beside the paths:
+// Eleven retired routes, all owed a redirect (rules in
+// `website/netlify/marketing-redirects.toml`, staged for stage 3); this
+// list is the same set, kept beside the paths:
 //
 //   /getting-started/      -> the docs quickstart, cross-host
 //   /acknowledgements/     -> the docs funding page, cross-host
@@ -86,14 +81,12 @@ export const MARKETING_PATHS = [
 ];
 
 
-// No `productsAnchors` and no `caseStudyAnchors`. Both existed for the home
-// page's links into other pages' fragments, and a later reorder removed the
-// last of those: the component catalogue became one link to /products/, and the
-// carousel became three cards linking to a platform's write-up on /impact/. The
-// ids themselves stay in the markup, because those cards, external links and the
-// /case-studies/ redirect all land on them; they are listed in
-// data/components.ts and data/platforms.ts, next to the content they belong to.
-//
-// Removing them is what cleared the six broken-anchor warnings the build had
-// carried since stage 1. Docusaurus does not collect ids from JSX pages, so it
-// could never verify those links; now nothing asks it to.
+// No `productsAnchors` and no `caseStudyAnchors`: both existed for the home
+// page's links into other pages' fragments, removed when the component
+// catalogue became one link to /products/ and the carousel became three
+// cards linking to /impact/ write-ups. The ids themselves stay in the
+// markup (listed in data/components.ts and data/platforms.ts) since cards,
+// external links and the /case-studies/ redirect still land on them.
+// Removing the anchor-collection calls cleared six broken-anchor warnings
+// the build had carried: Docusaurus can't verify ids on JSX pages anyway,
+// so now nothing asks it to.

@@ -6,29 +6,25 @@ import { H3 } from "./Typography";
  * The white tile the home page's card bands are built from: a title, a body,
  * and a "go" line, with the whole tile one link.
  *
- * It is the documentation site's entry tile (components/SiteMap), rebuilt on
- * this side of the build. That component is a CSS module scoped to a page with
- * no marketing styles on it, so it cannot be imported here; what the two share
- * by construction instead is their shape and, where the caller passes one, the
- * accent colour (`--journey-*-color` in css/custom.css).
+ * Mirrors the documentation site's entry tile (components/SiteMap) — a
+ * CSS-module component scoped to a page with no marketing styles, so it
+ * can't be imported here. The two share shape and, where passed, accent
+ * colour (`--journey-*-color` in css/custom.css).
  *
- * Renders an `<li>`, so the caller supplies the `<ul>` and owns the grid: this
- * component is the card, not the row. `accent` colours the go line and is a CSS
- * colour or `var()` reference; without one the tile uses the site's link blue.
+ * Renders an `<li>`; the caller supplies the `<ul>` and owns the grid.
+ * `accent` colours the go line (a CSS colour or `var()`); without one it
+ * uses the site's link blue.
  *
- * The single anchor is why the caller passes `children` as plain paragraphs
- * rather than anything interactive: links inside a link is neither valid markup
- * nor navigable, and the whole point of the tile is that the whole tile is
- * clickable.
+ * The single anchor is why `children` must be plain paragraphs, not
+ * interactive content: a link inside a link is invalid and unnavigable, and
+ * the whole tile is meant to be clickable.
  *
- * `image` puts a screenshot across the top of the tile, inside the anchor.
- * Inside rather than behind and overhanging, which is the other way a card band
- * shows one: the tiles here sit two by two, so an overhang on the second row has
- * to clear the first row's floor, and every screenshot the site holds is already
- * drawn with its own browser chrome and shadow, which is the raised look a
- * second frame behind it would only repeat. That shadow is also why the shot is
- * inset on a pale blue field rather than bled to the tile's edges; see
- * `.CardTile__media` in styles/components/_card-tile.scss.
+ * `image` sits inside the anchor, not behind it as an overhang: tiles sit
+ * two-by-two here, so an overhang on the second row would clash with the
+ * row above, and every screenshot already has its own chrome/shadow, which
+ * a second frame would only repeat. Inset on a pale blue field rather than
+ * bled to the edge for the same reason; see `.CardTile__media` in
+ * styles/components/_card-tile.scss.
  */
 export type CardTileProps = {
   title: string;

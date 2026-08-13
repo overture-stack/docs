@@ -53,21 +53,15 @@
     font-family: $font-monospace;
     font-size: 15px;
     line-height: 1.9;
-    // Wraps at a space and nowhere else. Getting there took three attempts,
-    // each measured with Range rects per visual line rather than read off a
-    // screenshot, since a screenshot cannot tell a wrap from a real newline:
+    // Wraps at a space and nowhere else: a hyphen is a line-break
+    // opportunity in CSS, so `pre-wrap`/`overflow-wrap: break-word` and
+    // `word-break: keep-all` both still broke `docker build --platform` as
+    // `docker build --` / `platform`. `Terminal__token`'s
+    // `white-space: nowrap` on each token is what actually works, leaving
+    // only the command's own spaces as break points.
     //
-    //   1. `pre-wrap` plus `overflow-wrap: break-word` broke `docker build
-    //      --platform ...` as `docker build --` / `platform` at 390px. A
-    //      hyphen is a line-break opportunity in CSS, so this is not an
-    //      overflow-wrap question at all.
-    //   2. `word-break: keep-all` produced the identical break in Chrome.
-    //   3. What works: `Terminal__token`'s `white-space: nowrap` on each
-    //      whitespace-separated token, so the only break opportunities left in
-    //      a command are the spaces the command itself has.
-    //
-    // `overflow-x` is the fallback for a single token wider than the block,
-    // which nothing in the quickstart currently is.
+    // `overflow-x` is the fallback for a single token wider than the
+    // block, which nothing in the quickstart currently is.
     white-space: pre-wrap;
     overflow-x: auto;
     // A monospace face with a `--` ligature would render every long flag here as

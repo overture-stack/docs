@@ -38,10 +38,9 @@ export default function Terminal({
       clearTimeout(timer.current);
       timer.current = setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Clipboard access can be refused outright (an insecure origin, or a
-      // permissions policy). Nothing to recover: the commands are selectable
-      // text whether or not the button works, so this fails silently rather
-      // than showing an error for something the visitor did not ask for.
+      // Clipboard access can be refused (insecure origin, permissions
+      // policy). Fails silently: the commands are still selectable text
+      // either way.
     }
   };
 
@@ -53,9 +52,8 @@ export default function Terminal({
           <span className="Terminal__light" />
           <span className="Terminal__light" />
         </span>
-        {/* In the title bar rather than over the commands: the code block
-            scrolls sideways (see _terminal.scss for why it does not wrap), and
-            a button floating over a scrolling line ends up with text passing
+        {/* In the title bar, not over the commands: the code block scrolls
+            sideways, and a floating button there would have text passing
             underneath it. */}
         <button
           type="button"
@@ -74,13 +72,10 @@ export default function Terminal({
       <div className="Terminal__inner">
         <pre className="Terminal__code">
           <code>
-            {/* A line per command, and a `nowrap` span per whitespace-separated
-                token inside it. Both are load-bearing rather than tidiness:
-                CSS treats a hyphen as a line-break opportunity, so left to
-                itself the browser breaks `--platform` into `--` and `platform`
-                on a narrow column, which reads as two arguments. Keeping each
-                token unbreakable means a long command can only ever wrap at a
-                space, and the hanging indent in _terminal.scss is what tells a
+            {/* A line per command, a `nowrap` span per token: CSS treats a
+                hyphen as a break point, so `--platform` would otherwise split
+                into `--` and `platform` on a narrow column, reading as two
+                arguments. The hanging indent in _terminal.scss then tells a
                 wrapped line apart from the next command. */}
             {commands.map((command) => (
               <span className="Terminal__line" key={command}>

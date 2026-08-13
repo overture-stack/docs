@@ -14,47 +14,34 @@ import {
 } from "../constants/externalLinks";
 
 /**
- * "What we do": who builds Overture, how it is built, and what to contact us
- * about. The second band under the carousel, behind `HomeCapabilities`, which
- * it led for one round: a visitor who has just read what Overture is needs to
- * know what it does before who builds it, and this band is then the staffed
- * route out of the page, offered ahead of the documentation and quickstart
- * bands below.
+ * "What we do": who builds Overture, how, and what to contact us about. Sits
+ * behind `HomeCapabilities` (what before who), and ahead of the
+ * documentation/quickstart bands as the staffed route out of the page.
  *
- * The only place the /about-us/ material exists, condensed into three
- * paragraphs and a four-item list, now that the page itself is gone: who
- * builds it (the Genome Informatics program, its size, what OICR does), the
- * 2017 origin story, and the four values the page spent a grid on. The
- * footer's Our story and the 301 from /about-us/ both land on the H2 below,
- * which is why its `id` (`ABOUT_BAND` in constants/pages.ts, the one spelling
- * of that address) is load-bearing and not just an aria target — it's what
- * turns the landing into a scroll past the capability cards rather than a
- * hunt.
+ * The only place the retired /about-us/ page's material exists now,
+ * condensed into three paragraphs and a four-item list. The footer's Our
+ * story and the /about-us/ 301 both land on the H2 below via its `id`
+ * (`ABOUT_BAND` in constants/pages.ts), which is load-bearing, not just an
+ * aria target.
  *
- * The band opens on what Overture is for and credits the team second, which is
- * the order the heading asks for: "What we do with Overture" is answered by the
- * portfolio paragraph, and who builds it is a byline under that answer rather
- * than the way in. The two paragraphs are otherwise the ones /about-us/ had.
+ * Opens on what Overture is for, crediting the team second — the heading
+ * order asks for the portfolio answer first, who-builds-it as a byline
+ * under it.
  *
  * The three offers are `offers` in data/collaboration.ts, the same array
- * /collaborate/ renders a section each from; this reads their `oneLine`, so the
- * two pages describe the same three things and cannot drift apart. They sit
- * under their own subhead now, because the band opens on prose about the program
- * rather than on the offers and the reader needs to be told where one ends and
- * the other starts.
+ * /collaborate/ renders from (reading `oneLine` here), so the two pages
+ * can't drift apart. Under their own subhead since the band opens on prose
+ * about the program, not the offers.
  *
- * No "Our funders / Publications / Who builds Overture" link row at the foot:
- * the funder claim it carried survives as the sentence about public funding
- * below, and the three routes are in the footer.
+ * No "Our funders / Publications / Who builds Overture" link row at the
+ * foot: the funder claim survives as the public-funding sentence below, and
+ * the three routes are in the footer.
  */
 /**
- * The four claims about how the software is built, with the badge /about-us/
- * gave each one. `icon` is a key in the Icon component's own map, not a path, so
- * a renamed file is one edit there rather than four here.
- *
- * Local to this component rather than a data file: /about-us/ was the only other
- * reader and it is gone, so there is nothing left for the two to drift apart
- * from.
+ * The four claims about how the software is built, each with its
+ * /about-us/ badge. `icon` is a key in Icon's own map, not a path. Local
+ * here rather than in a data file, since /about-us/ (the only other reader)
+ * is gone.
  */
 const values = [
   {
@@ -100,10 +87,10 @@ export default function HomeCollaborate() {
             What we do with Overture
           </H2>
           <div className="yellow-bar ow:my-6" />
-          {/* No `P1` on the first paragraph: all three are one class, at the
-              smallest size this site sets prose in, so the band's opening
-              statement isn't told at a visibly different size than the notes
-              under it. The rules are pages/_home.scss `&__prose`. */}
+          {/* No `P1`: all three paragraphs share one class, the smallest
+              prose size this site sets, so the opening statement isn't
+              visibly bigger than the notes under it. Rules in
+              pages/_home.scss `&__prose`. */}
           <p className="HomeCollaborate__prose">
             Our ability to build{" "}
             <Link to={IMPACT_PATH}>a diverse portfolio of data platforms</Link>{" "}
@@ -114,14 +101,10 @@ export default function HomeCollaborate() {
             help researchers and consortiums across disciplines collect,
             organize and share their research data.
           </p>
-          {/* The one credential on this page, and one sentence of it. The home
-              page carries no citation anywhere else: the footer links "How to
-              cite us" on the documentation site, which is two hops from here and
-              is a page about citing rather than a statement that the platform
-              has been reviewed at all. This is the cheapest thing the page can
-              say to a reader who wants to know whether this is a real project,
-              and it is a sentence rather than a band on purpose. `/impact/`
-              carries the other four papers. */}
+          {/* The one credential on this page: a sentence stating the platform
+              has been peer reviewed, since the footer's "How to cite us" link
+              is about citing, not reviewing. `/impact/` carries the other
+              four papers. */}
           <p className="HomeCollaborate__prose">
             The platform is described in{" "}
             <Link to={GIGASCIENCE_PAPER_LINK}>GigaScience (2025)</Link>, peer
@@ -129,17 +112,12 @@ export default function HomeCollaborate() {
           </p>
         </div>
 
-        {/* The values grid from /about-us/, one line each instead of a card
-            each: four short claims about how the software is built are context
-            for the offers below, and at card size they were a second page
-            opening inside this band.
-
-            The badges are that page's own, which is the point of carrying them
-            here rather than drawing four new ones: this band is what is left of
-            /about-us/, and these four marks are the part of it a reader who
-            knew the page would recognize. `alt=""` on every one, because each
-            sits directly beside the word it illustrates and a screen reader
-            reading "Open source" twice is worse than not reading the badge. */}
+        {/* The values grid from /about-us/, one line each rather than a card
+            each — at card size these four claims read as a second page
+            opening inside this band. Badges are /about-us/'s own, carried
+            over rather than redrawn. `alt=""` on each: it sits beside the
+            word it illustrates, so a screen reader reading it twice is worse
+            than not reading it. */}
         <ul className="HomeCollaborate__values">
           {values.map((value) => (
             <li key={value.name}>
@@ -159,17 +137,16 @@ export default function HomeCollaborate() {
           How we collaborate
         </H3>
 
-        {/* The same `CardTile` the documentation band at the foot of the page is
-            built from, three across on the same grid. These were bare columns of
-            text with a link under each, which is what a card is, drawn without
-            the box: the tile gives them the edges that say where one offer stops
-            and the next starts, and it puts all three "what this involves" lines
-            on one floor whatever the sentence above happens to cost. */}
+        {/* The same `CardTile` the documentation band below is built from.
+            These were bare text columns with a link under each — the tile
+            adds edges marking where one offer stops and the next starts, and
+            keeps all three link lines flush regardless of the sentence
+            above. */}
         <ul className="HomeCollaborate__offers">
           {offers.map((offer) => (
-            // Into the section for this offer, not the top of the page:
-            // /collaborate/ gives each one an id, and the anchor is what makes
-            // three cards and one page not feel like a detour.
+            // Into the section for this offer, not the top of the page —
+            // /collaborate/ gives each an id, so three cards feel like one
+            // page rather than a detour.
             <CardTile
               key={offer.id}
               title={offer.title}
@@ -181,16 +158,12 @@ export default function HomeCollaborate() {
           ))}
         </ul>
 
-        {/* The self-serve route out of the cards and under them. It belongs to
-            one offer, but a tile is a single link end to end and a second link
-            inside one is neither valid markup nor reachable, so it reads as a
-            line about the band instead. It has to survive somewhere: it is what
-            keeps this honest that not everything here needs a conversation with
-            us first. The address comes from the offer that carries it, so the
-            URL stays in data/collaboration.ts and cannot rot separately here;
-            the wording is this sentence's own, because `selfServe.label` is
-            written to stand alone as a link and reads as an instruction dropped
-            mid-sentence when it is set inside one. */}
+        {/* The self-serve route, under the cards rather than inside one: a
+            tile is a single link end to end, so a second link inside it
+            isn't valid or reachable. Keeps this honest that not everything
+            needs a conversation first. The URL comes from
+            data/collaboration.ts; the wording is this sentence's own since
+            `selfServe.label` is written to stand alone, not mid-sentence. */}
         {selfServe && (
           <p className="HomeCollaborate__selfServe">
             Most questions do not need any of this,{" "}

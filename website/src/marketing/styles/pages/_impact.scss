@@ -1,10 +1,8 @@
 // The /impact/ hub, collapsed into one page: the per-platform pages are gone
 // and their write-ups render here.
 //
-// Almost nothing is here on purpose. The hub is built with `ow:` utilities, and
-// the write-ups reuse the `.Case-Study` component styles, which are top-level
-// rather than scoped to a page. What is left is the few things utilities cannot
-// supply from the markup.
+// Almost nothing is here on purpose. The hub is built with `ow:` utilities;
+// what's left is the few things utilities can't supply from the markup.
 
 .ImpactPage {
   // `.marketing` sets font size, weight and colour but not family: Bulma's rule
@@ -59,22 +57,20 @@
     }
   }
 
-  // The aggregate band is six short figures, not prose, so it wants far less
-  // height than a content section: it is a strip between the hero and the link
-  // tree rather than a section of its own. It was four figures on one row and is
-  // now six on two, so the vertical padding is a little more generous than the
-  // 24px a single row wanted.
+  // The aggregate band is six short figures, not prose, so it wants far
+  // less height than a content section — a strip between the hero and the
+  // link tree, not a section of its own. Was four figures on one row, now
+  // six on two, so the padding is a touch more generous than a single row
+  // wanted.
   .ImpactAggregate .container {
     padding-top: 32px;
     padding-bottom: 32px;
   }
 
-  // The deployments section runs up close under the hero and the figures
-  // strip, the same way `/products/`'s component table does under its own
-  // hero (see `.ProductsTable .container` in pages/_products.scss): a full
-  // section's worth of top padding here would read as a gap between the
-  // strip and this section's own heading. Only the top side, so the space
-  // below the table is untouched and `#publications` still starts as its own
+  // The deployments section runs close under the hero and figures strip,
+  // the same way `/products/`'s component table does (see
+  // `.ProductsTable .container`): a full section's top padding would read
+  // as a gap. Top side only, so `#publications` still starts as its own
   // band.
   .ImpactDeployments .container {
     padding-top: 32px;
@@ -108,13 +104,12 @@
     color: $navy-black;
   }
 
-  // A subhead inside a section, under that section's own title. Both are `H3`
-  // in the markup, and until 2026-08-12 that was fine: section titles were `H2`
-  // and the two were a step apart on their own. The developer had the titles
-  // dropped to bold `.t-h3` text that day, which left "Distribution and release
-  // history" set identically to "Packages" underneath it, so the step is taken
-  // here instead. Same family and weight, one size down: a subhead should read
-  // as inside its section rather than beside it.
+  // A subhead inside a section, under that section's own title — both H3
+  // in the markup. Section titles dropped from H2 to bold `.t-h3` text,
+  // which left "Distribution and release history" set identically to
+  // "Packages" underneath it, so the step is taken here instead: same
+  // family and weight, one size down, reading as inside its section
+  // rather than beside it.
   .ImpactBeyond__subhead {
     margin: 3rem 0 0;
     text-align: left;
@@ -339,17 +334,10 @@
     // instruction; the Led by column names the institution behind every row and
     // is what carries it now.
 
-    // A row's name, where a screenshot exists to preview: underlined like a
-    // link so the hover/focus target is visible before it is tried, but not
-    // `$blue-links` — it goes nowhere, and a link-blue name next to real
-    // links in the row's own Link column would promise a click this one
-    // cannot deliver.
-    // A row's name. A dotted underline and `cursor: default` until 2026-08-12,
-    // when the developer had it made a link to the deployment itself: it is a
-    // real destination now, so it takes the site's link colour and a solid
-    // rule like every other link in the table. The hover preview it also
-    // carries is a second thing it does, not a reason to dress it as a
-    // non-link.
+    // A row's name: a real link to the deployment, taking the site's link
+    // colour and a solid underline like every other link in the table.
+    // The hover preview it also carries is a second thing it does, not a
+    // reason to dress it as a non-link.
     &__nameTrigger {
       color: $blue-links;
       text-underline-offset: 3px;
@@ -397,24 +385,21 @@
         outline-offset: 1px;
       }
 
-      // The one icon in a row's Runs cell that matches the component a
-      // reader arrived asking about, from /products/'s "N deployments" link
-      // (`highlightedComponent` in impact/index.tsx). Same glow the home
-      // hero's diagram gives a highlighted hotspot (`_hero-diagram.scss`'s
-      // `--highlighted`, `filter: drop-shadow(...)` twice at different
-      // radii for a softer edge than one pass gives), plus a yellow
-      // background of its own: this box has one to give, where a hotspot on
-      // the diagram floats with none.
+      // The one icon in a row's Runs cell matching the component a reader
+      // arrived asking about (`highlightedComponent`, impact/index.tsx).
+      // Same glow as the home hero's highlighted hotspot
+      // (`_hero-diagram.scss`'s `--highlighted`, `drop-shadow` twice at
+      // different radii for a softer edge), plus a yellow background this
+      // box has to give that a floating hotspot doesn't.
       &--highlighted {
         background-color: rgba($yellow, 0.35);
         filter: drop-shadow(0 0 3px $yellow) drop-shadow(0 0 5px $yellow);
       }
     }
 
-    // The link column. A list rather than a sentence of commas, the same
-    // reasoning `&__repos` above was built on: an independent adopter row
-    // carries two or three source links, and a reader checking one wants to
-    // see at a glance how many there are.
+    // The link column: a list, not a comma sentence, for the same reason
+    // as `&__repos` above — an independent adopter row carries two or
+    // three source links, and a reader wants to see how many at a glance.
     &__linkList {
       list-style: none;
       margin: 0;
@@ -424,17 +409,15 @@
       gap: 0.35rem;
     }
 
-    // The screenshot preview. `position: fixed` and positioned from the
-    // hovered name's own `getBoundingClientRect()` (`floatingTooltipPosition`,
-    // shared with LogoCarousel and StackDiagram): a table row has no
-    // `overflow` of its own to clip this, but a table this wide already
-    // scrolls horizontally below tablet (see the mobile rules further down),
-    // and `fixed` is the same fix that pattern uses for a clipping ancestor
-    // either way.
+    // The screenshot preview: `position: fixed`, positioned from the
+    // hovered name's `getBoundingClientRect()` (`floatingTooltipPosition`,
+    // shared with LogoCarousel), the same fix for a clipping ancestor this
+    // table's own horizontal scroll below tablet would otherwise cause.
+    //
     // One element, two jobs: a portal screenshot from a row's name, and a
-    // component's name from an icon in its Runs cell. The shared part is the
-    // dark card and the fixed positioning; the width is per kind, since a
-    // screenshot wants a box and a name wants a line.
+    // component's name from an icon in its Runs cell. Shared: the dark
+    // card and fixed positioning. Per kind: width, since a screenshot
+    // wants a box and a name wants a line.
     &__tooltip {
       @include floating-tooltip-card;
 
@@ -455,15 +438,13 @@
     }
   }
 
-  // `.ImpactTable`'s default sizing is `table-layout: auto`, which the release
-  // history table wants: five columns of short, similar-length values, sized
-  // to fit each. This table's six columns are not similar lengths — AGARI and
-  // CQDG's "What it is" cells run to eight sentences of prose next to a
-  // one-line platform summary — and `auto` layout let the short columns push
-  // "What it is" down to a sliver a few words wide, wrapping AGARI's paragraph
-  // to fifty-odd lines. Fixed widths, keyed to position rather than content,
-  // fix the column at a reasonable measure regardless of what any one row
-  // puts in it.
+  // `.ImpactTable`'s default `table-layout: auto` suits the release
+  // history table (five columns of similar-length values), but this
+  // table's six columns aren't similar — AGARI and CQDG's "What it is"
+  // cells run to eight sentences next to a one-line summary, and `auto`
+  // layout squeezed that column to a sliver, wrapping AGARI's paragraph
+  // to fifty-odd lines. Fixed widths, keyed to position, hold each column
+  // to a reasonable measure regardless of content.
   .ImpactTable--deployments {
     table-layout: fixed;
 

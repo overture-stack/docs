@@ -34,13 +34,12 @@ import { hoverIntentHandlers } from "../../marketing/utils/hoverIntent";
  * The /impact/ hub, in three sections: who runs Overture, what has been
  * published about it, and how far the code travels.
  *
- *   - **Deployments** (`#platforms`), one table of every deployment there is,
- *     ours and other people's. It was two card grids, `#beyond` above
- *     `#platforms`, until 2026-08-12, when the developer had them consolidated
- *     into `deploymentRows`: one table reads faster than two.
+ *   - **Deployments** (`#platforms`): one table of every deployment there
+ *     is, ours and other people's — consolidated from two separate card
+ *     grids, since one table reads faster than two.
  *   - **Publications** (`#publications`), five papers.
- *   - **Distribution and release history** (`#distribution`), the registries
- *     and the release table.
+ *   - **Distribution and release history** (`#distribution`), the
+ *     registries and the release table.
  *
  * **Every claim on this page links to the source it came from**, and that is the
  * rule the sections are built to rather than a finishing touch. The one
@@ -48,23 +47,19 @@ import { hoverIntentHandlers } from "../../marketing/utils/hoverIntent";
  * be checked from outside; the page says so in the sentence that gives the
  * figure rather than letting it sit among the linked ones.
  *
- * Rows are ordered by launch year, most recent first, with the undated at the
- * foot: see the sort in `data/deployments.ts`, which is also where the type
- * and the row-building live now — moved out of this file so /products/'s
- * "Used by" column (see ComponentTable.tsx) can read the same rows and never
- * link to one that isn't actually here. That replaced an order that put other
- * people's deployments above our own, and a badge on those rows saying
- * `Independent`, both removed 2026-08-12 on the developer's instruction. What
- * still marks a deployment as somebody else's is the Led by column, which names
- * the institution behind every row.
+ * Rows are ordered by launch year, most recent first, undated at the foot:
+ * see the sort in `data/deployments.ts`, which also owns the type and
+ * row-building now — moved out of this file so /products/'s "Used by"
+ * column (ComponentTable.tsx) can read the same rows and never link to one
+ * that isn't here. Replaced an order that put other people's deployments
+ * above ours with an `Independent` badge; the Led by column names the
+ * institution behind every row instead.
  *
- * **Every row carries its own anchor id**, which is `Platform.id` and the same
- * slug the case studies have used since the Gatsby site, so `/impact/#icgcargo`
- * and the 301 from `/case-studies/#icgcargo` still land. They land on a table
- * row now rather than on a write-up: the long-form write-up sections were
- * removed from this page 2026-08-12, also on the developer's instruction.
- * `data/caseStudies.tsx` and `components/CaseStudy` had no caller left after
- * that and were deleted.
+ * Every row carries its own anchor id, `Platform.id` and the same slug
+ * case studies have used since the Gatsby site, so `/impact/#icgcargo` and
+ * the 301 from `/case-studies/#icgcargo` still land — on a table row now,
+ * not a write-up. `data/caseStudies.tsx` and `components/CaseStudy` had no
+ * caller left once the write-up sections were removed, and were deleted.
  *
  * All seven platform rows link to a live portal as of 2026-08-12, when the
  * developer confirmed OHCRN's and PCGL's URLs, except the Drug Discovery
@@ -79,22 +74,18 @@ import { hoverIntentHandlers } from "../../marketing/utils/hoverIntent";
 /**
  * The aggregate band, three figures.
  *
- * Container pulls and package downloads held two of the slots until
- * 2026-08-12, when the developer had them removed: both count activity
- * (`npm install` runs per CI job, not per person) rather than adoption, and
- * the same registries already get a fuller, less misleading treatment in
- * `#distribution`. The external-projects count was removed the same day: at
- * two organizations, a bare number in the glance band overstated a claim the
- * `#beyond` section itself makes better, with names and sources rather than a
- * digit. Every figure that remains carries its source in the label, which is
- * the same rule the sections below follow: a figure a reader cannot check is
- * a figure they have to take on trust, and this page's whole argument is
- * that they do not have to.
+ * Container pulls and package downloads are gone from here: both count
+ * activity (`npm install` runs per CI job, not per person) rather than
+ * adoption, and get a fuller treatment in `#distribution`. The
+ * external-projects count is gone too: at two organizations, a bare
+ * number overstated a claim `#beyond` makes better with names and
+ * sources. Every figure that remains carries its source in the label — a
+ * figure a reader can't check is one they have to trust, and this page's
+ * whole argument is that they don't have to.
  *
- * `key` is its own field rather than the label, because every label is an
- * element now and cannot be a key. Figures come from data/metrics.ts without
- * exception; nothing here is typed in, which is the rule that stopped the last
- * set going stale.
+ * `key` is its own field since every label is now an element, not a
+ * string. Figures come from data/metrics.ts without exception; nothing
+ * here is typed in, which is the rule that stopped the last set going stale.
  */
 const aggregates: { key: string; figure: string; label: React.ReactNode }[] = [
   {

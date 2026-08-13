@@ -2,27 +2,21 @@
 // same deployments table /impact/ renders everything else from (see
 // data/deployments.ts's `independentAdopters` mapping).
 //
-// It replaces `adopters` in data/platforms.ts, which was three entries, no
-// links, and one of them ("Overture components in their own stack") vague enough
-// that a reader could not tell what was being claimed. That export is gone
-// rather than kept beside this one: two lists of adopters is exactly the drift
-// this data layer exists to prevent.
+// Replaces `adopters` in data/platforms.ts (three entries, no links, one too
+// vague to tell what was claimed), removed rather than kept beside this one
+// — two lists of adopters is the drift this data layer exists to prevent.
 //
-// **Every entry here is linked, and that is a constraint rather than a
-// nicety.** The claim being made is that other institutions chose this
-// independently, which is worth nothing if the reader has to take our word for
-// it. So: no organization is named without a public source a reader can open,
-// and where the source is an organization's own words about their own system,
-// those words are quoted rather than paraphrased. Anything we cannot source this
-// way does not go on the page, however true we believe it to be.
+// **Every entry is linked, as a constraint, not a nicety**: the claim is
+// that other institutions chose this independently, worth nothing on our
+// word alone. No organization is named without a public source; where the
+// source is the organization's own words, they're quoted, not paraphrased.
+// Unsourced claims don't go on the page, however true.
 //
-// Sourced from the RSMF Phase 2 supporting-evidence submission, §2 and §4,
-// collected 2026-08-11. Narrowed on 2026-08-12, on the developer's instruction,
-// to the two cases with the clearest, most durable evidence: a funding body's
-// own procurement documents naming the framework, and a partner organization
-// actively developing its own fork rather than carrying an old one. The wider
-// list of ten repositories this page used to cite read as padding next to
-// those two, not as corroborating evidence.
+// Narrowed on 2026-08-12 to the two cases with the clearest, most durable
+// evidence: a third party's own procurement documents naming the framework,
+// and a partner organization actively developing its own fork. A wider list
+// of ten repositories this page used to cite read as padding next to those
+// two, not corroboration.
 
 export type DependentSource = {
   /** What the reader is about to open, not the bare URL. */
@@ -37,17 +31,11 @@ export type IndependentAdopter = {
   institution?: string;
   where: string;
   /**
-   * Launch year, where the organization has announced one publicly. Added
-   * 2026-08-12, when /impact/ started ordering every deployment by recency
-   * rather than by whose it is: without it these two rows sort to the foot of
-   * the table by default rather than because nothing is known about them.
-   *
-   * Absent is meaningful and is not a gap to fill by inference. CQDG has no
-   * launch announcement of Ferlab's fork to date it by, and the evidence there
-   * is a commit history rather than a launch, so it stays undated and sorts
-   * last. AGARI lost its dated source the same way on 2026-08-12, when its
-   * launch announcement was dropped from `sources`: the remaining source is a
-   * tender, not a launch, so it is undated too now.
+   * Launch year, where publicly announced. Absent is meaningful, not a gap
+   * to fill by inference: CQDG's evidence is a commit history, not a
+   * launch, so it stays undated; AGARI's remaining source (after its launch
+   * announcement was dropped) is a tender, not a launch, so it's undated
+   * too. Both sort last as a result.
    */
   launched?: string;
   /** Which Overture components this adopter is documented as running. */
@@ -69,14 +57,10 @@ export type IndependentAdopter = {
 };
 
 /**
- * The two cases where a third party has documented the dependency themselves,
- * in their own tender or commit history, with the clearest and most durable
- * evidence of the ten this page used to cite.
- *
- * CQDG first, AGARI second: both are undated now (see the note on `launched`
- * above) and the deployment table's sort is stable, so array order is what
- * breaks the tie. AGARI moved to the foot of that tie on 2026-08-12, on the
- * developer's instruction.
+ * The two cases with the clearest, most durable third-party evidence of the
+ * ten this page used to cite. CQDG first, AGARI second: both are undated
+ * (see `launched` above), and the deployment table's stable sort means
+ * array order breaks the tie.
  */
 export const independentAdopters: IndependentAdopter[] = [
   {

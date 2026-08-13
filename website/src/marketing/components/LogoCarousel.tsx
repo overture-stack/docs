@@ -70,15 +70,10 @@ function LogoItem({
       draggable={false}
     />
   );
-  // No production date under the logo: each one added a line of text plus
-  // its gap under every chip, and the band has to finish above the fold
-  // together with the hero. `date` is still in
-  // data/partnerLogos.ts (it reads as the record of when each platform ran, and
-  // `startYear` next to it still orders this list), just not rendered here.
-  // The impact tooltip (below) replaces the plain title for a logo that has
-  // one, rather than stacking a duplicate browser tooltip a second after the
-  // custom one; a logo without an impact statement yet still gets the plain
-  // title, same as before.
+  // No production date rendered under the logo (still in
+  // data/partnerLogos.ts, unused here). A logo with an impact statement
+  // skips the plain browser `title` in favor of the tooltip below, so the
+  // two never stack.
   const title = logo.name;
   const itemClassName = clsx(
     "LogoCarousel__item",
@@ -164,61 +159,27 @@ const LogoList = React.forwardRef<HTMLUListElement, { hidden: boolean }>(
 );
 
 /**
- * Who runs Overture, scrolling right below the hero: a continuous marquee
- * rather than a click-through carousel, since a marquee shows every logo at
- * once instead of hiding most of them behind an arrow.
+ * Who runs Overture, scrolling right below the hero: a continuous marquee,
+ * so every logo shows at once rather than hiding behind an arrow.
  *
- * The list renders twice, back to back, and the viewport is a real scroll
- * container (`overflow-x: auto`), not a CSS `transform` animation: a
- * `requestAnimationFrame` loop just adds to `scrollLeft` every frame when
- * nothing else is moving it, and wraps by exactly one list's width so the
- * loop point (the two copies being identical) is invisible. Being a real
- * scroll container is what lets a visitor take over with a trackpad swipe,
- * shift+wheel, or a mouse drag (handled here directly, since browsers don't
- * do that one on their own) without fighting the animation: hovering or
- * focusing anything inside pauses the loop outright rather than merely
- * slowing it, so the visitor's own scroll position is never being fought
- * from underneath them.
+ * The list renders twice back to back inside a real scroll container
+ * (`overflow-x: auto`), not a CSS transform animation, so a
+ * `requestAnimationFrame` loop can advance `scrollLeft` each frame while
+ * still letting a trackpad swipe, shift+wheel, or mouse drag take over
+ * without fighting it. The second copy is `aria-hidden`/`tabIndex={-1}` (it
+ * only exists to make the loop seamless) and drops out entirely under
+ * `prefers-reduced-motion`.
  *
- * A touch swipe is the fourth way in and the one none of that covered, since
- * a finger neither hovers nor focuses: the loop went on writing `scrollLeft`
- * a frame at a time throughout the gesture. Two things stop it now — the
- * contact itself (`touchHoldRef`, so a finger resting on the row is enough,
- * even before it moves) and any movement of `scrollLeft` this loop did not
- * write, which is what covers the momentum still gliding after the finger
- * has gone. Both branches resync `position` from the real scroll offset, so
- * the marquee picks up from wherever the visitor left it rather than
- * snapping back.
+ * Two independent links through `ComponentHighlightContext`: hovering a
+ * component in HeroDiagram swaps the marquee for a static list of the
+ * platforms that use it (dimming in place would miss anything currently
+ * off-screen); hovering a logo here sets `highlightedPlatform`, which
+ * HeroDiagram reads to highlight its own matching components.
  *
- * The second copy is `aria-hidden` and every one of its links is
- * `tabIndex={-1}`: it exists only to make the loop seamless, never as
- * content to tab into or hear twice. Under `prefers-reduced-motion` the loop
- * never starts and the duplicate list drops out entirely (see
- * _logo-carousel.scss), leaving a static, wrapped row.
- *
- * Two independent directions through ComponentHighlightContext: hovering or
- * focusing a component in HeroDiagram doesn't just dim the non-matching
- * logos here in place — whatever uses the component might not be scrolled
- * into view at that moment, and dimming something off-screen shows the
- * visitor nothing. It swaps the marquee out for a static, centered list of
- * just the matches instead, laid over the same space (`visibility: hidden`
- * on the marquee, not unmounted, so its scroll position and animation frame
- * survive the swap rather than resetting every time). The other direction —
- * hovering or focusing a logo here — sets `highlightedPlatform`, which
- * HeroDiagram reads itself to highlight the components that platform uses;
- * this component doesn't need to do anything with it beyond setting it.
- *
- * A third, unrelated thing the same hover/focus triggers: a tooltip with the
- * platform's impact statement (data/partnerLogos.ts's `impact` field),
- * mirroring HeroDiagram's own tooltip. It can't be positioned the same way
- * HeroDiagram's is (a plain `position: absolute` child, popping above the
- * icon): every logo here sits inside `&__viewport`, which needs
- * `overflow-y: hidden` for the marquee illusion to work, and that clips
- * anything that pops outside a row's own height exactly like the highlight
- * ring's `transform: scale` did earlier in this file's history. Rendered
- * instead as a single `position: fixed` element, positioned from the
- * hovered item's own `getBoundingClientRect()`: `fixed` is positioned
- * against the viewport itself, so no ancestor's `overflow` touches it.
+ * The impact-statement tooltip is `position: fixed`, not the `position:
+ * absolute` popup HeroDiagram's tooltip uses, because `&__viewport` needs
+ * `overflow-y: hidden` for the marquee illusion, which would clip anything
+ * anchored inside it.
  */
 export default function LogoCarousel() {
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -227,15 +188,14 @@ export default function LogoCarousel() {
   const filteredListRef = useRef<HTMLUListElement>(null);
   const pausedRef = useRef(false);
   const draggingRef = useRef(false);
-  // A finger (or pen) resting on the viewport. Separate from `draggingRef`,
-  // which is the mouse drag this component runs itself: touch scrolling is
-  // the browser's, and all this loop has to do about it is keep out of the
-  // way for as long as the contact lasts, whether or not it ever moves.
+  // A finger or pen resting on the viewport, separate from `draggingRef`
+  // (the mouse drag this component runs itself) — touch scrolling is the
+  // browser's; this only needs to stay out of its way.
   const touchHoldRef = useRef(false);
   const dragStartRef = useRef({ x: 0, scrollLeft: 0 });
-  // A mousedown that hasn't yet proven itself a drag: recorded here instead
-  // of `dragStartRef`/`draggingRef` directly so a plain click never captures
-  // the pointer at all — see `DRAG_THRESHOLD` and `handlePointerDown`.
+  // A mousedown not yet proven a drag, kept separate from
+  // `dragStartRef`/`draggingRef` so a plain click never captures the
+  // pointer — see `DRAG_THRESHOLD`.
   const dragCandidateRef = useRef<{
     pointerId: number;
     x: number;
@@ -246,12 +206,9 @@ export default function LogoCarousel() {
   const [tooltip, setTooltip] = useState<TooltipInfo | null>(null);
   const [filteredScale, setFilteredScale] = useState(1);
 
-  // The filtered view never wraps to a second row and never grows past each
-  // logo's own normal size — only ever shrinks, and only as much as it has
-  // to, to keep however many matches there are on one line. `scrollWidth`
-  // reads the list's natural, unscaled width regardless of any transform
-  // already applied (`transform` doesn't affect layout size), so this is
-  // stable to recompute repeatedly rather than compounding.
+  // The filtered view only ever shrinks to fit one line, never grows or
+  // wraps. `scrollWidth` reads the list's natural width regardless of any
+  // transform already applied, so recomputing repeatedly is safe.
   useLayoutEffect(() => {
     const list = filteredListRef.current;
     const stage = stageRef.current;
@@ -286,20 +243,15 @@ export default function LogoCarousel() {
 
     let frame: number;
     let last: number | null = null;
-    // `scrollLeft` itself is integer-quantized: at this speed each frame's
-    // move is under a pixel, and writing that straight to `scrollLeft` and
-    // reading it back next frame rounds it down to zero forever. Keeping the
-    // real position in a float here, and only ever writing the rounded
-    // result to the DOM, is what lets the sub-pixel amounts actually add up.
+    // `scrollLeft` is integer-quantized; at this speed each frame's move is
+    // under a pixel, so writing straight to it would round to zero forever.
+    // Tracked as a float here, only rounded on write.
     let position = viewport.scrollLeft;
-    // What `scrollLeft` read at the end of the previous frame, which is the
-    // only way to tell this loop's own scrolling apart from everyone else's:
-    // if the value moved between two frames by more than this loop wrote, the
-    // visitor moved it.
+    // The previous frame's `scrollLeft`, the only way to tell this loop's
+    // own writes apart from the visitor's.
     let lastSeen: number | null = null;
-    // `-Infinity` and not `0`: `now` is milliseconds since the page loaded, so
-    // a plain zero would read as "scrolled a moment ago" for the first
-    // `EXTERNAL_SCROLL_HOLD` of the page's life.
+    // `-Infinity`, not `0`: a plain zero would read as a recent scroll for
+    // the first `EXTERNAL_SCROLL_HOLD` of the page's life.
     let externalScrollAt = Number.NEGATIVE_INFINITY;
 
     const tick = (now: number) => {
@@ -311,12 +263,8 @@ export default function LogoCarousel() {
         return;
       }
 
-      // Native scrolling — a touch swipe and the momentum that follows it, a
-      // trackpad or shift+wheel gesture — announces itself only by having
-      // moved `scrollLeft` since the last frame. Nothing here paused for it,
-      // so on a phone this loop spent the whole swipe writing its own
-      // position back over the visitor's, a frame at a time: the row fought
-      // the finger on the way and snapped back the moment it lifted.
+      // Native scrolling (touch, trackpad, shift+wheel) only shows up as
+      // `scrollLeft` moving since the last frame; nothing else marks it.
       const actual = viewport.scrollLeft;
       if (lastSeen !== null && Math.abs(actual - lastSeen) > 1) {
         externalScrollAt = now;
@@ -329,10 +277,8 @@ export default function LogoCarousel() {
         now - externalScrollAt < EXTERNAL_SCROLL_HOLD ||
         highlightedComponentRef.current !== null
       ) {
-        // A drag, native scrolling, or the filtered view being shown over
-        // this may have moved (or simply frozen) the real scrollLeft; resync
-        // so resuming continues from there instead of snapping back to
-        // wherever this was before the interruption.
+        // Resync from the real offset so resuming continues from there,
+        // not a snap back.
         position = actual;
       } else {
         position += SPEED * elapsed;
@@ -344,11 +290,9 @@ export default function LogoCarousel() {
         viewport.scrollLeft = position;
       }
 
-      // After the write, not before: `scrollLeft` is integer-quantized and
-      // clamped to the scrollable range, so what the element actually holds
-      // is what the next frame has to compare against. Reading back what was
-      // asked for instead would show a difference of its own every frame and
-      // read as the visitor scrolling.
+      // Read back after writing, not before: `scrollLeft` is quantized and
+      // clamped, so the next frame must compare against what's actually
+      // there, not what was requested.
       lastSeen = viewport.scrollLeft;
       frame = requestAnimationFrame(tick);
     };
@@ -357,12 +301,9 @@ export default function LogoCarousel() {
     return () => cancelAnimationFrame(frame);
   }, []);
 
-  // Hover, and only hover: a touchscreen has none, and the compatibility
-  // `mouseenter` a browser fires after a tap is not it. That event has no
-  // matching `mouseleave` until the visitor taps something else entirely, so
-  // `onMouseEnter={pause}` (what this was) left the marquee stopped for good
-  // after a single tap anywhere on it — the most visible half of the bug this
-  // pair was reported for. `pointerenter` carries the device that caused it.
+  // Mouse hover only: a touchscreen has none, and the compatibility
+  // `mouseenter` a tap fires has no matching `mouseleave`, which would leave
+  // the marquee paused for good after one tap.
   const pause = (event: React.PointerEvent<HTMLDivElement>) => {
     if (!isHoverIntent(event)) return;
     pausedRef.current = true;
@@ -372,10 +313,9 @@ export default function LogoCarousel() {
     pausedRef.current = false;
   };
   // `event.target`, not `currentTarget`: React's `onFocus` is `focusin`, so
-  // what arrives here is the viewport with the focus sitting on a link
-  // somewhere inside it, and the link is what has to be asked. Blur stays
-  // unconditional — clearing a pause that was never set costs nothing, and
-  // there is no version of "stop pausing" worth being selective about.
+  // `currentTarget` is the viewport, but it's the focused link inside it
+  // that needs checking. Blur stays unconditional; clearing an unset pause
+  // costs nothing.
   const pauseForFocus = (event: React.FocusEvent<HTMLDivElement>) => {
     if (!wantsFocusHint(event.target as HTMLElement)) return;
     pausedRef.current = true;
@@ -385,24 +325,19 @@ export default function LogoCarousel() {
   };
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    // Touch and pen already get native drag-to-scroll from `overflow-x:
-    // auto`; only a mouse drag needs to be done by hand here. The loop above
-    // still has to know the contact exists, though: a finger held still on
-    // the row scrolls nothing for it to notice, and without this the marquee
-    // carried on sliding out from under it.
+    // Touch and pen already get native drag-to-scroll; only mouse drag
+    // needs handling here. The loop still needs to know contact exists — a
+    // still finger scrolls nothing for it to notice otherwise.
     if (event.pointerType !== "mouse") {
       touchHoldRef.current = true;
       return;
     }
     const viewport = viewportRef.current;
     if (!viewport) return;
-    // Not yet a drag: recorded, but `draggingRef` stays false and the
-    // pointer stays uncaptured until `handlePointerMove` sees real movement
-    // past `DRAG_THRESHOLD`. Doing either here instead, on every mousedown
-    // before it is known to be a drag rather than a click, retargets the
-    // browser's own `click` — and with it a logo's native navigation — away
-    // from the link under the pointer and onto this viewport, which made
-    // every logo here unclickable by mouse.
+    // Not yet a drag: `draggingRef` stays false and the pointer uncaptured
+    // until `handlePointerMove` confirms movement past `DRAG_THRESHOLD`.
+    // Capturing here instead would retarget the browser's own `click` onto
+    // this viewport, making every logo unclickable by mouse.
     dragCandidateRef.current = {
       pointerId: event.pointerId,
       x: event.clientX,
@@ -421,19 +356,16 @@ export default function LogoCarousel() {
     const candidate = dragCandidateRef.current;
     if (!candidate || candidate.pointerId !== event.pointerId) return;
     if (Math.abs(event.clientX - candidate.x) < DRAG_THRESHOLD) return;
-    // Crossed the slop: a drag, not a click. Captured only now, so capture —
-    // and the click-retargeting it causes — only ever applies to a gesture
-    // that has already proven itself a drag.
+    // Crossed the slop: a drag, not a click. Captured only now, so the
+    // click-retargeting only applies to a confirmed drag.
     draggingRef.current = true;
     viewport.setPointerCapture(event.pointerId);
     dragStartRef.current = { x: candidate.x, scrollLeft: candidate.scrollLeft };
     viewport.scrollLeft = candidate.scrollLeft - (event.clientX - candidate.x);
   };
 
-  // Before the `draggingRef` guard, not after it: a touch never sets that ref
-  // (the browser does its scrolling), so an early return would leave the hold
-  // set for good and the marquee stopped from the first tap onwards — the same
-  // failure `pause` had, arrived at from the other end.
+  // Before the `draggingRef` guard: touch never sets that ref, so returning
+  // early here would leave the hold set for good after the first tap.
   const endDrag = (event: React.PointerEvent<HTMLDivElement>) => {
     touchHoldRef.current = false;
     dragCandidateRef.current = null;
@@ -511,15 +443,11 @@ export default function LogoCarousel() {
                     <ul
                       ref={filteredListRef}
                       className="LogoCarousel__list LogoCarousel__list--filtered"
-                      // Never bigger than each logo's own normal size (`scale`
-                      // only ever shrinks, capped at 1 in the effect above),
-                      // and only as small as it has to be to keep this on one
-                      // line — a component a lot of platforms use ends up
-                      // small; three or four stay at full size. The
-                      // `translate(-50%, -50%)` is centering (see
-                      // _logo-carousel.scss's `&--filtered`), not part of the
-                      // sizing — flex centering breaks down once this list is
-                      // wider than its container, which it is before scaling.
+                      // Never bigger than normal size, shrunk only as much as
+                      // needed to fit one line. `translate(-50%, -50%)` is
+                      // centering, not sizing — flex centering breaks down
+                      // once this list is wider than its container, which it
+                      // is before scaling.
                       style={{
                         transform: `translate(-50%, -50%) scale(${filteredScale})`,
                       }}
@@ -549,11 +477,9 @@ export default function LogoCarousel() {
           className="LogoCarousel__tooltip"
           role="tooltip"
           id="LogoCarousel-tooltip"
-          // Above the logo, on request. `floatingTooltipPosition` still
-          // flips to "below" as a fallback if there's no room above (a chip
-          // near the top of the carousel, or a very short window), the same
-          // clamping it already did the other direction when this preferred
-          // "below".
+          // Above the logo by default; `floatingTooltipPosition` still flips
+          // to "below" if there's no room (a chip near the top, or a short
+          // window).
           style={floatingTooltipPosition(tooltip.rect, "above", {
             width: 220,
             estimatedHeight: 110,

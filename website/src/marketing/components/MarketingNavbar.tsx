@@ -15,18 +15,15 @@ import {
 
 const LOGO = "/img/marketing/chrome/overture_logo.svg";
 
-// Three items plus two actions, per `ia-proposal.md` § Navigation. Two things
-// leave the primary nav rather than being renamed: `Documentation` moves right
-// into the actions group, since it leaves the site, and `Support` drops out
-// entirely and becomes "Support forum" in the footer's Connect column.
+// Three items plus two actions. `Documentation` moved into the actions
+// group since it leaves the site; `Support` dropped out entirely and became
+// "Support forum" in the footer's Connect column.
 //
-// `About` has left it too: it was the one item that did not point at the
-// route it names — /about-us/ was removed and the item pointed into a band of
-// the home page instead, which is a nav entry that scrolls the page a visitor
-// is already on. "Who are these people" is answered by that band on arrival
-// and by the footer's Our story, both still `ABOUT_BAND` in constants/pages.ts,
-// so nothing that address served has been lost. Don't re-add it without also
-// giving it a real route to point at.
+// No `About`: it was the one item that scrolled the page a visitor was
+// already on rather than navigating, since /about-us/ was removed. "Who
+// are these people" is answered by that band and by the footer's Our
+// story, both via `ABOUT_BAND` in constants/pages.ts. Don't re-add it
+// without a real route to point at.
 //
 // Every label left here points at the page it names.
 const navLinks = [
@@ -35,10 +32,9 @@ const navLinks = [
   { name: "Collaboration", url: COLLABORATE_PATH },
 ];
 
-// Both leave the site, so both carry the external-link icon the IA writes them
-// with. `Get Started` no longer sits beside them: the button read as a second
-// call to action next to the primary nav's own, and the docs quickstart it
-// pointed at is already one click away via `Docs`.
+// Both leave the site, so both carry the external-link icon. No `Get
+// Started` beside them: it read as a second call to action, and the docs
+// quickstart it pointed at is already one click away via `Docs`.
 const navActions = [
   { name: "Docs", url: DOCUMENTATION_LINK },
   { name: "GitHub", url: OVERTURE_GITHUB_LINK },
@@ -53,11 +49,10 @@ const navActions = [
  * the site, and the mobile menu needs nothing more than a single piece of
  * state to open and close.
  *
- * Docusaurus renders the navbar outside the content wrapper that normally
- * carries `.marketing`, so this brings its own. It has to be a wrapping element
- * rather than a second class on the `<nav>`: the styles compile to
- * `.marketing .NavHeader`, a descendant selector, so both classes on one
- * element would match nothing.
+ * Docusaurus renders the navbar outside the content wrapper that carries
+ * `.marketing`, so this brings its own — as a wrapper, not a second class on
+ * `<nav>`, since the compiled selector `.marketing .NavHeader` needs both
+ * classes on separate elements.
  */
 export default function MarketingNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -120,12 +115,11 @@ export default function MarketingNavbar() {
                   to={action.url}
                 >
                   {action.name}
-                  {/* The same external-link glyph the documentation navbar renders
-                      for its own off-site items (GitHub, Support Forum,
-                      overture.bio) — see NavbarNavLink/IconExternalLink in
-                      @docusaurus/theme-classic. Decorative: `Link` already opens
-                      external URLs in a new tab, and the icon would read as
-                      punctuation to a screen reader. */}
+                  {/* The same external-link glyph the documentation navbar
+                      uses (@docusaurus/theme-classic's IconExternalLink).
+                      Decorative: `Link` already opens external URLs in a new
+                      tab; the icon would read as punctuation to a screen
+                      reader. */}
                   <svg
                     width="13.5"
                     height="13.5"
@@ -140,12 +134,10 @@ export default function MarketingNavbar() {
                   </svg>
                 </Link>
               ))}
-              {/* The same Algolia search the documentation navbar carries, and
-                  the same index: these pages are one build with the docs, so a
-                  visitor who arrives on the marketing site can search it from
-                  here rather than having to cross over first. Trailing rather
-                  than leading, so it sits where the documentation navbar's own
-                  search box sits: the last thing in the row. */}
+              {/* The same Algolia search and index the documentation navbar
+                  carries — one build, so a marketing visitor can search the
+                  docs without crossing over first. Trailing, matching where
+                  the documentation navbar's own search box sits. */}
               <div className="navbar-item nav-link navbar-search">
                 <SearchBar />
               </div>

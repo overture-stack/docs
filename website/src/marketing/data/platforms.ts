@@ -1,14 +1,13 @@
-// What the /impact/ hub shows, in three fixed tiers.
+// What the /impact/ hub shows, in three fixed tiers: platforms genuinely
+// differ by who runs them, which a flat list used to obscure. Tier 2 (other
+// people building on Overture independently) is the most persuasive
+// evidence the site has — "we built seven things" vs. "other people choose
+// this".
 //
-// The tiers exist because platforms genuinely differ by who runs them, and the old
-// single list flattened them. Tier 2 is the one that was missing entirely, and
-// it is the most persuasive evidence the site has: it is the difference between
-// "we built seven things" and "other people choose this".
-//
-// Figures live in metrics.ts, never here. Card copy is written for scanning; the
-// long-form write-up four platforms once had lived in caseStudies.tsx, which
-// the hub rendered below the cards. Removed 2026-08-12 (see the note on `id`
-// below) — data/caseStudies.tsx and components/CaseStudy were deleted with it.
+// Figures live in metrics.ts, never here. Card copy is written for
+// scanning; the long-form write-ups four platforms once had
+// (data/caseStudies.tsx, components/CaseStudy) were deleted once nothing
+// rendered them.
 
 import metrics from "./metrics";
 import {
@@ -26,22 +25,19 @@ import { IMPACT_PATH } from "../constants/pages";
 
 export type Platform = {
   /**
-   * Anchor id on the hub, and the same slug the case study has carried since
-   * the Gatsby site. `/case-studies/#icgcargo` and its siblings are linked from
-   * the home page and from outside; the 301 to `/impact/` keeps the fragment,
-   * so these ids are what makes those links still land. On the hub the id sits
-   * on the write-up when there is one, and on the card when there is not.
+   * Anchor id on the hub, the same slug case studies have carried since the
+   * Gatsby site. `/case-studies/#icgcargo` and its siblings are linked from
+   * outside; the 301 to `/impact/` keeps the fragment, so these ids are what
+   * makes those links still land.
    */
   id: string;
   name: string;
   /** Launch year. Absent while a platform has no public date. */
   launched?: string;
   /**
-   * Who leads the platform, and where it runs. Both from the deployment table
-   * in the RSMF Phase 2 supporting evidence, added 2026-08-12 so a card says
-   * whose platform it is rather than only what it holds. Four of the six are
-   * led by someone other than us, which is the fact these two fields exist to
-   * make visible: a page that lists six platforms without naming their leads
+   * Who leads the platform, and where it runs. Four of the six are led by
+   * someone other than us — the fact these two fields exist to make
+   * visible, since a page listing six platforms without naming their leads
    * reads as a portfolio of ours.
    */
   institution?: string;
@@ -50,15 +46,12 @@ export type Platform = {
   /** One line, for scanning. The page carries the argument. */
   summary: string;
   /**
-   * Where this platform is written up: `/impact/` plus its own anchor. Only the
-   * four with a write-up carry one. It is the address for links from other
-   * pages; the hub itself links to the bare fragment instead, since going
-   * through the router to reach the page already open scrolls nowhere.
-   *
-   * The build warns that these four anchors are broken. They are not: the ids
-   * are in the emitted HTML. Docusaurus does not collect ids from JSX pages, so
-   * it cannot see any anchor on a marketing page, which is the same reason the
-   * footer's `/home/#collaborate-heading` is on that list on every page.
+   * The address for links from other pages into this platform's row on
+   * /impact/; the hub itself links to the bare fragment since routing to
+   * the page already open scrolls nowhere. The build warns these anchors
+   * are broken — they aren't: Docusaurus can't see anchors on a plain JSX
+   * page, the same reason the footer's `/home/#collaborate-heading` is on
+   * that list too.
    */
   href?: string;
   /** The live deployment, off-site. */
@@ -79,21 +72,13 @@ export type Platform = {
 const LOGOS = "/img/marketing/case-studies-data";
 
 /**
- * Tier 1: platforms the team builds and runs. Six of the seven carry a portal
- * URL as of 2026-08-12, when the developer confirmed OHCRN's and PCGL's: those
- * two were the only cards in this tier that linked nowhere until then.
- *
- * The OICR Drug Discovery Portal came off this list on 2026-08-11, as internal
- * to one research group rather than a consortium platform, and went back on
- * 2026-08-12 on the developer's instruction. Being one group's platform is the
- * reason it is here, not the reason it was not: every other entry is a
- * consortium or a province, so a list without it reads as though these
- * components only pay off at that size. Its card and the home page capability
- * that cites it both say whose portal it is and that access is internal, so it
- * is not published as though a reader could go and open it.
- *
- * With it back the list is seven, which is what `metrics.activePlatforms` has
- * claimed throughout and what the six-card list has been quietly contradicting.
+ * Tier 1: platforms the team builds and runs, seven total (matching
+ * `metrics.activePlatforms`). The OICR Drug Discovery Portal is included
+ * specifically because it's one lab's platform, not a consortium's — every
+ * other entry is a consortium or a province, and omitting it would read as
+ * though these components only pay off at that scale. Its card and the home
+ * page capability that cites it both say access is internal, not published
+ * as though a reader could open it.
  */
 export const platforms: Platform[] = [
   {
@@ -167,20 +152,13 @@ export const platforms: Platform[] = [
     logo: `${LOGOS}/pcgl/logo.png`,
   },
   {
-    // The one platform on this list that is a single laboratory rather than a
-    // consortium, a network or a national programme, which is why the home
-    // page's "run a portal at one lab's scale" capability cites it.
-    //
-    // No `portal`, and that is not a `[NEEDS: URL]` the way OHCRN's and PCGL's
-    // were: access is internal to the group today. The reference material says a
-    // public release is intended once testing completes, so the field arrives
-    // when the portal does, and until then the card links down to nothing
-    // off-site rather than to a login wall.
-    //
-    // `[NEEDS: logo file]` and `[NEEDS: screenshot]`. Its six siblings have
-    // both; this one has neither, so its card on /impact/ reads as text and it
-    // stays out of the home page logo carousel (data/partnerLogos.ts names its
-    // entries one by one, so nothing there breaks by omission).
+    // The one lab-scale platform on this list — why the home page's "run a
+    // portal at one lab's scale" capability cites it. No `portal`: access
+    // is internal today; the field arrives if that changes. No
+    // `logo`/`screenshot` either, unlike its six siblings, so its card
+    // reads as text and it stays out of the home page logo carousel
+    // (data/partnerLogos.ts names entries one by one, so nothing breaks by
+    // omission).
     id: "drugDiscovery",
     name: "OICR Drug Discovery Portal",
     launched: metrics.ddpLaunch.value,
@@ -191,12 +169,10 @@ export const platforms: Platform[] = [
   },
 ];
 
-// Tier 2, organizations building on Overture independently, was three
-// unsourced entries here (`adopters`) that nothing rendered. It is
-// data/dependents.ts now: ten organizations, every one of them carrying the
-// public source that documents the dependency, and /impact/ renders it. The old
-// export is gone rather than left beside the new one, because two lists of the
-// same thing is what this data layer exists to prevent.
+// Tier 2, organizations building on Overture independently, is
+// data/dependents.ts now — sourced and rendered on /impact/, replacing an
+// unsourced, unrendered `adopters` export here (removed rather than kept
+// beside it, to avoid two lists of the same thing).
 
 export type LineagePlatform = {
   id: string;

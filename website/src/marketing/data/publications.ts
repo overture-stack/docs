@@ -1,22 +1,19 @@
 // The peer-reviewed record, rendered by /impact/.
 //
-// This is not a citation page and does not try to be one: `06-citing-us.md` on
-// the documentation site is canonical for how to cite Overture, and the footer
-// links it. What was missing is the plain statement that the platform has been
-// through peer review at all, which a funder or an evaluator looks for first and
-// which lived nowhere on this site after /impact/publications/ was retired.
-// Five entries is a section; it was never worth a page again.
+// Not a citation page: `06-citing-us.md` on the documentation site is
+// canonical for that, and the footer links it. What was missing — the plain
+// statement that the platform has been through peer review at all — lived
+// nowhere on this site after /impact/publications/ was retired. Five
+// entries is a section; not worth a page again.
 //
-// Sourced from the RSMF Phase 2 supporting-evidence submission, which lists the
-// same five. Two of them are third-party work rather than ours, and that is the
-// point of including them: an independent account of a platform built on
-// Arranger, and a review that cites Overture among data portal platforms, are
-// evidence of use in a way that our own platform paper is not.
+// Two of the five are third-party work, not ours, deliberately: an
+// independent account of a platform built on Arranger, and a review citing
+// Overture among data portal platforms, are evidence our own platform
+// paper can't be.
 //
-// The platform paper itself is not in this array. It is
-// `GIGASCIENCE_PAPER_LINK` in constants/externalLinks.ts, because the home
-// page's "What we do" band cites it too, and a link two pages share belongs in
-// the shared file. `publications` opens with it regardless, via `platformPaper`
+// The platform paper's link lives in `GIGASCIENCE_PAPER_LINK`
+// (constants/externalLinks.ts) instead, since the home page's "What we do"
+// band cites it too. `publications` still opens with it via `platformPaper`
 // below, so the list a reader sees is complete.
 
 import { GIGASCIENCE_PAPER_LINK } from "../constants/externalLinks";
@@ -91,10 +88,9 @@ export const publications: Publication[] = [
       "A third-party review of the field that cites Overture among the data portal platforms it surveys.",
   },
   {
-    // No DOI, so nothing to link. Listed anyway, and labelled: it is evidence
-    // that the components on this site are still producing peer-reviewed work,
-    // which is a different claim from the four above it and is worth making. It
-    // is not offered as a citation, and the page says so.
+    // No DOI to link, listed and labelled anyway: evidence the components
+    // here are still producing peer-reviewed work, a different claim from
+    // the four above it. Not offered as a citation; the page says so.
     id: "dictionaryviewer",
     authors: "Shiell M, Ashraf S, Luc E, et al.",
     title:

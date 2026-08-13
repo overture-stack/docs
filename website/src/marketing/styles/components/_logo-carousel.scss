@@ -1,18 +1,16 @@
 // Who runs Overture, scrolling right below the hero. See LogoCarousel.tsx.
 //
-// `$blue-block` lives on the section itself now, edge to edge like `.Hero`
-// above it (`background-color: $blue-top` there, same pattern): a rounded
-// card with white either side of it read as floating on the page rather than
-// its own section. `&__band` is just a vertical-padding wrapper now; `.LogoCarousel
-// .container`'s own horizontal padding (_home.scss) is what indents the
-// content and lines it up with the hero's.
-// One figure, `$carousel-band-y`, above the heading and below the logos: the
-// band used to carry 28px over the title and 24px under the logos with a
-// further 40px of section padding beneath that, so it finished with more than
-// twice the air it opened with and pushed the whole band past the fold. The
-// section's own vertical padding is zero now and the band is the only thing
-// setting it, which is what keeps the two ends equal by construction rather
-// than by two numbers that have to be kept in step.
+// `$blue-block` lives on the section itself, edge to edge like `.Hero`
+// above it: a rounded card with white either side read as floating rather
+// than its own section. `&__band` is just a vertical-padding wrapper;
+// `.LogoCarousel .container`'s own horizontal padding (_home.scss) indents
+// the content.
+//
+// One figure, `$carousel-band-y`, above the heading and below the logos:
+// previously three separate values (28px/24px/40px) left more air at the
+// foot than the top, pushing the band past the fold. The section's own
+// padding is zero now, so this one number keeps both ends equal by
+// construction.
 $carousel-band-y: 28px;
 
 .LogoCarousel {
@@ -23,11 +21,10 @@ $carousel-band-y: 28px;
     padding: $carousel-band-y 0;
   }
 
-  // The figures heading plus the interaction hint underneath it, stacked as
-  // one block above the logos.
-  // The gap above the logos lives here, not on `&__hint`: the hint is
-  // `display: none` below tablet-up, so a margin on it left the heading sitting
-  // directly on top of the first logo card on a phone.
+  // The heading plus interaction hint, stacked above the logos. The gap
+  // lives here, not on `&__hint`: the hint is `display: none` below
+  // tablet-up, which would otherwise leave the heading sitting directly on
+  // the first logo card on a phone.
   &__heading {
     display: flex;
     flex-direction: column;
@@ -36,27 +33,20 @@ $carousel-band-y: 28px;
     margin-bottom: 28px;
   }
 
-  // Heading-sized, but only the two figures inside it are bold: the sentence is
-  // long for a heading, and setting all of it in the H3's own weight made it
-  // shout the words rather than the numbers. The regular weight is also what
-  // lets the funders link inside it read as a link rather than as more heading.
-  // `&.t-h3`, not a bare `&__title`: the H3 component adds `.t-h3` (see
-  // Typography.tsx), which sets its own size and weight at the same specificity
-  // as this class and is compiled after it, so a single-class rule here loses
-  // the tie and the size below is ignored.
+  // `&.t-h3`, not a bare `&__title`: the H3 component adds `.t-h3`
+  // (Typography.tsx), which sets its own size/weight at the same
+  // specificity, compiled after this, so a bare `&__title` rule would lose
+  // the tie.
   //
-  // A step under the section headings below it (`.t-h2`, see _home.scss): this
-  // band sits inside the hero's colour block and introduces the logos rather
-  // than opening a section of the page, so it reads as the smaller of the two.
-  // Bold throughout: it is a heading, not a sentence with figures picked out of
-  // it.
-  // No `padding-left` on this or on `&__hint` below. Both carried 47px, which
-  // was this band's share of an alignment done by hand: the carousel's own
-  // container sat 28px left of the section headings and the hero's copy sat 22px
-  // right of them, and 47px was roughly what it took to split the difference and
-  // land the heading under the hero's first line. Both edges are now the shared
-  // `--band-inset-x` (_home.scss), so the padding is the only thing left pushing
-  // this line out of line with every other heading on the page.
+  // A step under the section headings below it (`.t-h2`, see _home.scss):
+  // this band sits inside the hero's colour block and introduces the logos
+  // rather than opening a section, so it reads as the smaller of the two.
+  // Bold throughout, as a heading rather than a sentence with figures
+  // picked out.
+  //
+  // No `padding-left`: both edges now use the shared `--band-inset-x`
+  // (_home.scss), replacing a hand-tuned 47px that used to split the
+  // difference between the carousel's own container and the hero's copy.
   &__title.t-h3 {
     margin: 0;
     color: $navy-black;
@@ -65,11 +55,10 @@ $carousel-band-y: 28px;
     line-height: 1.3;
     text-align: left;
 
-    // A step down on a phone. At 1.5rem and 900 weight this sentence wrapped to
-    // three lines under 600px and read as a second hero rather than as a label
-    // on the logos below it, which are the point of the band. The hint under it
-    // is `display: none` at this width, so this is the whole heading block and
-    // there is nothing else here to carry the emphasis.
+    // A step down on a phone: at 1.5rem/900 weight this wrapped to three
+    // lines under 600px, reading as a second hero rather than a label on
+    // the logos. The hint under it is `display: none` at this width, so
+    // this is the whole heading block.
     @include breakpoint(mobile) {
       font-size: 1.125rem;
       line-height: 1.35;
@@ -84,15 +73,11 @@ $carousel-band-y: 28px;
     white-space: nowrap;
   }
 
-  // `.HomePage .container`'s own padding override lines this section's
-  // `.container` up with the hero's content edges (the hero text's left
-  // edge, the diagram's right edge, both just `.Hero .container`'s inner
-  // edges): see _home.scss, next to `.Hero .container` itself. `&__band`
-  // fills that same container, so its own edges line up with the hero's
-  // too, even though its colour and padding still read as a separate card.
-  //
-  // The viewport sits inside the band, rather than bleeding to its edge, so
-  // the edge fades below line up the same way.
+  // `.HomePage .container`'s padding override lines this section up with
+  // the hero's content edges (see _home.scss). `&__band` fills that
+  // container, so its edges match too, even though its colour/padding
+  // still read as a separate card. The viewport sits inside the band, not
+  // bled to its edge, so the fades below line up the same way.
   &__viewport {
     position: relative;
     grid-area: 1 / 1;
@@ -110,10 +95,9 @@ $carousel-band-y: 28px;
     touch-action: pan-x pan-y pinch-zoom;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    // Crossfades with `&__filtered` rather than snapping: `visibility` (the
-    // first version of this) can't transition smoothly on its own, and a
-    // hard cut between the marquee and the filtered view read as a glitch
-    // rather than a deliberate change of state.
+    // Crossfades with `&__filtered` rather than snapping: `visibility`
+    // alone can't transition smoothly, and a hard cut read as a glitch
+    // rather than a deliberate change.
     opacity: 1;
     transition: opacity 200ms ease-out;
 
@@ -137,23 +121,19 @@ $carousel-band-y: 28px;
     }
   }
 
-  // Holds the marquee viewport and, when a HeroDiagram component is
-  // highlighted, the filtered view stacked directly on top of it
-  // (LogoCarousel.tsx): both share `grid-area: 1 / 1`, which is what lets
-  // them crossfade in place rather than one replacing the other in the
-  // document's own flow.
+  // Holds the marquee viewport and, when highlighted, the filtered view
+  // stacked on top (LogoCarousel.tsx): both share `grid-area: 1 / 1` so
+  // they crossfade in place.
   &__stage {
     position: relative;
     display: grid;
   }
 
-  // Every platform using the highlighted component, all shown together
-  // regardless of where the marquee happened to have scrolled to, instead
-  // of dimming whichever matches happened to already be on screen and
-  // leaving the rest hidden. Always mounted (LogoCarousel.tsx renders this
-  // regardless of whether anything's highlighted) rather than conditional
-  // on `matches`, specifically so it has an "opacity: 0" state to crossfade
-  // from — a freshly-mounted element has no prior frame to transition from.
+  // Every platform using the highlighted component, shown together
+  // regardless of marquee scroll position, rather than dimming whatever's
+  // already on screen. Always mounted, not conditional on `matches`, so it
+  // has an "opacity: 0" state to crossfade from — a freshly-mounted
+  // element has no prior frame.
   &__filtered {
     grid-area: 1 / 1;
     position: relative;
@@ -184,12 +164,10 @@ $carousel-band-y: 28px;
   }
 
   // Siblings of the viewport, not `::before`/`::after` inside it: Chrome
-  // leaves stale paint behind these on top of a `scrollLeft`-driven
-  // container (a real, if obscure, compositing bug, not anything about this
-  // carousel specifically) when they're descendants of the element being
-  // scrolled from JS rather than by the user's own input. Living outside
-  // the scrolling box entirely sidesteps that class of bug rather than
-  // chasing the specific repaint that's missing.
+  // leaves stale paint behind these when they're descendants of an element
+  // scrolled from JS rather than user input (a real compositing bug, not
+  // specific to this carousel). Living outside the scrolling box sidesteps
+  // it.
   &__fade {
     position: absolute;
     top: 0;
@@ -235,10 +213,8 @@ $carousel-band-y: 28px;
     display: flex;
     align-items: center;
     flex-shrink: 0;
-    // Was sized so five sat fully inside the container with a sixth
-    // peeking at the edge; the container's a narrower card now (`&__band`
-    // above), so fewer fit before the edge fade takes over, same idea, at
-    // whatever count this width actually allows.
+    // Sized so a partial logo peeks at the edge before the fade takes
+    // over, at whatever count this width allows.
     gap: 36px;
     padding: 0 24px;
     margin: 0;
@@ -259,32 +235,24 @@ $carousel-band-y: 28px;
       width: 100%;
     }
 
-    // The filtered view (LogoCarousel.tsx): a handful of matches, scaled to
-    // fit one line (`transform: scale()`, computed in JS from this list's
-    // own natural width vs. the container's) rather than wrapped to a
-    // second row or shrunk by a fixed amount at a fixed threshold — a
-    // component with three matches stays full size, one with eight shrinks
-    // only as much as it takes to still fit on one line.
+    // The filtered view (LogoCarousel.tsx): matches scaled to fit one line
+    // (`transform: scale()`, computed in JS from natural vs. container
+    // width) rather than wrapped or shrunk by a fixed threshold — three
+    // matches stay full size, eight shrink only as much as needed.
     //
-    // `position: absolute; left/top: 50%` plus `translate(-50%, -50%)` in
-    // the inline `transform` (LogoCarousel.tsx), not `&__filtered`'s own
-    // flex centering: a flex item wider than its flex container (this list,
-    // before it's scaled down, reliably is) doesn't center symmetrically —
-    // it can overflow one side more than the other, so the transform's own
-    // `scale()` was shrinking around the wrong point and leaving matches
-    // hanging off the right edge of the viewport. Centering by pinning this
-    // list's own center to its container's, independent of how wide it
-    // naturally is, is what makes the subsequent scale always shrink toward
-    // the correct point.
+    // `position: absolute` + `translate(-50%, -50%)` in the inline
+    // transform, not `&__filtered`'s flex centering: a flex item wider
+    // than its container (this list, before scaling, reliably is) doesn't
+    // center symmetrically, so `scale()` shrank around the wrong point and
+    // left matches hanging off the right edge. Pinning this list's own
+    // center to its container's fixes the anchor regardless of natural
+    // width.
     //
-    // No `transition` on `transform`, deliberately: this list unmounts and
-    // remounts fresh on every hover (it's only rendered while `matches` is
-    // non-null), so its first committed style is always last hover's stale
-    // scale, corrected a moment later once the measuring effect runs. With a
-    // transition active, that counted as a real style change and animated
-    // between them — a visible zoom, worst on Arranger's small scale, on
-    // every single hover. `&__filtered`'s own opacity fade is the only
-    // transition this needs; the size should just already be correct.
+    // No `transition` on `transform`: this list remounts fresh on every
+    // hover, so its first committed style is last hover's stale scale,
+    // corrected once the measuring effect runs a moment later. A
+    // transition would animate that correction as a visible zoom on every
+    // hover. `&__filtered`'s opacity fade is the only transition this needs.
     &--filtered {
       position: absolute;
       left: 50%;
@@ -305,17 +273,15 @@ $carousel-band-y: 28px;
     align-items: center;
     justify-content: center;
     height: 80px;
-    // `box-sizing: border-box` plus a transparent border at rest, not just a
-    // border added on `--highlighted`: a transform-based highlight (scaling
-    // the box up) doesn't grow its parent's layout size to match, so it got
-    // clipped by `&__viewport`'s `overflow-y: hidden` — the developer caught
-    // this from a screenshot. A border occupies the same space whether or
+    // A transparent border at rest, not just added on `--highlighted`: a
+    // transform-based highlight (scaling up) doesn't grow the parent's
+    // layout size, so it got clipped by `&__viewport`'s
+    // `overflow-y: hidden`. A border occupies the same space whether or
     // not it's coloured in, so highlighting never changes the box's size.
     box-sizing: border-box;
-    // 10px, not 12px: the 3px border below eats into this same fixed 80px
-    // box (border-box sizing, inherited site-wide from _layout.scss), so
-    // this keeps the same ~52px of vertical room for the logo itself that
-    // 12px gave it before the border existed.
+    // 10px, not 12px: the 3px border eats into this same fixed 80px box
+    // (border-box, inherited from _layout.scss), keeping the same ~52px of
+    // vertical room the logo had before the border existed.
     padding: 10px 22px;
     border: 3px solid transparent;
     background: $white;
@@ -344,16 +310,11 @@ $carousel-band-y: 28px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
   }
 
-  // Fixed height, natural width, no crop: a fixed *box* (equal width and
-  // height for every logo) needs `object-fit: cover` to fill it, which
-  // crops whatever doesn't fit the box's aspect ratio — fine for a square
-  // mark, but it slices words in half on every wordmark logo here ("Human
-  // Cancer Models Initiative" becomes "man Cancer / odels Initiati"). Fixing
-  // the height and leaving width to the image's own aspect ratio fills the
-  // chip vertically with no dead space above/below, without ever cutting
-  // content off; the chip has no fixed width of its own; it already just
-  // wraps the logo in padding, so a wide wordmark gets a wider chip instead
-  // of empty margin.
+  // Fixed height, natural width, no crop: a fixed square box would need
+  // `object-fit: cover`, which slices wordmark logos in half ("Human Cancer
+  // Models Initiative" → "man Cancer / odels Initiati"). Fixing height and
+  // letting width follow the image's own ratio avoids that; the chip has no
+  // fixed width, so a wide wordmark just gets a wider chip.
   &__logo {
     display: block;
     height: 52px;
@@ -362,11 +323,10 @@ $carousel-band-y: 28px;
     object-fit: contain;
   }
 
-  // A fixed line saying what the interaction is; it stays put rather than
-  // reacting to whatever is highlighted, so nothing under the title moves while
-  // a visitor is hovering across the diagram or the logos. Only shown where the
-  // interaction itself is possible, matching HeroDiagram's own `display: none`
-  // below tablet-up (_home.scss).
+  // A fixed line saying what the interaction is; stays put rather than
+  // reacting to what's highlighted, so nothing under the title moves while
+  // hovering. Only shown where the interaction is possible, matching
+  // HeroDiagram's own `display: none` below tablet-up.
   &__hint {
     display: none;
 
@@ -381,19 +341,16 @@ $carousel-band-y: 28px;
   }
 }
 
-// A sibling of .LogoCarousel in the DOM, not a descendant (LogoCarousel.tsx
-// renders it next to the section, not inside it), so this can't nest under
-// `.LogoCarousel` the way everything above does — the class name is BEM
-// convention, not a hook into that nesting.
+// A sibling of .LogoCarousel in the DOM, not a descendant, so this can't
+// nest under `.LogoCarousel` — the class name is BEM convention, not a
+// nesting hook.
 //
 // `position: fixed`, positioned from LogoCarousel.tsx's own
-// `getBoundingClientRect()` math via inline `left`/`bottom`: a plain
-// `position: absolute` tooltip, popping up from the hovered logo the way
-// HeroDiagram's does, would be clipped by `.LogoCarousel__viewport`'s
-// `overflow-y: hidden` the moment it tried to extend past the row's own
-// height — the same class of bug the highlight ring's `transform: scale`
-// hit earlier. `fixed` positions against the viewport itself, so no
-// ancestor's `overflow` applies to it.
+// `getBoundingClientRect()` via inline `left`/`bottom`: `position:
+// absolute` would be clipped by `.LogoCarousel__viewport`'s
+// `overflow-y: hidden`, the same class of bug the highlight ring hit
+// earlier. `fixed` positions against the viewport itself, so no ancestor's
+// `overflow` applies.
 .LogoCarousel__tooltip {
   @include floating-tooltip-card;
   width: 220px;

@@ -1,14 +1,11 @@
 // Every deployment there is, ours and other people's, as one list: what
-// /impact/ renders as `#platforms`, and the single source /products/ inverts
-// to answer "who uses this component". Moved out of impact/index.tsx on
-// 2026-08-12 for that second reader.
+// /impact/ renders as `#platforms`, and what /products/ inverts to answer
+// "who uses this component".
 //
-// Building the reverse lookup (`usedBy` below) from this array rather than
-// from componentUsage.ts's full key set is what keeps a component's "Used by"
-// list honest: componentUsage also carries entries for lineage platforms
-// (kidsFirst, icgc25k, gdc) that are no longer rendered as a row anywhere on
-// the site, and those must never surface on /products/ as a link with nothing
-// on the other end of it.
+// The reverse lookup (`usedBy` below) reads from this array, not
+// componentUsage.ts's full key set: componentUsage also carries lineage
+// platforms (kidsFirst, icgc25k, gdc) that render no row anywhere, and those
+// must never surface on /products/ as a link with nothing to land on.
 
 import type { ReactNode } from "react";
 import { componentUsage } from "./componentUsage";
@@ -16,14 +13,11 @@ import { independentAdopters } from "./dependents";
 import { platforms } from "./platforms";
 
 /**
- * The id on /impact/'s Deployments section heading. Named here, rather than
- * only as a literal `id="platforms"` in impact/index.tsx, because
- * ComponentTable's "Used by" column also needs it: a component used by more
- * than one deployment collapses to "N deployments" (see `usedBy` below) and
- * links here — as `IMPACT_PATH?used-by={componentId}#{DEPLOYMENTS_ANCHOR}`,
- * carrying the component id so impact/index.tsx can highlight every matching
- * row on arrival, not just scroll to the section — there being no single row
- * among several for a bare fragment to point at instead.
+ * The id on /impact/'s Deployments heading. Named here rather than inlined,
+ * since ComponentTable's "Used by" column also needs it: a component used
+ * by several deployments links to
+ * `IMPACT_PATH?used-by={id}#{DEPLOYMENTS_ANCHOR}`, letting impact/index.tsx
+ * highlight every matching row rather than just scroll to the section.
  */
 export const DEPLOYMENTS_ANCHOR = "platforms";
 
@@ -36,11 +30,10 @@ export type DeploymentRow = {
   anchorId: string;
   name: string;
   /**
-   * The deployment itself: the running portal for a platform, and for the two
-   * rows that are not ours, the first of the sources documenting them, since
-   * neither publishes a portal we can send a reader to. The name is a link to
-   * it. Absent only where there is nowhere to go, which today is the Drug
-   * Discovery Portal, whose access is internal.
+   * The running portal for a platform; for the two rows that aren't ours,
+   * the first source documenting them instead, since neither publishes a
+   * portal. Absent only where there's nowhere to go (the Drug Discovery
+   * Portal, internal access).
    */
   href?: string;
   institution?: string;
@@ -60,21 +53,16 @@ export type DeploymentRow = {
 };
 
 /**
- * One table, two kinds of row, consolidated on 2026-08-12 on the developer's
- * instruction: the site used to argue "other people chose this" and "we built
- * seven things" in two separate card grids, and a reader had to already know to
- * look for the distinction.
+ * One table, two kinds of row: previously two separate card grids ("other
+ * people chose this" vs. "we built seven things"), which made a reader
+ * find the distinction rather than see it.
  *
- * Sorted by launch year, most recent first, with the undated at the foot. That
- * is the only thing deciding order now: the rows that are not ours carried an
- * `Independent` badge and sat above the rest until the same day, and both went
- * on the developer's instruction. The Led by column still names the institution
- * behind every row, which is where a reader now sees that AGARI is Africa CDC's
- * and CQDG is Ferlab's.
+ * Sorted by launch year, most recent first, undated at the foot — the only
+ * thing deciding order now. The Led by column names the institution behind
+ * every row instead (AGARI is Africa CDC's, CQDG is Ferlab's).
  *
- * `Number()` on the year rather than a string compare, so a four-digit year is
- * ordered as a number and not by its first character. Ties hold their source
- * order, `Array.prototype.sort` being stable.
+ * `Number()` on the year, not a string compare, so a four-digit year sorts
+ * numerically. Ties hold source order (`Array.prototype.sort` is stable).
  */
 export const deploymentRows: DeploymentRow[] = [
   ...independentAdopters.map(
@@ -82,8 +70,7 @@ export const deploymentRows: DeploymentRow[] = [
       id: `beyond-${adopter.id}`,
       anchorId: adopter.id,
       name: adopter.name,
-      // The first source, which is the closest thing to "the deployment" these
-      // two have: AGARI's launch announcement and Ferlab's own repository.
+      // The first source — the closest thing to "the deployment" for these two.
       href: adopter.sources[0]?.href,
       institution: adopter.institution,
       where: adopter.where,

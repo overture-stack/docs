@@ -1,14 +1,12 @@
 export type TooltipSide = "above" | "below";
 
 /**
- * Shared by HeroDiagram and LogoCarousel: both position a tooltip from a
- * hovered element's own `getBoundingClientRect()` rather than a plain CSS
- * `position: absolute` popup, because both sit inside an ancestor that
- * clips or gets covered by one (LogoCarousel's `overflow-y: hidden`
- * viewport; HeroDiagram had no clipping ancestor, but a tooltip anchored to
- * one hotspot could still cover the rest of the diagram, or run off the
- * browser window entirely for a hotspot near the top of a shorter one —
- * both caught by the developer using the real page, not in isolation).
+ * Shared by HeroDiagram and LogoCarousel: both position a tooltip from the
+ * hovered element's own `getBoundingClientRect()` rather than a CSS
+ * `position: absolute` popup, since both sit where that would clip
+ * (LogoCarousel's `overflow-y: hidden` viewport) or overflow badly
+ * (HeroDiagram: a tooltip could cover the rest of the diagram, or run
+ * off-window near a shorter viewport's top).
  *
  * `preferredSide` is a starting point, not a guarantee: this flips to the
  * other side when the preferred one doesn't have `estimatedHeight` of room

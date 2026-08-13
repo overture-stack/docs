@@ -40,10 +40,10 @@
     }
   }
 
-  // Tighter vertical rhythm for the three offer sections specifically: only
-  // the top/bottom padding, so the horizontal padding above still applies.
-  // Three sections at the site's default 80px/4em vertical padding, on top of
-  // an image no longer stretching to fill the column, still ran long.
+  // Tighter vertical rhythm for the three offer sections: only top/bottom
+  // padding, so the horizontal padding above still applies. Three
+  // sections at the site's default vertical padding, plus an image no
+  // longer stretching to fill the column, still ran long.
   .CollaborateOffer .container {
     padding-top: 56px;
     padding-bottom: 56px;

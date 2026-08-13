@@ -1,10 +1,9 @@
-// Infima styles the bare `.navbar` class too, and Docusaurus's rule is global
-// rather than scoped, so it reaches this navbar as well. It pins the element to
-// `--ifm-navbar-height` and adds its own padding, which crushed the navbar to a
-// single 64px row and pushed the menu down over the page. The `.navbar` in
-// `_layout.scss` is the one this markup wants, so undo Infima's two properties at
-// a specificity that beats it. `.navbar-brand`, `.navbar-menu` and `.navbar-item`
-// do not collide: Infima's equivalents are BEM (`.navbar__brand` and friends).
+// Infima's global `.navbar` rule reaches this navbar too, pinning it to
+// `--ifm-navbar-height` and adding padding that crushed it to a 64px row.
+// The `.navbar` in `_layout.scss` is the one this markup wants, so undo
+// Infima's two properties at higher specificity. `.navbar-brand`/
+// `.navbar-menu`/`.navbar-item` don't collide with Infima's BEM equivalents
+// (`.navbar__brand` and friends).
 .NavHeader.navbar {
   height: auto;
   padding: 0;
@@ -116,27 +115,21 @@
     }
   }
 
-  // Products / Impact / Collaborate / About, and the two nav actions beside the
-  // search box. Their hover was Bulma's `a.navbar-item:hover`, a full-bleed
-  // block, landing on an element that `.nav-link` stretches to the navbar's full
-  // height: hovering swept a 64px rectangle from the navbar's top edge to its
-  // bottom, and the 8px `margin-right` between items showed through it as a
-  // white sliver, so the row read as a band of tiles with notches cut between
-  // them. The current page wore that identical rectangle, leaving hover and
-  // "you are here" the same shape, told apart only by the label colour.
+  // Products / Impact / Collaborate / About, and the two nav actions.
+  // Bulma's full-bleed `a.navbar-item:hover` swept a 64px rectangle
+  // top-to-bottom, with the margin between items showing through as a
+  // white sliver — a band of tiles with notches — and the current-page
+  // state wore the identical shape.
   //
-  // Above the navmenu breakpoint the state is now a rounded rectangle centred in
-  // the row, so the margin between items falls outside the paint and reads as
-  // spacing rather than as a gap in something continuous. Below the breakpoint
-  // the menu is a stack of full-width rows where the full-width highlight is the
-  // right shape, so only the colours apply there.
+  // Above the navmenu breakpoint the state is now a rounded rectangle
+  // centred in the row, so the margin falls outside the paint and reads as
+  // spacing. Below it, the menu is full-width rows, where a full-width
+  // highlight is correct.
   //
-  // The 4px radius and `0.25rem 0.75rem` are the documentation navbar's own
-  // metrics, not a separate judgement call: `src/css/custom.css` gives
-  // `.navbar__items .navbar__item:hover` that radius, and Infima's
-  // `--ifm-navbar-item-padding-*` that padding. Both navbars are 64px tall, so
-  // hovering a link lands the same size box in the same place whichever site the
-  // visitor is on. Keep them in step if either side moves.
+  // The 4px radius and `0.25rem 0.75rem` match the documentation navbar's
+  // own metrics exactly (`src/css/custom.css`, `--ifm-navbar-item-padding-*`),
+  // so hovering a link lands the same box on both 64px-tall navbars. Keep
+  // them in step if either side moves.
   a.navbar-item.nav-link {
     @include breakpoint(navmenu-up) {
       align-self: center;
@@ -197,29 +190,25 @@
     }
   }
 
-  // Docs and GitHub. Styled as nav links rather than buttons, so the row carries
-  // no call to action at all — `Get Started` used to sit at the end of it, but
-  // it read as competing with the primary nav's own, and everything it pointed
-  // at is one click away via `Docs`.
+  // Docs and GitHub, styled as nav links rather than buttons — no call to
+  // action here. No `Get Started`: it read as competing with the primary
+  // nav's own, and everything it pointed at is one click away via `Docs`.
   .nav-action {
     white-space: nowrap;
   }
 
-  // Algolia's button, trailing the row exactly where the documentation navbar's
-  // own copy of it sits. Left at `@docsearch/css`'s and
-  // `@docusaurus/theme-search-algolia`'s defaults rather than restyled, so the
-  // two navbars carry the same search box rather than two different ones.
+  // Algolia's button, trailing the row where the documentation navbar's own
+  // copy sits. Left at `@docsearch/css`'s and
+  // `@docusaurus/theme-search-algolia`'s defaults so both navbars carry the
+  // same search box.
   .navbar-search {
     display: flex;
     align-items: center;
 
     .DocSearch-Button {
-      // `@docsearch/css` opens this rule with `all: unset`, which takes
-      // `box-sizing` back to `content-box` with it. Without this, `width: 100%`
-      // in the open mobile menu is 100% *plus* the button's own padding and
-      // border, and it hangs off the right edge. Above the navmenu breakpoint
-      // the button goes back to its natural content width, same as it has on
-      // the documentation navbar.
+      // `@docsearch/css`'s `all: unset` resets `box-sizing` to
+      // `content-box`; without this, `width: 100%` in the open mobile menu
+      // overflows by the button's own padding/border.
       box-sizing: border-box;
       width: 100%;
       margin: 0;

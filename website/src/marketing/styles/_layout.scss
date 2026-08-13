@@ -1,37 +1,34 @@
-// Everything the marketing pages used to take from Bulma, written out.
-//
-// Bulma shipped 291KB compiled to deliver what this file delivers in ~180
-// lines. It was removed; this partial is what replaced it, so the ported
-// markup keeps rendering identically without the framework underneath it.
+// Everything the marketing pages used to take from Bulma, written out
+// directly: Bulma shipped 291KB compiled for what this file delivers in
+// ~180 lines. This partial replaced it so the markup keeps rendering
+// identically without the framework underneath.
 //
 // Two rules on keeping this file honest:
 //
-// 1. Every rule here was extracted from Bulma 0.9.4 compiled with this site's
-//    own variable overrides, then filtered to what the marketing markup can
-//    actually reach. Values are Bulma's, verbatim, including the ones that look
-//    arbitrary (`z-index: 30`, `86ms`). Do not "tidy" them: they are a
+// 1. Values are Bulma's, verbatim — extracted from 0.9.4 compiled with this
+//    site's own overrides, filtered to what the markup can reach. Don't
+//    "tidy" arbitrary-looking ones (`z-index: 30`, `86ms`): they're a
 //    compatibility surface, not a design decision. Restyling belongs in the
-//    component and page partials that come after this one.
-// 2. It has to stay first in index.scss, where Bulma's import used to be, so
-//    every later partial keeps overriding it at equal specificity. Several
-//    partials rely on that: `_base.scss` patches `.container` and `.button`,
-//    `_button.scss` patches `.custom-button`, `_navbar.scss` outranks `.navbar`.
+//    partials after this one.
+// 2. Must stay first in index.scss, where Bulma's import used to be, so
+//    every later partial keeps overriding it at equal specificity
+//    (`_base.scss` patches `.container`/`.button`, `_button.scss` patches
+//    `.custom-button`, `_navbar.scss` outranks `.navbar`).
 //
-// The `.marketing` nesting in index.scss is what keeps all of this off the
-// documentation pages, which share one stylesheet with these. That is also what
-// makes the bare class names below safe: `.marketing p` (0,1,1) beats Infima's
-// `p` (0,0,1), and nothing here can match outside a marketing route.
+// The `.marketing` nesting (index.scss) keeps this off the documentation
+// pages sharing this stylesheet, and makes the bare class names below safe:
+// `.marketing p` (0,1,1) beats Infima's `p` (0,0,1), so nothing here matches
+// outside a marketing route.
 
 // ---------------------------------------------------------------------------
 // Reset (Bulma's minireset.sass, plus the element rules from base/generic.sass)
 //
-// This is the part that is easy to miss when accounting for what Bulma does:
-// the marketing pages are built on its reset, not just its layout classes.
-// Dropping it would hand every heading, paragraph and list back to Infima's
-// typography, on all nine routes at once. Bulma's own `html` and `body` rules
-// are not here because they became `.marketing html`/`.marketing body` once
-// nested and never matched; `_base.scss` re-applies their values to the
-// `.marketing` wrapper itself, which is the element they were meant for.
+// Easy to miss: the marketing pages are built on Bulma's reset, not just
+// its layout classes — dropping it would hand every heading, paragraph and
+// list back to Infima's typography. Bulma's own `html`/`body` rules aren't
+// here since they'd compile to `.marketing html`/`.marketing body` and
+// never match; `_base.scss` re-applies their values to the `.marketing`
+// wrapper itself instead.
 // ---------------------------------------------------------------------------
 
 p, ol, ul, li, dl, dt, dd, blockquote, figure, fieldset, legend, textarea, pre,
@@ -226,11 +223,12 @@ pre {
 }
 
 // ---------------------------------------------------------------------------
-// Grid: .columns and .column (the case studies page only)
+// Grid: .columns and .column. Written for the case studies page, which is
+// now deleted — no current markup uses `.columns`/`.column`; verify before
+// removing this block.
 //
-// Note the breakpoint: Bulma's columns do NOT become a flex row until 1024px,
-// so they stack below that. That is the responsive behaviour of every case
-// study, and it is easy to lose by writing `display: flex` unconditionally.
+// Note the breakpoint: Bulma's columns do NOT become a flex row until
+// 1024px, so they stack below that.
 // ---------------------------------------------------------------------------
 
 .columns {
@@ -421,18 +419,17 @@ pre {
 // ---------------------------------------------------------------------------
 // Components: .navbar
 //
-// `$navbar-breakpoint` was set to 1160px in index.scss, so every query here is
-// written against that rather than Bulma's 1024px default. It has to stay in
-// step with the `navmenu-up` and `navmenu-below` mixins in `_variables.scss`.
+// These queries are written against 1160px directly (not Bulma's 1024px
+// default), matching the `navmenu-up`/`navmenu-below` mixins in
+// `_variables.scss` — keep them in step.
 //
-// `_navbar.scss` restyles most of this. What only exists here, and what the
-// mobile menu actually depends on, is the `.navbar-menu` display toggle and the
-// `.navbar-burger` bars: `display: none` by default, `block` when `.is-active`
-// is present below 1160px. That pair is the open/close behaviour of the mobile
-// nav, not decoration.
+// `_navbar.scss` restyles most of this. What only exists here is the
+// `.navbar-menu` display toggle and `.navbar-burger` bars: `display: none`
+// by default, `block` when `.is-active` is present below 1160px — the
+// mobile nav's actual open/close behaviour, not decoration.
 //
-// Bulma's `.navbar > .container` rules are not here: this navbar wraps its
-// contents in `.nav-container`, which is the site's own class.
+// Bulma's `.navbar > .container` rules aren't here: this navbar wraps its
+// contents in `.nav-container`, the site's own class.
 // ---------------------------------------------------------------------------
 
 .navbar {

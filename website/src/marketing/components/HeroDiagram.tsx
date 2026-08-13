@@ -14,32 +14,27 @@ const PORTAL = "/img/marketing/home/portal.svg";
 
 /**
  * The home hero's diagram: an orbit of Overture's seven components plus
- * Control (still in development), positioned to match the reference
- * artwork's own coordinates rather than an evenly-spaced redistribution. Each
- * icon is a real focusable/hoverable hotspot, linking to `/products/#<id>`
- * and showing a tooltip with its name, codename and summary.
+ * Control (in development), positioned to match the reference artwork
+ * rather than evenly spaced. Each icon is a focusable/hoverable hotspot
+ * linking to `/products/#<id>` with a name/codename/summary tooltip.
  *
  * Who runs Overture used to live here too, as a second carousel slide; it's
  * now LogoCarousel, its own scrolling section right below the hero.
  *
- * Hovering or focusing a hotspot filters LogoCarousel below to the platforms
- * that use that component; hovering or focusing a platform there highlights
- * the components it uses back here (both data/componentUsage.ts, via
- * ComponentHighlightContext shared between the two siblings). Unlike the
- * carousel, every hotspot is always on screen at once, so the second
- * direction just dims the rest in place rather than filtering anything out.
+ * Hovering a hotspot filters LogoCarousel below to platforms using that
+ * component; hovering a platform there highlights its components back here
+ * (both via `data/componentUsage.ts` and shared `ComponentHighlightContext`).
+ * Every hotspot is always on screen, so this direction just dims the rest
+ * rather than filtering.
  *
- * The tooltip is a single `position: fixed` element, positioned in JS from
- * the hovered hotspot's own `getBoundingClientRect()` (see
- * utils/floatingTooltip.ts), not a `position: absolute` span anchored to
- * each icon: a plain CSS tooltip anchored to one hotspot could still cover
- * the rest of the diagram, or run off the browser window for a hotspot near
- * the top of a shorter one — both real, both caught by the developer using
- * the real page rather than in a screenshot of one hotspot in isolation.
+ * The tooltip is `position: fixed`, positioned in JS from the hovered
+ * hotspot's `getBoundingClientRect()` (utils/floatingTooltip.ts) rather than
+ * `position: absolute`: an absolute tooltip could cover the rest of the
+ * diagram, or run off-window near a shorter viewport's top edge.
  *
- * Rendered only from `tablet-up`: see _home.scss. Hidden with `display: none`
- * rather than merely visually, so nothing here sits in the tab order on a
- * viewport where the artwork isn't shown at all.
+ * Rendered only from `tablet-up` (see _home.scss), hidden with
+ * `display: none` so nothing here sits in the tab order when the artwork
+ * isn't shown.
  */
 export default function HeroDiagram() {
   const { setHighlightedComponent, highlightedPlatform } =
@@ -86,10 +81,8 @@ export default function HeroDiagram() {
         );
 
         // Pointer events, not onMouseEnter/onMouseLeave: @docusaurus/Link
-        // spreads `...props` and then unconditionally sets its own
-        // `onMouseEnter` after (for its hover-preload behaviour), silently
-        // discarding whatever the caller passed in. Pointer events are
-        // untouched by it and fire for the same mouse interactions.
+        // overwrites `onMouseEnter` internally (for hover-preload), silently
+        // discarding any passed in. Pointer events are untouched by it.
         const showTooltip = (event: React.SyntheticEvent<HTMLElement>) => {
           setHighlightedComponent(hotspot.id);
           setTooltip({
@@ -150,12 +143,11 @@ export default function HeroDiagram() {
           role="tooltip"
           style={floatingTooltipPosition(
             tooltip.rect,
-            // Preference only, not a guarantee: pointed away from the
-            // ring's own center by default — a hotspot in the top half
-            // throws its tooltip further up, not down over the portal —
-            // unless the hotspot overrides that on its own visual call
-            // (see `tooltipSide` in data/heroDiagram.ts). Either way, flips
-            // if that would run off the browser window.
+            // Preference only: defaults to pointing away from the ring's
+            // center (a top-half hotspot throws its tooltip up, not over
+            // the portal) unless overridden via `tooltipSide` in
+            // data/heroDiagram.ts. Flips either way if it would run
+            // off-window.
             tooltip.hotspot.tooltipSide ??
               (tooltip.hotspot.top < 50 ? "above" : "below"),
             { width: 200, estimatedHeight: 130 },

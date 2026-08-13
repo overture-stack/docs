@@ -6,9 +6,9 @@
 // functional name first, codename beside it, written as "Tabular Submission
 // (Lyric)". Never the codename alone, and never the codename first.
 //
-// This file is the reason the products page stopped being seven near-identical
-// JSX sections: the page is now a list renderer and the content is data. Anything
-// else that needs to name a component reads from here rather than restating it.
+// This is why the products page is a list renderer over data now, rather
+// than seven near-identical JSX sections. Anything else naming a component
+// reads from here.
 
 import {
   ARRANGER_DOCS_LINK,

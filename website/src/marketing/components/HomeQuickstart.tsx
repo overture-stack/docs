@@ -20,20 +20,19 @@ const PORTAL_SCREENSHOT = "/img/marketing/home/overtureQuickstartPortal.webp";
  * The introduction carries the documentation band's own grey rather than
  * white, so that seam is the section's only colour change.
  *
- * The commands are mirrored from the documentation rather than rewritten. See
- * data/quickstart.ts, which names the two files to check against when the demo
- * changes, and which derives the "3 steps, 2 commands" claim from the steps
- * themselves so the subtitle cannot be left behind by an edit to them.
+ * Commands are mirrored from the documentation, not rewritten —
+ * data/quickstart.ts names the files to check when the demo changes, and
+ * derives the "3 steps, 2 commands" claim from the steps themselves so the
+ * subtitle can't fall behind.
  *
- * It is the last thing on the page deliberately. The hero's first button points
- * here rather than out to the documentation, so the page's first CTA and its
- * last section are the same offer, and a visitor who scrolls the whole way lands
- * on something they can run.
+ * Last on the page deliberately: the hero's first button points here, so
+ * the page's first CTA and last section are the same offer, and scrolling
+ * the whole way lands on something runnable.
  */
 export default function HomeQuickstart() {
-  // The hero's button is an in-page link to `#quickstart`, and Docusaurus's
-  // broken-anchor check only knows about anchors something registers. A plain
-  // React page registers none on its own; same reason ProductGroup does this.
+  // The hero's button links in-page to `#quickstart`; a plain React page
+  // registers no anchors on its own for Docusaurus's broken-anchor check,
+  // so this does it by hand (same as HomeDocs).
   useBrokenLinks().collectAnchor("quickstart");
 
   return (
@@ -61,15 +60,12 @@ export default function HomeQuickstart() {
       </div>
 
       <div className="HomeQuickstart__band">
-        {/* Decoration, so it is `alt=""`: what the portal looks like is the
-            payoff, not a step. It is first in the source order because it is
-            also the thing that visually joins the two halves of the section,
-            and a screen reader reading an empty image before the steps costs
-            nothing.
-
-            Outside `.container` on purpose: it is positioned against the blue
-            band's own top edge, and `.HomePage .container`'s top padding would
-            otherwise have to be cancelled first. See _quickstart.scss. */}
+        {/* Decorative (`alt=""`): what the portal looks like is the payoff,
+            not a step. First in source order since it visually joins the two
+            halves of the section; a screen reader reading an empty image
+            first costs nothing. Outside `.container`: it's positioned
+            against the blue band's own top edge, avoiding having to cancel
+            `.container`'s padding. See _quickstart.scss. */}
         <div className="HomeQuickstart__figure">
           <img
             src={PORTAL_SCREENSHOT}

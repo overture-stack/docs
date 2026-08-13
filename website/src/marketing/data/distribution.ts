@@ -1,34 +1,23 @@
 // How far the code travels, and how long it has been travelling: the two
 // sections at the foot of /impact/.
 //
-// Nothing on this site published a download, a pull count or a release history
-// before 2026-08-12. The page argued reach entirely through named platforms,
-// which undercounts by construction: a platform has to be big enough for us to
-// know about it before it can appear, and the registries count everyone.
+// Before this, the page argued reach only through named platforms, which
+// undercounts by construction — a platform has to be big enough for us to
+// know about, while the registries count everyone.
 //
-// Sourced from the RSMF Phase 2 supporting-evidence submission, §5 and §6.
-// Totals live in data/metrics.ts with the rest of the site's figures, so a
-// reader of that file sees every number the site publishes in one place; the
-// breakdowns are here because they are tables rather than headline figures.
+// Totals live in data/metrics.ts with the rest of the site's figures; the
+// breakdowns are here because they're tables, not headline figures.
 //
-// **Every row carries its own link**, for the same reason data/dependents.ts
-// does: these are the numbers a reviewer is most likely to want to check, and a
-// figure with no source beside it is the kind of claim this site is trying to
-// stop making. Registry pages are the source, not a dashboard of ours.
+// Every row carries its own link, like data/dependents.ts: registry pages
+// are the source, not a dashboard of ours.
 //
-// **Release counting was rebuilt from git tags to published artifacts on
-// 2026-08-13.** Git tagging practice turned out to be inconsistent across the
-// org in ways that made a bare tag count actively misleading: Score, Maestro
-// and Stage keep shipping containers on every merge long after their last
-// version tag; Song's real release ritual merges an `rc/X.Y.Z` branch straight
-// to `master` with no tag at all; Arranger's 407 tags conflate one legacy
-// unified scheme with several still-prerelease sub-packages. The count below is
-// now each component's confirmed publish history: npm versions, container
-// image tags (GHCR and, historically, Docker Hub), or a merged release-branch
-// build where that is the component's actual mechanism, checked directly
-// against the registry rather than inferred from tags. `firstRelease` still
-// reads from a git tag for most components, because no registry retains
-// history that far back; see each row's own note for which.
+// Release counting uses each component's confirmed publish history (npm
+// versions, container tags, or a release-branch build, whichever is its
+// real mechanism) checked against the registry directly, not inferred from
+// git tags: tagging practice varies too much across the org for a bare tag
+// count to be reliable. `firstRelease` still reads from a git tag for most
+// components, since no registry retains history that far back; see each
+// row's own note.
 
 export type NpmPackage = {
   /** Bare package name; the scope is added when it is rendered. */
