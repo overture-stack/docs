@@ -98,7 +98,12 @@ export type ComponentRelease = {
    */
   latestHref: string;
   contributors: string;
-  /** GitHub's own contributor graph for the default branch. */
+  /**
+   * GitHub's own contributor graph for the default branch, with an explicit
+   * `?from=` (the repo's creation date) and `?to=` (today) so the graph covers
+   * its full history: without a range, GitHub's UI silently windows the graph
+   * to a shorter recent period and undercounts.
+   */
   contributorsHref: string;
 };
 
@@ -145,7 +150,7 @@ export const releaseHistory: ComponentRelease[] = [
     latestHref: "https://github.com/overture-stack/score/pull/492",
     contributors: "26",
     contributorsHref:
-      "https://github.com/overture-stack/score/graphs/contributors",
+      "https://github.com/overture-stack/score/graphs/contributors?from=3%2F26%2F2015&to=8%2F13%2F2026",
   },
   {
     id: "song",
@@ -170,7 +175,7 @@ export const releaseHistory: ComponentRelease[] = [
     latestHref: "https://github.com/overture-stack/song/pull/914",
     contributors: "28",
     contributorsHref:
-      "https://github.com/overture-stack/song/graphs/contributors",
+      "https://github.com/overture-stack/song/graphs/contributors?from=4%2F18%2F2017&to=8%2F13%2F2026",
   },
   {
     id: "arranger",
@@ -198,7 +203,7 @@ export const releaseHistory: ComponentRelease[] = [
     latestHref: `${npmPackageLink("arranger-server")}/v/3.0.4`,
     contributors: "34",
     contributorsHref:
-      "https://github.com/overture-stack/arranger/graphs/contributors",
+      "https://github.com/overture-stack/arranger/graphs/contributors?from=12%2F14%2F2017&to=8%2F13%2F2026",
   },
   {
     id: "maestro",
@@ -207,24 +212,25 @@ export const releaseHistory: ComponentRelease[] = [
     tagsHref: "https://github.com/overture-stack/maestro/pkgs/container/maestro",
     firstRelease: "2019-05-22",
     firstReleaseHref: "https://github.com/overture-stack/maestro/releases/tag/0.1.0",
-    // 27 confirmed semver-era container releases (Docker Hub, then GHCR),
-    // dropping the 28th git tag (`4.4.0-SNAPSHOT`), a pre-release marker that
-    // was never a real published version. That count is the old Java/Maven
-    // stack's history and stops at 4.3.0 (2023-01); it does not include the
-    // untagged builds below, which are a different stack entirely.
-    tags: "27",
-    // The main line now is `M5-revised`, a ground-up rewrite (TypeScript,
-    // pnpm, nx) replacing the old Java/Maven app, currently versioned
-    // 5.0.0-alpha.1 in its own package.json. It has no git tag or GitHub
-    // Release yet, so this links to its most recent merged PR; CI publishes a
-    // fresh untagged container to GHCR on every merge, most recently
-    // 2026-08-06. 4.3.0 (2023-01) is the last release of the old stack, not
-    // the current one.
-    latest: "5.0.0-alpha.1 (2026-08)",
-    latestHref: "https://github.com/overture-stack/maestro/pull/297",
+    // 27 confirmed semver-era container releases (Docker Hub, then GHCR) plus
+    // 1 for 5.0.0 below: 28. The 27 are the old Java/Maven stack's history,
+    // stopping at 4.3.0 (2023-01); dropped the 28th git tag from that era
+    // (`4.4.0-SNAPSHOT`), a pre-release marker that was never a real published
+    // version.
+    tags: "28",
+    // The ground-up TypeScript/pnpm/nx rewrite (formerly tracked on a
+    // separate `M5-revised` branch, since renamed to `main`, now the repo's
+    // default) shipped its first real versioned container, 5.0.0, built from
+    // the `release` branch on 2026-08-13. No git tag or GitHub Release exists
+    // for it yet, so this links to the version-bump commit itself; `main` is
+    // one commit behind and still reads `5.0.0-alpha.1` in its package.json.
+    // 4.3.0 (2023-01) was the last release of the old stack, now superseded.
+    latest: "5.0.0 (2026-08)",
+    latestHref:
+      "https://github.com/overture-stack/maestro/commit/49d850ddae64577150d45f43c93290693766e8f3",
     contributors: "14",
     contributorsHref:
-      "https://github.com/overture-stack/maestro/graphs/contributors",
+      "https://github.com/overture-stack/maestro/graphs/contributors?from=3%2F6%2F2019&to=8%2F13%2F2026",
   },
   {
     id: "lectern",
@@ -244,7 +250,7 @@ export const releaseHistory: ComponentRelease[] = [
       "https://github.com/overture-stack/lectern/releases/tag/dictionary-v2.0.0",
     contributors: "19",
     contributorsHref:
-      "https://github.com/overture-stack/lectern/graphs/contributors",
+      "https://github.com/overture-stack/lectern/graphs/contributors?from=6%2F24%2F2019&to=8%2F13%2F2026",
   },
   {
     id: "stage",
@@ -271,7 +277,7 @@ export const releaseHistory: ComponentRelease[] = [
     latestHref: "https://github.com/overture-stack/stage/releases/tag/1.1.3",
     contributors: "11",
     contributorsHref:
-      "https://github.com/overture-stack/stage/graphs/contributors",
+      "https://github.com/overture-stack/stage/graphs/contributors?from=9%2F2%2F2020&to=8%2F13%2F2026",
   },
   {
     id: "lyric",
@@ -294,7 +300,7 @@ export const releaseHistory: ComponentRelease[] = [
     latestHref: npmPackageLink("lyric"),
     contributors: "8",
     contributorsHref:
-      "https://github.com/overture-stack/lyric/graphs/contributors",
+      "https://github.com/overture-stack/lyric/graphs/contributors?from=2%2F5%2F2024&to=8%2F13%2F2026",
   },
 ];
 
