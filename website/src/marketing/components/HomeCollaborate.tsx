@@ -165,7 +165,9 @@ export default function HomeCollaborate() {
           ))}
         </ul>
 
-        <H3 className="HomeCollaborate__subhead">How we collaborate</H3>
+        <H3 className="HomeCollaborate__subhead" id="how-we-collaborate-heading">
+          How we collaborate
+        </H3>
 
         {/* The same `CardTile` the documentation band at the foot of the page is
             built from, three across on the same grid. These were bare columns of

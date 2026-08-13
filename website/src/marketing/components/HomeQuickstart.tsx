@@ -84,7 +84,10 @@ export default function HomeQuickstart() {
             <ol className="HomeQuickstart__steps">
               {quickstartSteps.map((step, index) => (
                 <li key={step.id} className="HomeQuickstart__step">
-                  <H3 className="HomeQuickstart__stepTitle">
+                  <H3
+                    className="HomeQuickstart__stepTitle"
+                    id={`quickstart-${step.id}`}
+                  >
                     <span
                       className="HomeQuickstart__stepNumber"
                       aria-hidden="true"

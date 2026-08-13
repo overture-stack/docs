@@ -3,31 +3,54 @@
  **/
 
 import React from "react";
+import Heading from "@theme/Heading";
 
 type TextProps = {
   className?: string;
   children?: React.ReactNode;
   style?: React.CSSProperties;
-  /** For headings a `<section aria-labelledby>` points at. */
+  /**
+   * For headings a `<section aria-labelledby>` points at. Also, via
+   * `@theme/Heading` below, what turns the heading itself into a clickable,
+   * linkable anchor (a "#" that appears on hover, the same as every MDX
+   * heading on the documentation site) — see SiteMap.tsx and pages/index.tsx
+   * for the same pattern already in use elsewhere on this site. A heading
+   * with no `id` renders exactly as it did before this existed.
+   */
   id?: string;
 };
 
 export const H1 = ({ className, children, style, id }: TextProps) => (
-  <h1 id={id} style={style} className={`${className ? className : ""} t-h1`}>
+  <Heading
+    as="h1"
+    id={id}
+    style={style}
+    className={`${className ? className : ""} t-h1`}
+  >
     {children}
-  </h1>
+  </Heading>
 );
 
 export const H2 = ({ className, children, style, id }: TextProps) => (
-  <h2 id={id} style={style} className={`${className ? className : ""} t-h2`}>
+  <Heading
+    as="h2"
+    id={id}
+    style={style}
+    className={`${className ? className : ""} t-h2`}
+  >
     {children}
-  </h2>
+  </Heading>
 );
 
 export const H3 = ({ className, children, style, id }: TextProps) => (
-  <h3 id={id} style={style} className={`${className ? className : ""} t-h3`}>
+  <Heading
+    as="h3"
+    id={id}
+    style={style}
+    className={`${className ? className : ""} t-h3`}
+  >
     {children}
-  </h3>
+  </Heading>
 );
 
 export const P1 = ({ className, children, style }: TextProps) => (

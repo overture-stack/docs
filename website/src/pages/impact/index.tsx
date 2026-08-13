@@ -528,7 +528,9 @@ export default function ImpactPage() {
 
           <div className="ImpactDistribution__figures">
             <div>
-              <H3 className="ImpactBeyond__subhead">Packages</H3>
+              <H3 className="ImpactBeyond__subhead" id="packages-heading">
+                Packages
+              </H3>
               <p className="ImpactDistribution__figure">
                 {metrics.npmDownloads.value}
               </p>
@@ -555,7 +557,9 @@ export default function ImpactPage() {
             </div>
 
             <div>
-              <H3 className="ImpactBeyond__subhead">Container images</H3>
+              <H3 className="ImpactBeyond__subhead" id="container-images-heading">
+                Container images
+              </H3>
               <p className="ImpactDistribution__figure">
                 {metrics.containerPulls.value}
               </p>
@@ -582,7 +586,9 @@ export default function ImpactPage() {
             </div>
           </div>
 
-          <H3 className="ImpactBeyond__subhead">Releases</H3>
+          <H3 className="ImpactBeyond__subhead" id="releases-heading">
+            Releases
+          </H3>
           <p className="ImpactDistribution__figure">
             {metrics.releaseTags.value}
           </p>
