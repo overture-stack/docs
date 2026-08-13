@@ -27,6 +27,7 @@ import { platforms } from "./platforms";
  */
 export const DEPLOYMENTS_ANCHOR = "platforms";
 
+/** A source citation: what the reader is about to open, not the bare URL. */
 export type DeploymentLink = { label: string; href: string };
 
 export type DeploymentRow = {

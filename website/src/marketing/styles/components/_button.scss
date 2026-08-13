@@ -4,14 +4,10 @@
 
 .custom-button {
   border: none;
-  // `padding: 0` was here. In the Gatsby build the component stylesheets were
-  // separate files that webpack put *before* Bulma, so the `.button` padding
-  // (equal specificity, later in the cascade) won and only
-  // `.custom-button.default` below, which is more specific, actually zeroed it.
-  // Everything is one stylesheet here and the partials come after `_layout.scss`,
-  // which reversed that and left every button with its text against its edges.
-  // Dropping the line restores the original result; `.default` still sets its
-  // own padding explicitly, so that variant is unaffected.
+  // No explicit `padding: 0` here: `_layout.scss` (which defines `.button`'s
+  // padding) is imported before this partial, so this rule already wins the
+  // cascade at equal specificity without needing to restate it. `.default`
+  // below still sets its own padding explicitly, unaffected either way.
   margin: 0;
   outline: none;
   background: none;

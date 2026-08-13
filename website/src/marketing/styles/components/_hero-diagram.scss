@@ -129,27 +129,17 @@
   // visibility is React state (only rendered while a tooltip is set), not
   // CSS.
   &__tooltip {
-    position: fixed;
-    z-index: 20;
-    transform: translateX(-50%);
+    @include floating-tooltip-card;
     width: 200px;
     padding: 12px 14px;
-    border-radius: 8px;
-    background: $navy-black;
     color: $white;
     font-family: $font-sans-serif;
     text-align: left;
-    pointer-events: none;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
   }
 
   &__tooltipName {
+    @include white-strong;
     display: block;
-    // `_defaults.scss` sets `strong { color: $navy-black !important; }`
-    // site-wide; inheriting $white from .HeroDiagram__tooltip loses to that
-    // regardless of selector specificity, since !important beats inheritance
-    // outright. Only another !important wins it back.
-    color: $white !important;
     font-size: 0.95rem;
     font-weight: 700;
     margin-bottom: 4px;

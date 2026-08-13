@@ -3,9 +3,9 @@ import React, { useEffect, useRef, useState } from "react";
 /**
  * A block of shell commands, styled as a terminal window.
  *
- * Ported from the Gatsby site's `Terminal`, which the phase 1 port left behind
- * with the home page's Prelude walkthrough (see data/quickstart.ts for why that
- * walkthrough is back). Two changes from the original:
+ * Dropped along with the home page's Prelude walkthrough, then brought back
+ * with it — see data/quickstart.ts for why that walkthrough returned. Two
+ * notable choices:
  *
  *   - The commands are one `<pre><code>` rather than a `<div>` per line, so a
  *     visitor selecting them by hand gets the newlines, and a screen reader
@@ -14,9 +14,9 @@ import React, { useEffect, useRef, useState } from "react";
  *     It copies every line at once, joined with newlines, so pasting into a
  *     shell runs the step as written.
  *
- * The original's `UrlBar` and exported `TrafficLights` are not ported: nothing
- * on this site uses either, and the traffic lights are three decorative dots
- * that belong to this component alone.
+ * No `UrlBar` or `TrafficLights`: nothing on this site uses either, and the
+ * traffic lights are three decorative dots that belong to this component
+ * alone.
  */
 export default function Terminal({
   commands,

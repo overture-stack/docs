@@ -13,11 +13,11 @@ import { docJourneys } from "../data/docJourneys";
  * the journey colours (`--journey-*-color` in css/custom.css), so a "Browse
  * Deploy" line is the same teal on both.
  *
- * No deep links inside the cards and no "All documentation" button under them,
- * on the developer's call: three named destinations is the whole offer here, and
- * a card carrying four links no longer reads as one thing to click. The links
- * that were here are all reachable one click further in, from the journey
- * landing page each card opens.
+ * No deep links inside the cards and no "All documentation" button under
+ * them: three named destinations is the whole offer here, and a card
+ * carrying four links no longer reads as one thing to click. The links that
+ * were here are all reachable one click further in, from the journey landing
+ * page each card opens.
  *
  * The Algolia search that briefly sat between the lede and the cards is gone
  * again, and the navbar's is the one that stays: with the navbar sticky it is

@@ -3,10 +3,9 @@ import React from "react";
 /**
  * Every icon the marketing pages can render, by name.
  *
- * The Gatsby version imported each SVG as a module and let the bundler emit a
- * URL. Docusaurus hands SVG imports to SVGR, which returns a React component
- * instead, so the icons live in `static/img/marketing/icons/` and are addressed
- * by path. The names are unchanged, since pages pass them as the `img` prop.
+ * Docusaurus hands SVG imports to SVGR, which returns a React component
+ * rather than a URL, so these are addressed by path into
+ * `static/img/marketing/icons/` instead of imported as modules.
  */
 const icons: Record<string, string> = {
   aboutUsExtensible: "/img/marketing/icons/aboutUsExtensible.svg",
@@ -129,8 +128,7 @@ const icons: Record<string, string> = {
 export type IconProps = {
   /**
    * Required, so a decorative icon has to say so with `alt=""` rather than
-   * silently shipping an unlabelled image. Fifteen `<img>` tags in the Gatsby
-   * source had no alt at all, this component's among them.
+   * silently shipping an unlabelled image.
    */
   alt: string;
   img: string;
@@ -149,18 +147,3 @@ export function Icon({ alt, img, size, className, style }: IconProps) {
     />
   );
 }
-
-// Common icon sets / groups
-function Core() {
-  return (
-    <span className="Icons">
-      <div className="core">
-        <Icon className="" img="star" alt="" /> CORE{" "}
-      </div>
-    </span>
-  );
-}
-
-export const IconCommon = {
-  Core,
-};

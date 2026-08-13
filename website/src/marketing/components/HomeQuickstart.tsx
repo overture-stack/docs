@@ -15,11 +15,10 @@ import { WORKSHOP_DOCS_LINK } from "../constants/externalLinks";
 const PORTAL_SCREENSHOT = "/img/marketing/home/overtureQuickstartPortal.webp";
 
 /**
- * The quickstart, at the foot of the home page, rebuilt to the Gatsby site's
- * "Getting Started" band: an introduction, a blue band under it, and the portal
- * screenshot straddling the seam between the two. The introduction carries the
- * documentation band's own grey rather than white, so that seam is the section's
- * only colour change.
+ * The quickstart, at the foot of the home page: an introduction, a blue band
+ * under it, and the portal screenshot straddling the seam between the two.
+ * The introduction carries the documentation band's own grey rather than
+ * white, so that seam is the section's only colour change.
  *
  * The commands are mirrored from the documentation rather than rewritten. See
  * data/quickstart.ts, which names the two files to check against when the demo

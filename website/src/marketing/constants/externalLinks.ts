@@ -6,9 +6,9 @@
 // redirects, so a visitor takes one hop instead of two.
 //
 // These stay absolute, cross-host URLs even though the documentation is built
-// from this same repo: overture.bio and docs.overture.bio remain separate sites
-// (see .dev/roadmap.md, Decisions). onBrokenLinks cannot validate them, which is
-// why the Gatsby repo's URL-check script became permanent tooling.
+// from this same repo: overture.bio and docs.overture.bio remain separate
+// sites. onBrokenLinks cannot validate them, which is why a separate
+// URL-check script exists as permanent tooling.
 const DOCS = "https://docs.overture.bio";
 
 // The four audience journeys the docs site is organized into. Component
@@ -73,10 +73,8 @@ export const GIGASCIENCE_PAPER_LINK =
 // Case Study Links
 
 export const GDC_LINK = "https://portal.gdc.cancer.gov/";
-export const HCMIS_LINK = "https://hcmi-searchable-catalog.nci.nih.gov/";
 export const HCMIS_PORTAL_LINK = "https://hcmi-searchable-catalog.nci.nih.gov/";
 export const ICGC_LINK = "https://dcc.icgc.org/";
-export const IHCC_LINK = "https://ihccglobal.org/";
 export const IHCC_PORTAL_LINK = "https://atlas.ihccglobal.org/";
 export const KIDS_FIRST_LINK =
   "https://portal.kidsfirstdrc.org/login?redirect_path=/dashboard?";
@@ -87,9 +85,8 @@ export const KIDS_FIRST_LINK =
 // anchor id. `/explorer` is kept from the old URL and still resolves: it
 // redirects to `/explorer/clinical`, checked 2026-08-12.
 export const IMICROSEQ_PORTAL_LINK = "https://imicroseq-dataportal.ca/explorer";
-// OHCRN and PCGL, both live and both verified 2026-08-12. These are the two
-// portal URLs .dev/roadmap.md carried as `[NEEDS: URLs]` from the start of the
-// rebuild: their cards were the only ones on /impact/ that linked nowhere.
+// OHCRN and PCGL, both live and both verified 2026-08-12: until then, their
+// cards were the only ones on /impact/ that linked nowhere.
 export const OHCRN_PORTAL_LINK = "https://ohcrn.ca";
 export const PCGL_PORTAL_LINK = "https://genomelibrary.ca";
 export const ICGC_ARGO_LINK = "https://www.icgc-argo.org/";

@@ -15,18 +15,18 @@ import {
 
 const LOGO = "/img/marketing/chrome/overture_logo.svg";
 
-// Three items plus two actions, per `ia-proposal.md` § Navigation, replacing
-// the five plus two the Gatsby site carried. Two things leave the primary nav
-// rather than being renamed: `Documentation` moves right into the actions group,
-// since it leaves the site, and `Support` drops out entirely and becomes
-// "Support forum" in the footer's Connect column.
+// Three items plus two actions, per `ia-proposal.md` § Navigation. Two things
+// leave the primary nav rather than being renamed: `Documentation` moves right
+// into the actions group, since it leaves the site, and `Support` drops out
+// entirely and becomes "Support forum" in the footer's Connect column.
 //
-// `About` has left it too, on the developer's call. It was the one item that did
-// not point at the route it names: /about-us/ was removed and the item pointed
-// into a band of the home page instead, which is a nav entry that scrolls the
-// page a visitor is already on. "Who are these people" is answered by that band
-// on arrival and by the footer's Our story, both still `ABOUT_BAND` in
-// constants/pages.ts, so nothing that address serves has been lost.
+// `About` has left it too: it was the one item that did not point at the
+// route it names — /about-us/ was removed and the item pointed into a band of
+// the home page instead, which is a nav entry that scrolls the page a visitor
+// is already on. "Who are these people" is answered by that band on arrival
+// and by the footer's Our story, both still `ABOUT_BAND` in constants/pages.ts,
+// so nothing that address served has been lost. Don't re-add it without also
+// giving it a real route to point at.
 //
 // Every label left here points at the page it names.
 const navLinks = [
@@ -49,10 +49,9 @@ const navActions = [
  *
  * The documentation navbar (Develop, Deploy, Use, Community) is the wrong
  * navigation for these pages, and showing it made the two sites look like one.
- * This is a plain Bulma navbar rather than a port of the Gatsby `NavBar` class
- * component: the megamenu it carried was already unreachable, and the mobile
- * menu is a single piece of state instead of the `useSSRWorkaround` machinery
- * that Gatsby's rehydration needed.
+ * The megamenu this could have carried is already unreachable elsewhere on
+ * the site, and the mobile menu needs nothing more than a single piece of
+ * state to open and close.
  *
  * Docusaurus renders the navbar outside the content wrapper that normally
  * carries `.marketing`, so this brings its own. It has to be a wrapping element
@@ -89,6 +88,7 @@ export default function MarketingNavbar() {
               className={`button navbar-burger ${openClass}`}
               aria-label="Menu"
               aria-expanded={mobileMenuOpen}
+              aria-controls="navMenu"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               <span />

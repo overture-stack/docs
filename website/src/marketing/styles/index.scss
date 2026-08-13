@@ -30,7 +30,7 @@
 // `@import` is still deprecated, and this file still depends on it: `@use`
 // cannot be nested inside a selector, so `.marketing { @import ... }` has no
 // modern equivalent. Removing Bulma did not resolve that, because the site's own
-// 2,800 lines still need the same scoping. See .dev/roadmap.md.
+// 2,800 lines still need the same scoping.
 
 @import "color-codes";
 @import "colors";
@@ -83,7 +83,6 @@
 
   @import "components/button";
   @import "components/card-tile";
-  @import "components/casestudy";
   @import "components/footer";
   @import "components/hero";
   @import "components/hero-diagram";
@@ -92,8 +91,10 @@
   @import "components/navbar";
   // No components/notebox: `NoteBox` was dead before the rebuild and was
   // deleted with the home page's quickstart work, so its partial went too.
+  // No components/casestudy or components/stack-diagram: both partials styled
+  // components with no caller left on the site (CaseStudy, StackDiagram), and
+  // were deleted with them.
   @import "components/quickstart";
-  @import "components/stack-diagram";
   @import "components/terminal";
   @import "components/typography";
 

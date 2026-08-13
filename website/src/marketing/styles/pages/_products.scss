@@ -1,25 +1,15 @@
-// Rebuild phase 3 rewrote this page around the Collect / Explore / Control
-// grouping, so what is left here is the hero (which carries the page artwork),
-// the container padding, and the component table. The rest is built with `ow:`
-// utilities in ComponentTable.tsx and the route file, per .dev/roadmap.md;
-// `_productspagesection.scss` went with the component it styled.
-
-// A row's "you were just sent here" marker — see `tbody tr:target` below.
-@keyframes ProductsTable-target-flash {
-  from {
-    background-color: rgba($yellow, 0.35);
-  }
-  to {
-    background-color: transparent;
-  }
-}
+// This page is built around the Collect / Explore / Control grouping, so what
+// is left here is the hero (which carries the page artwork), the container
+// padding, and the component table. The rest is built with `ow:` utilities
+// in ComponentTable.tsx and the route file; `_productspagesection.scss` went
+// with the component it styled.
 
 .ProductsPage {
-  // The phase 3 markup is bare elements plus utilities, and `.marketing` sets
+  // This page's markup is bare elements plus utilities, and `.marketing` sets
   // font size, weight and colour but not family: Bulma's rule lived on `body`,
   // which had nowhere to land once the styles were nested (see `_base.scss`).
-  // Ported markup takes the family from its `.t-*` class, so only new elements
-  // need this, exactly as the prose pages do.
+  // Existing markup takes the family from its `.t-*` class, so only new
+  // elements need this, exactly as the prose pages do.
   p,
   li,
   strong {
@@ -88,8 +78,8 @@
 
   // The seven components, as one table. See ComponentTable.tsx.
   //
-  // This is SCSS rather than `ow:` utilities, against the phase 2 default for
-  // new work, because a table is the one thing utilities cannot dress here.
+  // This is SCSS rather than `ow:` utilities, the usual default for new work,
+  // because a table is the one thing utilities cannot dress here.
   // Infima styles every `table` on the site — `display: block`, a border on
   // each cell, a background on every second row — and undoing that takes
   // element selectors (`tr:nth-child(2n)` has no utility) on markup we do not
@@ -229,7 +219,7 @@
     // is in the URL right now, no JS required, and fades on its own rather
     // than sitting highlighted forever.
     tbody tr:target {
-      animation: ProductsTable-target-flash 2400ms ease-out;
+      animation: target-flash 2400ms ease-out;
     }
 
     // The other case a row can be jumped to for: /impact/'s Runs column links
@@ -240,27 +230,8 @@
     // link (`.ImpactTable__highlight` in pages/_impact.scss) — cleared the
     // same way, on a click outside the row, which ComponentTable.tsx's
     // `highlightedComponentId` handles.
-    //
-    // The background sits on the cells rather than the row, for the same
-    // reason given on `.ImpactTable__highlight`: a `tr`'s own background does
-    // not reliably paint past its cells in every browser, and the box-shadow
-    // on the first and last cell is what carries the colour to the row's
-    // actual edge.
     tbody tr.ProductsTable__highlight {
-      th,
-      td {
-        background-color: $c-blue-100;
-      }
-
-      th:first-child,
-      td:first-child {
-        box-shadow: -16px 0 0 $c-blue-100;
-      }
-
-      th:last-child,
-      td:last-child {
-        box-shadow: 16px 0 0 $c-blue-100;
-      }
+      @include table-row-highlight-bleed;
     }
 
     // Icon beside the name, and the name wrapping inside its own column rather
@@ -321,20 +292,8 @@
     // column (`floatingTooltipPosition`, shared rather than reimplemented),
     // so the two pages' hover cards match.
     &__tooltip {
-      position: fixed;
-      z-index: 20;
-      max-width: 220px;
-      padding: 6px 10px;
-      transform: translateX(-50%);
-      border-radius: 8px;
-      background: $navy-black;
-      color: $white;
-      font-family: $font-sans-serif;
-      font-size: 13px;
-      line-height: 1.4;
-      text-align: center;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-      pointer-events: none;
+      @include floating-tooltip-card;
+      @include floating-tooltip-label-text;
     }
 
     // Below tablet there is no room for three columns, so the table stops

@@ -1,10 +1,9 @@
-// Site-wide marketing rules, from the Gatsby site's src/styles/main.scss.
+// Site-wide marketing rules.
 //
-// Dropped on the way over, because what they styled is not ported: the
-// `.site-wrapper` flex scaffolding and the `html, body, #___gatsby` height rules
+// Deliberately absent: page-shell flex scaffolding and body-height rules
 // (Docusaurus owns the page shell), `.has-navbar-fixed-top` (the marketing
-// navbar is not fixed, so it needs no body offset), the react-modal overrides
-// (nothing rendered a modal), and the `.BottomCallout` button colour
+// navbar is not fixed, so it needs no body offset), react-modal overrides
+// (nothing renders a modal), and the `.BottomCallout` button colour
 // (BottomCallout is one of the dead components).
 
 // Override the navbar item hover colour from `_layout.scss`.

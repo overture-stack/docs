@@ -4,8 +4,8 @@ import { PRODUCTS_PATH } from "../constants/pages";
 /**
  * Layout for the home hero's diagram: what Overture is made of. Positions
  * are percentages of a 528x528 square (the diagram's aspect ratio), matching
- * the real shape coordinates in .dev/referenceMaterial/diagram.pptx, not an
- * evenly-spaced redistribution.
+ * the real shape coordinates from the reference artwork, not an evenly-spaced
+ * redistribution.
  */
 export type HeroDiagramHotspot = {
   id: string;
@@ -25,8 +25,7 @@ export type HeroDiagramHotspot = {
    * that side runs off the browser window: see utils/floatingTooltip.ts).
    * Defaults to away from the ring's own center (`top < 50` prefers
    * "above") when absent; Score, Lectern, Maestro, Arranger and Stage
-   * override that default on the developer's own visual call rather than
-   * the generic rule.
+   * override that default where it reads better against their position.
    */
   tooltipSide?: "above" | "below";
 };
@@ -71,9 +70,8 @@ export const heroDiagramHotspots: HeroDiagramHotspot[] = [
   {
     // Not data/components.ts's "control" group (the Keycloak-delegated band
     // with no component of its own, at /products/#control): a distinct,
-    // unshipped component confirmed with the developer 2026-08-10. No `href`
-    // until it has real documentation to link to; `[NEEDS: URL]` per
-    // .dev/roadmap.md's convention once one exists.
+    // unshipped component, confirmed with the developer 2026-08-10. No
+    // `href` until it has real documentation to link to.
     id: "control",
     icon: componentIcon("control"),
     left: 16.914,

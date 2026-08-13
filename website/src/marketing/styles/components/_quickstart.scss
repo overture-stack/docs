@@ -80,10 +80,10 @@
   // The portal is the payoff, so it straddles the seam: part over the white
   // introduction, the rest over the blue band it belongs to.
   //
-  // A negative margin rather than the Gatsby site's `position: relative;
-  // bottom`, which moved the image without changing layout height. That left
-  // the band with dead blue at its foot and made every element under the image
-  // need the same offset applied by hand.
+  // A negative margin, not `position: relative; bottom` (which would move
+  // the image without changing layout height): that leaves dead blue at the
+  // band's foot and forces every element under the image to carry the same
+  // offset by hand.
   &__figure {
     margin: calc(-1 * var(--portal-overhang)) auto 0;
     width: 100%;
@@ -95,8 +95,8 @@
     display: block;
     width: 100%;
     height: auto;
-    // The Gatsby site's own treatment: this is a screenshot of a UI, so the
-    // browser's smoothing on a downscale reads as blur rather than as detail.
+    // This is a screenshot of a UI, so the browser's smoothing on a downscale
+    // reads as blur rather than as detail.
     image-rendering: crisp-edges;
   }
 

@@ -1,13 +1,14 @@
-// What the /impact/ hub shows, in the three tiers .dev/ia-proposal.md defines.
+// What the /impact/ hub shows, in three fixed tiers.
 //
-// The tiers exist because the reference material distinguishes them and the old
+// The tiers exist because platforms genuinely differ by who runs them, and the old
 // single list flattened them. Tier 2 is the one that was missing entirely, and
 // it is the most persuasive evidence the site has: it is the difference between
 // "we built seven things" and "other people choose this".
 //
 // Figures live in metrics.ts, never here. Card copy is written for scanning; the
-// long-form write-up for the four platforms that have one lives in
-// caseStudies.tsx, which the hub renders below the cards.
+// long-form write-up four platforms once had lived in caseStudies.tsx, which
+// the hub rendered below the cards. Removed 2026-08-12 (see the note on `id`
+// below) — data/caseStudies.tsx and components/CaseStudy were deleted with it.
 
 import metrics from "./metrics";
 import {
@@ -65,10 +66,10 @@ export type Platform = {
   /** Absolute path into static/. Only the four that carry one. */
   logo?: string;
   /**
-   * A screenshot of the running portal, absolute path into static/. The same
-   * file the platform's case study shows (data/caseStudies.tsx `details`), named
-   * here so a band that cites a platform can show it without going through the
-   * case study: the home page's capability cards do exactly that.
+   * A screenshot of the running portal, absolute path into static/. Named
+   * here (rather than only on the now-deleted case study) so a band that
+   * cites a platform can show it directly: the home page's capability cards
+   * do exactly that.
    *
    * Five platforms carry one, under the historical filename `chart.png`.
    */
@@ -80,11 +81,7 @@ const LOGOS = "/img/marketing/case-studies-data";
 /**
  * Tier 1: platforms the team builds and runs. Six of the seven carry a portal
  * URL as of 2026-08-12, when the developer confirmed OHCRN's and PCGL's: those
- * two were the `[NEEDS: URLs]` that had been open since the start of the
- * rebuild and the only cards in this tier that linked nowhere. OHCRN, PCGL and
- * the Drug Discovery Portal still have no long-form write-up in
- * caseStudies.tsx, which is now the only thing separating them from their four
- * siblings.
+ * two were the only cards in this tier that linked nowhere until then.
  *
  * The OICR Drug Discovery Portal came off this list on 2026-08-11, as internal
  * to one research group rather than a consortium platform, and went back on

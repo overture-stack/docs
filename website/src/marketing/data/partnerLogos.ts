@@ -96,8 +96,7 @@ function platformLogo(
  * carries, which read fine as a page's opening paragraph and far too long
  * as a hover tooltip. Pass `{ impact: "..." }` to `platformLogo()` to write
  * something purpose-built instead, per platform, whenever there's real
- * impact copy to put there. `[NEEDS: impact statements]` in
- * .dev/roadmap.md tracks which ones are still borrowed text.
+ * impact copy to put there.
  */
 export const partnerLogos: PartnerLogo[] = [
   // PCGL read "In development" with no start year until 2026-08-12, when the

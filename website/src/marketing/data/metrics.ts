@@ -2,8 +2,7 @@
 //
 // The site's numbers went stale because they were typed into JSX once, while the
 // numbers that actually matter are maintained in program reporting that never
-// flowed back. Pages read from here; nothing hardcodes a figure. See
-// .dev/ia-proposal.md § One source for the numbers.
+// flowed back. Pages read from here; nothing hardcodes a figure.
 //
 // `source` names where the figure originates, not whichever document last quoted
 // it. Keep it that way: a document name goes out of date faster than the team
@@ -25,12 +24,6 @@ export type Metric = {
   note?: string;
 };
 
-/**
- * A figure goes stale after six months, matching the documentation-currency
- * cadence in .dev/roadmap.md § Parked, so one refresh covers both.
- */
-export const MAX_VERIFIED_AGE_MONTHS = 6;
-
 const metrics = {
   // Platform-wide
   activePlatforms: {
@@ -42,14 +35,14 @@ const metrics = {
   stableReleaseHistory: {
     value: "11 years",
     source: "Overture component release histories",
-    verified: "2026-08-11",
-    note: "Counted from Score's first tag, 2015-07-06, to the most recent release. Was published as `8+ years` until 2026-08-11, which was an understatement rather than a different measurement: nothing sourced said where the eight came from, and the git histories put it at eleven. Each component follows independent semantic versioning; `releaseTags` is the count across all seven.",
+    verified: "2026-08-13",
+    note: "Counted from Score's first tag, 2015-07-06, to the most recent release. Was published as `8+ years` until 2026-08-11, which was an understatement rather than a different measurement: nothing sourced said where the eight came from, and the git histories put it at eleven. Each component follows independent semantic versioning. This span still anchors on Score's git tag rather than a container, since no registry retains history that far back, a different question from `releaseTags` below, which counts confirmed publishes rather than the oldest surviving evidence of development.",
   },
   releaseTags: {
-    value: "675",
-    source: "Overture component git histories",
-    verified: "2026-08-11",
-    note: "Version tags across the seven components, counted from each repository's git history rather than from its GitHub Releases page. The Releases pages are a curated subset and would undercount badly: Lectern and Lyric publish none at all and Arranger publishes two. data/distribution.ts holds the per-component breakdown this totals.",
+    value: "309",
+    source: "Overture component registries (npm, GHCR, Docker Hub) and merged release-branch history",
+    verified: "2026-08-13",
+    note: "Confirmed published releases across the seven components: npm versions, container image tags, or a merged release-branch build where that is a component's actual mechanism, checked per component against its own registry rather than counted from git tags. Rebuilt 2026-08-13 from `675` (raw git tags): tagging turned out to be unreliable across this org in both directions, some components keep shipping containers for years after their last tag (Score, Maestro, Stage) while others' raw tag counts include junk markers, packaging-mirror tags, or a monorepo's still-prerelease sub-packages (Song, Arranger). 309 is lower than 675 because it counts what actually shipped, not every tag ever pushed; it is higher than GitHub's curated Releases pages, which undercount badly and would show none at all for Lectern and Lyric. data/distribution.ts holds the per-component breakdown and the reasoning specific to each.",
   },
   firstDeployment: {
     value: "2016",
@@ -253,27 +246,11 @@ const metrics = {
     value: "30.5k",
     source: "Unverified: carried forward from the Gatsby site",
     verified: null,
-    note: "Kids First is lineage rather than a platform the team runs; phase 3 moves it to that tier.",
+    note: "Kids First is lineage rather than a platform the team runs, and still needs moving to that tier.",
   },
 } satisfies Record<string, Metric>;
 
+/** Every figure name a caller can look up on `metrics`. */
 export type MetricKey = keyof typeof metrics;
-
-/**
- * Every figure that has gone stale, or was never verified at all.
- *
- * Nothing calls this yet. It is here so that wiring it into the pre-commit
- * build gate, which .dev/roadmap.md § Known issues still lists as open, is a
- * one-line job rather than a design task.
- */
-export function findStaleMetrics(now: Date): MetricKey[] {
-  const cutoff = new Date(now);
-  cutoff.setMonth(cutoff.getMonth() - MAX_VERIFIED_AGE_MONTHS);
-
-  return (Object.keys(metrics) as MetricKey[]).filter((key) => {
-    const { verified } = metrics[key];
-    return verified === null || new Date(verified) < cutoff;
-  });
-}
 
 export default metrics;

@@ -4,8 +4,8 @@
 // the documentation site is canonical for how to cite Overture, and the footer
 // links it. What was missing is the plain statement that the platform has been
 // through peer review at all, which a funder or an evaluator looks for first and
-// which lived nowhere on this site after /impact/publications/ was retired (see
-// .dev/roadmap.md). Five entries is a section; it was never worth a page again.
+// which lived nowhere on this site after /impact/publications/ was retired.
+// Five entries is a section; it was never worth a page again.
 //
 // Sourced from the RSMF Phase 2 supporting-evidence submission, which lists the
 // same five. Two of them are third-party work rather than ours, and that is the

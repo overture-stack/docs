@@ -1,6 +1,6 @@
-// Who builds on Overture without us: the tier .dev/ia-proposal.md § /impact/ Hub
-// called "arguably the most persuasive evidence on the whole site", and which
-// has rendered nowhere since that page was written.
+// Who builds on Overture without us: independent adopters, folded into the
+// same deployments table /impact/ renders everything else from (see
+// data/deployments.ts's `independentAdopters` mapping).
 //
 // It replaces `adopters` in data/platforms.ts, which was three entries, no
 // links, and one of them ("Overture components in their own stack") vague enough
@@ -50,6 +50,8 @@ export type IndependentAdopter = {
    * tender, not a launch, so it is undated too now.
    */
   launched?: string;
+  /** Which Overture components this adopter is documented as running. */
+  uses?: string;
   /**
    * What they built and why it counts. Written to be read on its own; the
    * sources under it are how a reader checks it, not where the claim lives.

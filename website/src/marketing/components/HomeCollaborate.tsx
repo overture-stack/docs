@@ -15,27 +15,21 @@ import {
 
 /**
  * "What we do": who builds Overture, how it is built, and what to contact us
- * about. The second band under the carousel, behind `HomeCapabilities`, which it
- * led for one round: a visitor who has just read what Overture is needs to know
- * what it does before who builds it, and this band is then the staffed route out
- * of the page, offered ahead of the documentation and quickstart bands below.
+ * about. The second band under the carousel, behind `HomeCapabilities`, which
+ * it led for one round: a visitor who has just read what Overture is needs to
+ * know what it does before who builds it, and this band is then the staffed
+ * route out of the page, offered ahead of the documentation and quickstart
+ * bands below.
  *
- * The footer's Our story and the 301 from /about-us/ land on the H2 here, so both
- * now scroll a reader past the capability cards on the way. The anchor is what
- * makes that a scroll rather than a hunt, which is the same reason it is
- * load-bearing below.
- *
- * This band now carries /about-us/ in condensed form, on the developer's call.
- * Everything that page said is here in three paragraphs and a four-item list:
- * who builds it (the Genome Informatics program, its size, what OICR does), the
- * 2017 origin story, and the four values the page spent a grid on.
- *
- * That page has since been removed outright, so this is not a condensed copy of
- * a live page any more: it is the only place the material exists. The footer's
- * Our story and a 301 from /about-us/ both land on the H2 below (the navbar's
- * About item is gone), which is why its `id` is load-bearing and not just an
- * aria target.
- * `ABOUT_BAND` in constants/pages.ts is the one spelling of that address.
+ * The only place the /about-us/ material exists, condensed into three
+ * paragraphs and a four-item list, now that the page itself is gone: who
+ * builds it (the Genome Informatics program, its size, what OICR does), the
+ * 2017 origin story, and the four values the page spent a grid on. The
+ * footer's Our story and the 301 from /about-us/ both land on the H2 below,
+ * which is why its `id` (`ABOUT_BAND` in constants/pages.ts, the one spelling
+ * of that address) is load-bearing and not just an aria target — it's what
+ * turns the landing into a scroll past the capability cards rather than a
+ * hunt.
  *
  * The band opens on what Overture is for and credits the team second, which is
  * the order the heading asks for: "What we do with Overture" is answered by the
@@ -49,12 +43,9 @@ import {
  * rather than on the offers and the reader needs to be told where one ends and
  * the other starts.
  *
- * Gone: the "Our funders / Publications / Who builds Overture" link row at the
- * foot, on the developer's call. The funder claim it carried survives as the
- * sentence about public funding below; the three routes are in the footer.
- *
- * `engagements` in data/collaboration.ts still has no reader on the site; the
- * styles it used are still in _home.scss.
+ * No "Our funders / Publications / Who builds Overture" link row at the foot:
+ * the funder claim it carried survives as the sentence about public funding
+ * below, and the three routes are in the footer.
  */
 /**
  * The four claims about how the software is built, with the badge /about-us/
@@ -109,11 +100,10 @@ export default function HomeCollaborate() {
             What we do with Overture
           </H2>
           <div className="yellow-bar ow:my-6" />
-          {/* Three paragraphs at one size, and no `P1` on the first of them: it
-              was `.t-p1`, which is 24px at desktop, above two 17px notes, so the
-              band's opening statement was told in three sizes. They are one
-              class now, at the smallest size this site sets prose in, on the
-              developer's call. The rules are pages/_home.scss `&__prose`. */}
+          {/* No `P1` on the first paragraph: all three are one class, at the
+              smallest size this site sets prose in, so the band's opening
+              statement isn't told at a visibly different size than the notes
+              under it. The rules are pages/_home.scss `&__prose`. */}
           <p className="HomeCollaborate__prose">
             Our ability to build{" "}
             <Link to={IMPACT_PATH}>a diverse portfolio of data platforms</Link>{" "}

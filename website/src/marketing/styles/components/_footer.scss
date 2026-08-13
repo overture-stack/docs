@@ -24,15 +24,14 @@
       flex-shrink: 0;
     }
 
-    // `__links-holder` went with the flat list in phase 4: it existed to cap
-    // the height that made the column-wrap work, and the grid below needs no
-    // wrapper of its own.
+    // No `__links-holder`: it existed to cap the height that made the old
+    // flat list's column-wrap work, and the grid below needs no wrapper of
+    // its own.
   }
 
-  // Four columns as of rebuild phase 4, replacing the flat wrapped list this
-  // held through phases 1 to 3. The old `.links-container` used a fixed
-  // `max-height` and column-wrap to fake columns out of one list, which is why
-  // adding a ninth link used to reflow the whole thing.
+  // Four columns, replacing a flat wrapped list: the old `.links-container`
+  // used a fixed `max-height` and column-wrap to fake columns out of one
+  // list, which is why adding a ninth link used to reflow the whole thing.
   .footer-columns {
     display: grid;
     grid-template-columns: 1fr;

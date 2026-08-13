@@ -1,8 +1,8 @@
 
 .Hero {
-  // `min-height` rather than `height`, changed in rebuild phase 4. A fixed
-  // height was fine while every hero heading was one line; the home page's new
-  // one runs to three at 1440 and the flex child, being taller than its 470px
+  // `min-height` rather than `height`: a fixed height was fine while every
+  // hero heading was one line; the home page's new one runs to three at 1440
+  // and the flex child, being taller than its 470px
   // parent, overflowed in both directions and put the first line behind the
   // navbar. Measured: a 614px section inside a 470px box, starting 7px above
   // the viewport. Pages that want the old exact height set it themselves.

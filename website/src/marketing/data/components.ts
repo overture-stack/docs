@@ -1,11 +1,10 @@
 // The seven Overture components, the authorization service being built beside
 // them, and the grouping the products page is built on.
 //
-// The Collect / Explore / Control grouping and the functional names come from
-// the component diagram in .dev/referenceMaterial/. .dev/ia-proposal.md
-// § Decided fixes the house style: functional name first, codename beside it,
-// written as "Tabular Submission (Lyric)". Never the codename alone, and never
-// the codename first.
+// The Collect / Explore / Control grouping is a content decision, not derived
+// from anything here. The functional names follow a fixed house style:
+// functional name first, codename beside it, written as "Tabular Submission
+// (Lyric)". Never the codename alone, and never the codename first.
 //
 // This file is the reason the products page stopped being seven near-identical
 // JSX sections: the page is now a list renderer and the content is data. Anything
@@ -30,9 +29,8 @@ export type OvertureComponent = {
    * Anchor id, and the lower-cased codename.
    *
    * `/products/#song` and its six siblings predate this rewrite and are linked
-   * from outside the site, so they survive it. Nothing inside the site links to
-   * them any more: the phase 4 home reorder dropped the component catalogue
-   * that did.
+   * from outside the site, so they survive it. Nothing inside the site links
+   * to them any more: the home page catalogue that once did has been dropped.
    */
   id: string;
   /** What the component does, which is how the diagram labels it. */
@@ -41,7 +39,7 @@ export type OvertureComponent = {
   codename: string;
   /** One sentence. The docs site owns the detail; this owns the orientation. */
   summary: string;
-  /** One link per row, to the docs page. See .dev/ia-proposal.md. */
+  /** One link per row, to the docs page. */
   docs: string;
   group: ComponentGroupId;
   /**
@@ -226,50 +224,3 @@ export function componentIcon(id: string): string {
   return `/img/marketing/home/diagram/${id}.png`;
 }
 
-export type AdjacentProject = {
-  name: string;
-  /** Who maintains it. An evaluator reads this as the governance question. */
-  maintainer: string;
-  link: string;
-  /** What it is, in its own terms rather than ours. */
-  what: string;
-  /** Where it is the better choice. Conceding this is the point of the section. */
-  stronger: string;
-};
-
-/**
- * The three projects that occupy adjacent space, adapted from the landscape
- * answer in .dev/referenceMaterial/P1-loi-form.md § 3.3.
- *
- * One deliberate change from that source, per .dev/ia-proposal.md: the LOI
- * argues that *Canadian* platforms on Gen3 inherit US-oriented governance. The
- * general and more useful form of the same fact is that any institution outside
- * the US does, so that is what ships here. The site does not make a national
- * argument.
- */
-export const adjacentProjects: AdjacentProject[] = [
-  {
-    name: "Gen3",
-    maintainer: "University of Chicago, Center for Translational Data Science",
-    link: "https://gen3.org/",
-    what: "The closest functional analog: an open-source microservice stack for building data commons. It is built around United States research infrastructure, developed under NIH funding and deployed primarily across NIH data commons, so an institution outside the US inherits a stack governed by and oriented toward US priorities. The two projects share history. The Overture team worked with the Chicago group on the original Genomic Data Commons, and Gen3 built on Overture's search API service.",
-    stronger:
-      "Stronger if your platform belongs inside the NIH data commons ecosystem and has to interoperate with it.",
-  },
-  {
-    name: "cBioPortal",
-    maintainer: "Memorial Sloan Kettering, with multi-institutional contributors",
-    link: "https://www.cbioportal.org/",
-    what: "A cancer-specific visualization and analysis application: one integrated tool for exploring genomic and clinical data across cancer cohorts, rather than a set of composable parts for assembling platforms across research domains.",
-    stronger:
-      "Stronger if what you need is cancer cohort analysis working today, not a platform to build on.",
-  },
-  {
-    name: "Globus",
-    maintainer: "University of Chicago",
-    link: "https://www.globus.org/",
-    what: "A widely used research data transfer and sharing service, free for non-profits at the basic tier with paid tiers above it. Its central management infrastructure is operated by a US institution and Globus Connect Server v5 is distributed under a proprietary license. It does not carry the metadata management, access control or portal layers a full platform needs.",
-    stronger:
-      "Stronger at high-volume transfer between established institutional endpoints, which is the problem it was built for.",
-  },
-];

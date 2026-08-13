@@ -24,8 +24,8 @@ const CAPABILITY_SHOTS = "/img/marketing/home/capabilities";
 /**
  * The quickstart demo portal, the same file HomeQuickstart shows at the foot of
  * this page, standing in on the lab-scale card until a shot of the Drug
- * Discovery Portal exists. That portal is internal, so nobody outside the group
- * can capture one; `[NEEDS: screenshot]` in .dev/roadmap.md tracks it.
+ * Discovery Portal exists. That portal is internal, so nobody outside the
+ * group can capture one.
  *
  * Deliberately unbadged. It carried a "Quickstart portal" pill for one round, on
  * the reasoning that the band's other shots are the interface their card is

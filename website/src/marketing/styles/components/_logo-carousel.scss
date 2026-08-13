@@ -1,10 +1,9 @@
 // Who runs Overture, scrolling right below the hero. See LogoCarousel.tsx.
 //
 // `$blue-block` lives on the section itself now, edge to edge like `.Hero`
-// above it (`background-color: $blue-top` there, same pattern) — a rounded
+// above it (`background-color: $blue-top` there, same pattern): a rounded
 // card with white either side of it read as floating on the page rather than
-// its own section, on the developer's own follow-up after seeing it built.
-// `&__band` is just a vertical-padding wrapper now; `.LogoCarousel
+// its own section. `&__band` is just a vertical-padding wrapper now; `.LogoCarousel
 // .container`'s own horizontal padding (_home.scss) is what indents the
 // content and lines it up with the hero's.
 // One figure, `$carousel-band-y`, above the heading and below the logos: the
@@ -396,25 +395,17 @@ $carousel-band-y: 28px;
 // hit earlier. `fixed` positions against the viewport itself, so no
 // ancestor's `overflow` applies to it.
 .LogoCarousel__tooltip {
-  position: fixed;
-  z-index: 20;
-  transform: translateX(-50%);
+  @include floating-tooltip-card;
   width: 220px;
   padding: 12px 14px;
-  border-radius: 8px;
-  background: $navy-black;
   color: $white;
   font-family: $font-sans-serif;
   text-align: left;
-  pointer-events: none;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
 
 .LogoCarousel__tooltipName {
+  @include white-strong;
   display: block;
-  // `_defaults.scss` sets `strong { color: $navy-black !important; }`
-  // site-wide; same fix as HeroDiagram__tooltipName for the same reason.
-  color: $white !important;
   font-size: 0.95rem;
   font-weight: 700;
   margin-bottom: 4px;

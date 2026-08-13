@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useBrokenLinks from "@docusaurus/useBrokenLinks";
+import clsx from "clsx";
 import Link from "./Link";
 import { H2 } from "./Typography";
 import { IMPACT_PATH } from "../constants/pages";
@@ -11,6 +12,7 @@ import {
 } from "../data/components";
 import { DEPLOYMENTS_ANCHOR, usedBy } from "../data/deployments";
 import { floatingTooltipPosition } from "../utils/floatingTooltip";
+import { hoverIntentHandlers } from "../utils/hoverIntent";
 
 /**
  * The column headers, written once so the real `<thead>` row and the row
@@ -28,8 +30,7 @@ const COLUMN_HEADERS = ["Component", "What it does", "Documentation", "Used by"]
  * comparing two components no longer scrolls past a section boundary to do it,
  * and the page lost two bands of chrome without losing a line of copy. The
  * Collect / Explore / Control grouping survives as a group row inside the table
- * (`<th scope="colgroup">`), which is what the component diagram in
- * .dev/referenceMaterial/ groups them by and what the group blurbs explain.
+ * (`<th scope="colgroup">`), which is what the group blurbs below explain.
  *
  * Control is the group that is not seven-eighths shipped: its blurb says what a
  * deployment does about access today (delegate to Keycloak) and links the how-to
@@ -73,10 +74,9 @@ const COLUMN_HEADERS = ["Component", "What it does", "Documentation", "Used by"]
  * deployment's own row, the same as before collapsing existed.
  *
  * The column headers repeat at the top of every group (`COLUMN_HEADERS`,
- * rendered again inside each `<tbody>`), on the developer's instruction:
- * with only the true `<thead>` at the very top of the table, scrolling into
- * Explore or Control loses the header row entirely and a reader can no
- * longer tell which column is which.
+ * rendered again inside each `<tbody>`): with only the true `<thead>` at the
+ * very top of the table, scrolling into Explore or Control loses the header
+ * row entirely and a reader can no longer tell which column is which.
  */
 export default function ComponentTable() {
   // MDX headings and list items register their own anchors as they render, so
@@ -206,11 +206,11 @@ export default function ComponentTable() {
                     <tr
                       key={component.id}
                       id={component.id}
-                      className={
-                        component.id === highlightedComponentId
-                          ? "ow:scroll-mt-20 ProductsTable__highlight"
-                          : "ow:scroll-mt-20"
-                      }
+                      className={clsx(
+                        "ow:scroll-mt-20",
+                        component.id === highlightedComponentId &&
+                          "ProductsTable__highlight",
+                      )}
                     >
                       <th scope="row">
                         {/* The flex row is a div inside the cell rather than
@@ -266,14 +266,12 @@ export default function ComponentTable() {
                             to={`${IMPACT_PATH}?used-by=${component.id}#${DEPLOYMENTS_ANCHOR}`}
                             className="ProductsTable__usedByLink"
                             aria-describedby="ProductsTable-tooltip"
-                            onPointerEnter={showTooltip(
-                              deployments.map((d) => d.name).join(", "),
+                            {...hoverIntentHandlers(
+                              showTooltip(
+                                deployments.map((d) => d.name).join(", "),
+                              ),
+                              hideTooltip,
                             )}
-                            onFocus={showTooltip(
-                              deployments.map((d) => d.name).join(", "),
-                            )}
-                            onPointerLeave={hideTooltip}
-                            onBlur={hideTooltip}
                           >
                             {deployments.length} deployments
                           </Link>

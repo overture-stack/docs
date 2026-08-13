@@ -2,13 +2,9 @@ import React from "react";
 import DocusaurusLink from "@docusaurus/Link";
 
 /**
- * Replaces the Gatsby site's LinkHelper.
- *
- * The original wrapped `gatsby`'s Link, joined internal URLs with
- * proper-url-join, and hand-rolled smooth scrolling for same-page hashes
- * because Gatsby's router did not do it. Docusaurus's Link handles internal
- * routing and hash targets itself, so all that is left is the one behaviour
- * worth keeping: external links open in a new tab, safely.
+ * A thin wrapper around Docusaurus's own `Link`, which already handles
+ * internal routing and same-page hash targets. The one thing it doesn't do —
+ * opening external links safely in a new tab — is all this adds.
  */
 export type LinkProps = React.ComponentProps<typeof DocusaurusLink> & {
   to?: string;
@@ -26,7 +22,6 @@ export default function Link({ to = "", children, ...props }: LinkProps) {
   }
 
   if (!to) {
-    // Was `<a name="...">` in the Gatsby markup: an anchor with no destination.
     return <a {...props}>{children}</a>;
   }
 

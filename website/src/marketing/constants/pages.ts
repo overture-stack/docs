@@ -1,8 +1,8 @@
 // Marketing routes, as Docusaurus generates them from src/pages/.
 //
-// The Gatsby version built these with proper-url-join; Docusaurus emits a
-// trailing slash for a directory route, and onBrokenLinks: "throw" checks every
-// one of them at build time, so they are written out literally.
+// Docusaurus emits a trailing slash for a directory route, and
+// onBrokenLinks: "throw" checks every one of them at build time, so they are
+// written out literally.
 
 // No ABOUT_US_PATH: /about-us/ is gone. Everything it said is the "What we do"
 // band on the home page, which is where the footer's Our story and a 301 from the
@@ -15,23 +15,21 @@
 // footer is the only navigation that points here; the `id` is still load-bearing
 // for the redirect either way.
 export const ABOUT_BAND = "/home/#collaborate-heading";
-// No COMMUNITY_PATH: the Gatsby /community/ page rendered nothing but a title
-// and a keywords meta tag, and /community is already the routeBasePath of the
-// community documentation plugin instance in this build. See .dev/roadmap.md.
+// No COMMUNITY_PATH: /community is already the routeBasePath of the community
+// documentation plugin instance in this build, and the marketing page that
+// used to sit there rendered nothing but a title and a keywords meta tag.
 //
 // No FUNDING_PATH and no PUBLICATIONS_PATH. /about/funding/ and
-// /impact/publications/ were the two marketing pages that held content whose
-// maintained version lives in `docs/community-docs/`; phase 1 moved that content
-// here and left pointers behind, and this reverses that: the docs pages carry it
-// again and these two routes are retired, both redirecting cross-host. The
+// /impact/publications/ are retired: their content's maintained version lives
+// in `docs/community-docs/`, and both routes now redirect cross-host. The
 // footer's Impact column links `OVERTURE_DOCUMENTATION_FUNDING` and
 // `OVERTURE_DOCUMENTATION_CITING` in constants/externalLinks.ts instead.
 export const PRIVACY_PATH = "/privacy/";
 export const PRODUCTS_PATH = "/products/";
 
-// The /impact/ section, added in rebuild phase 3 as the successor to
-// /case-studies/, and one route rather than five: the four platform pages that
-// lived under it are retired and their write-ups render on the hub itself.
+// The /impact/ section, the successor to /case-studies/ and one route rather
+// than five: the four platform pages that lived under it are retired and
+// their write-ups render on the hub itself.
 //
 // So there are no per-platform paths here any more. The addresses that replaced
 // them are `IMPACT_PATH` plus a fragment, and the fragment is a `Platform.id`,
@@ -39,9 +37,9 @@ export const PRODUCTS_PATH = "/products/";
 // rather than a second time here. Those ids keep their older camelCase
 // spellings, which is what makes today's inbound fragment links still land.
 export const IMPACT_PATH = "/impact/";
-// /services/ became /collaborate/ in rebuild phase 4, page and address both.
-// The old route no longer exists here, so it owes a 301 in whatever Netlify
-// config stage 3 produces, per the table in .dev/ia-proposal.md.
+// /services/ became /collaborate/, page and address both. The old route no
+// longer exists here, so it owes a 301 in whatever Netlify config stage 3
+// produces.
 export const COLLABORATE_PATH = "/collaborate/";
 export const TERMS_PATH = "/terms-conditions/";
 // `/` is the documentation homepage in this build, so the marketing home sits
@@ -52,10 +50,10 @@ export const HOME_PATH = "/home/";
 // `website/netlify/marketing-redirects.toml`, staged for the Netlify site stage
 // 3 creates; this list is the same set, kept beside the paths:
 //
-//   /getting-started/      -> the docs quickstart, cross-host   (phase 1)
-//   /acknowledgements/     -> the docs funding page, cross-host (phase 1)
-//   /services/             -> COLLABORATE_PATH                  (phase 4)
-//   /case-studies/         -> IMPACT_PATH                       (phase 4)
+//   /getting-started/      -> the docs quickstart, cross-host
+//   /acknowledgements/     -> the docs funding page, cross-host
+//   /services/             -> COLLABORATE_PATH
+//   /case-studies/         -> IMPACT_PATH
 //   /about-us/             -> ABOUT_BAND
 //   /about/funding/        -> the docs funding page, cross-host
 //   /impact/publications/  -> the docs citing-us page, cross-host
@@ -89,7 +87,7 @@ export const MARKETING_PATHS = [
 
 
 // No `productsAnchors` and no `caseStudyAnchors`. Both existed for the home
-// page's links into other pages' fragments, and the phase 4 reorder removed the
+// page's links into other pages' fragments, and a later reorder removed the
 // last of those: the component catalogue became one link to /products/, and the
 // carousel became three cards linking to a platform's write-up on /impact/. The
 // ids themselves stay in the markup, because those cards, external links and the

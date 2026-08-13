@@ -4,19 +4,7 @@
 // hand-written JSX.
 
 .PrivacyPage {
-  p,
-  div,
-  li {
-    font-family: $font-sans-serif;
-    font-size: 18px;
-    letter-spacing: 0;
-    line-height: 30px;
-    color: $navy-black;
-  }
-
-  p {
-    margin: 20px 0;
-  }
+  @include prose-base-text;
 
   h2 {
     @include prose-section-heading;

@@ -55,17 +55,19 @@
     }
   }
 
-  // override some bulma burger button settings
-  .navbar-burger,
-  .navbar-burger > .is-active {
+  // Overrides `.button`'s white background/border (_layout.scss) so the
+  // burger reads as a plain icon control rather than a boxed button; kept
+  // `!important` because `.button` sets these at the same specificity and
+  // after this in the cascade.
+  .navbar-burger {
     height: 2.4rem;
     width: 2.4rem;
     border-color: $blue-light !important;
-    background-color: none !important;
+    background-color: transparent !important;
     outline: none !important;
 
     &:hover {
-      background-color: none !important;
+      background-color: transparent !important;
     }
 
     & > span {
@@ -144,7 +146,7 @@
 
       // The plain `.navbar-item` rule below tightens the row here; this selector
       // out-specifies it, so the tightening is restated rather than lost.
-      @media (max-width: 1260px) {
+      @media (max-width: $navbar-tight-breakpoint) {
         padding: 0.25rem 0.5rem;
       }
     }
@@ -176,7 +178,7 @@
     font-size: 16px;
     letter-spacing: 0;
     padding: 0.75rem;
-    @media (max-width: 1260px) {
+    @media (max-width: $navbar-tight-breakpoint) {
       padding: 0.5rem 1em;
     }
   }
@@ -289,7 +291,7 @@
   //
 
   // Tighten up the spacing on the navbar.
-  @media (max-width: 1260px) and (min-width: 1024px) {
+  @media (max-width: $navbar-tight-breakpoint) and (min-width: 1024px) {
     .navbar-brand-link {
       margin-right: 0;
     }

@@ -15,6 +15,20 @@
 // does: these are the numbers a reviewer is most likely to want to check, and a
 // figure with no source beside it is the kind of claim this site is trying to
 // stop making. Registry pages are the source, not a dashboard of ours.
+//
+// **Release counting was rebuilt from git tags to published artifacts on
+// 2026-08-13.** Git tagging practice turned out to be inconsistent across the
+// org in ways that made a bare tag count actively misleading: Score, Maestro
+// and Stage keep shipping containers on every merge long after their last
+// version tag; Song's real release ritual merges an `rc/X.Y.Z` branch straight
+// to `master` with no tag at all; Arranger's 407 tags conflate one legacy
+// unified scheme with several still-prerelease sub-packages. The count below is
+// now each component's confirmed publish history: npm versions, container
+// image tags (GHCR and, historically, Docker Hub), or a merged release-branch
+// build where that is the component's actual mechanism, checked directly
+// against the registry rather than inferred from tags. `firstRelease` still
+// reads from a git tag for most components, because no registry retains
+// history that far back; see each row's own note for which.
 
 export type NpmPackage = {
   /** Bare package name; the scope is added when it is rendered. */
@@ -46,11 +60,15 @@ export const npmPackages: NpmPackage[] = [
   { name: "arranger-types", downloads: "563" },
 ];
 
+/** Every package published under the @overture-stack npm scope. */
 export const NPM_SCOPE_LINK = "https://www.npmjs.com/search?q=%40overture-stack";
+/** The org's Docker Hub image listing. */
 export const DOCKER_HUB_LINK = "https://hub.docker.com/u/overture";
+/** The org's GitHub Container Registry package listing. */
 export const GHCR_PACKAGES_LINK =
   "https://github.com/orgs/overture-stack/packages";
 
+/** The npm registry page for one @overture-stack package, by its unscoped name. */
 export function npmPackageLink(name: string): string {
   return `https://www.npmjs.com/package/@overture-stack/${name}`;
 }
@@ -61,20 +79,33 @@ export type ComponentRelease = {
   /** Functional name, then codename, the house style fixed in ia-proposal.md. */
   name: string;
   codename: string;
-  /** The repository's tags page, which is where the count came from. */
+  /**
+   * Where the release count's evidence lives: a GHCR container page or an npm
+   * package page, per component. Stage is the one exception, still linked to
+   * its git tags page; see its row for why.
+   */
   tagsHref: string;
-  /** ISO date of the first tagged release. */
+  /**
+   * ISO date of the earliest verified release. Sourced from a git tag for
+   * every component except Lyric: no registry retains history back that far,
+   * so the tag is the only surviving evidence. Each row notes where its own
+   * first *published artifact* evidence begins, when that's later.
+   */
   firstRelease: string;
-  /** The first tag itself, linked from the date. */
+  /** The first release's evidence: a tag page, or a merged PR where neither a tag nor a Release exists. */
   firstReleaseHref: string;
-  /** Version tags in the git history, as printed. */
+  /**
+   * Confirmed published releases: npm versions, container image tags, or
+   * merged release-branch builds, whichever is this component's real
+   * mechanism. Not a git tag count; see the file-level note above.
+   */
   tags: string;
-  /** Most recent release, with its month. */
+  /** Most recent confirmed release, with its month. */
   latest: string;
   /**
-   * Where "latest" points to. Usually the matching git tag; for Lyric no git
-   * tag matches the published version (its npm releases have run ahead of its
-   * tags), so this points at the npm package instead.
+   * Where "latest" points to: a GitHub Release, a git tag, an npm package, or
+   * the merged PR that shipped it when none of those exist. See each row's own
+   * note for which and why.
    */
   latestHref: string;
   contributors: string;
@@ -87,9 +118,16 @@ export type ComponentRelease = {
  * the argument this table makes is longevity and the first column is the one
  * carrying it.
  *
- * Counts are of git tags, not of GitHub Releases. The distinction matters and
- * the page states it: Releases pages are curated and would show none at all for
- * Lectern and Lyric and two for Arranger, against 38, 15 and 407 real tags.
+ * Counts are of confirmed published releases, checked per component against
+ * whichever registry it actually ships to, not of git tags, and not of GitHub's
+ * curated Releases page either: that page is curated and would show none at all
+ * for Lectern and Lyric, one for Stage, and two for Arranger, against real
+ * publish histories many times longer. Method varies by component because the
+ * mechanism does: Score, Song, Maestro and Stage ship containers; Arranger and
+ * Lyric ship npm packages (Arranger's npm history is used instead of its GHCR
+ * image, which has been stale since its 2.x line); Lectern ships both. See the
+ * file-level note above for the full reasoning, and each row's own comment for
+ * the specifics that don't fit in a table cell.
  *
  * Contributor counts are GitHub's own, per repository, on the default branch.
  * **Do not total this column.** People appear in several of these repositories,
@@ -101,12 +139,21 @@ export const releaseHistory: ComponentRelease[] = [
     id: "score",
     name: "File Transfer",
     codename: "Score",
-    tagsHref: "https://github.com/overture-stack/score/tags",
+    // GHCR's `score-server` image, the current registry; Docker Hub (legacy,
+    // frozen since 2023-11) is folded into the count below but not linked here.
+    tagsHref: "https://github.com/overture-stack/score/pkgs/container/score-server",
+    // Git tag only; no container survives from this far back. Docker Hub's
+    // earliest confirmed Score image is 1.1.0, pushed 2018-05-08.
     firstRelease: "2015-07-06",
     firstReleaseHref: "https://github.com/overture-stack/score/releases/tag/0.0.10",
-    tags: "102",
-    latest: "5.11.0 (2024-10)",
-    latestHref: "https://github.com/overture-stack/score/releases/tag/5.11.0",
+    // 34 distinct published container versions (Docker Hub 1.1.0–5.10.0 union
+    // GHCR 5.3.0–5.12.0), not the 102 git tags, ~57 of which have no matching
+    // container at all (pre-2018, or other submodule/junk tags in this repo).
+    tags: "34",
+    // 5.12.0 shipped as a container (GHCR, 2025-08-05) with no git tag at all;
+    // CI keeps publishing untagged commit builds past this on `score-client`.
+    latest: "5.12.0 (2025-08)",
+    latestHref: "https://github.com/overture-stack/score/pull/492",
     contributors: "26",
     contributorsHref:
       "https://github.com/overture-stack/score/graphs/contributors",
@@ -115,12 +162,23 @@ export const releaseHistory: ComponentRelease[] = [
     id: "song",
     name: "File Manager",
     codename: "Song",
-    tagsHref: "https://github.com/overture-stack/song/tags",
+    tagsHref: "https://github.com/overture-stack/song/pkgs/container/song-server",
+    // Git tag only; earliest confirmed container is 1.2.0, Docker Hub,
+    // 2018-09-28, over a year later.
     firstRelease: "2017-06-07",
     firstReleaseHref: "https://github.com/overture-stack/song/releases/tag/0.0.1",
-    tags: "70",
-    latest: "5.2.0 (2024-07)",
-    latestHref: "https://github.com/overture-stack/song/releases/tag/5.2.0",
+    // 39 distinct published container versions across legacy Docker Hub
+    // (overture/song, overture/song-server) and current GHCR, not the 70 git
+    // tags (which mix two renaming eras, docker-packaging mirror tags, and
+    // some junk markers with the real release lineage).
+    tags: "39",
+    // 5.4.0 merged to master 2026-08-12 (the real release ritual here is an
+    // `rc/X.Y.Z` branch merge, not a tag push). Its container build was still
+    // failing in Jenkins as of 2026-08-13, a known issue that's being fixed,
+    // so this links to the merge itself rather than an image that doesn't
+    // exist yet. The last confirmed-published container is 5.3.0 (2025-05-30).
+    latest: "5.4.0 (2026-08)",
+    latestHref: "https://github.com/overture-stack/song/pull/914",
     contributors: "28",
     contributorsHref:
       "https://github.com/overture-stack/song/graphs/contributors",
@@ -129,14 +187,26 @@ export const releaseHistory: ComponentRelease[] = [
     id: "arranger",
     name: "Search",
     codename: "Arranger",
-    tagsHref: "https://github.com/overture-stack/arranger/tags",
+    // npm, not GHCR: this monorepo's `arranger-server` container has been
+    // stale since its 2.x line and never picked up the 3.x npm releases below.
+    tagsHref: npmPackageLink("arranger-server"),
+    // Git tag only; the first published npm package in this monorepo is
+    // arranger-server@3.0.0-beta.1, from 2021-12-10. The pre-2021 unified tag
+    // line was never published as an installable package under any name.
     firstRelease: "2017-12-17",
     firstReleaseHref:
       "https://github.com/overture-stack/arranger/releases/tag/v0.0.1-0.0.2.1.0",
-    tags: "407",
-    latest: "server-v3.0.0 (2025-08)",
-    latestHref:
-      "https://github.com/overture-stack/arranger/releases/tag/server-v3.0.0",
+    // 134 distinct published npm versions across the Arranger family
+    // (arranger-server, -components, -charts, -types, -graphql-router, sqon,
+    // sqon-builder), not the 407 git tags, which conflate one legacy unified
+    // scheme with several sub-packages that are still prerelease-only.
+    tags: "134",
+    // arranger-server@3.0.4, npm, 2026-05-13, the newest GA release anywhere
+    // in the family. Several sibling packages (search-server, graphql-router,
+    // components, sqon, mcp-server) are mid-restructure with `-rc` npm
+    // releases as recent as 2026-07-28, but none has gone GA yet.
+    latest: "3.0.4 (2026-05)",
+    latestHref: `${npmPackageLink("arranger-server")}/v/3.0.4`,
     contributors: "34",
     contributorsHref:
       "https://github.com/overture-stack/arranger/graphs/contributors",
@@ -145,12 +215,24 @@ export const releaseHistory: ComponentRelease[] = [
     id: "maestro",
     name: "Indexing Service",
     codename: "Maestro",
-    tagsHref: "https://github.com/overture-stack/maestro/tags",
+    tagsHref: "https://github.com/overture-stack/maestro/pkgs/container/maestro",
     firstRelease: "2019-05-22",
     firstReleaseHref: "https://github.com/overture-stack/maestro/releases/tag/0.1.0",
-    tags: "28",
-    latest: "4.3.0 (2023-01)",
-    latestHref: "https://github.com/overture-stack/maestro/releases/tag/4.3.0",
+    // 27 confirmed semver-era container releases (Docker Hub, then GHCR),
+    // dropping the 28th git tag (`4.4.0-SNAPSHOT`), a pre-release marker that
+    // was never a real published version. That count is the old Java/Maven
+    // stack's history and stops at 4.3.0 (2023-01); it does not include the
+    // untagged builds below, which are a different stack entirely.
+    tags: "27",
+    // The main line now is `M5-revised`, a ground-up rewrite (TypeScript,
+    // pnpm, nx) replacing the old Java/Maven app, currently versioned
+    // 5.0.0-alpha.1 in its own package.json. It has no git tag or GitHub
+    // Release yet, so this links to its most recent merged PR; CI publishes a
+    // fresh untagged container to GHCR on every merge, most recently
+    // 2026-08-06. 4.3.0 (2023-01) is the last release of the old stack, not
+    // the current one.
+    latest: "5.0.0-alpha.1 (2026-08)",
+    latestHref: "https://github.com/overture-stack/maestro/pull/297",
     contributors: "14",
     contributorsHref:
       "https://github.com/overture-stack/maestro/graphs/contributors",
@@ -159,10 +241,15 @@ export const releaseHistory: ComponentRelease[] = [
     id: "lectern",
     name: "Dictionary Manager",
     codename: "Lectern",
-    tagsHref: "https://github.com/overture-stack/lectern/tags",
+    tagsHref: "https://github.com/overture-stack/lectern/pkgs/container/lectern",
     firstRelease: "2019-08-15",
     firstReleaseHref: "https://github.com/overture-stack/lectern/releases/tag/1.1.2",
-    tags: "38",
+    // 32 dated release events: the 25-version legacy monolith container line
+    // (2019–2023, Docker Hub then GHCR) plus 7 post-split npm/GHCR cuts
+    // (six 2.0.0-beta releases and the final 2.0.0), several of which were
+    // never git-tagged at all. Not the 38 git tags, which double-count the
+    // simultaneous 2.0.0 cut across five separately-tagged packages.
+    tags: "32",
     latest: "2.0.0 (2026-04)",
     latestHref:
       "https://github.com/overture-stack/lectern/releases/tag/dictionary-v2.0.0",
@@ -174,9 +261,22 @@ export const releaseHistory: ComponentRelease[] = [
     id: "stage",
     name: "Portal UI",
     codename: "Stage",
+    // The one component still linked to its git tags page rather than a
+    // registry: see the note on `tags` below for why.
     tagsHref: "https://github.com/overture-stack/stage/tags",
     firstRelease: "2020-10-15",
     firstReleaseHref: "https://github.com/overture-stack/stage/releases/tag/0.2.0",
+    // 15 git tags, kept as the published figure because, unusually among
+    // these seven, no *registry* evidence survives for this era at all: GHCR's
+    // history for Stage only reaches back to 2024-04-16, well after tagging
+    // stopped, so the tags are the only surviving evidence of the versioned
+    // era rather than a stand-in for a better number. Real shipping did not
+    // stop when tagging did: `main` has continued past 1.1.3 (2022-03) with no
+    // version number attached, publishing 35 further untagged GHCR builds since
+    // 2024-04, the latest 2026-08-05, continuous per-commit deployment, not a
+    // dormant component. Five independent per-client fork branches (iobio,
+    // ch_portal, bridgeStage, paperscrape, demo) exist on top of that and are
+    // not reflected here.
     tags: "15",
     latest: "1.1.3 (2022-03)",
     latestHref: "https://github.com/overture-stack/stage/releases/tag/1.1.3",
@@ -188,10 +288,19 @@ export const releaseHistory: ComponentRelease[] = [
     id: "lyric",
     name: "Tabular Submission",
     codename: "Lyric",
-    tagsHref: "https://github.com/overture-stack/lyric/tags",
-    firstRelease: "2024-04-08",
-    firstReleaseHref: "https://github.com/overture-stack/lyric/releases/tag/1.0.0",
-    tags: "15",
+    tagsHref: npmPackageLink("lyric"),
+    // Corrected 2026-08-13: the `1.0.0` tag this used to cite is a red herring,
+    // a Jenkinsfile/Dockerfile setup commit, not a release. The first real
+    // package, 0.1.0, published to npm and GHCR together on 2024-06-14.
+    firstRelease: "2024-06-14",
+    firstReleaseHref: "https://github.com/overture-stack/lyric/pull/52",
+    // 28 npm versions (0.1.0–0.19.0), matched one-for-one by GHCR container
+    // tags, the cleanest release history of the seven. `lyric-data-model`
+    // tracks the same version numbers in lockstep, missing only 0.16.1.
+    // Superseded the 15 git tags: tagging stopped after 0.8.1 (2025-03), and
+    // every release since exists only as a "Release X.Y.Z" PR merged into a
+    // long-lived `release` branch, then published, never tagged.
+    tags: "28",
     latest: "0.19.0 (2026-07)",
     latestHref: npmPackageLink("lyric"),
     contributors: "8",

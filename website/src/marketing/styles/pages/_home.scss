@@ -24,13 +24,13 @@
 
     @include breakpoint(tablet-up) {
       height: fit-content;
-      // Was `max-height: 470px`, which capped the box while the phase 4 hero
-      // heading grew past it. `min-height` keeps the old proportions when the
-      // copy is short and lets the box grow when it is not. Both this and
-      // the padding below have come down four times now, each time on
-      // request: with LogoCarousel reading as an extension of the hero right
-      // underneath it, the hero doesn't need to carry much air of its own
-      // between the diagram and the carousel below.
+      // Was `max-height: 470px`, which capped the box while the hero heading
+      // grew past it. `min-height` keeps the old proportions when the copy
+      // is short and lets the box grow when it is not. Both this and the
+      // padding below have come down four times now: with LogoCarousel
+      // reading as an extension of the hero right underneath it, the hero
+      // doesn't need to carry much air of its own between the diagram and
+      // the carousel below.
       //
       // The floor is only a floor. Above roughly 1024px the diagram
       // (_hero-diagram.scss) is taller than this and it, not this figure, is
@@ -164,10 +164,10 @@
   // ---------------------------------------------------------------------------
   // Floating cubes
   //
-  // Back after the phase 4 reorder dropped them, and rebuilt rather than ported.
-  // The Gatsby site placed them as floated `<img>` elements with negative
-  // margins tuned to a section sequence that no longer exists, which also meant
-  // every cube announced itself to a screen reader as "Floating Maroon Cube".
+  // Rebuilt rather than reused: the previous version placed them as floated
+  // `<img>` elements with negative margins tuned to a section sequence that
+  // no longer exists, which also meant every cube announced itself to a
+  // screen reader as "Floating Maroon Cube".
   //
   // Here they are pseudo-elements on the sections they sit between, so each one
   // is positioned against its own section's box and cannot be knocked out of
@@ -489,9 +489,9 @@
   }
 
   .HomeCollaborate {
-    // The three paragraphs under the heading. No cap at all, on the
-    // developer's call: this band's opening runs to the container's own edges,
-    // so the prose ends where the row of offer tiles below it ends. It has been
+    // The three paragraphs under the heading. No cap at all: this band's
+    // opening runs to the container's own edges, so the prose ends where the
+    // row of offer tiles below it ends. It has been
     // narrowed twice before, first to 48rem by an `ow:max-w-3xl` in the markup
     // and then to `$lede-max-width`; both left the paragraphs in a column
     // narrower than everything under them. Nothing sets a width here now.
@@ -592,10 +592,8 @@
       color: $navy-black;
     }
 
-    // `$navy-black`, not the `$navy-dark` the engagement list above uses: at
-    // #04518c on white, one line of text under a bold navy term reads as a link
-    // rather than as a description, and this list sits two rules above three
-    // real links.
+    // `$navy-black`, not `$navy-dark`: at #04518c on white, one line of text
+    // under a bold navy term reads as a link rather than as a description.
     &__valueText {
       font-family: $font-sans-serif;
       font-size: 1rem;
@@ -607,11 +605,11 @@
     // their own to sit under: without it the band reads as one continuous
     // statement about the team and the three cards look like a fourth value.
     //
-    // The yellow rule under it is gone, on the developer's call. It was here to
-    // stop the subhead reading as a fourth offer with no text under it, back
-    // when subhead and offer title were both bare `.t-h3` at the same size on
-    // the same background. The offers are boxed tiles now, so the thing that
-    // separates the heading from them is the edge of the first card.
+    // No yellow rule under it: it was here to stop the subhead reading as a
+    // fourth offer with no text under it, back when subhead and offer title
+    // were both bare `.t-h3` at the same size on the same background. The
+    // offers are boxed tiles now, so the thing that separates the heading
+    // from them is the edge of the first card.
     // On the container's left margin, with "What we do" above it and every
     // other heading on the page. It carried the tile's own inset for one round,
     // which lined it up with "Academic partnership" inside the first card but
@@ -654,54 +652,11 @@
     }
 
     // No `&__actions` any more. The band ended on a "contact@overture.bio" and
-    // a "Collaborate with us" button, both on the developer's call: each of the
-    // three offer cards already opens the page those buttons led to, at the
-    // section for that offer, and the address is in the footer on every page.
+    // a "Collaborate with us" button: each of the three offer cards already
+    // opens the page those buttons led to, at the section for that offer, and
+    // the address is in the footer on every page.
     // Two buttons under three cards restated the same destination a fourth and
     // fifth time.
-
-    &__engagements {
-      margin-top: 3rem;
-      padding-top: 2rem;
-      border-top: 1px solid rgba(0, 48, 85, 0.15);
-    }
-
-    &__engagementList {
-      list-style: none;
-      margin: 1.25rem 0 0;
-      padding: 0;
-      display: grid;
-      gap: 12px 32px;
-
-      @include breakpoint(tablet-up) {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      @include breakpoint(desktop-up) {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      li {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-      }
-    }
-
-    &__engagementName {
-      font-family: $font-sans-serif;
-      font-size: 1.0625rem;
-      font-weight: 700;
-      line-height: 1.5;
-      color: $navy-black;
-    }
-
-    &__engagementOutcome {
-      font-family: $font-sans-serif;
-      font-size: 0.95rem;
-      line-height: 1.5;
-      color: $navy-dark;
-    }
 
     &__links {
       margin-top: 2.5rem;

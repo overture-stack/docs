@@ -8,7 +8,15 @@ const btnTypes: Record<string, string> = {
   default: "default",
 };
 
-const btnSizes: Record<string, string> = {
+export type ButtonSize =
+  | "default"
+  | "large"
+  | "medium"
+  | "navGithub"
+  | "navSlack"
+  | "small";
+
+const btnSizes: Record<ButtonSize, string> = {
   // Bulma classes
   default: "",
   large: "is-large",
@@ -18,8 +26,13 @@ const btnSizes: Record<string, string> = {
   small: "is-small",
 };
 
-// Icon sizes vary based on passed in button size prop.
-const iconSizes: Record<string, number> = {
+/**
+ * Icon pixel size for each button size. Typed against the same `ButtonSize`
+ * union as `btnSizes` (rather than `Record<string, number>`) so the two stay
+ * in step: a size missing from either object is a compile error instead of
+ * an icon silently rendering at `width: undefined`.
+ */
+const iconSizes: Record<ButtonSize, number> = {
   default: 16,
   large: 32,
   medium: 24,
@@ -29,10 +42,7 @@ const iconSizes: Record<string, number> = {
 };
 
 export type ButtonProps = {
-  /**
-   * A link to an anchor on another page. The Gatsby site needed
-   * gatsby-plugin-anchor-links for this; a plain Link carries the hash.
-   */
+  /** Takes priority over `link` when both are passed (`to={anchorLink ?? link}`); the two behave identically today. */
   anchorLink?: string;
   /** Required in practice for icon-only buttons, which have no text to read. */
   ariaLabel?: string;
@@ -43,7 +53,7 @@ export type ButtonProps = {
   iconStyle?: React.CSSProperties;
   link?: string;
   onClick?: () => void;
-  size?: keyof typeof btnSizes;
+  size?: ButtonSize;
   type?: keyof typeof btnTypes;
 };
 

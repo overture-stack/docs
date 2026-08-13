@@ -5,12 +5,18 @@ import React, {
   useRef,
   useState,
 } from "react";
+import clsx from "clsx";
 import Link from "./Link";
 import { H3 } from "./Typography";
 import { partnerLogos, type PartnerLogo } from "../data/partnerLogos";
 import { componentUsage } from "../data/componentUsage";
 import { useComponentHighlight } from "../context/ComponentHighlightContext";
 import { floatingTooltipPosition } from "../utils/floatingTooltip";
+import {
+  hoverIntentHandlers,
+  isHoverIntent,
+  wantsFocusHint,
+} from "../utils/hoverIntent";
 import { OVERTURE_DOCUMENTATION_FUNDING } from "../constants/externalLinks";
 
 // The one line under the heading. Only shown where the interaction it describes
@@ -36,32 +42,6 @@ const EXTERNAL_SCROLL_HOLD = 700;
 const DRAG_THRESHOLD = 4;
 
 type TooltipInfo = { id: string; name: string; impact: string; rect: DOMRect };
-
-/**
- * Whether a `focus` event is one the hover treatments should answer to.
- *
- * Not every focus is a visitor asking to be shown something: a tap focuses
- * whatever link it lands on, and that focus then stays exactly where it is
- * until they touch something else. Treating it as hover left the marquee
- * stopped and an impact tooltip on screen for as long after the tap as the
- * visitor cared to keep reading — the same "no matching leave event" shape
- * as the compatibility `mouseenter` a tap also fires, arrived at from the
- * other side.
- *
- * `:focus-visible` is the browser's own answer to which focus wants showing —
- * keyboard yes, pointer no — so this asks it rather than guessing from the
- * event. The keyboard path is unaffected, which is the point: it is the only
- * way to reach any of this without a mouse.
- */
-function wantsFocusHint(element: HTMLElement): boolean {
-  try {
-    return element.matches(":focus-visible");
-  } catch {
-    // A browser old enough not to know the selector throws on it. There,
-    // every focus counts, which is exactly the behaviour this replaced.
-    return true;
-  }
-}
 
 // Internal to this file, not exported: a way for any LogoItem, however deep
 // (the marquee's two lists, or the filtered view), to hand its impact
@@ -90,9 +70,9 @@ function LogoItem({
       draggable={false}
     />
   );
-  // No production date under the logo any more, on the developer's call: each
-  // one added a line of text plus its gap under every chip, and the band has to
-  // finish above the fold together with the hero. `date` is still in
+  // No production date under the logo: each one added a line of text plus
+  // its gap under every chip, and the band has to finish above the fold
+  // together with the hero. `date` is still in
   // data/partnerLogos.ts (it reads as the record of when each platform ran, and
   // `startYear` next to it still orders this list), just not rendered here.
   // The impact tooltip (below) replaces the plain title for a logo that has
@@ -100,15 +80,15 @@ function LogoItem({
   // custom one; a logo without an impact statement yet still gets the plain
   // title, same as before.
   const title = logo.name;
-  const itemClassName = `LogoCarousel__item${
-    highlighted ? " LogoCarousel__item--highlighted" : ""
-  }`;
+  const itemClassName = clsx(
+    "LogoCarousel__item",
+    highlighted && "LogoCarousel__item--highlighted",
+  );
 
   // Pointer events, not onMouseEnter/onMouseLeave: @docusaurus/Link spreads
   // `...props` and then unconditionally sets its own `onMouseEnter` after
   // (for its hover-preload behaviour), silently discarding whatever the
-  // caller passed in. Pointer events are untouched by it. See HeroDiagram,
-  // where the same bug showed up first.
+  // caller passed in. Pointer events are untouched by it.
   const handleEnter = (element: HTMLElement) => {
     setHighlightedPlatform(logo.id);
     if (logo.impact) {
@@ -124,31 +104,15 @@ function LogoItem({
     setHighlightedPlatform(null);
     setTooltip(null);
   };
-  // Mouse only, on the pointer path. `pointerenter` fires for a finger too,
-  // at the moment it touches down and before the browser has decided whether
-  // the gesture is a tap or a swipe: on a phone that put the impact tooltip
-  // on screen under the visitor's own finger for the length of every swipe
-  // across the logos, cleared again by the `pointercancel` that ends it.
-  // There is nothing for it to do there in any case — a touchscreen has no
-  // hover, which is why the hint line above the logos and the diagram this
-  // highlights are both `display: none` below tablet-up (_logo-carousel.scss,
-  // _home.scss). A tap on a logo follows its link, as it did before.
-  //
-  // The keyboard path keeps calling this unconditionally: a `focus` event
-  // carries no pointer type because no pointer caused it.
-  const handlePointerEnter = (event: React.PointerEvent<HTMLElement>) => {
-    if (event.pointerType !== "mouse") return;
-    handleEnter(event.currentTarget);
-  };
-  const highlightHandlers = {
-    onPointerEnter: handlePointerEnter,
-    onPointerLeave: handleLeave,
-    onFocus: (event: React.FocusEvent<HTMLElement>) => {
-      if (!wantsFocusHint(event.currentTarget)) return;
-      handleEnter(event.currentTarget);
-    },
-    onBlur: handleLeave,
-  };
+  // Guarded to mouse-only pointer events and keyboard-caused focus: a
+  // touchscreen has no hover, which is why the hint line above the logos and
+  // the diagram this highlights are both `display: none` below tablet-up
+  // (_logo-carousel.scss, _home.scss). A tap on a logo follows its link, as
+  // it did before.
+  const highlightHandlers = hoverIntentHandlers<HTMLElement>(
+    (event) => handleEnter(event.currentTarget),
+    handleLeave,
+  );
 
   if (!logo.href) {
     return (
@@ -201,10 +165,8 @@ const LogoList = React.forwardRef<HTMLUListElement, { hidden: boolean }>(
 
 /**
  * Who runs Overture, scrolling right below the hero: a continuous marquee
- * rather than a click-through carousel, since the previous phase 4 rebuild
- * already argued its way out of one of those (see .dev/roadmap.md) and a
- * marquee shows every logo at once instead of hiding most of them behind an
- * arrow.
+ * rather than a click-through carousel, since a marquee shows every logo at
+ * once instead of hiding most of them behind an arrow.
  *
  * The list renders twice, back to back, and the viewport is a real scroll
  * container (`overflow-x: auto`), not a CSS `transform` animation: a
@@ -402,11 +364,11 @@ export default function LogoCarousel() {
   // after a single tap anywhere on it — the most visible half of the bug this
   // pair was reported for. `pointerenter` carries the device that caused it.
   const pause = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (event.pointerType !== "mouse") return;
+    if (!isHoverIntent(event)) return;
     pausedRef.current = true;
   };
   const resume = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (event.pointerType !== "mouse") return;
+    if (!isHoverIntent(event)) return;
     pausedRef.current = false;
   };
   // `event.target`, not `currentTarget`: React's `onFocus` is `focusin`, so
@@ -500,9 +462,10 @@ export default function LogoCarousel() {
 
             <div className="LogoCarousel__stage" ref={stageRef}>
               <div
-                className={`LogoCarousel__viewport${
-                  matches ? " LogoCarousel__viewport--hidden" : ""
-                }`}
+                className={clsx(
+                  "LogoCarousel__viewport",
+                  matches && "LogoCarousel__viewport--hidden",
+                )}
                 ref={viewportRef}
                 onPointerEnter={pause}
                 onPointerLeave={resume}
@@ -519,14 +482,18 @@ export default function LogoCarousel() {
                 </div>
               </div>
               <div
-                className={`LogoCarousel__fade LogoCarousel__fade--left${
-                  matches ? " LogoCarousel__fade--hidden" : ""
-                }`}
+                className={clsx(
+                  "LogoCarousel__fade",
+                  "LogoCarousel__fade--left",
+                  matches && "LogoCarousel__fade--hidden",
+                )}
               />
               <div
-                className={`LogoCarousel__fade LogoCarousel__fade--right${
-                  matches ? " LogoCarousel__fade--hidden" : ""
-                }`}
+                className={clsx(
+                  "LogoCarousel__fade",
+                  "LogoCarousel__fade--right",
+                  matches && "LogoCarousel__fade--hidden",
+                )}
               />
 
               {/* Always mounted, not conditional on `matches`, so the crossfade
@@ -534,9 +501,10 @@ export default function LogoCarousel() {
                   a freshly-mounted element has no "before" state to animate
                   from. */}
               <div
-                className={`LogoCarousel__filtered${
-                  matches ? " LogoCarousel__filtered--visible" : ""
-                }`}
+                className={clsx(
+                  "LogoCarousel__filtered",
+                  matches && "LogoCarousel__filtered--visible",
+                )}
               >
                 {matches &&
                   (matches.length > 0 ? (

@@ -1,32 +1,15 @@
-// The /impact/ hub, added in rebuild phase 3 and since collapsed into one page:
-// the per-platform pages are gone and their write-ups render here.
+// The /impact/ hub, collapsed into one page: the per-platform pages are gone
+// and their write-ups render here.
 //
 // Almost nothing is here on purpose. The hub is built with `ow:` utilities, and
 // the write-ups reuse the `.Case-Study` component styles, which are top-level
 // rather than scoped to a page. What is left is the few things utilities cannot
 // supply from the markup.
 
-// A deployment row's "you were just sent here" marker, for a single row
-// landed on directly — see `.ImpactTable--deployments tbody tr:target`
-// below. The same cue `ProductsTable-target-flash` in _products.scss gives a
-// component row, now that /products/'s Used by column links into this table
-// for the first time. Not used by `.ImpactTable__highlight`, the other case
-// that column can produce: several rows lit from one link need to stay lit
-// until a reader has found them all, not fade on a timer — see that rule
-// further down.
-@keyframes ImpactTable-target-flash {
-  from {
-    background-color: rgba($yellow, 0.35);
-  }
-  to {
-    background-color: transparent;
-  }
-}
-
 .ImpactPage {
   // `.marketing` sets font size, weight and colour but not family: Bulma's rule
   // lived on `body` and had nowhere to land once the styles were nested (see
-  // `_base.scss`). Ported markup takes the family from its `.t-*` class, so
+  // `_base.scss`). Existing markup takes the family from its `.t-*` class, so
   // only bare elements need this, as on the products and prose pages.
   p,
   li,
@@ -102,9 +85,9 @@
   }
 
   // The lede under a section heading, and the smaller note that follows a
-  // subhead or precedes a table. Shared across the three sections added in the
-  // evidence rebuild rather than declared three times: they are the same two
-  // roles in each of them.
+  // subhead or precedes a table. Shared across this page's three sections
+  // rather than declared three times: they are the same two roles in each of
+  // them.
   //
   // Named for `.ImpactBeyond` because that section was written first and the
   // other two reuse its classes rather than aliasing them. Rename all four
@@ -453,13 +436,7 @@
     // dark card and the fixed positioning; the width is per kind, since a
     // screenshot wants a box and a name wants a line.
     &__tooltip {
-      position: fixed;
-      z-index: 20;
-      transform: translateX(-50%);
-      border-radius: 8px;
-      background: $navy-black;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-      pointer-events: none;
+      @include floating-tooltip-card;
 
       &--shot {
         width: 280px;
@@ -473,13 +450,7 @@
       }
 
       &--label {
-        max-width: 220px;
-        padding: 6px 10px;
-        color: $white;
-        font-family: $font-sans-serif;
-        font-size: 13px;
-        line-height: 1.4;
-        text-align: center;
+        @include floating-tooltip-label-text;
       }
     }
   }
@@ -519,9 +490,10 @@
     // column (exactly one deployment) or an external `/impact/#icgcargo`
     // link: an anchor jump otherwise lands with no visual cue for which row
     // it was aiming at, on a table this long. Fades on its own, no JS
-    // required — see the note on the keyframe above.
+    // required — see `target-flash` in _common.scss, shared with
+    // /products/'s own table.
     tbody tr:target {
-      animation: ImpactTable-target-flash 2400ms ease-out;
+      animation: target-flash 2400ms ease-out;
     }
 
     // The other case a Used by link can produce: "N deployments" on
@@ -537,27 +509,8 @@
     // `--highlighted` icon (below) carries the yellow glow now, matching the
     // one the home hero's diagram gives a highlighted hotspot, and the two
     // needed to read as different cues rather than the same colour twice.
-    //
-    // The background sits on the cells rather than the row, because a `tr`'s
-    // own background does not reliably paint past its cells in every
-    // browser; the box-shadow on the first and last cell then bleeds that
-    // colour past the row's actual edge; it read as clipped square against
-    // it otherwise.
     tbody tr.ImpactTable__highlight {
-      td,
-      th {
-        background-color: $c-blue-100;
-      }
-
-      td:first-child,
-      th:first-child {
-        box-shadow: -16px 0 0 $c-blue-100;
-      }
-
-      td:last-child,
-      th:last-child {
-        box-shadow: 16px 0 0 $c-blue-100;
-      }
+      @include table-row-highlight-bleed;
     }
   }
 
@@ -583,9 +536,7 @@
   // study and the way back up to the table, plus the left-aligned heading and
   // generated yellow rule that made `CaseStudy`'s own centred `.t-h2` sit right
   // among this page's sections. The write-up sections were removed from
-  // pages/impact/index.tsx on 2026-08-12, on the developer's instruction, so
-  // every one of those selectors matched nothing. Deleted rather than left: a
-  // class that resolves to no markup is exactly as invisible as a class that
-  // resolves to no CSS, which .dev/roadmap.md has open as its highest-value
-  // item.
+  // pages/impact/index.tsx, so every one of those selectors matched nothing —
+  // deleted rather than left, since a class that resolves to no markup is
+  // exactly as invisible as a class that resolves to no CSS.
 }

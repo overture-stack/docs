@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import clsx from "clsx";
 import MarketingPage from "../../marketing/MarketingPage";
 import Hero from "../../marketing/components/Hero";
 import Link from "../../marketing/components/Link";
@@ -27,6 +28,7 @@ import {
 import metrics from "../../marketing/data/metrics";
 import publications from "../../marketing/data/publications";
 import { floatingTooltipPosition } from "../../marketing/utils/floatingTooltip";
+import { hoverIntentHandlers } from "../../marketing/utils/hoverIntent";
 
 /**
  * The /impact/ hub, in three sections: who runs Overture, what has been
@@ -60,8 +62,9 @@ import { floatingTooltipPosition } from "../../marketing/utils/floatingTooltip";
  * slug the case studies have used since the Gatsby site, so `/impact/#icgcargo`
  * and the 301 from `/case-studies/#icgcargo` still land. They land on a table
  * row now rather than on a write-up: the long-form write-up sections were
- * removed from this page 2026-08-12, also on the developer's instruction, which
- * is why nothing here reads data/caseStudies.tsx any more.
+ * removed from this page 2026-08-12, also on the developer's instruction.
+ * `data/caseStudies.tsx` and `components/CaseStudy` had no caller left after
+ * that and were deleted.
  *
  * All seven platform rows link to a live portal as of 2026-08-12, when the
  * developer confirmed OHCRN's and PCGL's URLs, except the Drug Discovery
@@ -109,7 +112,7 @@ const aggregates: { key: string; figure: string; label: React.ReactNode }[] = [
     figure: metrics.releaseTags.value,
     label: (
       <>
-        <Link to="#distribution">tagged releases</Link> across{" "}
+        <Link to="#distribution">published releases</Link> across{" "}
         {metrics.stableReleaseHistory.value}
       </>
     ),
@@ -304,11 +307,11 @@ export default function ImpactPage() {
                 <tr
                   key={row.id}
                   id={row.anchorId}
-                  className={
-                    highlightedRowIds?.has(row.anchorId)
-                      ? "ow:scroll-mt-20 ImpactTable__highlight"
-                      : "ow:scroll-mt-20"
-                  }
+                  className={clsx(
+                    "ow:scroll-mt-20",
+                    highlightedRowIds?.has(row.anchorId) &&
+                      "ImpactTable__highlight",
+                  )}
                 >
                   <th scope="row">
                     {/* The name is the deployment: hovering it previews the
@@ -325,20 +328,12 @@ export default function ImpactPage() {
                         aria-describedby={
                           row.screenshot ? "ImpactTable-tooltip" : undefined
                         }
-                        onPointerEnter={
-                          row.screenshot
-                            ? showTooltip("shot", row.screenshot)
-                            : undefined
-                        }
-                        onFocus={
-                          row.screenshot
-                            ? showTooltip("shot", row.screenshot)
-                            : undefined
-                        }
-                        onPointerLeave={
-                          row.screenshot ? hideTooltip : undefined
-                        }
-                        onBlur={row.screenshot ? hideTooltip : undefined}
+                        {...(row.screenshot
+                          ? hoverIntentHandlers(
+                              showTooltip("shot", row.screenshot),
+                              hideTooltip,
+                            )
+                          : {})}
                       >
                         {row.name}
                       </Link>
@@ -375,26 +370,23 @@ export default function ImpactPage() {
                           <li key={componentId}>
                             <Link
                               to={`${PRODUCTS_PATH}?highlight=${componentId}#${componentId}`}
-                              className={
-                                componentId === highlightedComponent
-                                  ? "ImpactTable__runsLink ImpactTable__runsLink--highlighted"
-                                  : "ImpactTable__runsLink"
-                              }
+                              className={clsx(
+                                "ImpactTable__runsLink",
+                                componentId === highlightedComponent &&
+                                  "ImpactTable__runsLink--highlighted",
+                              )}
                               // The icon is decorative and the visible label
                               // only appears on hover, so the accessible name
                               // has to be the whole of it here.
                               aria-label={componentLabel(componentId)}
                               aria-describedby="ImpactTable-tooltip"
-                              onPointerEnter={showTooltip(
-                                "label",
-                                componentLabel(componentId),
+                              {...hoverIntentHandlers(
+                                showTooltip(
+                                  "label",
+                                  componentLabel(componentId),
+                                ),
+                                hideTooltip,
                               )}
-                              onFocus={showTooltip(
-                                "label",
-                                componentLabel(componentId),
-                              )}
-                              onPointerLeave={hideTooltip}
-                              onBlur={hideTooltip}
                             >
                               <img
                                 src={componentIcon(componentId)}
@@ -456,8 +448,8 @@ export default function ImpactPage() {
           2026-08-12 on the developer's instruction. Their anchor ids moved onto
           the table rows, so the links that used to land on them still land; see
           the note at the top of this file. data/caseStudies.tsx and
-          components/CaseStudy are both still in the tree and now have no caller
-          on this site. */}
+          components/CaseStudy were deleted with them, having had no caller
+          left on this site. */}
 
       {/* The peer-reviewed record. Not a citation page: docs.overture.bio owns
           how to cite us and the link at the foot of this section says so. What
@@ -593,7 +585,11 @@ export default function ImpactPage() {
             {metrics.releaseTags.value}
           </p>
           <p className="ImpactDistribution__caption">
-            {metrics.releaseTags.value} version tags in total, spanning{" "}
+            {metrics.releaseTags.value} published releases in total:
+            npm packages, container images, and merged release builds where
+            that is a component's own mechanism, counted from each one's
+            registry rather than from git tags, which this org uses too
+            inconsistently to total on their own, spanning{" "}
             {metrics.stableReleaseHistory.value} of continuous release
             activity. All seven components are{" "}
             <Link to={OVERTURE_GITHUB_LINK}>developed in the open</Link>{" "}
@@ -605,7 +601,7 @@ export default function ImpactPage() {
               <tr>
                 <th scope="col">Component</th>
                 <th scope="col">First release</th>
-                <th scope="col">Tags</th>
+                <th scope="col">Releases</th>
                 <th scope="col">Latest</th>
                 <th scope="col">Contributors</th>
               </tr>

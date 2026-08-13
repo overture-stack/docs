@@ -9,8 +9,13 @@ $mobile: 768px;
 $tablet: 1024px;
 $desktop: 1216px;
 
-// for pages like About Us, Contact; the green headers with images.
-$header-height: 470px;
+// Where the navbar's own items (not the whole menu, which collapses at
+// `navmenu-below`/`navmenu-up` above) start crowding: past `navmenu-up`
+// (1160px) the nav links, search box and logo are all on one row again, but
+// there isn't quite enough width for their default spacing until this point.
+// Doesn't match any named breakpoint above because it isn't a layout
+// breakpoint — it's a measured, navbar-specific squeeze.
+$navbar-tight-breakpoint: 1260px;
 
 // How wide the introduction under a section heading is allowed to run.
 //
@@ -78,6 +83,3 @@ $lede-max-width: 68rem;
   }
 }
 
-// Colors -----
-
-$teal: $green-bg;

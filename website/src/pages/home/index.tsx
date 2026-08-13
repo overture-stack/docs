@@ -11,11 +11,11 @@ import { ComponentHighlightProvider } from "../../marketing/context/ComponentHig
 import { H1, P1 } from "../../marketing/components/Typography";
 
 /**
- * The marketing home page. One job, unchanged since .dev/ia-proposal.md § Home:
- * get each of the three audiences to the right second page inside one scroll.
+ * The marketing home page. One job: get each of the three audiences to the
+ * right second page inside one scroll.
  *
- * Four bands under the hero group, each answering a different question, in the
- * order a visitor asks them (see .dev/home-rebuild-plan.md):
+ * Four bands under the hero group, each answering a different question, in
+ * the order a visitor asks them:
  *
  *   1. **What can I do with this?** `HomeCapabilities`. It replaced a band that
  *      led with a platform's name, which answered "who uses this" instead. Same
@@ -26,11 +26,11 @@ import { H1, P1 } from "../../marketing/components/Typography";
  *   4. **Can I just run it?** `HomeQuickstart`, which is where the hero's first
  *      button lands.
  *
- * The first two have swapped places twice, each time on the developer's call,
- * and are now back to capabilities first: the hero says what Overture is and the
- * carousel says who runs it, so the next thing a visitor asks is what it does,
- * not who we are. `HomeCollaborate` reads as the staffed route offered just
- * ahead of the two self-serve ones below it.
+ * The first two have swapped places twice and are now back to capabilities
+ * first: the hero says what Overture is and the carousel says who runs it, so
+ * the next thing a visitor asks is what it does, not who we are.
+ * `HomeCollaborate` reads as the staffed route offered just ahead of the two
+ * self-serve ones below it.
  *
  * The background colours have never moved with them. The band right under the
  * carousel is white and the one after it is grey, whichever content is in them,
@@ -39,14 +39,13 @@ import { H1, P1 } from "../../marketing/components/Typography";
  * `--card-tile-bg` on the slot rather than on the band, which is why a swap here
  * is two edits there and not a repaint.
  *
- * Gone with this rebuild: the "Publicly funded, openly built" band, whose one
- * substantive claim is now a paragraph inside `HomeCollaborate` and whose three
- * links are the row at that band's foot. It was a second ending in front of the
- * quickstart.
+ * No "Publicly funded, openly built" band any more: its one substantive claim
+ * is now a paragraph inside `HomeCollaborate`, and its three links are the row
+ * at that band's foot. It was a second ending in front of the quickstart.
  *
- * Still owed: the funder logos and the labelled Collect / Explore / Control
- * diagram, both `[NEEDS:]` in .dev/roadmap.md. Each section is written to read
- * correctly without its artwork rather than to hold a gap open.
+ * No funder logos and no labelled Collect / Explore / Control diagram: each
+ * section is written to read correctly without its artwork rather than to
+ * hold a gap open.
  */
 export default function HomePage() {
   return (

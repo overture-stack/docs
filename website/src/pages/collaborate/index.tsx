@@ -9,11 +9,11 @@ import { offers } from "../../marketing/data/collaboration";
 import { EMAIL_LINK } from "../../marketing/constants/externalLinks";
 
 /**
- * /collaborate/, which replaced /services/ in rebuild phase 4.
+ * /collaborate/, which replaced /services/.
  *
- * One change from the page it replaces, from .dev/ia-proposal.md: academic
- * partnership leads, because it is the highest-value ask. It used to be third,
- * under technical support and consulting.
+ * One change from the page it replaces: academic partnership leads, because
+ * it is the highest-value ask. It used to be third, under technical support
+ * and consulting.
  *
  * Two things were built here and then removed on request, and both eventually
  * landed somewhere else. The named engagement record ("Who we have worked

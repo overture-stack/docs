@@ -1,4 +1,4 @@
-// What /collaborate/ offers, in the order .dev/ia-proposal.md puts them.
+// What /collaborate/ offers, in a fixed order.
 //
 // The same three offers the old /services/ page carried, reordered so academic
 // partnership leads, because it is the highest-value ask and the one the page
@@ -80,27 +80,3 @@ export const offers: Offer[] = [
   },
 ];
 
-export type Engagement = {
-  name: string;
-  /** What came of it, where something did. */
-  outcome?: string;
-};
-
-/**
- * Institutions the team has worked with, from the LOI's engagement list.
- *
- * The point of naming them is that this page is an invitation rather than a
- * menu: these are not customers, they are groups who asked and got time. The
- * figure they sit under is in metrics.ts.
- */
-export const engagements: Engagement[] = [
-  {
-    name: "South African National Bioinformatics Institute",
-    outcome: "led to the AGARI platform",
-  },
-  { name: "Harvard", outcome: "4DN Data Portal" },
-  { name: "Australian BioCommons", outcome: "ACDC Portal" },
-  { name: "Seqera" },
-  { name: "Marie Curie Institute" },
-  { name: "Barcelona Supercomputing Center" },
-];

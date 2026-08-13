@@ -1,10 +1,6 @@
-// Named utility classes for the marketing pages.
-//
-// These used to be "for when basscss doesn't do the trick". basscss was a Gatsby
-// dependency and was never ported, so every class the pages took from it
-// (`bold`, `mt3`, `py2` and friends) resolved to nothing from stage 1 until
-// rebuild phase 2, which replaced them with prefixed Tailwind. Reach for a
-// `ow:` utility for new spacing rather than adding a one-off here.
+// Named utility classes for the marketing pages, for cases prefixed Tailwind
+// (`ow:`) utilities don't cover. Reach for an `ow:` utility for new spacing
+// rather than adding a one-off here.
 
 // Backgrounds
 .bg-grey {

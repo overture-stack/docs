@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import clsx from "clsx";
 import Link from "./Link";
 import {
   heroDiagramHotspots,
@@ -7,6 +8,7 @@ import {
 import { componentUsage } from "../data/componentUsage";
 import { useComponentHighlight } from "../context/ComponentHighlightContext";
 import { floatingTooltipPosition } from "../utils/floatingTooltip";
+import { hoverIntentHandlers } from "../utils/hoverIntent";
 
 const PORTAL = "/img/marketing/home/portal.svg";
 
@@ -18,8 +20,7 @@ const PORTAL = "/img/marketing/home/portal.svg";
  * and showing a tooltip with its name, codename and summary.
  *
  * Who runs Overture used to live here too, as a second carousel slide; it's
- * now LogoCarousel, its own scrolling section right below the hero. See
- * .dev/sessions history for why that moved.
+ * now LogoCarousel, its own scrolling section right below the hero.
  *
  * Hovering or focusing a hotspot filters LogoCarousel below to the platforms
  * that use that component; hovering or focusing a platform there highlights
@@ -100,27 +101,23 @@ export default function HeroDiagram() {
           setHighlightedComponent(null);
           setTooltip(null);
         };
-        const highlightHandlers = {
-          onPointerEnter: showTooltip,
-          onPointerLeave: hideTooltip,
-          onFocus: showTooltip,
-          onBlur: hideTooltip,
-        };
-        const platformHighlightClassName = [
+        const highlightHandlers = hoverIntentHandlers(showTooltip, hideTooltip);
+        const platformHighlightClassName = clsx(
           "HeroDiagram__hotspot",
           usedByHoveredPlatform && "HeroDiagram__hotspot--highlighted",
           highlightedPlatform &&
             !usedByHoveredPlatform &&
             "HeroDiagram__hotspot--dimmed",
-        ]
-          .filter(Boolean)
-          .join(" ");
+        );
 
         if (hotspot.comingSoon || !hotspot.href) {
           return (
             <span
               key={hotspot.id}
-              className={`${platformHighlightClassName} HeroDiagram__hotspot--disabled`}
+              className={clsx(
+                platformHighlightClassName,
+                "HeroDiagram__hotspot--disabled",
+              )}
               style={style}
               tabIndex={0}
               aria-label={`${hotspot.name}: ${hotspot.summary}`}
