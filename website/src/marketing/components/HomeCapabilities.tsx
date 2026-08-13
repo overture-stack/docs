@@ -71,12 +71,23 @@ export default function HomeCapabilities() {
               (entry) => entry.id === capability.platform,
             );
 
+            // `?highlight={id}#{id}`, not `platform.href`'s bare fragment:
+            // the same param partnerLogos.ts sends LogoCarousel's logos to
+            // /impact/ with, so a card here lands on its platform's row with
+            // the persistent `ImpactTable__highlight`, not just the brief
+            // `:target` flash a bare fragment gives.
+            const href =
+              capability.href ??
+              (platform
+                ? `${IMPACT_PATH}?highlight=${platform.id}#${platform.id}`
+                : IMPACT_PATH);
+
             return (
               <CardTile
                 key={capability.id}
                 className="CardTile--split"
                 title={capability.action}
-                href={capability.href ?? platform?.href ?? IMPACT_PATH}
+                href={href}
                 image={capability.screenshot ?? platform?.screenshot}
                 imageBadge={capability.screenshotBadge}
                 linkLabel={
