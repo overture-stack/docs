@@ -16,6 +16,18 @@ export default function MatomoTracking(): React.JSX.Element | null {
       return;
     }
 
+    // Production only. Without this, `npm start` and a local `npm run serve`
+    // report real page views into site 76, recorded against whatever host the
+    // browser is on, which for a development run is http://localhost. The
+    // Gatsby site that served overture.bio set `dev: false` on
+    // gatsby-plugin-matomo for exactly this reason.
+    //
+    // Webpack replaces NODE_ENV with a literal, so the production bundle keeps
+    // the tracking and the development bundle never reaches it.
+    if (process.env.NODE_ENV !== 'production') {
+      return;
+    }
+
     const _paq = (window._paq = window._paq || []);
     
     // Initialize Matomo tracking

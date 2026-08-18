@@ -27,25 +27,34 @@ cd website
 npm ci
 ```
 
-3. Start the server:
+3. Start the server for whichever of the two sites you are working on:
 
 ```bash
-npm start
+npm start                 # docs.overture.bio, the documentation site
+npm run start:marketing   # overture.bio, the marketing site
 ```
+
+Both serve on port 3000, so to run them side by side give one of them another port: `npm run start:marketing -- --port 3001`.
 
 > [!IMPORTANT]
 > Docusaurus requires node version 18 or higher. All npm commands run from `website/`; there is no package manifest at the repository root.
 
+> [!TIP]
+> One repository, two sites. `npm start` serves the documentation with its homepage at `/`; `npm run start:marketing` serves the marketing site with **its** homepage at `/`. Neither contains the other's routes. [Two builds, one branch](#the-overturebio-marketing-pages) explains how the switch works.
+
 ### Checking your work
 
-Two commands are worth running before you open a pull request, both from `website/`:
+Three commands are worth running before you open a pull request, all from `website/`:
 
 ```bash
-npm run typecheck   # tsc across website/src/
-npm run build       # fails on any broken internal link
+npm run typecheck        # tsc across website/src/
+npm run build            # the documentation site
+npm run build:marketing  # the marketing site
 ```
 
-`onBrokenLinks` is set to `throw`, so a link to a page that does not exist fails the build rather than shipping a 404.
+`onBrokenLinks` is set to `throw`, so a link to a page that does not exist fails the build rather than shipping a 404. Run both builds even when a change looks like it belongs to one site: `src/theme/`, the emitted stylesheet and `docusaurus.config.ts` are shared, so a change there can break the site you were not looking at.
+
+The dev server is client-rendered and will not catch either of those. To see what Netlify actually serves, build and serve the output: `npm run serve` for the documentation site, `npm run serve:marketing` for the marketing one.
 
 ## How Overture Docs Works
 
@@ -70,24 +79,47 @@ npm run build       # fails on any broken internal link
 
 - **Interactive components**: Some pages embed browser-based tooling (the configuration generator, the Lectern dictionary playground, and the Song schema playground) built as React components under `website/src/components/`.
 
-- **Marketing pages**: This repository is also becoming the home of the overture.bio marketing site, ported from the Gatsby site at [overture-stack/website](https://github.com/overture-stack/website). Those pages are described in the next section.
+- **Two sites from one repository**: this repository builds both `docs.overture.bio` and the `overture.bio` marketing site, selected by the `OVERTURE_SITE` environment variable. See [The overture.bio marketing pages](#the-overturebio-marketing-pages) and [Deployment](#deployment).
 
 ## The overture.bio marketing pages
 
-The marketing site is being ported into this repository so that one codebase serves both hostnames. The port is partway through: the pages are here and they build, but nothing a visitor sees has changed yet.
+The marketing site was ported into this repository so that one codebase serves both hostnames. The code is complete and both sites build; what is left is the Netlify and DNS work described under [Deployment](#deployment), which is what actually moves visitors from the Gatsby site to this one.
 
-- **Where the code lives**: shared components, constants, case-study data and stylesheets are under `website/src/marketing/`. Each route is a page under `website/src/pages/`, one directory apiece: `about-us`, `acknowledgements`, `case-studies`, `getting-started`, `home`, `privacy`, `products`, `services`, and `terms-conditions`.
+- **Where the code lives**: everything is under `website/src/marketing/`. Routes are `pages/`, one directory apiece (`collaborate`, `impact`, `privacy`, `products`, `terms-conditions`) plus `pages/index.tsx`, which is the home page. Components, constants, case-study data and stylesheets sit alongside them.
 
-- **The two sites have separate navigation**: the marketing pages carry their own navbar and footer, so a reader can tell which of the two sites they are on. `website/src/theme/Navbar/` and `website/src/theme/Footer/` decide which to render based on the route, and the marketing versions live in `website/src/marketing/components/`. Documentation routes are untouched and keep the navbar configured in `docusaurus.config.ts`. Adding a marketing nav item means editing `MarketingNavbar.tsx`, not the site config.
+- **Two builds, one branch**: `docusaurus.config.ts` reads `OVERTURE_SITE`. Unset, it builds the documentation site exactly as before. Set to `marketing`, it builds overture.bio: the documentation plugin instances and the redirect table are dropped, and the pages plugin points at `src/marketing/pages/` so the marketing home is served at `/`. Search stays on both sites, against the same index, with the marketing build configured to send results cross-host. Neither site contains the other's routes, so neither hostname serves a second copy of the other.
 
-- **The home page is at `/home/`, not `/`**: this build's `/` is the documentation homepage. The marketing build gets its own root later in the port, when the two hostnames are separated.
+- **The two sites have separate navigation**: the marketing build carries its own navbar and footer so a reader can tell which of the two sites they are on. `website/src/theme/Navbar/` and `website/src/theme/Footer/` pick one using `useIsMarketingSite`, which reads the build mode rather than the route. Adding a marketing nav item means editing `MarketingNavbar.tsx`, not the site config.
 
 - **Styles are Sass, and they are scoped**: the marketing pages carry their own styling, which would otherwise fight the documentation theme. Every stylesheet is imported inside a `.marketing` block by `website/src/marketing/styles/index.scss`, and only `MarketingPage.tsx` imports that file. If you are adding marketing styles, add a partial and import it there rather than importing a stylesheet from a component.
 
 - **Assets live in `website/static/img/marketing/`** and are referenced by path, not imported.
 
 > [!NOTE]
-> The staged copy of the Gatsby site that lived here during the port was deleted once the pages were rebuilt. [overture-stack/website](https://github.com/overture-stack/website) still serves overture.bio, so a change that needs to reach the live site goes there, not here.
+> The staged copy of the Gatsby site that lived here during the port was deleted once the pages were rebuilt. [overture-stack/website](https://github.com/overture-stack/website) still serves overture.bio until DNS is cut over, so until then a change that has to reach the live site goes there, not here.
+
+## Deployment
+
+Both sites are Netlify sites building this repository from the same branch. They differ only in one environment variable and the publish directory.
+
+| | docs.overture.bio | overture.bio |
+| --- | --- | --- |
+| Base directory | `website` | `website` |
+| Build command | `npm ci && npm run build` | `npm ci && npm run build:marketing` |
+| Publish directory | `website/build` | `website/build-marketing` |
+| `OVERTURE_SITE` | unset | `marketing` |
+| `NODE_VERSION` | `20` | `20` |
+
+Neither site needs a `netlify.toml`, and adding one would be a mistake: a single file on a single branch cannot say different things to two sites. Everything that would go in one is expressed per site instead.
+
+- **Redirects** live in `website/static-docs/_redirects` and `website/static-marketing/_redirects`. Each is copied into its own build's output by the `staticDirectories` setting, so each host serves only the rules it owes. Netlify combines them with any rules configured in the site UI, applying the UI rules first.
+- **`robots.txt`** is per host for the same reason, next to each `_redirects`.
+- **`sitemap.xml`** is generated for each build from the `url` in `docusaurus.config.ts`, so it always names the host it is served from.
+- **Submodules** are fetched by Netlify automatically: every URL in `.gitmodules` is public HTTPS. The documentation symlinks under `website/docs/` are committed as git symlinks with relative targets, so [symlinker.sh](symlinker.sh) does not need to run during a build.
+
+Because submodule pointers are pinned commits, a documentation change landed in a component repository does not reach the deployed site until a submodule bump is committed here.
+
+Running either site locally is covered under [Running it Locally](#running-it-locally).
 
 ## Repository structure
 
@@ -118,8 +150,10 @@ The marketing site is being ported into this repository so that one codebase ser
     │   ├── /css/               # Component-specific styles
     │   ├── /marketing/         # Components, data and Sass for the overture.bio pages
     │   ├── /theme/             # Global theme configuration and styling
-    │   └── /pages/             # Static page content, including the marketing routes
-    ├── /netlify/               # Redirects staged for the marketing site (not live, see its README)
+    │   │   └── /pages/         # The overture.bio routes; index.tsx is its home page
+    │   └── /pages/             # Documentation homepage
+    ├── /static-docs/           # robots.txt and _redirects for docs.overture.bio only
+    ├── /static-marketing/      # robots.txt and _redirects for overture.bio only
     ├── /static/                # Static assets served as-is
     │   └── /img/marketing/     # Images and icons for the marketing pages
     ├── docusaurus.config.ts    # Site config: plugin instances, navbar, redirects
@@ -135,8 +169,8 @@ The marketing site is being ported into this repository so that one codebase ser
     - **/docs/use-docs/**: Task-oriented content for people working with a running platform
     - **/docs/community-docs/**: Community-focused content, including the org-wide documentation standards linked from the `.github` submodule
     - **/src/**: Website implementation files including custom components, styling, and page content
-    - **/src/marketing/**: The overture.bio marketing pages, rebuilt from the Gatsby site
-    - **/netlify/**: Redirects the marketing site will need when it gets its own Netlify site. Nothing reads them yet
+    - **/src/marketing/**: The overture.bio marketing site, rebuilt from the Gatsby site, routes included
+    - **/static-docs/**, **/static-marketing/**: The files each host serves alone, `robots.txt` and `_redirects`. See [Deployment](#deployment)
 
 > [!IMPORTANT]
 > Documentation content is owned by the submodules, not by this repository. Where a page under `website/docs/` is a symlink, edit the source file in `submodules/<project>/docs/` and land the change through that project's own repository.

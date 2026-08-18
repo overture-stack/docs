@@ -1,6 +1,6 @@
 import React from "react";
-import ProsePage from "../../marketing/components/ProsePage";
-import Prose from "../../marketing/content/terms-conditions.mdx";
+import ProsePage from "../../components/ProsePage";
+import Prose from "../../content/terms-conditions.mdx";
 
 /**
  * The copy for this page is in src/marketing/content/terms-conditions.mdx. Edit

@@ -1,14 +1,14 @@
 import React from "react";
-import MarketingPage from "../../marketing/MarketingPage";
-import Button from "../../marketing/components/Button";
-import HeroDiagram from "../../marketing/components/HeroDiagram";
-import HomeCapabilities from "../../marketing/components/HomeCapabilities";
-import HomeCollaborate from "../../marketing/components/HomeCollaborate";
-import HomeDocs from "../../marketing/components/HomeDocs";
-import HomeQuickstart from "../../marketing/components/HomeQuickstart";
-import LogoCarousel from "../../marketing/components/LogoCarousel";
-import { ComponentHighlightProvider } from "../../marketing/context/ComponentHighlightContext";
-import { H1, P1 } from "../../marketing/components/Typography";
+import MarketingPage from "../MarketingPage";
+import Button from "../components/Button";
+import HeroDiagram from "../components/HeroDiagram";
+import HomeCapabilities from "../components/HomeCapabilities";
+import HomeCollaborate from "../components/HomeCollaborate";
+import HomeDocs from "../components/HomeDocs";
+import HomeQuickstart from "../components/HomeQuickstart";
+import LogoCarousel from "../components/LogoCarousel";
+import { ComponentHighlightProvider } from "../context/ComponentHighlightContext";
+import { H1, P1 } from "../components/Typography";
 
 /**
  * The marketing home page. One job: get each of the three audiences to the
@@ -51,7 +51,7 @@ export default function HomePage() {
   return (
     <MarketingPage
       className="HomePage"
-      title="Overture - Home"
+      title="Home"
       description="Open-source microservices for building research data platforms: collect data, make it discoverable, and run the whole thing on infrastructure you control."
     >
       {/* 1. Hero, with the product story in it. Wrapped with LogoCarousel below

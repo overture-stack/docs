@@ -1,7 +1,7 @@
 import React from "react";
-import MarketingPage from "../../marketing/MarketingPage";
-import Hero from "../../marketing/components/Hero";
-import ComponentTable from "../../marketing/components/ComponentTable";
+import MarketingPage from "../../MarketingPage";
+import Hero from "../../components/Hero";
+import ComponentTable from "../../components/ComponentTable";
 
 /**
  * What Overture is made of: a hero and one table.

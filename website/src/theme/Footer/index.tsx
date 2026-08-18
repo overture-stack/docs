@@ -1,7 +1,7 @@
 import React from "react";
 import Footer from "@theme-original/Footer";
 import MarketingFooter from "@site/src/marketing/components/MarketingFooter";
-import useIsMarketingRoute from "@site/src/marketing/useIsMarketingRoute";
+import useIsMarketingSite from "@site/src/marketing/useIsMarketingSite";
 
 /**
  * The footer half of the same split. See src/theme/Navbar/index.tsx.
@@ -12,7 +12,7 @@ import useIsMarketingRoute from "@site/src/marketing/useIsMarketingRoute";
 export default function FooterWrapper(
   props: React.ComponentProps<typeof Footer>,
 ): React.JSX.Element {
-  const isMarketing = useIsMarketingRoute();
+  const isMarketing = useIsMarketingSite();
 
   return isMarketing ? <MarketingFooter /> : <Footer {...props} />;
 }

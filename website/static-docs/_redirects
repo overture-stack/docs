@@ -1,0 +1,21 @@
+# Redirects the docs.overture.bio build publishes.
+#
+# Six of them, all for the same reason. While the marketing pages were being
+# ported they were part of this build and public on this host, at /home/,
+# /products/, /impact/, /collaborate/, /privacy/ and /terms-conditions/. The
+# split moved them to overture.bio and they no longer exist here, so each one
+# points at its new address cross-host.
+#
+# No force: these paths do not exist in this build, and Netlify applies a
+# redirect when nothing else matches. Forcing would mask a future docs page at
+# one of these paths.
+#
+# Netlify combines these with any rules configured in the site's UI; the UI
+# rules are applied first.
+
+/home/*              https://overture.bio/                    301
+/products/*          https://overture.bio/products/           301
+/impact/*            https://overture.bio/impact/             301
+/collaborate/*       https://overture.bio/collaborate/        301
+/privacy/*           https://overture.bio/privacy/            301
+/terms-conditions/*  https://overture.bio/terms-conditions/   301

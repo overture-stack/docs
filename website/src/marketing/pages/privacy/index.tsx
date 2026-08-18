@@ -1,6 +1,6 @@
 import React from "react";
-import ProsePage from "../../marketing/components/ProsePage";
-import Prose from "../../marketing/content/privacy.mdx";
+import ProsePage from "../../components/ProsePage";
+import Prose from "../../content/privacy.mdx";
 
 /**
  * The copy for this page is in src/marketing/content/privacy.mdx. Edit it there.

@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
-import MarketingPage from "../../marketing/MarketingPage";
-import Hero from "../../marketing/components/Hero";
-import Link from "../../marketing/components/Link";
-import { H3 } from "../../marketing/components/Typography";
+import MarketingPage from "../../MarketingPage";
+import Hero from "../../components/Hero";
+import Link from "../../components/Link";
+import { H3 } from "../../components/Typography";
 import {
   OVERTURE_DOCUMENTATION_CITING,
   OVERTURE_DOCUMENTATION_FUNDING,
   OVERTURE_GITHUB_LINK,
-} from "../../marketing/constants/externalLinks";
-import { PRODUCTS_PATH } from "../../marketing/constants/pages";
-import { componentIcon, componentLabel } from "../../marketing/data/components";
+} from "../../constants/externalLinks";
+import { PRODUCTS_PATH } from "../../constants/pages";
+import { componentIcon, componentLabel } from "../../data/components";
 import {
   DEPLOYMENTS_ANCHOR,
   deploymentRows,
-} from "../../marketing/data/deployments";
+} from "../../data/deployments";
 import {
   DOCKER_HUB_LINK,
   GHCR_PACKAGES_LINK,
@@ -24,11 +24,11 @@ import {
   npmPackageLink,
   npmPackages,
   releaseHistory,
-} from "../../marketing/data/distribution";
-import metrics from "../../marketing/data/metrics";
-import publications from "../../marketing/data/publications";
-import { floatingTooltipPosition } from "../../marketing/utils/floatingTooltip";
-import { hoverIntentHandlers } from "../../marketing/utils/hoverIntent";
+} from "../../data/distribution";
+import metrics from "../../data/metrics";
+import publications from "../../data/publications";
+import { floatingTooltipPosition } from "../../utils/floatingTooltip";
+import { hoverIntentHandlers } from "../../utils/hoverIntent";
 
 /**
  * The /impact/ hub, in three sections: who runs Overture, what has been

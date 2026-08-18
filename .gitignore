@@ -3,6 +3,7 @@
 
 # Production
 /website/build
+/website/build-marketing
 
 # Generated files
 /website/.docusaurus

@@ -1,18 +1,18 @@
 import React from "react";
 import Navbar from "@theme-original/Navbar";
 import MarketingNavbar from "@site/src/marketing/components/MarketingNavbar";
-import useIsMarketingRoute from "@site/src/marketing/useIsMarketingRoute";
+import useIsMarketingSite from "@site/src/marketing/useIsMarketingSite";
 
 /**
- * One build serves two sites, so it serves two navbars.
+ * One repository builds two sites, so it carries two navbars.
  *
- * Marketing routes get the overture.bio navigation; everything else gets the
- * documentation navbar configured in docusaurus.config.ts, untouched.
+ * The marketing build gets the overture.bio navigation; the documentation
+ * build gets the navbar configured in docusaurus.config.ts, untouched.
  */
 export default function NavbarWrapper(
   props: React.ComponentProps<typeof Navbar>,
 ): React.JSX.Element {
-  const isMarketing = useIsMarketingRoute();
+  const isMarketing = useIsMarketingSite();
 
   return isMarketing ? <MarketingNavbar /> : <Navbar {...props} />;
 }

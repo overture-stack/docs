@@ -1,12 +1,12 @@
 import React from "react";
 import useBrokenLinks from "@docusaurus/useBrokenLinks";
-import MarketingPage from "../../marketing/MarketingPage";
-import Button from "../../marketing/components/Button";
-import Hero from "../../marketing/components/Hero";
-import Link from "../../marketing/components/Link";
-import { H2, P1 } from "../../marketing/components/Typography";
-import { offers } from "../../marketing/data/collaboration";
-import { EMAIL_LINK } from "../../marketing/constants/externalLinks";
+import MarketingPage from "../../MarketingPage";
+import Button from "../../components/Button";
+import Hero from "../../components/Hero";
+import Link from "../../components/Link";
+import { H2, P1 } from "../../components/Typography";
+import { offers } from "../../data/collaboration";
+import { EMAIL_LINK } from "../../constants/externalLinks";
 
 /**
  * /collaborate/, which replaced /services/.

@@ -1,4 +1,4 @@
-// Marketing routes, as Docusaurus generates them from src/pages/.
+// Marketing routes, as Docusaurus generates them from src/marketing/pages/.
 //
 // Docusaurus emits a trailing slash for a directory route, and
 // onBrokenLinks: "throw" checks every one of them at build time, so they are
@@ -11,10 +11,11 @@
 // HomeCollaborate.tsx, so an inbound link arrives at the content, not the
 // top of the page. The footer is now the only navigation pointing here;
 // the `id` stays load-bearing for the redirect regardless.
-export const ABOUT_BAND = "/home/#collaborate-heading";
-// No COMMUNITY_PATH: /community is already the routeBasePath of the community
-// documentation plugin instance in this build, and the marketing page that
-// used to sit there rendered nothing but a title and a keywords meta tag.
+export const ABOUT_BAND = "/#collaborate-heading";
+// No COMMUNITY_PATH. The marketing page that used to sit there rendered
+// nothing but a title and a keywords meta tag, and /community is the community
+// documentation's routeBasePath on the other site. The route collision went
+// away when the builds split; the reason not to have the page did not.
 //
 // No FUNDING_PATH and no PUBLICATIONS_PATH. /about/funding/ and
 // /impact/publications/ are retired: their content's maintained version lives
@@ -33,23 +34,24 @@ export const PRODUCTS_PATH = "/products/";
 // inbound fragment links still land.
 export const IMPACT_PATH = "/impact/";
 // /services/ became /collaborate/, page and address both. The old route no
-// longer exists here, so it owes a 301 in whatever Netlify config stage 3
-// produces.
+// longer exists here, so it is one of the 301s in static-marketing/_redirects.
 export const COLLABORATE_PATH = "/collaborate/";
 export const TERMS_PATH = "/terms-conditions/";
-// `/` is the documentation homepage in this build, so the marketing home sits
-// at /home/ until stage 3 gives the marketing build its own root.
-export const HOME_PATH = "/home/";
+// The marketing build's root. It is `src/marketing/pages/index.tsx`, which is
+// why there is no /home/ route any more: the two builds were split and the
+// marketing one got its own root.
+export const HOME_PATH = "/";
 
-// Eleven retired routes, all owed a redirect (rules in
-// `website/netlify/marketing-redirects.toml`, staged for stage 3); this
-// list is the same set, kept beside the paths:
+// Twelve retired routes, all owed a redirect (rules in
+// `website/static-marketing/_redirects`, published by the marketing build);
+// this list is the same set, kept beside the paths:
 //
 //   /getting-started/      -> the docs quickstart, cross-host
 //   /acknowledgements/     -> the docs funding page, cross-host
 //   /services/             -> COLLABORATE_PATH
 //   /case-studies/         -> IMPACT_PATH
 //   /about-us/             -> ABOUT_BAND
+//   /home/                 -> HOME_PATH, the address it had before the split
 //   /about/funding/        -> the docs funding page, cross-host
 //   /impact/publications/  -> the docs citing-us page, cross-host
 //   /impact/icgc-argo/     -> IMPACT_PATH + #icgcargo
@@ -68,17 +70,12 @@ export const HOME_PATH = "/home/";
 // /case-studies/ carries fragments: browsers preserve `#icgcargo` across a 301
 // and the hub keeps the matching ids, which is the whole mechanism. Nothing
 // 404s in production meanwhile, because the Gatsby site serves overture.bio
-// until stage 3.
+// until DNS is pointed at this build.
 
-/** Every route that renders as part of the marketing site. */
-export const MARKETING_PATHS = [
-  HOME_PATH,
-  COLLABORATE_PATH,
-  IMPACT_PATH,
-  PRIVACY_PATH,
-  PRODUCTS_PATH,
-  TERMS_PATH,
-];
+// No MARKETING_PATHS list. It existed so the swizzled Navbar and Footer could
+// tell a marketing route from a documentation one inside a single build; the
+// marketing build now contains nothing but marketing routes, so
+// useIsMarketingSite asks the build rather than the route.
 
 
 // No `productsAnchors` and no `caseStudyAnchors`: both existed for the home

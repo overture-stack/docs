@@ -1,0 +1,10 @@
+# overture.bio. The documentation site ships its own from static-docs/, which is
+# why each host gets its own static directory rather than sharing static/.
+#
+# The Sitemap line names one canonical host. If www rather than the apex is
+# chosen as canonical, change it here as well as in `url` in
+# docusaurus.config.ts, which is what generates the sitemap in the first place.
+User-agent: *
+Allow: /
+
+Sitemap: https://overture.bio/sitemap.xml
