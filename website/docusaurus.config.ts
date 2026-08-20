@@ -4,10 +4,9 @@ import type * as Preset from "@docusaurus/preset-classic";
 
 // This repository builds two sites. `OVERTURE_SITE=marketing` produces
 // overture.bio: the pages under src/marketing/pages/, with the marketing home
-// at the root. Anything else produces docs.overture.bio, which is what a bare
-// `npm start`, a CI check and the documentation site's own Netlify build all
-// get, so the documentation site needs no configuration to keep behaving as it
-// always has.
+// at the root. Anything else produces docs.overture.bio. The npm scripts set
+// the variable for you: `build`/`start`/`serve` are marketing, the `:docs`
+// variants are the documentation site.
 //
 // The split is by build rather than by route because these are two hostnames:
 // one build serving both would put every documentation page on overture.bio

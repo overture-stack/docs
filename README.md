@@ -30,31 +30,31 @@ npm ci
 3. Start the server for whichever of the two sites you are working on:
 
 ```bash
-npm start                 # docs.overture.bio, the documentation site
-npm run start:marketing   # overture.bio, the marketing site
+npm start            # overture.bio, the marketing site
+npm run start:docs   # docs.overture.bio, the documentation site
 ```
 
-Both serve on port 3000, so to run them side by side give one of them another port: `npm run start:marketing -- --port 3001`.
+Both serve on port 3000, so to run them side by side give one of them another port: `npm run start:docs -- --port 3001`.
 
 > [!IMPORTANT]
 > Docusaurus requires node version 18 or higher. All npm commands run from `website/`; there is no package manifest at the repository root.
 
 > [!TIP]
-> One repository, two sites. `npm start` serves the documentation with its homepage at `/`; `npm run start:marketing` serves the marketing site with **its** homepage at `/`. Neither contains the other's routes. [Two builds, one branch](#the-overturebio-marketing-pages) explains how the switch works.
+> One repository, two sites. `npm start` serves the marketing site with its homepage at `/`; `npm run start:docs` serves the documentation with **its** homepage at `/`. Neither contains the other's routes. [Two builds, one branch](#the-overturebio-marketing-pages) explains how the switch works.
 
 ### Checking your work
 
 Three commands are worth running before you open a pull request, all from `website/`:
 
 ```bash
-npm run typecheck        # tsc across website/src/
-npm run build            # the documentation site
-npm run build:marketing  # the marketing site
+npm run typecheck   # tsc across website/src/
+npm run build       # the marketing site
+npm run build:docs  # the documentation site
 ```
 
 `onBrokenLinks` is set to `throw`, so a link to a page that does not exist fails the build rather than shipping a 404. Run both builds even when a change looks like it belongs to one site: `src/theme/`, the emitted stylesheet and `docusaurus.config.ts` are shared, so a change there can break the site you were not looking at.
 
-The dev server is client-rendered and will not catch either of those. To see what Netlify actually serves, build and serve the output: `npm run serve` for the documentation site, `npm run serve:marketing` for the marketing one.
+The dev server is client-rendered and will not catch either of those. To see what Netlify actually serves, build and serve the output: `npm run serve` for the marketing site, `npm run serve:docs` for the documentation one.
 
 ## How Overture Docs Works
 
@@ -79,7 +79,7 @@ The dev server is client-rendered and will not catch either of those. To see wha
 
 - **Interactive components**: Some pages embed browser-based tooling (the configuration generator, the Lectern dictionary playground, and the Song schema playground) built as React components under `website/src/components/`.
 
-- **Two sites from one repository**: this repository builds both `docs.overture.bio` and the `overture.bio` marketing site, selected by the `OVERTURE_SITE` environment variable. See [The overture.bio marketing pages](#the-overturebio-marketing-pages) and [Deployment](#deployment).
+- **Two sites from one repository**: this repository builds both the `overture.bio` marketing site and `docs.overture.bio`, selected by the `OVERTURE_SITE` environment variable, which the npm scripts set for you. See [The overture.bio marketing pages](#the-overturebio-marketing-pages) and [Deployment](#deployment).
 
 ## The overture.bio marketing pages
 
@@ -87,7 +87,7 @@ The marketing site was ported into this repository so that one codebase serves b
 
 - **Where the code lives**: everything is under `website/src/marketing/`. Routes are `pages/`, one directory apiece (`collaborate`, `impact`, `privacy`, `products`, `terms-conditions`) plus `pages/index.tsx`, which is the home page. Components, constants, case-study data and stylesheets sit alongside them.
 
-- **Two builds, one branch**: `docusaurus.config.ts` reads `OVERTURE_SITE`. Unset, it builds the documentation site exactly as before. Set to `marketing`, it builds overture.bio: the documentation plugin instances and the redirect table are dropped, and the pages plugin points at `src/marketing/pages/` so the marketing home is served at `/`. Search stays on both sites, against the same index, with the marketing build configured to send results cross-host. Neither site contains the other's routes, so neither hostname serves a second copy of the other.
+- **Two builds, one branch**: `docusaurus.config.ts` reads `OVERTURE_SITE`. Set to `marketing`, which is what the default `build`, `start` and `serve` scripts do, it builds overture.bio: the documentation plugin instances and the redirect table are dropped, and the pages plugin points at `src/marketing/pages/` so the marketing home is served at `/`. Unset, which is what the `:docs` scripts do, it builds the documentation site. Search stays on both sites, against the same index, with the marketing build configured to send results cross-host. Neither site contains the other's routes, so neither hostname serves a second copy of the other.
 
 - **The two sites have separate navigation**: the marketing build carries its own navbar and footer so a reader can tell which of the two sites they are on. `website/src/theme/Navbar/` and `website/src/theme/Footer/` pick one using `useIsMarketingSite`, which reads the build mode rather than the route. Adding a marketing nav item means editing `MarketingNavbar.tsx`, not the site config.
 
@@ -102,13 +102,14 @@ The marketing site was ported into this repository so that one codebase serves b
 
 Both sites are Netlify sites building this repository from the same branch. They differ only in one environment variable and the publish directory.
 
-| | docs.overture.bio | overture.bio |
+| | overture.bio | docs.overture.bio |
 | --- | --- | --- |
 | Base directory | `website` | `website` |
-| Build command | `npm ci && npm run build` | `npm ci && npm run build:marketing` |
-| Publish directory | `website/build` | `website/build-marketing` |
-| `OVERTURE_SITE` | unset | `marketing` |
+| Build command | `npm ci && npm run build` | `npm ci && npm run build:docs` |
+| Publish directory | `website/build` | `website/build-docs` |
 | `NODE_VERSION` | `20` | `20` |
+
+The marketing site is the default build, so it needs no site-specific environment variable: `npm run build` sets `OVERTURE_SITE=marketing` itself and writes to `website/build`, which is what a Netlify site created with the defaults already expects. The documentation site is the one that has to name its script and publish directory.
 
 Neither site needs a `netlify.toml`, and adding one would be a mistake: a single file on a single branch cannot say different things to two sites. Everything that would go in one is expressed per site instead.
 
