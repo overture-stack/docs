@@ -112,34 +112,10 @@
       }
     }
 
-    thead {
-      // Infima fills the header row with its table stripe colour, which reads
-      // as a grey band the page has nowhere else.
-      background-color: transparent;
-    }
-
-    // Column headers, and the column widths with them: set on the header cells
-    // rather than with `col`, which browsers honour for width but not for
-    // padding or type.
-    //
-    // `&__columnHeader th` repeats the look at the top of every group
-    // (ComponentTable.tsx's `COLUMN_HEADERS`), since scrolling into
-    // Explore or Control would otherwise lose the header row entirely.
-    // Widths are set on the real `thead` only — `table-layout: fixed`
-    // takes them from the first row of cells, so repeating them would be
-    // redundant.
-    thead th,
-    &__columnHeader th {
-      padding-bottom: 0.9em;
-      border-bottom: 2px solid $grey-3;
-      color: $c-grey-500;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    thead th {
+    // There's no `<thead>` (see the note on ComponentTable.tsx): the column
+    // widths `table-layout: fixed` needs come from these instead, browsers
+    // honouring `col` for width even though it can't carry padding or type.
+    &__table > colgroup col {
       &:nth-child(1) {
         width: 26%;
       }
@@ -152,6 +128,20 @@
       &:nth-child(4) {
         width: 24%;
       }
+    }
+
+    // `&__columnHeader th` is the look of the table's only column header
+    // row, repeated at the top of every group (ComponentTable.tsx's
+    // `COLUMN_HEADERS`) since scrolling into Explore or Control would
+    // otherwise lose it entirely.
+    &__columnHeader th {
+      padding-bottom: 0.9em;
+      border-bottom: 2px solid $grey-3;
+      color: $c-grey-500;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
     // Collect, Explore and Control, as a row spanning the table rather than a
@@ -293,10 +283,6 @@
         display: block;
       }
 
-      thead {
-        display: none;
-      }
-
       tbody,
       tbody tr,
       tbody th,
@@ -305,12 +291,11 @@
         width: auto;
       }
 
-      // The repeated header row aids desktop's multi-row groups; a
-      // stacked mobile card has no columns to lose track of, so it hides
-      // with `thead`. Written as `tbody tr.ProductsTable__columnHeader`,
-      // not the bare class: the generic `tbody tr { display: block }`
-      // above outranks a class alone on specificity, and had been
-      // quietly winning the cascade.
+      // The repeated header row aids desktop's multi-row groups; a stacked
+      // mobile card has no columns to lose track of, so it hides. Written
+      // as `tbody tr.ProductsTable__columnHeader`, not the bare class: the
+      // generic `tbody tr { display: block }` above outranks a class alone
+      // on specificity, and had been quietly winning the cascade.
       tbody tr.ProductsTable__columnHeader {
         display: none;
       }

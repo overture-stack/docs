@@ -53,10 +53,14 @@ const COLUMN_HEADERS = ["Component", "What it does", "Documentation", "Used by"]
  * can only point at one). Exactly one deployment still links straight to
  * its own row.
  *
- * The column headers repeat at the top of every group (`COLUMN_HEADERS`,
- * rendered again inside each `<tbody>`): with only the true `<thead>` at the
- * very top of the table, scrolling into Explore or Control loses the header
- * row entirely and a reader can no longer tell which column is which.
+ * There's no separate `<thead>`: the column headers live only in the row
+ * repeated at the top of every group, Collect included (`COLUMN_HEADERS`,
+ * rendered inside each `<tbody>`). A `<thead>` sitting above Collect's own
+ * title row would just sandwich that title between two identical header
+ * rows, and scrolling into Explore or Control still needs its own copy of
+ * the header or the row loses meaning. Column widths, which a lone
+ * `<thead>` row would otherwise have carried for `table-layout: fixed`,
+ * come from the `<colgroup>` below instead.
  */
 export default function ComponentTable() {
   // MDX registers its own anchors for Docusaurus's broken-anchor check; a
@@ -115,15 +119,15 @@ export default function ComponentTable() {
     <section className="ProductsTable" aria-label="Overture's components">
       <div className="container">
         <table className="ProductsTable__table">
-          <thead>
-            <tr>
-              {COLUMN_HEADERS.map((label) => (
-                <th key={label} scope="col">
-                  {label}
-                </th>
-              ))}
-            </tr>
-          </thead>
+          {/* Carries the column widths `table-layout: fixed` needs, now that
+              no `<thead>` row provides them (see the note on the component
+              above). */}
+          <colgroup>
+            <col />
+            <col />
+            <col />
+            <col />
+          </colgroup>
 
           {componentGroups.map((groupId) => {
             const group = groups.find((candidate) => candidate.id === groupId)!;
@@ -153,10 +157,11 @@ export default function ComponentTable() {
                   </th>
                 </tr>
 
-                {/* Repeats the real `<thead>` row's words at the top of every
-                    group; see the note on the component above. `th scope="col"`
-                    here too, since these are column headers for the rows below
-                    them and not row headers. */}
+                {/* The table's only column header row, repeated at the top
+                    of every group (see the note on the component above),
+                    Collect included. `th scope="col"` here too, since these
+                    are column headers for the rows below them and not row
+                    headers. */}
                 <tr className="ProductsTable__columnHeader">
                   {COLUMN_HEADERS.map((label) => (
                     <th key={label} scope="col">
