@@ -317,11 +317,12 @@ const config: Config = {
 
   onBrokenLinks: "throw",
 
-  // Read by useIsMarketingSite, which is what the swizzled Navbar and Footer
-  // use to pick which site's chrome to render. This is the only place the
-  // build mode reaches the browser bundle.
+  // Build-time values passed through to the browser bundle: `site` picks the
+  // chrome (useIsMarketingSite), `deployContext` is Netlify's CONTEXT var
+  // (used by MatomoTracking to skip previews/branch deploys).
   customFields: {
     site: isMarketing ? "marketing" : "docs",
+    deployContext: process.env.CONTEXT ?? null,
   },
 
   // `static/` is shared. The second directory is what each host owns on its
