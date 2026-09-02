@@ -135,15 +135,21 @@ export type IconProps = {
   size?: number | string;
   className?: string;
   style?: React.CSSProperties;
+  /**
+   * Opt-in, not the default: an icon in a hero or a navbar is on the critical
+   * path, and deferring it there costs more than the request saves.
+   */
+  loading?: "lazy" | "eager";
 };
 
-export function Icon({ alt, img, size, className, style }: IconProps) {
+export function Icon({ alt, img, size, className, style, loading }: IconProps) {
   return (
     <img
       alt={alt}
       className={`${className ? className : ""} Icon`}
       src={icons[img]}
       style={{ width: size, height: "auto", ...style }}
+      loading={loading}
     />
   );
 }

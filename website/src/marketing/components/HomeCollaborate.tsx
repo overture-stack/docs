@@ -126,6 +126,7 @@ export default function HomeCollaborate() {
                 img={value.icon}
                 alt=""
                 size="44px"
+                loading="lazy"
               />
               <span className="HomeCollaborate__valueName">{value.name}</span>
               <span className="HomeCollaborate__valueText">{value.text}</span>

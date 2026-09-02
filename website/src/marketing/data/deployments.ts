@@ -21,6 +21,9 @@ import { platforms } from "./platforms";
  */
 export const DEPLOYMENTS_ANCHOR = "platforms";
 
+/** The id on /impact/'s Collaborations heading, the table's other half. */
+export const COLLABORATIONS_ANCHOR = "collaborations";
+
 /** A source citation: what the reader is about to open, not the bare URL. */
 export type DeploymentLink = { label: string; href: string };
 
@@ -50,16 +53,28 @@ export type DeploymentRow = {
   /** Absolute path into static/. Drives /impact/'s hover preview; most rows have none. */
   screenshot?: string;
   links: DeploymentLink[];
+  /**
+   * Which of /impact/'s two tables the row renders in. Not inferred from
+   * which array the row came from: the Drug Discovery Portal is tier-1 data
+   * (`platforms`, "we build and run it") but reads as a collaboration
+   * alongside AGARI and CQDG rather than as a deployment alongside its six
+   * siblings, on the developer's instruction, 2026-09-02.
+   */
+  table: "deployments" | "collaborations";
 };
 
 /**
- * One table, two kinds of row: previously two separate card grids ("other
- * people chose this" vs. "we built seven things"), which made a reader
- * find the distinction rather than see it.
+ * One array, two tables: previously two separate card grids ("other people
+ * chose this" vs. "we built seven things"), then one merged table, split
+ * again 2026-09-02 into Deployments and Collaborations — see `table` above
+ * for what decides which table a row renders in. Kept as one array (rather
+ * than two exports) because `usedBy` below and /impact/'s highlight state
+ * both need to search every row regardless of which table it renders in.
  *
  * Sorted by launch year, most recent first, undated at the foot — the only
- * thing deciding order now. The Led by column names the institution behind
- * every row instead (AGARI is Africa CDC's, CQDG is Ferlab's).
+ * thing deciding order within a table now. The Led by column names the
+ * institution behind every row instead (AGARI is Africa CDC's, CQDG is
+ * Ferlab's).
  *
  * `Number()` on the year, not a string compare, so a four-digit year sorts
  * numerically. Ties hold source order (`Array.prototype.sort` is stable).
@@ -78,6 +93,7 @@ export const deploymentRows: DeploymentRow[] = [
       summary: adopter.body,
       runs: componentUsage[adopter.id] ?? [],
       links: adopter.sources,
+      table: "collaborations",
     }),
   ),
   ...platforms.map((platform): DeploymentRow => {
@@ -97,6 +113,7 @@ export const deploymentRows: DeploymentRow[] = [
       runs: componentUsage[platform.id] ?? [],
       screenshot: platform.screenshot,
       links,
+      table: platform.id === "drugDiscovery" ? "collaborations" : "deployments",
     };
   }),
 ].sort((a, b) => {

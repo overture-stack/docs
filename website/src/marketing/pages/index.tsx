@@ -10,43 +10,6 @@ import LogoCarousel from "../components/LogoCarousel";
 import { ComponentHighlightProvider } from "../context/ComponentHighlightContext";
 import { H1, P1 } from "../components/Typography";
 
-/**
- * The marketing home page. One job: get each of the three audiences to the
- * right second page inside one scroll.
- *
- * Four bands under the hero group, each answering a different question, in
- * the order a visitor asks them:
- *
- *   1. **What can I do with this?** `HomeCapabilities`. It replaced a band that
- *      led with a platform's name, which answered "who uses this" instead. Same
- *      evidence, inverted: the capability is the heading, the platform proves it.
- *   2. **Who do I talk to?** `HomeCollaborate`. What to contact us about and how
- *      to do it.
- *   3. **Where do I read?** `HomeDocs`, one column per hands-on journey.
- *   4. **Can I just run it?** `HomeQuickstart`, which is where the hero's first
- *      button lands.
- *
- * The first two have swapped places twice and are now back to capabilities
- * first: the hero says what Overture is and the carousel says who runs it, so
- * the next thing a visitor asks is what it does, not who we are.
- * `HomeCollaborate` reads as the staffed route offered just ahead of the two
- * self-serve ones below it.
- *
- * The background colours have never moved with them. The band right under the
- * carousel is white and the one after it is grey, whichever content is in them,
- * so the page's colour rhythm and its floating cubes are unchanged by either
- * swap and only the content order is: pages/_home.scss keeps `grey-bg` and
- * `--card-tile-bg` on the slot rather than on the band, which is why a swap here
- * is two edits there and not a repaint.
- *
- * No "Publicly funded, openly built" band any more: its one substantive claim
- * is now a paragraph inside `HomeCollaborate`, and its three links are the row
- * at that band's foot. It was a second ending in front of the quickstart.
- *
- * No funder logos and no labelled Collect / Explore / Control diagram: each
- * section is written to read correctly without its artwork rather than to
- * hold a gap open.
- */
 export default function HomePage() {
   return (
     <MarketingPage
@@ -62,10 +25,10 @@ export default function HomePage() {
         <div className="Hero">
           <div className="container">
             <section className="Hero__section">
-              <H1>Connecting research through shared data.</H1>
+              <H1>Build. Deploy. Discover.</H1>
               <P1>
-                Overture is a collection of open-source software used for
-                building platforms to store, organize and explore research data.
+                Open-source software for building platforms to collect,
+                discover, and reuse research data.
               </P1>
               <div className="Hero__small-buttons-container">
                 {/* Points at the quickstart at the foot of this page, not out

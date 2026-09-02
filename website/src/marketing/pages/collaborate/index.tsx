@@ -8,28 +8,6 @@ import { H2, P1 } from "../../components/Typography";
 import { offers } from "../../data/collaboration";
 import { EMAIL_LINK } from "../../constants/externalLinks";
 
-/**
- * /collaborate/, which replaced /services/.
- *
- * One change from the page it replaces: academic partnership leads, because
- * it is the highest-value ask. It used to be third, under technical support
- * and consulting.
- *
- * Two things were built here and then removed on request, and both eventually
- * landed somewhere else. The named engagement record ("Who we have worked
- * with") stayed gone from this page and is now a block inside the home page's
- * collaborate band, under the figure it used to open with. The closing
- * "Get in touch" section with
- * its own email button also went, on the reasoning that the footer's Contact
- * link already routes to the same address — but each offer without its own
- * self-serve route (Academic partnership, Consulting) has since gained its
- * own "Email us" button, so the CTA is back, just per-offer instead of once
- * at the foot of the page. Technical support keeps its own self-serve link to
- * the community forum instead, since that one has a real free alternative to
- * emailing.
- *
- * "Services" read commercial for a not-for-profit. The offers did not change.
- */
 export default function CollaboratePage() {
   // Docusaurus only knows about anchors something registers, and a plain React
   // page registers none on its own, so every `id` on this page reads as broken
@@ -89,10 +67,14 @@ export default function CollaboratePage() {
                   index % 2 === 1 ? "ow:lg:order-last" : ""
                 }`}
               >
+                {/* Only the first offer's illustration is in the opening
+                    viewport, and deferring that one would delay the largest
+                    thing painted there. */}
                 <img
                   src={offer.image}
                   alt=""
                   className="ow:h-full ow:w-full ow:object-contain"
+                  loading={index === 0 ? undefined : "lazy"}
                 />
               </div>
 

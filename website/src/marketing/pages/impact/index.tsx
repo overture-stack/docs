@@ -12,8 +12,10 @@ import {
 import { PRODUCTS_PATH } from "../../constants/pages";
 import { componentIcon, componentLabel } from "../../data/components";
 import {
+  COLLABORATIONS_ANCHOR,
   DEPLOYMENTS_ANCHOR,
   deploymentRows,
+  type DeploymentRow,
 } from "../../data/deployments";
 import {
   DOCKER_HUB_LINK,
@@ -30,71 +32,13 @@ import publications from "../../data/publications";
 import { floatingTooltipPosition } from "../../utils/floatingTooltip";
 import { hoverIntentHandlers } from "../../utils/hoverIntent";
 
-/**
- * The /impact/ hub, in three sections: who runs Overture, what has been
- * published about it, and how far the code travels.
- *
- *   - **Deployments** (`#platforms`): one table of every deployment there
- *     is, ours and other people's — consolidated from two separate card
- *     grids, since one table reads faster than two.
- *   - **Publications** (`#publications`), five papers.
- *   - **Distribution and release history** (`#distribution`), the
- *     registries and the release table.
- *
- * **Every claim on this page links to the source it came from**, and that is the
- * rule the sections are built to rather than a finishing touch. The one
- * exception is our own documentation traffic, which is our analytics and cannot
- * be checked from outside; the page says so in the sentence that gives the
- * figure rather than letting it sit among the linked ones.
- *
- * Rows are ordered by launch year, most recent first, undated at the foot:
- * see the sort in `data/deployments.ts`, which also owns the type and
- * row-building now — moved out of this file so /products/'s "Used by"
- * column (ComponentTable.tsx) can read the same rows and never link to one
- * that isn't here. Replaced an order that put other people's deployments
- * above ours with an `Independent` badge; the Led by column names the
- * institution behind every row instead.
- *
- * Every row carries its own anchor id, `Platform.id` and the same slug
- * case studies have used since the Gatsby site, so `/impact/#icgcargo` and
- * the 301 from `/case-studies/#icgcargo` still land — on a table row now,
- * not a write-up. `data/caseStudies.tsx` and `components/CaseStudy` had no
- * caller left once the write-up sections were removed, and were deleted.
- *
- * All seven platform rows link to a live portal as of 2026-08-12, when the
- * developer confirmed OHCRN's and PCGL's URLs, except the Drug Discovery
- * Portal, whose access is internal to one group.
- *
- * The lineage tier is still cut from this page; `lineage` stays in
- * `data/platforms.ts` because the home page logo carousel reads it. `adopters`
- * is gone from that file entirely, replaced by `data/dependents.ts`, which is
- * where the AGARI and CQDG rows come from.
- */
-
-/**
- * The aggregate band, three figures.
- *
- * Container pulls and package downloads are gone from here: both count
- * activity (`npm install` runs per CI job, not per person) rather than
- * adoption, and get a fuller treatment in `#distribution`. The
- * external-projects count is gone too: at two organizations, a bare
- * number overstated a claim `#beyond` makes better with names and
- * sources. Every figure that remains carries its source in the label — a
- * figure a reader can't check is one they have to trust, and this page's
- * whole argument is that they don't have to.
- *
- * `key` is its own field since every label is now an element, not a
- * string. Figures come from data/metrics.ts without exception; nothing
- * here is typed in, which is the rule that stopped the last set going stale.
- */
 const aggregates: { key: string; figure: string; label: React.ReactNode }[] = [
   {
     key: "platforms",
     figure: metrics.activePlatforms.value,
     label: (
       <>
-        <Link to={`#${DEPLOYMENTS_ANCHOR}`}>platforms in production</Link>{" "}
-        today
+        <Link to={`#${DEPLOYMENTS_ANCHOR}`}>platforms in production</Link> today
       </>
     ),
   },
@@ -202,6 +146,121 @@ export default function ImpactPage() {
         ])
       : null;
 
+  // Split once per render rather than exported pre-split from deployments.ts:
+  // `usedBy` and `highlightedRowIds` above both need every row regardless of
+  // table, so the single source array stays the module's export and only
+  // this page, which actually renders two tables, divides it.
+  const deploymentTableRows = deploymentRows.filter(
+    (row) => row.table === "deployments",
+  );
+  const collaborationTableRows = deploymentRows.filter(
+    (row) => row.table === "collaborations",
+  );
+
+  // One row renderer for both tables: same six columns, same highlight and
+  // hover-preview behaviour, whichever table a row ends up in.
+  const renderDeploymentRow = (row: DeploymentRow) => (
+    <tr
+      key={row.id}
+      id={row.anchorId}
+      className={clsx(
+        "ow:scroll-mt-20",
+        highlightedRowIds?.has(row.anchorId) && "ImpactTable__highlight",
+      )}
+    >
+      <th scope="row">
+        {/* The name is the deployment: hovering it previews the
+            running portal where there is a shot of one, and
+            clicking it opens the thing itself. It was a `span`
+            with nowhere to go until 2026-08-12, which made the one
+            element on the row that shows you the portal the one
+            element that could not take you to it. Rows with no
+            `href` (the internal one) stay plain text. */}
+        {row.href ? (
+          <Link
+            to={row.href}
+            className="ImpactTable__nameTrigger"
+            aria-describedby={
+              row.screenshot ? "ImpactTable-tooltip" : undefined
+            }
+            {...(row.screenshot
+              ? hoverIntentHandlers(
+                  showTooltip("shot", row.screenshot),
+                  hideTooltip,
+                )
+              : {})}
+          >
+            {row.name}
+          </Link>
+        ) : (
+          row.name
+        )}
+      </th>
+      <td>{row.summary}</td>
+      <td>
+        {[row.institution, row.where].filter(Boolean).join(" · ") || "—"}
+      </td>
+      {/* Icons rather than the comma-joined list of names this
+          cell used to hold. Seven functional names with their
+          codenames beside them ran to five lines in a column this
+          narrow and was the widest thing in the table; the same
+          seven as artwork is one line. The name is not lost, it
+          moves to the hover, and each icon links to its component
+          on /products/, which the words never did. Same artwork the
+          home hero's diagram and the products table use, by id, so
+          no icon here can drift from the component it names.
+
+          The link also carries `?highlight={componentId}`, the
+          mirror of this table's own `used-by` param (see above):
+          ComponentTable.tsx reads it back client-side and gives
+          the matching row the same persistent highlight this
+          page's `ImpactTable__highlight` gives a row lit from
+          /products/, rather than only the brief `:target` flash
+          an anchor jump gets on its own. */}
+      <td>
+        {row.runs.length > 0 ? (
+          <ul className="ImpactTable__runs">
+            {row.runs.map((componentId) => (
+              <li key={componentId}>
+                <Link
+                  to={`${PRODUCTS_PATH}?highlight=${componentId}#${componentId}`}
+                  className={clsx(
+                    "ImpactTable__runsLink",
+                    componentId === highlightedComponent &&
+                      "ImpactTable__runsLink--highlighted",
+                  )}
+                  // The icon is decorative and the visible label
+                  // only appears on hover, so the accessible name
+                  // has to be the whole of it here.
+                  aria-label={componentLabel(componentId)}
+                  aria-describedby="ImpactTable-tooltip"
+                  {...hoverIntentHandlers(
+                    showTooltip("label", componentLabel(componentId)),
+                    hideTooltip,
+                  )}
+                >
+                  <img src={componentIcon(componentId)} alt="" loading="lazy" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          "—"
+        )}
+      </td>
+      <td>{row.since ? `Launched ${row.since}` : "—"}</td>
+      <td>
+        <ul className="ImpactTable__linkList">
+          {row.links.map((link) => (
+            <li key={link.href}>
+              <Link to={link.href}>{link.label}</Link>
+            </li>
+          ))}
+        </ul>
+      </td>
+    </tr>
+  );
+
   // Clears the highlight on a click outside every highlighted row's own
   // bounds, rather than fading it on a timer: with several rows lit at once
   // (see above), a reader scrolling down the table to find all of them could
@@ -261,11 +320,15 @@ export default function ImpactPage() {
         </div>
       </section>
 
-      {/* One table, both tiers: the platforms we build and run, and the
-          organizations running Overture with no involvement from us. Every row
-          carries its own anchor id, since there are no write-up sections below
-          for those ids to live on any more; see the note at the top of this
-          file. */}
+      {/* Two tables, split 2026-09-02 on the developer's instruction: the
+          platforms the team builds and runs, and — separately — the
+          collaborations, where Overture's part is smaller (one lab's own
+          portal, or no involvement at all). One merged table stood here
+          until this split; see `table` on `DeploymentRow` in
+          data/deployments.ts for what decides which table a row is in.
+          Every row still carries its own anchor id, since there are no
+          write-up sections below for those ids to live on any more; see the
+          note at the top of this file. */}
       {/* A heading and a lede stood here until 2026-08-12, then just a lede
           until the developer had the heading restored the same day to match
           the yellow-bar-under-heading pattern the Publications and
@@ -293,125 +356,51 @@ export default function ImpactPage() {
                 <th scope="col">Link</th>
               </tr>
             </thead>
-            <tbody>
-              {deploymentRows.map((row) => (
-                <tr
-                  key={row.id}
-                  id={row.anchorId}
-                  className={clsx(
-                    "ow:scroll-mt-20",
-                    highlightedRowIds?.has(row.anchorId) &&
-                      "ImpactTable__highlight",
-                  )}
-                >
-                  <th scope="row">
-                    {/* The name is the deployment: hovering it previews the
-                        running portal where there is a shot of one, and
-                        clicking it opens the thing itself. It was a `span`
-                        with nowhere to go until 2026-08-12, which made the one
-                        element on the row that shows you the portal the one
-                        element that could not take you to it. Rows with no
-                        `href` (the internal one) stay plain text. */}
-                    {row.href ? (
-                      <Link
-                        to={row.href}
-                        className="ImpactTable__nameTrigger"
-                        aria-describedby={
-                          row.screenshot ? "ImpactTable-tooltip" : undefined
-                        }
-                        {...(row.screenshot
-                          ? hoverIntentHandlers(
-                              showTooltip("shot", row.screenshot),
-                              hideTooltip,
-                            )
-                          : {})}
-                      >
-                        {row.name}
-                      </Link>
-                    ) : (
-                      row.name
-                    )}
-                  </th>
-                  <td>{row.summary}</td>
-                  <td>
-                    {[row.institution, row.where].filter(Boolean).join(" · ") ||
-                      "—"}
-                  </td>
-                  {/* Icons rather than the comma-joined list of names this
-                      cell used to hold. Seven functional names with their
-                      codenames beside them ran to five lines in a column this
-                      narrow and was the widest thing in the table; the same
-                      seven as artwork is one line. The name is not lost, it
-                      moves to the hover, and each icon links to its component
-                      on /products/, which the words never did. Same artwork the
-                      home hero's diagram and the products table use, by id, so
-                      no icon here can drift from the component it names.
+            <tbody>{deploymentTableRows.map(renderDeploymentRow)}</tbody>
+          </table>
+        </div>
+      </section>
 
-                      The link also carries `?highlight={componentId}`, the
-                      mirror of this table's own `used-by` param (see above):
-                      ComponentTable.tsx reads it back client-side and gives
-                      the matching row the same persistent highlight this
-                      page's `ImpactTable__highlight` gives a row lit from
-                      /products/, rather than only the brief `:target` flash
-                      an anchor jump gets on its own. */}
-                  <td>
-                    {row.runs.length > 0 ? (
-                      <ul className="ImpactTable__runs">
-                        {row.runs.map((componentId) => (
-                          <li key={componentId}>
-                            <Link
-                              to={`${PRODUCTS_PATH}?highlight=${componentId}#${componentId}`}
-                              className={clsx(
-                                "ImpactTable__runsLink",
-                                componentId === highlightedComponent &&
-                                  "ImpactTable__runsLink--highlighted",
-                              )}
-                              // The icon is decorative and the visible label
-                              // only appears on hover, so the accessible name
-                              // has to be the whole of it here.
-                              aria-label={componentLabel(componentId)}
-                              aria-describedby="ImpactTable-tooltip"
-                              {...hoverIntentHandlers(
-                                showTooltip(
-                                  "label",
-                                  componentLabel(componentId),
-                                ),
-                                hideTooltip,
-                              )}
-                            >
-                              <img
-                                src={componentIcon(componentId)}
-                                alt=""
-                                loading="lazy"
-                              />
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      "—"
-                    )}
-                  </td>
-                  <td>{row.since ? `Launched ${row.since}` : "—"}</td>
-                  <td>
-                    <ul className="ImpactTable__linkList">
-                      {row.links.map((link) => (
-                        <li key={link.href}>
-                          <Link to={link.href}>{link.label}</Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+      {/* The other half of the split above: AGARI and CQDG, who build on
+          Overture with no involvement from us, and the Drug Discovery
+          Portal, OICR's own but one lab's rather than a platform serving a
+          wider community. Same table shape and behaviour as Deployments
+          above — `ImpactTable--deployments` and `renderDeploymentRow` are
+          shared rather than duplicated, since both tables are the same six
+          columns with the same highlight and hover-preview behaviour. */}
+      <section
+        className="ImpactCollaborations ow:scroll-mt-20"
+        id={COLLABORATIONS_ANCHOR}
+        aria-labelledby="collaborations-heading"
+      >
+        <div className="container">
+          <H3 id="collaborations-heading" className="ow:text-left">
+            Collaborations
+          </H3>
+          <div className="yellow-bar ow:my-6" />
+
+          <table className="ImpactTable ImpactTable--deployments">
+            <thead>
+              <tr>
+                <th scope="col">Collaboration</th>
+                <th scope="col">What it is</th>
+                <th scope="col">Led by</th>
+                <th scope="col">Runs</th>
+                <th scope="col">Live since</th>
+                <th scope="col">Link</th>
+              </tr>
+            </thead>
+            <tbody>{collaborationTableRows.map(renderDeploymentRow)}</tbody>
           </table>
         </div>
 
         {/* One tooltip element for both kinds, sized to what it is about to
             hold: a portal screenshot needs a box, a component's name needs a
             line, and passing the screenshot's dimensions for a label would flip
-            it to the wrong side of a trigger near the foot of the window. */}
+            it to the wrong side of a trigger near the foot of the window.
+            Lives here rather than in either table individually since it is
+            `position: fixed` (see _impact.scss) and shared React state drives
+            it regardless of which table's row or icon triggered it. */}
         {tooltip && (
           <div
             className={`ImpactTable__tooltip ImpactTable__tooltip--${tooltip.kind}`}
@@ -509,6 +498,18 @@ export default function ImpactPage() {
           </H3>
           <div className="yellow-bar ow:my-6" />
 
+          {/* The three figures below (`npmDownloads`, `containerPulls`,
+              `releaseTags`) all carry a `+` in data/metrics.ts: every one is
+              a live counter that only grows, so the number printed here is a
+              floor, not a snapshot total. This note gives the one collection
+              date rather than the three different `verified` dates
+              metrics.ts records for them (2026-08-09, -11 and -13), on the
+              developer's instruction. */}
+          <p className="ImpactBeyond__note">
+            npm downloads, container pulls and release counts on this page
+            were collected August 10, 2026 and only grow from there.
+          </p>
+
           <div className="ImpactDistribution__figures">
             <div>
               <H3 className="ImpactBeyond__subhead" id="packages-heading">
@@ -540,7 +541,10 @@ export default function ImpactPage() {
             </div>
 
             <div>
-              <H3 className="ImpactBeyond__subhead" id="container-images-heading">
+              <H3
+                className="ImpactBeyond__subhead"
+                id="container-images-heading"
+              >
                 Container images
               </H3>
               <p className="ImpactDistribution__figure">
@@ -552,8 +556,8 @@ export default function ImpactPage() {
                 {containerRegistries
                   .map((image) => `${image.label} at ${image.pulls}`)
                   .join(", ")}
-                . Docker Hub is the historical registry. Current distribution
-                is the{" "}
+                . Docker Hub is the historical registry. Current distribution is
+                the{" "}
                 <Link to={GHCR_PACKAGES_LINK}>GitHub Container Registry</Link>,
                 which publishes no pull count but carries{" "}
                 {ghcrTags.map((image, index) => (
@@ -576,15 +580,14 @@ export default function ImpactPage() {
             {metrics.releaseTags.value}
           </p>
           <p className="ImpactDistribution__caption">
-            {metrics.releaseTags.value} published releases in total:
-            npm packages, container images, and merged release builds where
-            that is a component's own mechanism, counted from each one's
-            registry rather than from git tags, which this org uses too
-            inconsistently to total on their own, spanning{" "}
-            {metrics.stableReleaseHistory.value} of continuous release
-            activity. All seven components are{" "}
-            <Link to={OVERTURE_GITHUB_LINK}>developed in the open</Link>{" "}
-            under an OSI-approved AGPL-3.0 licence.
+            {metrics.releaseTags.value} published releases in total: npm
+            packages, container images, and merged release builds where that is
+            a component's own mechanism, counted from each one's registry rather
+            than from git tags, which this org uses too inconsistently to total
+            on their own, spanning {metrics.stableReleaseHistory.value} of
+            continuous release activity. All seven components are{" "}
+            <Link to={OVERTURE_GITHUB_LINK}>developed in the open</Link> under
+            an OSI-approved AGPL-3.0 licence.
           </p>
 
           <table className="ImpactTable">

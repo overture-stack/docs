@@ -190,6 +190,7 @@ export default function ComponentTable() {
                             className="ProductsTable__icon"
                             src={componentIcon(component.id)}
                             alt=""
+                            loading="lazy"
                           />
                           <span className="ProductsTable__name">
                             <span className="ProductsTable__nameFunctional">

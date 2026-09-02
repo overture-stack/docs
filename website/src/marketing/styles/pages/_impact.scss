@@ -70,9 +70,25 @@
   // The deployments section runs close under the hero and figures strip,
   // the same way `/products/`'s component table does (see
   // `.ProductsTable .container`): a full section's top padding would read
-  // as a gap. Top side only, so `#publications` still starts as its own
-  // band.
+  // as a gap. Top side only at first, so `#publications` still starts as
+  // its own band; the bottom side joined it 2026-09-02, tightened against
+  // Collaborations' own tightened top side below — Deployments and
+  // Collaborations are twin tables, split from one that day (see
+  // impact/index.tsx), and read as one block rather than two sections'
+  // worth of gap between them.
   .ImpactDeployments .container {
+    padding-top: 32px;
+    padding-bottom: 32px;
+
+    @include breakpoint(desktop-up) {
+      padding-top: 1.5em;
+      padding-bottom: 1.5em;
+    }
+  }
+
+  // Collaborations' facing (top) side only — its bottom padding stays
+  // full-size, so `#publications` still starts as its own band.
+  .ImpactCollaborations .container {
     padding-top: 32px;
 
     @include breakpoint(desktop-up) {
@@ -326,13 +342,14 @@
       }
     }
 
-    // The consolidated deployments table (`#platforms`). An `&__badge` rule
-    // stood here, an outlined pill reading `Independent` on the two rows that
-    // are not ours, which was how the table carried a distinction the two card
-    // grids before it had carried by position. Both the badge and the row order
-    // that put those rows first went on 2026-08-12, on the developer's
-    // instruction; the Led by column names the institution behind every row and
-    // is what carries it now.
+    // The Deployments (`#platforms`) and Collaborations (`#collaborations`)
+    // tables. One merged table until 2026-09-02; before that, an `&__badge`
+    // rule stood here, an outlined pill reading `Independent` on the two rows
+    // that aren't ours, which was how the table carried a distinction the
+    // two card grids before it had carried by position. Both the badge and
+    // the row order that put those rows first went on 2026-08-12, on the
+    // developer's instruction; the Led by column names the institution
+    // behind every row and is what carries it now.
 
     // A row's name: a real link to the deployment, taking the site's link
     // colour and a solid underline like every other link in the table.
@@ -439,12 +456,15 @@
   }
 
   // `.ImpactTable`'s default `table-layout: auto` suits the release
-  // history table (five columns of similar-length values), but this
-  // table's six columns aren't similar — AGARI and CQDG's "What it is"
-  // cells run to eight sentences next to a one-line summary, and `auto`
-  // layout squeezed that column to a sliver, wrapping AGARI's paragraph
-  // to fifty-odd lines. Fixed widths, keyed to position, hold each column
-  // to a reasonable measure regardless of content.
+  // history table (five columns of similar-length values), but neither the
+  // Deployments nor the Collaborations table's six columns are similar —
+  // AGARI and CQDG's "What it is" cells run to eight sentences next to a
+  // one-line summary, and `auto` layout squeezed that column to a sliver,
+  // wrapping AGARI's paragraph to fifty-odd lines. Fixed widths, keyed to
+  // position, hold each column to a reasonable measure regardless of
+  // content. Shared by both tables (impact/index.tsx), not renamed for the
+  // split: the columns, and the reason they need fixed widths, are the same
+  // in both.
   .ImpactTable--deployments {
     table-layout: fixed;
 

@@ -3,13 +3,14 @@
 // Not a citation page: `06-citing-us.md` on the documentation site is
 // canonical for that, and the footer links it. What was missing — the plain
 // statement that the platform has been through peer review at all — lived
-// nowhere on this site after /impact/publications/ was retired. Five
+// nowhere on this site after /impact/publications/ was retired. Seven
 // entries is a section; not worth a page again.
 //
-// Two of the five are third-party work, not ours, deliberately: an
-// independent account of a platform built on Arranger, and a review citing
-// Overture among data portal platforms, are evidence our own platform
-// paper can't be.
+// Four of the seven are third-party work, not ours, deliberately: an
+// independent account of a platform built on Arranger, a review citing
+// Overture among data portal platforms, and two papers in unrelated fields
+// (agricultural phenomics, genomic privacy architecture) that cite the
+// platform paper itself, are evidence our own platform paper can't be.
 //
 // The platform paper's link lives in `GIGASCIENCE_PAPER_LINK`
 // (constants/externalLinks.ts) instead, since the home page's "What we do"
@@ -88,9 +89,33 @@ export const publications: Publication[] = [
       "A third-party review of the field that cites Overture among the data portal platforms it surveys.",
   },
   {
+    id: "fairphenomics",
+    authors: "Callwood JB, Celebioglu B, Gladman N, et al.",
+    title:
+      "The need for robust, FAIR phenomic databases supporting agricultural efficiency and resiliency",
+    venue: "Science and Public Policy",
+    year: "2025",
+    href: "https://doi.org/10.1093/scipol/scaf039",
+    doi: "10.1093/scipol/scaf039",
+    relevance:
+      "A policy paper on FAIR agricultural phenomic data infrastructure that cites the platform paper.",
+  },
+  {
+    id: "genomicprivacy",
+    authors: "Xiong Y, Mao Y, Yu M, et al.",
+    title:
+      "A Distributed Architecture for Privacy-Preserving Management, Authorization, and Secure Update of Genomic Data",
+    venue: "Proc. 2025 Intl. Conf. on Health Informatization and Data Analytics",
+    year: "2025",
+    href: "https://doi.org/10.1145/3759972.3760189",
+    doi: "10.1145/3759972.3760189",
+    relevance:
+      "A privacy-preserving genomic data architecture proposal that cites the platform paper.",
+  },
+  {
     // No DOI to link, listed and labelled anyway: evidence the components
     // here are still producing peer-reviewed work, a different claim from
-    // the four above it. Not offered as a citation; the page says so.
+    // the six above it. Not offered as a citation; the page says so.
     id: "dictionaryviewer",
     authors: "Shiell M, Ashraf S, Luc E, et al.",
     title:

@@ -33,9 +33,10 @@
 // no room to travel and would never move at all.
 //
 // z-index above `_layout.scss`'s `.navbar` (30) and above the home page's
-// floating cubes, which are `z-index: 0` on the sections they decorate. 200 is
-// Docusaurus' own `--ifm-z-index-fixed`, which is what its navbar uses on the
-// documentation routes, so the two navbars sit at the same level.
+// floating cubes, which are `z-index: 10` on the sections they decorate
+// (pages/_home.scss). 200 is Docusaurus' own `--ifm-z-index-fixed`, which is
+// what its navbar uses on the documentation routes, so the two navbars sit
+// at the same level.
 .MarketingNavbar {
   position: sticky;
   top: 0;

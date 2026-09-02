@@ -71,6 +71,7 @@ export default function HomeQuickstart() {
             src={PORTAL_SCREENSHOT}
             alt=""
             className="HomeQuickstart__screenshot"
+            loading="lazy"
           />
         </div>
 
@@ -116,6 +117,7 @@ export default function HomeQuickstart() {
                         img="cog"
                         size={26}
                         className="HomeQuickstart__cog"
+                        loading="lazy"
                       />
                       <dl className="HomeQuickstart__settingsList">
                         {step.settings.map((setting) => (

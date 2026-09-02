@@ -4,6 +4,7 @@
 # Production
 /website/build
 /website/build-marketing
+/website/build-docs
 
 # Generated files
 /website/.docusaurus

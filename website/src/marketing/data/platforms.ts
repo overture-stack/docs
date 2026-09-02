@@ -64,7 +64,7 @@ export type Platform = {
    * cites a platform can show it directly: the home page's capability cards
    * do exactly that.
    *
-   * Five platforms carry one, under the historical filename `chart.png`.
+   * Five platforms carry one, under the historical filename stem `chart`.
    */
   screenshot?: string;
 };
@@ -72,13 +72,14 @@ export type Platform = {
 const LOGOS = "/img/marketing/case-studies-data";
 
 /**
- * Tier 1: platforms the team builds and runs, seven total (matching
- * `metrics.activePlatforms`). The OICR Drug Discovery Portal is included
- * specifically because it's one lab's platform, not a consortium's — every
- * other entry is a consortium or a province, and omitting it would read as
- * though these components only pay off at that scale. Its card and the home
- * page capability that cites it both say access is internal, not published
- * as though a reader could open it.
+ * Tier 1: platforms the team builds and runs, seven listed but six counted
+ * in `metrics.activePlatforms` — the OICR Drug Discovery Portal is still
+ * pre-release (no `launched` date) and isn't active yet. It's kept on this
+ * list anyway, specifically because it's one lab's platform, not a
+ * consortium's — every other entry is a consortium or a province, and
+ * omitting it would read as though these components only pay off at that
+ * scale. Its card and the home page capability that cites it both say
+ * access is internal, not published as though a reader could open it.
  */
 export const platforms: Platform[] = [
   {
@@ -90,8 +91,8 @@ export const platforms: Platform[] = [
     summary: `Genomic and clinical data for ${metrics.icgcArgoParticipants.value} participants, harmonized across ${metrics.icgcArgoPrograms.value} programs in ${metrics.icgcArgoCountries.value} countries.`,
     href: `${IMPACT_PATH}#icgcargo`,
     portal: ICGC_ARGO_PORTAL_LINK,
-    logo: `${LOGOS}/icgcargo/logo.png`,
-    screenshot: `${LOGOS}/icgcargo/chart.png`,
+    logo: `${LOGOS}/icgcargo/logo.webp`,
+    screenshot: `${LOGOS}/icgcargo/chart.webp`,
   },
   {
     id: "virusseq",
@@ -102,8 +103,8 @@ export const platforms: Platform[] = [
     summary: `${metrics.imicroseqPathogenGenomes.value} pathogen genomes and environmental wastewater surveillance, open access, launched as the Canadian VirusSeq Data Portal.`,
     href: `${IMPACT_PATH}#virusseq`,
     portal: IMICROSEQ_PORTAL_LINK,
-    logo: `${LOGOS}/virusseq/logo.png`,
-    screenshot: `${LOGOS}/virusseq/chart.png`,
+    logo: `${LOGOS}/virusseq/logo.webp`,
+    screenshot: `${LOGOS}/virusseq/chart.webp`,
   },
   {
     id: "ihcc",
@@ -114,8 +115,8 @@ export const platforms: Platform[] = [
     summary: `The International Health Cohorts Consortium atlas: ${metrics.ihccCohorts.value} cohorts, most of them a hundred thousand participants or more.`,
     href: `${IMPACT_PATH}#ihcc`,
     portal: IHCC_PORTAL_LINK,
-    logo: `${LOGOS}/ihcc/logo.png`,
-    screenshot: `${LOGOS}/ihcc/chart.png`,
+    logo: `${LOGOS}/ihcc/logo.webp`,
+    screenshot: `${LOGOS}/ihcc/chart.webp`,
   },
   {
     id: "humanCancerModels",
@@ -126,8 +127,8 @@ export const platforms: Platform[] = [
     summary: `A searchable catalogue of ${metrics.hcmiCancerModels.value} unique cancer models with their genomic and clinical annotation.`,
     href: `${IMPACT_PATH}#humanCancerModels`,
     portal: HCMIS_PORTAL_LINK,
-    logo: `${LOGOS}/hcmis/logo.png`,
-    screenshot: `${LOGOS}/hcmis/chart.png`,
+    logo: `${LOGOS}/hcmis/logo.webp`,
+    screenshot: `${LOGOS}/hcmis/chart.webp`,
   },
   {
     id: "ohcrn",
@@ -138,7 +139,7 @@ export const platforms: Platform[] = [
     summary:
       "A provincial network linking hereditary cancer research data across Ontario institutions.",
     portal: OHCRN_PORTAL_LINK,
-    logo: `${LOGOS}/ohcrn/logo.png`,
+    logo: `${LOGOS}/ohcrn/logo.webp`,
   },
   {
     id: "pcgl",
@@ -149,7 +150,7 @@ export const platforms: Platform[] = [
     summary:
       "A federal genomic infrastructure initiative for Canadian genomic data, hosted at McGill University.",
     portal: PCGL_PORTAL_LINK,
-    logo: `${LOGOS}/pcgl/logo.png`,
+    logo: `${LOGOS}/pcgl/logo.webp`,
   },
   {
     // The one lab-scale platform on this list — why the home page's "run a
@@ -158,10 +159,10 @@ export const platforms: Platform[] = [
     // `logo`/`screenshot` either, unlike its six siblings, so its card
     // reads as text and it stays out of the home page logo carousel
     // (data/partnerLogos.ts names entries one by one, so nothing breaks by
-    // omission).
+    // omission). No `launched` either: it's still pre-release as of 2026,
+    // so there's no public launch date to state yet.
     id: "drugDiscovery",
     name: "OICR Drug Discovery Portal",
-    launched: metrics.ddpLaunch.value,
     institution: "OICR, a single research group",
     country: "Canada",
     summary: `One lab's own cancer genomics portal: ${metrics.ddpRecords.value} records across genes, mutations and protein interactions, mined for drug targets.`,
@@ -198,7 +199,7 @@ export const lineage: LineagePlatform[] = [
     summary:
       "The original International Cancer Genome Consortium portal, and where these components started.",
     link: ICGC_LINK,
-    logo: `${LOGOS}/icgc25k/logo.png`,
+    logo: `${LOGOS}/icgc25k/logo.webp`,
   },
   {
     id: "gdc",
@@ -214,6 +215,6 @@ export const lineage: LineagePlatform[] = [
     summary:
       "A pediatric cancer and birth defect discovery portal built on Overture components, no longer a platform the team runs.",
     link: KIDS_FIRST_LINK,
-    logo: `${LOGOS}/kidsfirst/logo.png`,
+    logo: `${LOGOS}/kidsfirst/logo.webp`,
   },
 ];

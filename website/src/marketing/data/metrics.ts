@@ -27,9 +27,9 @@ export type Metric = {
 const metrics = {
   // Platform-wide
   activePlatforms: {
-    value: "7+",
+    value: "6+",
     source: "OICR Genome Informatics program",
-    verified: "2026-08-07",
+    verified: "2026-09-02",
     note: "Platforms the team builds and runs, excluding lineage deployments such as Kids First.",
   },
   stableReleaseHistory: {
@@ -39,7 +39,7 @@ const metrics = {
     note: "Counted from Score's first tag, 2015-07-06, to the most recent release. Was published as `8+ years` until 2026-08-11, which was an understatement rather than a different measurement: nothing sourced said where the eight came from, and the git histories put it at eleven. Each component follows independent semantic versioning. This span still anchors on Score's git tag rather than a container, since no registry retains history that far back, a different question from `releaseTags` below, which counts confirmed publishes rather than the oldest surviving evidence of development.",
   },
   releaseTags: {
-    value: "310",
+    value: "310+",
     source: "Overture component registries (npm, GHCR, Docker Hub) and merged release-branch history",
     verified: "2026-08-13",
     note: "Confirmed published releases across the seven components: npm versions, container image tags, or a merged release-branch build where that is a component's actual mechanism, checked per component against its own registry rather than counted from git tags. Rebuilt 2026-08-13 from `675` (raw git tags): tagging turned out to be unreliable across this org in both directions, some components keep shipping containers for years after their last tag (Score, Maestro, Stage) while others' raw tag counts include junk markers, packaging-mirror tags, or a monorepo's still-prerelease sub-packages (Song, Arranger). 310 is lower than 675 because it counts what actually shipped, not every tag ever pushed; it is higher than GitHub's curated Releases pages, which undercount badly and would show none at all for Lectern and Lyric. data/distribution.ts holds the per-component breakdown and the reasoning specific to each.",
@@ -84,7 +84,7 @@ const metrics = {
     note: "Organizations outside OICR that have documented, in their own tender or commit history, that they build on an Overture component: AGARI (Africa CDC) and CQDG (Ferlab). Counted from data/dependents.ts. Narrowed from a wider list of ten repositories on 2026-08-12, on the developer's instruction, to the two with the clearest and most durable evidence.",
   },
   npmDownloads: {
-    value: "48,854",
+    value: "48,854+",
     source: "api.npmjs.org",
     verified: "2026-08-09",
     note: "Downloads across all thirteen @overture-stack packages in the twelve months to 2026-08-09. Verified against the registry API rather than the web UI. data/distribution.ts holds the per-package breakdown this totals.",
@@ -96,7 +96,7 @@ const metrics = {
     note: "Published packages under the @overture-stack scope.",
   },
   containerPulls: {
-    value: "611,411",
+    value: "611,411+",
     source: "Docker Hub",
     verified: "2026-08-11",
     note: "Cumulative pulls of the seven components' images on Docker Hub, led by Lectern, Song and Score. Docker Hub is the historical registry: current distribution is the GitHub Container Registry, which publishes no pull count, so this figure stops growing at the point distribution moved and understates total use rather than overstating it.",
@@ -134,11 +134,6 @@ const metrics = {
     note: "The earliest platform still running, so this is also `firstDeployment`.",
   },
   ohcrnLaunch: {
-    value: "2025",
-    source: "OICR Genome Informatics program",
-    verified: "2026-08-07",
-  },
-  ddpLaunch: {
     value: "2025",
     source: "OICR Genome Informatics program",
     verified: "2026-08-07",

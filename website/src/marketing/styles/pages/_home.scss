@@ -195,7 +195,12 @@
       content: "";
       display: block;
       position: absolute;
-      z-index: 0;
+      // Top layer within its own band: above its own `.container` (below)
+      // and every other in-flow element these sections draw. Still well
+      // under the sticky navs (`.navbar` at 30, `.MarketingNavbar` at 200,
+      // index.scss), which sit in the page's outer stacking context and
+      // must stay above this decoration while scrolling.
+      z-index: 10;
       pointer-events: none;
       background-repeat: no-repeat;
     }
@@ -225,16 +230,6 @@
   .HomeCapabilities,
   .HomeDocs {
     --card-tile-bg: #{$grey-2};
-  }
-
-  // The container has to sit above them: a cube in a gutter at a narrow desktop
-  // width overlaps the edge of the text column.
-  .HomeCapabilities > .container,
-  .HomeCollaborate > .container,
-  .HomeDocs > .container,
-  .HomeQuickstart .container {
-    position: relative;
-    z-index: 1;
   }
 
   // The cubes belong to the slots, not the bands: each is drawn to
@@ -270,13 +265,17 @@
     left: -14px;
   }
 
+  // `cube_teal_blue` sits here (swapped with `cube_maroon`, formerly in the
+  // `.HomeQuickstart__band` slot below) rather than in its own slot, to keep
+  // the cubes' left/right placement alternating down the page while
+  // honouring this asset's one constraint: its file clips its own right
+  // face (`x1: 1` above — see `cube-art`'s doc comment), so it only reads
+  // as finished flush against the page's right edge, never on the left.
   .HomeDocs::before {
     @extend %cube;
-    @include cube-art("cube_maroon", 104px, 101px, 0.091, 0.861, 0.234, 0.902);
-    // Two thirds in the band above: any lower and its bottom corner reaches the
-    // left edge of this band's heading.
+    @include cube-art("cube_teal_blue", 104px, 104px, 0.19, 1, 0.249, 0.875);
     top: -66px;
-    left: -16px;
+    right: 0;
   }
 
   // No cube left of the quickstart's introduction: `cube_chartreuse` sat
@@ -284,22 +283,20 @@
   // page had the same colour twice. `cube_yellow` is the one that stays;
   // `.HomeQuickstart::after` further down is unaffected.
 
-  // Flush against the right edge, on the blue band's top edge — the
-  // section's only colour change now that its introduction shares the grey
-  // above. This cube's file clips its own right face, so the page edge has
-  // to finish it or it reads as sliced. The right gutter stays free: the
-  // screenshot is centred and capped at 944px, never reaching this far out.
+  // `cube_maroon` sits here (swapped with `cube_teal_blue` above) since its
+  // own crop has margin on every side and can hang left just as well as it
+  // sat flush right.
   .HomeQuickstart__band::before {
     @extend %cube;
-    @include cube-art("cube_teal_blue", 104px, 104px, 0.19, 1, 0.249, 0.875);
+    @include cube-art("cube_maroon", 104px, 101px, 0.091, 0.861, 0.234, 0.902);
     top: -52px;
-    right: 0;
+    left: -16px;
   }
 
-  // Stays inside its band rather than hanging over the footer, which is
-  // `position: relative` with its own white background and paints over
-  // anything at this z-index — raising the cube instead would put
-  // decoration over real content.
+  // Stays inside its band rather than hanging over the footer below, which
+  // has its own white background — raising cubes to the top layer doesn't
+  // change that, since `bottom: 22px` keeps this one inside its own box
+  // regardless of z-index.
   .HomeQuickstart::after {
     @extend %cube;
     @include cube-art(
@@ -312,7 +309,7 @@
       0.921
     );
     bottom: 22px;
-    left: -20px;
+    right: 0;
   }
 
   // `.marketing` sets font size, weight and colour but not family; bare

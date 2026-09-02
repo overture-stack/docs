@@ -94,7 +94,9 @@ const columns: FooterColumn[] = [
 const NetlifyBadge = ({ className }: { className: string }) => (
   <div className={className}>
     <Link to={NETLIFY_LINK}>
-      <img src={NETLIFY_IMAGE_LINK} alt="Deploys by Netlify" />
+      {/* Lazy because it is cross-origin: eager, every page pays a DNS lookup
+          and TLS handshake to netlify.com before the footer is ever seen. */}
+      <img src={NETLIFY_IMAGE_LINK} alt="Deploys by Netlify" loading="lazy" />
     </Link>
   </div>
 );
@@ -112,7 +114,11 @@ export default function MarketingFooter() {
       <footer className="Footer">
         <div className="footer-white">
           <Link className="footer-white__oicr-logo" to={OICR_LINK}>
-            <img src={OICR_LOGO} alt="Ontario Institute for Cancer Research" />
+            <img
+              src={OICR_LOGO}
+              alt="Ontario Institute for Cancer Research"
+              loading="lazy"
+            />
           </Link>
 
           <nav className="footer-columns" aria-label="Footer">
