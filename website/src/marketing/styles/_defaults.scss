@@ -1,0 +1,34 @@
+// Default styles across site.
+
+body {
+  font-family: $font-sans-serif;
+}
+
+// The rule under the site navigation. It was written as a bare `nav` when the
+// navbar was the only one on the page; the footer added later picked up a
+// stray line under its columns. Targeted at the navbar itself now, which is
+// the element it was always for.
+.NavHeader {
+  border-bottom: lightgray solid 0.1vmin;
+}
+
+p,
+div {
+  color: $navy-black;
+}
+
+// Prose nests `<strong>` inside `p`/`div`, both already navy — this keeps
+// bold text the same color as its own paragraph rather than picking up
+// whatever color it would otherwise inherit. `!important` because a more
+// specific rule (a link's own color, a colored callout) would otherwise win
+// on specificity alone; a few call sites need their own `!important` to win
+// it back for a `<strong>` on a dark background — see `white-strong` in
+// _common.scss.
+strong {
+  color: $navy-black !important;
+}
+
+hr {
+  background-color: $grey-3 !important;
+  height: 1px !important;
+}

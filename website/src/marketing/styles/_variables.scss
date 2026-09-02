@@ -1,0 +1,82 @@
+@import './colors';
+
+// fonts
+$font-sans-serif: 'Lato', Helvetica, Arial, sans-serif;
+$font-monospace: 'Source Code Pro', monospace;
+
+// Media queries
+$mobile: 768px;
+$tablet: 1024px;
+$desktop: 1216px;
+
+// Where the navbar's own items (not the whole menu, which collapses at
+// `navmenu-below`/`navmenu-up` above) start crowding: past `navmenu-up`
+// (1160px) the nav links, search box and logo are all on one row again, but
+// there isn't quite enough width for their default spacing until this point.
+// Doesn't match any named breakpoint above because it isn't a layout
+// breakpoint — it's a measured, navbar-specific squeeze.
+$navbar-tight-breakpoint: 1260px;
+
+// How wide the introduction under a section heading runs. One value
+// rather than the per-band `em` caps each home page section used to carry
+// (`44em` on a 1.05rem lede, `46em` on a note, `max-w-3xl` on a 1.5rem one
+// — three different widths, none reaching the container). `rem` keeps the
+// cap the same measured width regardless of type size.
+//
+// Sized against the container, not a reading-length rule: at 1440px the
+// container's content box is just under 1200px, so this fills it and only
+// caps on wider screens.
+$lede-max-width: 68rem;
+
+// No `$card-tile-inset`. It was declared here so `.HomeCollaborate__subhead`
+// could clear the same distance as a tile's own padding and sit on the same
+// line as the card titles under it; that heading is back on the container's
+// left margin with every other heading, so the tile's padding is the tile's
+// business again and lives in components/_card-tile.scss.
+
+@mixin breakpoint($class) {
+  @if $class == mobile {
+    @media (max-width: 767px) {
+      @content;
+    }
+  } @else if $class == tablet-up {
+    @media (min-width: 768px) {
+      @content;
+    }
+  } @else if $class == desktop-up {
+    @media (min-width: 1024px) {
+      @content;
+    }
+  } @else if $class == desktop-wide {
+    @media (min-width: 1216px) {
+      @content;
+    }
+  } @else if $class == desktop-ultra-wide {
+    @media (min-width: 1408px) {
+      @content;
+    }
+  } @else if $class == navmenu-below {
+    @media (max-width: 1159px) {
+      @content;
+    }
+  } @else if $class == navmenu-up {
+    @media (min-width: 1160px) {
+      @content;
+    }
+  } @else if $class == desktop-below {
+    @media (max-width: 1024px) {
+      @content;
+    }
+  } @else if $class == wide-up {
+    @media (min-width: 1200px) {
+      @content;
+    }
+  } @else if $class == wide-down {
+    @media (max-width: 1200px) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint mixin supports: xs, sm, md, lg";
+  }
+}
+

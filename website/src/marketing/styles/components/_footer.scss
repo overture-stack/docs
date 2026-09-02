@@ -1,0 +1,138 @@
+
+.Footer {
+  border-top: 1px solid $grey-3;
+  position: relative;
+  background: $white;
+  color: $navy-dark;
+
+  .footer-white {
+    padding: 38px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    @include breakpoint(tablet-up) {
+      flex-direction: row;
+      justify-content: center;
+      gap: 40px;
+      padding-left: 2.5em;
+    }
+
+    &__oicr-logo {
+      width: 138px;
+      height: auto;
+      flex-shrink: 0;
+    }
+
+    // No `__links-holder`: it existed to cap the height that made the old
+    // flat list's column-wrap work, and the grid below needs no wrapper of
+    // its own.
+  }
+
+  // Four columns, replacing a flat wrapped list: the old `.links-container`
+  // used a fixed `max-height` and column-wrap to fake columns out of one
+  // list, which is why adding a ninth link used to reflow the whole thing.
+  .footer-columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2em;
+    margin: 2em 0;
+    text-align: center;
+
+    @media (min-width: 480px) {
+      grid-template-columns: repeat(2, 1fr);
+      text-align: left;
+    }
+
+    @include breakpoint(desktop-up) {
+      grid-template-columns: repeat(4, minmax(150px, 1fr));
+      column-gap: 3em;
+      margin-left: 2.6em;
+    }
+
+    &__heading {
+      font-family: $font-sans-serif;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: $grey-darkest;
+      margin-bottom: 0.9em;
+    }
+
+    &__link {
+      display: inline-block;
+      padding: 0.3em 0;
+      text-decoration: none;
+      color: $navy-dark;
+      font-weight: 700;
+
+      &:hover {
+        color: $pink-darker;
+      }
+    }
+
+    &__arrow {
+      padding-left: 0.35em;
+      font-weight: 400;
+    }
+  }
+
+  .netlify-badge-mobile {
+    @include breakpoint(tablet-up) {
+      display: none;
+    }
+  }
+
+  .netlify-badge-tablet {
+    display: none;
+    @include breakpoint(tablet-up) {
+      display: block;
+    }
+    @include breakpoint(desktop-up) {
+      display: none;
+    }
+  }
+
+  .netlify-badge-desktop {
+    display: none;
+    @include breakpoint(desktop-up) {
+      display: block;
+    }
+  }
+
+  .footer-grey {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    font-size: 14px;
+
+    @include breakpoint(desktop-up) {
+      align-items: center;
+      justify-content: center;
+    }
+
+    &__top-container-mobile {
+      display: flex;
+      justify-content: space-between;
+      padding: 1em;
+    }
+
+    &__text {
+      font-size: 16px;
+      font-weight: 400;
+
+      span {
+        padding: 0 8px;
+      }
+
+      @include breakpoint(tablet-up) {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1em;
+      }
+    }
+  }
+}

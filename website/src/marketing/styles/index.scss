@@ -1,0 +1,98 @@
+// Entry point for every marketing style in the site.
+//
+// Instead of each component importing its own `styles.scss`, everything is
+// pulled in here and nested inside `.marketing`. These pages share one
+// emitted stylesheet with the documentation, so the nesting keeps their
+// bare class names and element rules off the docs pages. Only MarketingPage
+// imports this file.
+//
+// Variables and mixins stay at the top level: Sass scopes a variable to the
+// block it's declared in, so anything declared inside `.marketing` would be
+// invisible to the partials below.
+//
+// `_layout.scss` carries the reset and class families this markup depends
+// on, occupying the position Bulma used to (removed, along with its own
+// variable overrides and imports — nothing in this tree still needs them).
+//
+// `@import` is deprecated but still needed here: `@use` can't nest inside a
+// selector, so `.marketing { @import ... }` has no modern equivalent, and
+// the site's own 2,800 lines still need that scoping.
+
+@import "color-codes";
+@import "colors";
+@import "variables";
+
+// The one rule outside the `.marketing` block, and it has to be: it styles the
+// element that *carries* `.marketing`, which a rule nested inside that class can
+// never select (`.marketing .MarketingNavbar` is a descendant selector, and this
+// is the same element). MarketingNavbar.tsx puts both classes on its wrapper.
+//
+// Sticky belongs on the wrapper rather than on `.NavHeader` inside it for the
+// same structural reason a sticky element sticks within its parent's box: the
+// wrapper is exactly as tall as the navbar, so a sticky `.NavHeader` would have
+// no room to travel and would never move at all.
+//
+// z-index above `_layout.scss`'s `.navbar` (30) and above the home page's
+// floating cubes, which are `z-index: 10` on the sections they decorate
+// (pages/_home.scss). 200 is Docusaurus' own `--ifm-z-index-fixed`, which is
+// what its navbar uses on the documentation routes, so the two navbars sit
+// at the same level.
+.MarketingNavbar {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+// Also outside `.marketing`, for the same reason: `scroll-behavior` has to
+// land on the scrolling box itself (`html`), which no selector nested under
+// `.marketing` can reach. Without it, any plain in-page `#id` link — e.g. one
+// of ComponentTable's own rows on /products/, linked from outside the site —
+// cuts instantly from wherever the reader was to wherever the target is, with
+// no visual continuity between the two, which on a page as tall as this one
+// reads as leaving the page rather than moving down it. Guarded by
+// `prefers-reduced-motion` since this is a whole-page motion default, not a
+// one-off animation. Scoped to marketing routes because this file loads only
+// from `MarketingPage.tsx`.
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+.marketing {
+  // Keep first: this is where Bulma used to sit in the cascade.
+  @import "layout";
+
+  @import "util";
+  @import "defaults";
+  @import "common";
+  @import "base";
+
+  @import "components/button";
+  @import "components/card-tile";
+  @import "components/footer";
+  @import "components/hero";
+  @import "components/hero-diagram";
+  @import "components/logo-carousel";
+  @import "components/navbar";
+  // No components/notebox: `NoteBox` was dead before the rebuild and was
+  // deleted with the home page's quickstart work, so its partial went too.
+  // No components/casestudy or components/stack-diagram: both partials styled
+  // components with no caller left on the site (CaseStudy, StackDiagram), and
+  // were deleted with them. No components/icon: `.Icons`/`.core` styled
+  // `Icon.tsx`'s `Core()`/`IconCommon`, deleted as dead code.
+  @import "components/quickstart";
+  @import "components/terminal";
+  @import "components/typography";
+
+  @import "pages/home";
+  // No pages/funding: it styled `.FundingPage` and `.PublicationsPage` and
+  // nothing else, and both pages are gone (the funding and citation content is
+  // canonical on the docs site again). Its hero art,
+  // img/marketing/acknowledgements/, has no other reader either.
+  @import "pages/impact";
+  @import "pages/privacy";
+  @import "pages/products";
+  @import "pages/collaborate";
+  @import "pages/terms-conditions";
+}

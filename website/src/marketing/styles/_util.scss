@@ -1,0 +1,58 @@
+// Named utility classes for the marketing pages, for cases prefixed Tailwind
+// (`ow:`) utilities don't cover. Reach for an `ow:` utility for new spacing
+// rather than adding a one-off here.
+
+// Backgrounds
+.bg-grey {
+  background: $grey-2;
+}
+
+.bg-blue {
+  background: $navy-dark;
+}
+
+.bg-green {
+  background: $green-bg;
+}
+
+// Typography
+
+.text-white {
+  color: $white;
+}
+
+.text-green {
+  color: $green-text;
+}
+
+.text-magenta {
+  color: $pink-darker;
+}
+
+.link-magenta {
+  font-family: $font-sans-serif;
+  font-weight: 700;
+  color: $pink-darker;
+  letter-spacing: 0;
+  text-decoration: none;
+
+  a,
+  a:hover {
+    color: $pink-darker;
+  }
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.flip-horizontal {
+  transform: scaleX(-1);
+}
+
+.chevron-link,
+.chevron-link a {
+  color: $pink-darker;
+  font-weight: bold;
+  text-decoration: none;
+}

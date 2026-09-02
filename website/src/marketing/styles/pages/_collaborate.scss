@@ -1,0 +1,70 @@
+// /collaborate/, which replaced /services/.
+//
+// Carried over from `_services.scss`: the hero, including its artwork, which is
+// still the right illustration for the page. Everything below the hero is built
+// with `ow:` utilities, so what is left here is the hero and the two things
+// utilities cannot supply from the markup.
+
+.CollaboratePage {
+  // `.marketing` sets font size, weight and colour but not family, so bare
+  // elements need it stated. Same rule as the products, impact and prose pages;
+  // see `_base.scss` for why the inherited one is missing.
+  p,
+  li,
+  strong {
+    font-family: $font-sans-serif;
+  }
+
+  // Box, text and inset come from the shared subpage-hero rules in
+  // `components/_hero.scss`. Only the artwork is this page's own.
+  .Hero {
+    @include breakpoint(tablet-up) {
+      background-image: url('/img/marketing/services/img_hero_services.svg');
+      background-position-x: 100%;
+    }
+
+    @include breakpoint(desktop-wide) {
+      background-position-x: 105%;
+    }
+
+    @include breakpoint(desktop-ultra-wide) {
+      background-position-x: 81%;
+    }
+  }
+
+  .container {
+    padding: 80px 32px;
+
+    @include breakpoint(tablet-up) {
+      padding: 4em 4.4em;
+    }
+  }
+
+  // Tighter vertical rhythm for the three offer sections: only top/bottom
+  // padding, so the horizontal padding above still applies. Three
+  // sections at the site's default vertical padding, plus an image no
+  // longer stretching to fill the column, still ran long.
+  .CollaborateOffer .container {
+    padding-top: 56px;
+    padding-bottom: 56px;
+
+    @include breakpoint(tablet-up) {
+      padding-top: 3em;
+      padding-bottom: 3em;
+    }
+  }
+
+  // `.t-p1`'s desktop size (24px) is the largest a paragraph gets anywhere on
+  // the site; across three sections in a row it read heavier than the offers
+  // needed. Scoped to this page's own blurb class rather than `.t-p1` itself,
+  // so paragraphs elsewhere that use the shared class are untouched.
+  .CollaborateOffer__blurb {
+    font-size: 16px;
+    line-height: 26px;
+
+    @include breakpoint(tablet-up) {
+      font-size: 18px;
+      line-height: 28px;
+    }
+  }
+}

@@ -1,0 +1,298 @@
+// Infima's global `.navbar` rule reaches this navbar too, pinning it to
+// `--ifm-navbar-height` and adding padding that crushed it to a 64px row.
+// The `.navbar` in `_layout.scss` is the one this markup wants, so undo
+// Infima's two properties at higher specificity. `.navbar-brand`/
+// `.navbar-menu`/`.navbar-item` don't collide with Infima's BEM equivalents
+// (`.navbar__brand` and friends).
+.NavHeader.navbar {
+  height: auto;
+  padding: 0;
+}
+
+.NavHeader {
+  background: $white;
+  box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.1), 0 1px 5px 0 rgba(0, 0, 0, 0.08);
+
+  .nav-container {
+    margin: 0 auto;
+    width: 100%;
+    display: block;
+
+    @include breakpoint(navmenu-up) {
+      display: flex;
+    }
+  }
+
+  .nav-container.is-active {
+    @include breakpoint(navmenu-below) {
+      height: 100vh;
+      bottom: 0;
+    }
+  }
+
+  // Overture Logo container and Link
+  .navbar-brand {
+    align-items: center;
+    padding-right: 16px;
+  }
+
+  .navbar-brand-link {
+    margin-right: 1rem;
+    align-self: stretch;
+  }
+
+  .navbar-menu {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  .navbar-menu.is-active {
+    @include breakpoint(navmenu-below) {
+      height: calc(100vh - 52px);
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  // Overrides `.button`'s white background/border (_layout.scss) so the
+  // burger reads as a plain icon control rather than a boxed button; kept
+  // `!important` because `.button` sets these at the same specificity and
+  // after this in the cascade.
+  .navbar-burger {
+    height: 2.4rem;
+    width: 2.4rem;
+    border-color: $blue-light !important;
+    background-color: transparent !important;
+    outline: none !important;
+
+    &:hover {
+      background-color: transparent !important;
+    }
+
+    & > span {
+      background-color: $blue-light;
+    }
+  }
+
+  .megamenu-link-box {
+    display: flex;
+    align-self: stretch;
+    margin-right: 16px;
+    @include breakpoint(navmenu-below) {
+      flex-direction: column;
+      margin-right: 0;
+      justify-content: center;
+      border-top: 1px solid #f2f3f5;
+    }
+  }
+
+  // similar to .nav-link but slightly different.
+  .megamenu-link {
+    display: flex;
+    align-self: stretch;
+    justify-content: space-between;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $grey-1;
+    }
+  }
+
+  .megamenu-link-open,
+  .megamenu-link-highlight {
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    text-decoration: none;
+    @include breakpoint(navmenu-up) {
+      margin-right: 8px;
+      display: flex;
+      align-self: stretch;
+    }
+    @include breakpoint(navmenu-below) {
+      border-top: 1px solid $grey-2;
+    }
+  }
+
+  // Products / Impact / Collaborate / About, and the two nav actions.
+  // Bulma's full-bleed `a.navbar-item:hover` swept a 64px rectangle
+  // top-to-bottom, with the margin between items showing through as a
+  // white sliver — a band of tiles with notches — and the current-page
+  // state wore the identical shape.
+  //
+  // Above the navmenu breakpoint the state is now a rounded rectangle
+  // centred in the row, so the margin falls outside the paint and reads as
+  // spacing. Below it, the menu is full-width rows, where a full-width
+  // highlight is correct.
+  //
+  // The 4px radius and `0.25rem 0.75rem` match the documentation navbar's
+  // own metrics exactly (`src/css/custom.css`, `--ifm-navbar-item-padding-*`),
+  // so hovering a link lands the same box on both 64px-tall navbars. Keep
+  // them in step if either side moves.
+  a.navbar-item.nav-link {
+    @include breakpoint(navmenu-up) {
+      align-self: center;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      transition: background-color 100ms ease-out, color 100ms ease-out;
+
+      // The plain `.navbar-item` rule below tightens the row here; this selector
+      // out-specifies it, so the tightening is restated rather than lost.
+      @media (max-width: $navbar-tight-breakpoint) {
+        padding: 0.25rem 0.5rem;
+      }
+    }
+
+    &:hover,
+    &:focus-visible {
+      background-color: $grey-2;
+      color: $navy-black;
+    }
+  }
+
+  // The current page: pink label on a pink tint, against hover's navy on grey,
+  // so the two states no longer collide. `_base.scss` fills `.active-item` with
+  // $grey-2 — the hover colour exactly — so this has to out-specify that rule
+  // rather than sit next to it, hence the three classes.
+  a.navbar-item.nav-link.active-item {
+    color: $pink-darker;
+    background-color: $pink-light;
+
+    &:hover,
+    &:focus-visible {
+      color: $pink-darker;
+      background-color: $pink-tint;
+    }
+  }
+
+  .navbar-item {
+    font-family: $font-sans-serif;
+    font-size: 16px;
+    letter-spacing: 0;
+    padding: 0.75rem;
+    @media (max-width: $navbar-tight-breakpoint) {
+      padding: 0.5rem 1em;
+    }
+  }
+
+  .megamenu-arrow {
+    background: $white;
+    display: none;
+    align-self: center;
+    @include breakpoint(navmenu-below) {
+      display: flex;
+      padding: 8px;
+    }
+
+    &.open {
+      background: $grey-2;
+    }
+  }
+
+  // Docs and GitHub, styled as nav links rather than buttons — no call to
+  // action here. No `Get Started`: it read as competing with the primary
+  // nav's own, and everything it pointed at is one click away via `Docs`.
+  .nav-action {
+    white-space: nowrap;
+  }
+
+  // Algolia's button, trailing the row where the documentation navbar's own
+  // copy sits. Left at `@docsearch/css`'s and
+  // `@docusaurus/theme-search-algolia`'s defaults so both navbars carry the
+  // same search box.
+  .navbar-search {
+    display: flex;
+    align-items: center;
+
+    .DocSearch-Button {
+      // `@docsearch/css`'s `all: unset` resets `box-sizing` to
+      // `content-box`; without this, `width: 100%` in the open mobile menu
+      // overflows by the button's own padding/border.
+      box-sizing: border-box;
+      width: 100%;
+      margin: 0;
+      transition: all var(--ifm-transition-fast)
+        var(--ifm-transition-timing-default);
+
+      @include breakpoint(navmenu-up) {
+        width: auto;
+      }
+    }
+  }
+
+  // Matches `.iconExternalLink` in @docusaurus/theme-classic's `Icon/ExternalLink`
+  // exactly (0.3rem), so the same icon sits the same distance from its label on
+  // both navbars.
+  .nav-action__icon {
+    margin-left: 0.3rem;
+    align-self: center;
+  }
+
+  .navbar-mid {
+    display: flex;
+    flex-direction: column;
+    background-image: url('/img/marketing/chrome/cube_bright_teal.svg'), url('/img/marketing/chrome/cube_chartreuse.svg'),
+      url('/img/marketing/chrome/cube_teal_blue.svg');
+    background-repeat: no-repeat;
+    background-position-x: -6%, 98%, 100%;
+    background-position-y: 75%, 55%, 0;
+
+    @include breakpoint(navmenu-below) {
+      flex-grow: 1;
+    }
+    @include breakpoint(navmenu-up) {
+      display: none;
+    }
+  }
+
+  .navbar-mid.is-active {
+    background-image: none;
+  }
+
+  .teal-blue-cube {
+    position: relative;
+    float: right;
+  }
+
+  .chartreuse-cube {
+    position: relative;
+    float: right;
+    top: 200px;
+    left: 120px;
+  }
+
+  .bright-teal-cube {
+    position: relative;
+    right: 55px;
+  }
+
+  .navbar-end {
+    background: $grey-2;
+
+    @include breakpoint(navmenu-up) {
+      background: white;
+    }
+  }
+
+  //
+  // Media Queries:
+  //
+
+  // Tighten up the spacing on the navbar.
+  @media (max-width: $navbar-tight-breakpoint) and (min-width: 1024px) {
+    .navbar-brand-link {
+      margin-right: 0;
+    }
+  }
+
+  .documentation-down-arrow {
+    margin-top: 4px;
+    margin-left: 3px;
+  }
+
+  .documentation-arrow-rotate-up {
+    transform: rotate(180deg);
+    margin-bottom: 4px;
+  }
+}

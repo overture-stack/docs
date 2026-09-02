@@ -1,0 +1,148 @@
+// The home hero's diagram. See HeroDiagram.tsx.
+//
+// Square aspect ratio, matching the 528x528 artwork it lays hotspots over.
+// Sized with clamp() rather than a fixed width: a fixed size collided with
+// the hero paragraph between roughly 768px and 1216px viewport width —
+// invisible against the diagram's own empty space, not against text.
+.HeroDiagram {
+  position: relative;
+  flex-shrink: 0;
+  // The 450px ceiling came down to 400: only the top of the range moves, so
+  // the middle of the clamp (where the collision below 1216px was) is
+  // untouched.
+  width: clamp(220px, 32vw, 400px);
+  aspect-ratio: 1;
+
+  &__disc,
+  &__ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &__disc {
+    width: 75%;
+    height: 75%;
+    background: #edf6f9;
+    opacity: 0.666;
+    border: 1.4px dashed #4cc6f1;
+  }
+
+  &__ring {
+    // Touches the diagram's own edge by design: this is the outer boundary
+    // the icons are laid out inside of.
+    width: 100%;
+    height: 100%;
+    border: 1.4px dashed rgba(107, 116, 132, 0.47);
+  }
+
+  &__portal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -47%);
+    pointer-events: none;
+  }
+
+  &__portalImage {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  &__hotspot {
+    position: absolute;
+    // Baseline z-index so this participates in explicit stacking: eight of
+    // these share one absolutely-positioned layer, and without it a later
+    // sibling would paint over an earlier one's `scale()`-enlarged hover
+    // state. Raised further on hover/focus to clear every neighbour, not
+    // just earlier ones.
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    transition:
+      transform 120ms ease-out,
+      opacity 150ms ease-out,
+      filter 150ms ease-out;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      z-index: 3;
+      transform: translate(-50%, -50%) scale(1.14);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $yellow;
+      outline-offset: 3px;
+    }
+
+    &--disabled {
+      cursor: default;
+
+      .HeroDiagram__icon {
+        opacity: 0.55;
+      }
+    }
+
+    // Hovering a LogoCarousel logo sets `highlightedPlatform`
+    // (data/componentUsage.ts says which components it uses); every hotspot
+    // is always on screen here, so dimming the rest in place is enough.
+    &--highlighted {
+      z-index: 3;
+      transform: translate(-50%, -50%) scale(1.14);
+      filter: drop-shadow(0 0 3px $yellow) drop-shadow(0 0 5px $yellow);
+    }
+
+    &--dimmed {
+      opacity: 0.35;
+    }
+  }
+
+  &__icon {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  // `position: fixed`, positioned in JS from the hovered hotspot's
+  // `getBoundingClientRect()` (utils/floatingTooltip.ts), not `position:
+  // absolute`: a fixed offset could cover the rest of the diagram, or run
+  // off-window near a shorter viewport's top. No `:hover`/`:focus-visible`
+  // trigger: visibility is React state, not CSS.
+  &__tooltip {
+    @include floating-tooltip-card;
+    width: 200px;
+    padding: 12px 14px;
+    color: $white;
+    font-family: $font-sans-serif;
+    text-align: left;
+  }
+
+  &__tooltipName {
+    @include white-strong;
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  &__tooltipSummary {
+    display: block;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: $grey-2;
+  }
+}

@@ -1,0 +1,186 @@
+// Common styles that don't belong to a component (yet)
+
+.yellow-bar {
+  max-width: 80px;
+  height: 4px;
+  min-width: 48px;
+  background-color: $yellow;
+}
+
+// The section heading on the prose routes (privacy, terms).
+//
+// Those pages moved to Markdown, so their headings are now plain `h2`
+// elements rather than the `<div><H3/><div class="yellow-bar"/></div>`
+// the JSX built by hand. This reproduces that exactly: the `.t-h3` type scale,
+// the 1rem of space above, and the yellow rule underneath as a pseudo-element
+// instead of an empty div.
+//
+// Defined here rather than in either page partial because both use it, and
+// `_common.scss` is imported before `pages/*` so the mixin is in scope for them.
+@mixin prose-section-heading {
+  padding-top: 1rem;
+  font-family: $font-sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  color: $navy-black;
+  letter-spacing: 0;
+  line-height: 40px;
+
+  @include breakpoint(mobile) {
+    font-size: 20px;
+    line-height: 30px;
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    max-width: 80px;
+    min-width: 48px;
+    height: 4px;
+    margin: 1rem 0;
+    background-color: $yellow;
+  }
+}
+
+// Markdown emits bare `ul`/`li`, so the `.bullet` look has to come from the
+// element selectors. `_layout.scss` resets `ul` to `list-style: none`, which is
+// what this puts back.
+@mixin prose-bullets {
+  ul {
+    li {
+      list-style-type: disc;
+      margin-left: 20px;
+      padding-left: 4px;
+
+      // The Markdown sources keep a blank line between bullets, which is much
+      // easier to read when the items run several lines long. That makes them
+      // loose lists, so each item's text arrives wrapped in a `p` and picks up
+      // the 20px paragraph margin, spacing the bullets apart. The JSX these
+      // pages replaced had no `p` inside its `li`, so zero it back out and the
+      // source stays readable without changing the rendering.
+      > p {
+        margin: 0;
+      }
+    }
+  }
+}
+
+// The body text on the prose routes (privacy, terms): both use Markdown, so
+// both style the bare elements it emits rather than classes on hand-written
+// JSX. Defined here for the same reason as `prose-section-heading` above —
+// both pages use it, and `_common.scss` is in scope before `pages/*`.
+@mixin prose-base-text {
+  p,
+  div,
+  li {
+    font-family: $font-sans-serif;
+    font-size: 18px;
+    letter-spacing: 0;
+    line-height: 30px;
+    color: $navy-black;
+  }
+
+  p {
+    margin: 20px 0;
+  }
+}
+
+// The floating dark card every hover/focus tooltip on the marketing pages
+// uses: HeroDiagram's and LogoCarousel's own tooltips, and /impact/'s and
+// /products/'s screenshot/label tooltips. All four position it the same
+// way — `position: fixed`, placed in JS from the trigger's own
+// `getBoundingClientRect()` (utils/floatingTooltip.ts) rather than `position:
+// absolute` — because each sits inside an ancestor that either clips
+// (`overflow-y`/`overflow-x`) or could be covered by a tooltip anchored with
+// a plain offset; `fixed` positions against the viewport itself, so no
+// ancestor's `overflow` touches it.
+//
+// Sizing, padding, text alignment and color are per site — a component name
+// wants a left-aligned block with its own nested typography, a screenshot
+// wants an image with no text styling, a plain label wants centered text —
+// so those stay on each site's own `&__tooltip` rule alongside this include.
+@mixin floating-tooltip-card {
+  position: fixed;
+  z-index: 20;
+  transform: translateX(-50%);
+  border-radius: 8px;
+  background: $navy-black;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+// The plain-text sizing/type for a floating tooltip card: a short label with
+// no nested elements of its own, centered rather than left-aligned.
+// /impact/'s component-name tooltip and /products/'s "N deployments" tooltip
+// are the same card down to the pixel — both name `data/components.ts`
+// labels, short enough to center on one or two lines. Layered on top of
+// `floating-tooltip-card` rather than including it directly: /impact/'s own
+// tooltip already has a sibling `&--shot` variant that needs the card base
+// without this text styling, so the base stays a separate include there.
+@mixin floating-tooltip-label-text {
+  max-width: 220px;
+  padding: 6px 10px;
+  color: $white;
+  font-family: $font-sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+// `_defaults.scss` sets `strong { color: $navy-black !important; }` site-wide
+// (prose nests `<strong>` inside `p`/`div`, both already navy, so bold text
+// stays the same color as its own paragraph rather than picking up whatever
+// color it would otherwise inherit). A tooltip card with white body text
+// loses to that `!important` regardless of selector specificity — `!important`
+// beats specificity outright, not just inheritance — so a card whose own
+// `<strong>` needs to read white has to win it back with another
+// `!important`, which is what this is for.
+@mixin white-strong {
+  color: $white !important;
+}
+
+// A row's "you were just sent here" marker: a single row landed on directly,
+// whether from another page's link or a bare `#id` anchor jump, fades from a
+// pale yellow highlight rather than giving no visual cue which row was aimed
+// at on a table this long. Shared by /products/'s and /impact/'s own tables,
+// which give the same landing cue to a component row and a deployment row
+// respectively — same animation, so applying it is one line rather than two
+// near-identical `@keyframes` blocks.
+@keyframes target-flash {
+  from {
+    background-color: rgba($yellow, 0.35);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+// A table row lit from another page's link that can't point `:target` at
+// several rows at once (an "N deployments" or "N components" link fans out to
+// more than one row), so the linking page flags every match with a class
+// instead. Persistent rather than the fade above: several rows lit at once
+// and then fading on a fixed timer risked going dark before a reader had
+// scrolled to find them all, so this stays until a click outside every
+// highlighted row's bounds clears it.
+//
+// The background sits on the cells rather than the row because a `tr`'s own
+// background does not reliably paint past its cells in every browser; the
+// box-shadow on the first and last cell is what carries the colour to the
+// row's actual edge instead of stopping short and reading as clipped.
+@mixin table-row-highlight-bleed {
+  td,
+  th {
+    background-color: $c-blue-100;
+  }
+
+  td:first-child,
+  th:first-child {
+    box-shadow: -16px 0 0 $c-blue-100;
+  }
+
+  td:last-child,
+  th:last-child {
+    box-shadow: 16px 0 0 $c-blue-100;
+  }
+}
+

@@ -1,0 +1,44 @@
+
+// The copy for this page is Markdown, in src/marketing/content/privacy.mdx, so
+// everything below styles the elements Markdown emits rather than classes on
+// hand-written JSX.
+
+.PrivacyPage {
+  @include prose-base-text;
+
+  h2 {
+    @include prose-section-heading;
+  }
+
+  @include prose-bullets;
+
+  // The numbered list under "Collection and Use". The counter is the only way to
+  // get a number with no trailing period, which is what the page has always
+  // shown.
+  //
+  // `counter-reset` is on the `ol` itself. It was on `ol:first-child`, which
+  // worked while the JSX put the list first in its section and would silently
+  // stop counting now that Markdown wraps things differently.
+  ol {
+    counter-reset: customlistcounter;
+    list-style-type: none;
+    margin-left: 0;
+
+    > li {
+      counter-increment: customlistcounter;
+      font-size: 30px;
+
+      &::before {
+        content: counter(customlistcounter) ' ';
+        font-weight: bold;
+        float: left;
+        width: 1em;
+      }
+
+      // Markdown makes these loose list items, so the text is inside a `p`.
+      > p {
+        margin-left: 48px;
+      }
+    }
+  }
+}

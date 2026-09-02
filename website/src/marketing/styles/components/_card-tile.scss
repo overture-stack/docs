@@ -1,0 +1,213 @@
+// The tile the home page's card bands share (components/CardTile.tsx).
+//
+// Mirrors the documentation site's entry tile
+// (components/SiteMap/styles.module.css `.pickerTile`), grey on that site's
+// white page. Here the tile is whatever colour its band is not — white on
+// grey, grey on white — since bands alternate down the page and a fixed
+// colour would vanish on half of them.
+//
+// The band decides, not the tile: `--card-tile-bg` is set per band in
+// pages/_home.scss; the fallback below has to stay inside `var()` rather
+// than a declaration on `.CardTile`, or a custom property on the tile
+// itself would beat the inherited one and every tile would be white again.
+//
+// Everything here is the tile itself; the row is the caller's — this is a
+// grid cell, and the bands that use it set their own column counts and gaps.
+
+.CardTile {
+  // The colour of the go line. Overridden per tile by CardTile's `accent` prop,
+  // which is how the documentation cards carry their journey colours.
+  --card-tile-accent: #{$blue-links};
+
+  display: flex;
+}
+
+.CardTile__link {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--card-tile-bg, #{$white});
+  border-radius: 15px;
+  // The screenshot bleeds to the tile's edges, so the anchor has to clip it
+  // back to the same radius. The padding that was here is on `__body` below,
+  // which is what leaves the shot the full width to bleed into.
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  // Every line in the tile is inside this anchor, and a descendant cannot
+  // cancel an underline its ancestor draws: `.marketing a` has to be turned off
+  // here or the title and the body are both ruled through. What signals the
+  // link is the raise on hover and the go line.
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+
+    .CardTile__go {
+      text-decoration: underline;
+    }
+
+    // A quarter step in on the shot, under the tile's own two pixels up. Small
+    // on purpose: the tile is what moves on hover, and a screenshot that
+    // travelled with it would read as two things reacting to one pointer.
+    .CardTile__shot {
+      transform: scale(1.03);
+    }
+  }
+}
+
+.CardTile__body {
+  flex: 1;
+  // `min-width` because the body is a flex item beside the shot in the split
+  // layout below, and a flex item's floor is the width of its longest word
+  // unless it is told otherwise: without this the text column refuses to shrink
+  // and pushes the tile wider than its grid cell.
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.4rem 1.5rem;
+}
+
+// The screenshot band across the top of a tile that carries one.
+//
+// A letterbox rather than 16:9: at a 600px card width, 16:9 is a 340px band
+// that pushed every card's heading below the fold. 5:2 is the shallowest
+// crop that still shows a portal's chrome and filter rail — evidence it
+// runs, not something to be read closely.
+//
+// `object-position: top` crops the bottom rather than the middle, and is
+// also what makes the one portrait shot (the conversational mockup) work:
+// anchored to the top, it shows the question going in and the portal
+// queried back — the sentence in the card under it.
+.CardTile__media {
+  position: relative;
+  aspect-ratio: 5 / 2;
+  overflow: hidden;
+  // Behind the shot, not under it: the portal screenshots are PNGs with
+  // their own drop shadow on transparency, and white would leave that
+  // shadow floating on nothing. This is the page's palest blue, matching
+  // the band the tiles sit on.
+  background-color: $c-blue-100;
+  border-bottom: 1px solid $c-grey-300;
+  // Without this padding, `cover` filled the box edge to edge and the blue
+  // behind it was only visible in the seams. The quickstart shot's own wide
+  // transparent margin is the look this generalizes: the portal sits on
+  // the blue rather than being pasted over it, so each shot's drop shadow
+  // lands on something.
+  // Open on the right only — the edge the shot is cropped at anyway, and
+  // the one with the divider or the tile's corner, leaving the least blue
+  // to give. Inset on all four sides and it reads as a thumbnail; inset on
+  // three, a window continuing past the card, which is accurate.
+  padding: 0.9rem 0 0.9rem 0.9rem;
+}
+
+.CardTile__shot {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.3s ease;
+  // Corners on the shot itself, since it no longer reaches the tile's own
+  // rounded edge to borrow them. Square on the right, where it runs off.
+  border-radius: 8px 0 0 8px;
+  // `drop-shadow`, not `box-shadow`: these are cut-outs on transparency, so
+  // drop-shadow traces the actual browser window while box-shadow would
+  // trace the `<img>` box — drawing a second edge out in the blue on any
+  // shot with its own transparent margin.
+  //
+  // The quickstart shot already has a baked-in shadow; the two stack
+  // there, reading as slightly deeper rather than doubled, and it's a
+  // placeholder due to be swapped anyway.
+  //
+  // Clipped on the right by `__media`'s `overflow: hidden`, correctly: that
+  // edge is where the shot runs off the card rather than ending.
+  filter: drop-shadow(0 3px 8px rgba(21, 38, 61, 0.22));
+}
+
+// Shot beside the text, not above it, once a two-column grid leaves room to
+// split: stacked, a card costs shot-height plus text-height; split, it
+// costs whichever is taller (always the text).
+//
+// Only the capability cards use this; the documentation cards carry no
+// shot to split.
+@include breakpoint(desktop-wide) {
+  .CardTile--split .CardTile__link {
+    flex-direction: row;
+  }
+
+  .CardTile--split .CardTile__media {
+    // A fixed share of the card rather than an aspect ratio: the height is the
+    // text's now, and the shot fills whatever that comes to.
+    flex: 0 0 40%;
+    aspect-ratio: auto;
+    border-bottom: none;
+    border-right: 1px solid $c-grey-300;
+  }
+
+  // Anchored top-left, where a portal keeps its logo and filter rail — the
+  // two things that identify it at a glance. Centring the crop this narrow
+  // would land on a results table, which could be any table anywhere.
+  .CardTile--split .CardTile__shot {
+    object-position: left top;
+  }
+}
+
+// Names a shot that is not a running deployment. Bottom right rather than top
+// left: the top left of every one of these shots is the browser chrome and the
+// platform's own logo, which is the part worth keeping uncovered.
+.CardTile__badge {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background-color: rgba(40, 42, 53, 0.82);
+  color: $white;
+  font-family: $font-sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+// No rule under the title: the tile is the link, so underlining the
+// heading would mark just one line as clickable. `.t-h3`'s 40px line-height
+// on 24px type suits a heading standing alone; wrapped to two or three
+// lines in a box, that much leading reads as a gap and costs 20px a line.
+// Size is shared; leading is the tile's own.
+.CardTile__title.t-h3 {
+  margin: 0;
+  color: $navy-black;
+  line-height: 1.25;
+}
+
+// The body the caller passes in. Styled by element rather than by class so a
+// band can hand the tile plain paragraphs and get the same measure in each.
+.CardTile__body p {
+  font-family: $font-sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: $navy-black;
+  margin: 0;
+}
+
+// A qualifier under the body, and quieter than it: "In development" on a
+// capability that is not shipped yet. Selected through the link so it outweighs
+// the element rule above, which is a class and an element to this one's class.
+.CardTile__link .CardTile__note {
+  font-size: 0.95rem;
+  color: $c-grey-500;
+}
+
+.CardTile__go {
+  margin-top: auto;
+  padding-top: 0.9rem;
+  font-family: $font-sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--card-tile-accent);
+}

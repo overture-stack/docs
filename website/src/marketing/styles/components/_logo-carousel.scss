@@ -1,0 +1,376 @@
+// Who runs Overture, scrolling right below the hero. See LogoCarousel.tsx.
+//
+// `$blue-block` lives on the section itself, edge to edge like `.Hero`
+// above it: a rounded card with white either side read as floating rather
+// than its own section. `&__band` is just a vertical-padding wrapper;
+// `.LogoCarousel .container`'s own horizontal padding (_home.scss) indents
+// the content.
+//
+// One figure, `$carousel-band-y`, above the heading and below the logos:
+// previously three separate values (28px/24px/40px) left more air at the
+// foot than the top, pushing the band past the fold. The section's own
+// padding is zero now, so this one number keeps both ends equal by
+// construction.
+$carousel-band-y: 28px;
+
+.LogoCarousel {
+  padding: 0;
+  background-color: $blue-block;
+
+  &__band {
+    padding: $carousel-band-y 0;
+  }
+
+  // The heading plus interaction hint, stacked above the logos. The gap
+  // lives here, not on `&__hint`: the hint is `display: none` below
+  // tablet-up, which would otherwise leave the heading sitting directly on
+  // the first logo card on a phone.
+  &__heading {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    gap: 4px;
+    margin-bottom: 28px;
+  }
+
+  // `&.t-h3`, not a bare `&__title`: the H3 component adds `.t-h3`
+  // (Typography.tsx), which sets its own size/weight at the same
+  // specificity, compiled after this, so a bare `&__title` rule would lose
+  // the tie.
+  //
+  // A step under the section headings below it (`.t-h2`, see _home.scss):
+  // this band sits inside the hero's colour block and introduces the logos
+  // rather than opening a section, so it reads as the smaller of the two.
+  // Bold throughout, as a heading rather than a sentence with figures
+  // picked out.
+  //
+  // No `padding-left`: both edges now use the shared `--band-inset-x`
+  // (_home.scss), replacing a hand-tuned 47px that used to split the
+  // difference between the carousel's own container and the hero's copy.
+  &__title.t-h3 {
+    margin: 0;
+    color: $navy-black;
+    font-size: 1.5rem;
+    font-weight: 900;
+    line-height: 1.3;
+    text-align: left;
+
+    // A step down on a phone: at 1.5rem/900 weight this wrapped to three
+    // lines under 600px, reading as a second hero rather than a label on
+    // the logos. The hint under it is `display: none` at this width, so
+    // this is the whole heading block.
+    @include breakpoint(mobile) {
+      font-size: 1.125rem;
+      line-height: 1.35;
+    }
+  }
+
+  // Inherits the heading's size, so it stays part of the sentence rather than
+  // dropping to body size mid-line; colour and underline are what mark it.
+  &__fundingLink {
+    color: $blue-links;
+    text-decoration: underline;
+    white-space: nowrap;
+  }
+
+  // `.HomePage .container`'s padding override lines this section up with
+  // the hero's content edges (see _home.scss). `&__band` fills that
+  // container, so its edges match too, even though its colour/padding
+  // still read as a separate card. The viewport sits inside the band, not
+  // bled to its edge, so the fades below line up the same way.
+  &__viewport {
+    position: relative;
+    grid-area: 1 / 1;
+    overflow-x: auto;
+    overflow-y: hidden;
+    cursor: grab;
+    // Was `pan-x`, which does not mean "let a horizontal swipe scroll this" —
+    // it means "horizontal only", and a vertical swipe that started anywhere
+    // inside the box is dropped rather than passed up. This band is full
+    // width and sits directly under the hero, so on a phone it was a stripe
+    // across the top of the page that the page would not scroll from. Naming
+    // both axes lets the browser pick from the gesture's own direction, which
+    // is what it does everywhere else; `pinch-zoom` keeps zooming, which
+    // neither this nor the `pan-x` before it should ever have taken away.
+    touch-action: pan-x pan-y pinch-zoom;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    // Crossfades with `&__filtered` rather than snapping: `visibility`
+    // alone can't transition smoothly, and a hard cut read as a glitch
+    // rather than a deliberate change.
+    opacity: 1;
+    transition: opacity 200ms ease-out;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    &--hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      overflow: visible;
+      cursor: auto;
+      transition: none;
+    }
+  }
+
+  // Holds the marquee viewport and, when highlighted, the filtered view
+  // stacked on top (LogoCarousel.tsx): both share `grid-area: 1 / 1` so
+  // they crossfade in place.
+  &__stage {
+    position: relative;
+    display: grid;
+  }
+
+  // Every platform using the highlighted component, shown together
+  // regardless of marquee scroll position, rather than dimming whatever's
+  // already on screen. Always mounted, not conditional on `matches`, so it
+  // has an "opacity: 0" state to crossfade from — a freshly-mounted
+  // element has no prior frame.
+  &__filtered {
+    grid-area: 1 / 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease-out;
+
+    &--visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+
+  &__empty {
+    font-family: $font-sans-serif;
+    font-size: 0.95rem;
+    color: $navy-black;
+    opacity: 0.7;
+    text-align: center;
+    margin: 0;
+  }
+
+  // Siblings of the viewport, not `::before`/`::after` inside it: Chrome
+  // leaves stale paint behind these when they're descendants of an element
+  // scrolled from JS rather than user input (a real compositing bug, not
+  // specific to this carousel). Living outside the scrolling box sidesteps
+  // it.
+  &__fade {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: clamp(48px, 8vw, 120px);
+    z-index: 2;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 200ms ease-out;
+
+    // `$blue-block` (the card's own background, `&__band` above), not
+    // `$blue-top`: these fade into whatever's directly behind them, which
+    // is the card now, not the hero.
+    &--left {
+      left: 0;
+      background: linear-gradient(to right, $blue-block, transparent);
+    }
+
+    &--right {
+      right: 0;
+      background: linear-gradient(to left, $blue-block, transparent);
+    }
+
+    &--hidden {
+      opacity: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+
+  &__track {
+    display: flex;
+    width: max-content;
+
+    @media (prefers-reduced-motion: reduce) {
+      width: 100%;
+    }
+  }
+
+  &__list {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    // Sized so a partial logo peeks at the edge before the fade takes
+    // over, at whatever count this width allows.
+    gap: 36px;
+    padding: 0 24px;
+    margin: 0;
+    list-style: none;
+
+    // The second list exists only to make the loop seamless (see
+    // LogoCarousel.tsx); under reduced motion there's no loop to hide, so it
+    // would just be a visible duplicate of the first.
+    &[aria-hidden="true"] {
+      @media (prefers-reduced-motion: reduce) {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+
+    // The filtered view (LogoCarousel.tsx): matches scaled to fit one line
+    // (`transform: scale()`, computed in JS from natural vs. container
+    // width) rather than wrapped or shrunk by a fixed threshold — three
+    // matches stay full size, eight shrink only as much as needed.
+    //
+    // `position: absolute` + `translate(-50%, -50%)` in the inline
+    // transform, not `&__filtered`'s flex centering: a flex item wider
+    // than its container (this list, before scaling, reliably is) doesn't
+    // center symmetrically, so `scale()` shrank around the wrong point and
+    // left matches hanging off the right edge. Pinning this list's own
+    // center to its container's fixes the anchor regardless of natural
+    // width.
+    //
+    // No `transition` on `transform`: this list remounts fresh on every
+    // hover, so its first committed style is last hover's stale scale,
+    // corrected once the measuring effect runs a moment later. A
+    // transition would animate that correction as a visible zoom on every
+    // hover. `&__filtered`'s opacity fade is the only transition this needs.
+    &--filtered {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+    }
+  }
+
+  // One child now that the date line is gone, so no column gap left to set;
+  // still a flex item so the chip inside it keeps its own height rather than
+  // stretching to the tallest logo in the row.
+  &__item {
+    display: flex;
+    align-items: center;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+    // A transparent border at rest, not just added on `--highlighted`: a
+    // transform-based highlight (scaling up) doesn't grow the parent's
+    // layout size, so it got clipped by `&__viewport`'s
+    // `overflow-y: hidden`. A border occupies the same space whether or
+    // not it's coloured in, so highlighting never changes the box's size.
+    box-sizing: border-box;
+    // 10px, not 12px: the 3px border eats into this same fixed 80px box
+    // (border-box, inherited from _layout.scss), keeping the same ~52px of
+    // vertical room the logo had before the border existed.
+    padding: 10px 22px;
+    border: 3px solid transparent;
+    background: $white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transition:
+      border-color 150ms ease-out,
+      box-shadow 150ms ease-out;
+
+    &:focus-visible {
+      outline: 2px solid $yellow;
+      outline-offset: 3px;
+    }
+
+    &--disabled {
+      cursor: default;
+
+      .LogoCarousel__logo {
+        opacity: 0.55;
+      }
+    }
+  }
+
+  &__item--highlighted &__link {
+    border-color: $yellow;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+  }
+
+  // Fixed height, natural width, no crop: a fixed square box would need
+  // `object-fit: cover`, which slices wordmark logos in half ("Human Cancer
+  // Models Initiative" → "man Cancer / odels Initiati"). Fixing height and
+  // letting width follow the image's own ratio avoids that; the chip has no
+  // fixed width, so a wide wordmark just gets a wider chip.
+  &__logo {
+    display: block;
+    height: 52px;
+    width: auto;
+    max-width: 220px;
+    object-fit: contain;
+  }
+
+  // A fixed line saying what the interaction is; stays put rather than
+  // reacting to what's highlighted, so nothing under the title moves while
+  // hovering. Only shown where the interaction is possible, matching
+  // HeroDiagram's own `display: none` below tablet-up.
+  &__hint {
+    display: none;
+
+    @include breakpoint(tablet-up) {
+      display: block;
+      margin: 0;
+      font-family: $font-sans-serif;
+      font-size: 1.05rem;
+      color: $navy-black;
+      text-align: left;
+    }
+  }
+}
+
+// A sibling of .LogoCarousel in the DOM, not a descendant, so this can't
+// nest under `.LogoCarousel` — the class name is BEM convention, not a
+// nesting hook.
+//
+// `position: fixed`, positioned from LogoCarousel.tsx's own
+// `getBoundingClientRect()` via inline `left`/`bottom`: `position:
+// absolute` would be clipped by `.LogoCarousel__viewport`'s
+// `overflow-y: hidden`, the same class of bug the highlight ring hit
+// earlier. `fixed` positions against the viewport itself, so no ancestor's
+// `overflow` applies.
+.LogoCarousel__tooltip {
+  @include floating-tooltip-card;
+  width: 220px;
+  padding: 12px 14px;
+  color: $white;
+  font-family: $font-sans-serif;
+  text-align: left;
+}
+
+.LogoCarousel__tooltipName {
+  @include white-strong;
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.LogoCarousel__tooltipImpact {
+  display: block;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: $grey-2;
+}

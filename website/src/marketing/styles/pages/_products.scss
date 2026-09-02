@@ -1,0 +1,336 @@
+// This page is built around the Collect / Explore / Control grouping, so what
+// is left here is the hero (which carries the page artwork), the container
+// padding, and the component table. The rest is built with `ow:` utilities
+// in ComponentTable.tsx and the route file; `_productspagesection.scss` went
+// with the component it styled.
+
+.ProductsPage {
+  // This page's markup is bare elements plus utilities, and `.marketing` sets
+  // font size, weight and colour but not family: Bulma's rule lived on `body`,
+  // which had nowhere to land once the styles were nested (see `_base.scss`).
+  // Existing markup takes the family from its `.t-*` class, so only new
+  // elements need this, exactly as the prose pages do.
+  p,
+  li,
+  strong {
+    font-family: $font-sans-serif;
+  }
+
+  // Box, text and inset come from the shared subpage-hero rules
+  // (components/_hero.scss); only the artwork is this page's own. This
+  // illustration is the widest of the three — a conveyor running the
+  // band's diagonal, over 800px wide at full height — so it needs two
+  // things the others don't: anchored to the right edge, not a fixed left
+  // offset (which ran it under the text below `desktop-wide`), and scaled
+  // below band height until there's room beside the text column. The
+  // cubes (the solid part) sit a quarter-in from the image's left edge, so
+  // only the pale tail ever passes behind the subtitle.
+  .Hero {
+    @include breakpoint(tablet-up) {
+      background-image: url('/img/marketing/products/img_hero_products.svg');
+      background-position: right bottom;
+      background-size: auto 52%;
+    }
+
+    @include breakpoint(desktop-up) {
+      background-size: auto 78%;
+    }
+
+    @include breakpoint(desktop-wide) {
+      background-position-x: 105%;
+      background-position-y: 0;
+      background-size: auto 100%;
+    }
+
+    @include breakpoint(desktop-ultra-wide) {
+      background-position-x: 81%;
+    }
+  }
+
+  .container {
+    padding: 80px 32px;
+
+    @include breakpoint(desktop-up) {
+      padding: 5.2em 3.8em;
+    }
+    @include breakpoint(desktop-wide) {
+      padding: 4.7em 3.8em;
+    }
+  }
+
+  // Tighter than the shared rhythm above: the table is the only other
+  // thing on this page besides the hero, so there's no second section to
+  // separate it from — closer reads as one page, not two. Top side only;
+  // the shared side/bottom padding still applies since this overrides one
+  // longhand.
+  .ProductsTable .container {
+    padding-top: 32px;
+
+    @include breakpoint(desktop-up) {
+      padding-top: 1.5em;
+    }
+  }
+
+  // The seven components, as one table. See ComponentTable.tsx.
+  //
+  // SCSS rather than `ow:` utilities: Infima styles every `table`
+  // (`display: block`, cell borders, zebra striping) and undoing that
+  // needs element selectors (`tr:nth-child(2n)` has no utility) on markup
+  // we don't own the classes of. `.ProductsPage .ProductsTable__table tr`
+  // outranks Infima's rule on specificity alone, so nothing needs
+  // `!important` — a utility would have, and could never be overridden
+  // again.
+  .ProductsTable {
+    &__table {
+      // Infima's `display: block` turns a table into a scrolling box and drops
+      // column alignment entirely, which is the whole point of the element.
+      display: table;
+      width: 100%;
+      margin: 1.2em 0 0;
+      overflow: visible;
+      table-layout: fixed;
+      font-family: $font-sans-serif;
+
+      tr {
+        // Kills Infima's zebra striping and its per-row border. The rules
+        // between rows are drawn on the cells instead, which is what lets the
+        // group rows go without one and the stacked layout below put a single
+        // rule back on the row itself.
+        background-color: transparent;
+        border-top: 0;
+      }
+
+      th,
+      td {
+        border: 0;
+        padding: 1.6em 1.5em 1.6em 0;
+        vertical-align: top;
+
+        &:last-child {
+          padding-right: 0;
+        }
+      }
+    }
+
+    thead {
+      // Infima fills the header row with its table stripe colour, which reads
+      // as a grey band the page has nowhere else.
+      background-color: transparent;
+    }
+
+    // Column headers, and the column widths with them: set on the header cells
+    // rather than with `col`, which browsers honour for width but not for
+    // padding or type.
+    //
+    // `&__columnHeader th` repeats the look at the top of every group
+    // (ComponentTable.tsx's `COLUMN_HEADERS`), since scrolling into
+    // Explore or Control would otherwise lose the header row entirely.
+    // Widths are set on the real `thead` only — `table-layout: fixed`
+    // takes them from the first row of cells, so repeating them would be
+    // redundant.
+    thead th,
+    &__columnHeader th {
+      padding-bottom: 0.9em;
+      border-bottom: 2px solid $grey-3;
+      color: $c-grey-500;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    thead th {
+      &:nth-child(1) {
+        width: 26%;
+      }
+      &:nth-child(2) {
+        width: 34%;
+      }
+      &:nth-child(3) {
+        width: 16%;
+      }
+      &:nth-child(4) {
+        width: 24%;
+      }
+    }
+
+    // Collect, Explore and Control, as a row spanning the table rather than a
+    // section heading each.
+    &__group th {
+      padding-top: 2.6em;
+      padding-bottom: 1.2em;
+    }
+
+    &__groupTitle {
+      display: block;
+      color: $navy-black;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    // Runs the container's full width rather than being capped at a reading
+    // measure: the group row spans all three columns, and a blurb breaking
+    // early inside it read as a column the table did not have.
+    &__groupBlurb {
+      display: block;
+      margin-top: 0.5em;
+      color: $navy-black;
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.7;
+    }
+
+    // Only Control has one: the how-to for what a deployment can do about
+    // access today, which belongs to the group rather than to any one row.
+    &__groupLink {
+      display: inline-block;
+      margin-top: 0.9em;
+      color: $blue-links;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    tbody th[scope='row'] {
+      border-top: 1px solid $grey-3;
+      font-weight: 400;
+    }
+
+    tbody td {
+      border-top: 1px solid $grey-3;
+      color: $navy-black;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    // A row jumped to directly — a bookmarked or externally-linked
+    // `/products/#<id>` — gets a brief marker, since an anchor jump
+    // otherwise lands with no visual cue. `:target` matches whichever
+    // row's `id` is in the URL, no JS required, fading on its own.
+    tbody tr:target {
+      animation: target-flash 2400ms ease-out;
+    }
+
+    // The other case: /impact/'s Runs column links straight to one
+    // component, the same way this table's Used by column links to
+    // deployments there. Persistent rather than the flash above, matching
+    // /impact/'s own `.ImpactTable__highlight` — cleared the same way, on
+    // an outside click, via ComponentTable.tsx's `highlightedComponentId`.
+    tbody tr.ProductsTable__highlight {
+      @include table-row-highlight-bleed;
+    }
+
+    // Icon beside the name, and the name wrapping inside its own column rather
+    // than dropping below the icon when the column is narrow, which is what an
+    // inline-block pair does at tablet width.
+    &__component {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    // The icons are drawn at eight different aspect ratios, so the box is
+    // square and the artwork is fitted into it: setting a width instead would
+    // give Lyric's tall tag and Stage's wide one two different visual weights.
+    &__icon {
+      flex: none;
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+    }
+
+    &__nameFunctional {
+      display: block;
+      color: $navy-black;
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    &__codename {
+      display: block;
+      margin-top: 0.15em;
+      color: $c-grey-500;
+      font-size: 16px;
+    }
+
+    &__docs {
+      font-size: 17px;
+      font-weight: 700;
+      color: $blue-links;
+    }
+
+    // The Used by cell: the deployment(s) running this component, the
+    // reverse of /impact/'s Runs column. One deployment links directly;
+    // more than one collapses to "N deployments" (ComponentTable.tsx) —
+    // Arranger alone runs in seven, and naming each made that row far the
+    // tallest.
+    &__usedByLink {
+      font-size: 17px;
+      font-weight: 700;
+      color: $blue-links;
+    }
+
+    // The "N deployments" tooltip, opened on hover or focus. Same floating
+    // card /impact/'s own tooltip uses for a component's name off its Runs
+    // column (`floatingTooltipPosition`, shared rather than reimplemented),
+    // so the two pages' hover cards match.
+    &__tooltip {
+      @include floating-tooltip-card;
+      @include floating-tooltip-label-text;
+    }
+
+    // Below tablet there's no room for three columns, so every cell
+    // becomes a block and each row reads as a stacked card. The rules
+    // move off the cells onto the row, so a stacked row is separated
+    // once, not three times.
+    @include breakpoint(mobile) {
+      // The table element stacks too: leaving it as a table while
+      // rows/cells are blocks puts two layout models against each other,
+      // and the browser wraps the stray blocks back into anonymous cells
+      // sized from their content — not a width the phone can be held to.
+      &__table {
+        display: block;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tbody,
+      tbody tr,
+      tbody th,
+      tbody td {
+        display: block;
+        width: auto;
+      }
+
+      // The repeated header row aids desktop's multi-row groups; a
+      // stacked mobile card has no columns to lose track of, so it hides
+      // with `thead`. Written as `tbody tr.ProductsTable__columnHeader`,
+      // not the bare class: the generic `tbody tr { display: block }`
+      // above outranks a class alone on specificity, and had been
+      // quietly winning the cascade.
+      tbody tr.ProductsTable__columnHeader {
+        display: none;
+      }
+
+      // Every stacked row carries its own rule, group rows included: that is
+      // the table's top edge above Collect and the break above Explore.
+      tbody tr {
+        border-top: 1px solid $grey-3;
+        padding: 1.6em 0;
+      }
+
+      tbody th,
+      tbody td {
+        border-top: 0;
+        padding: 0;
+      }
+
+      tbody td {
+        margin-top: 0.7em;
+      }
+    }
+  }
+}

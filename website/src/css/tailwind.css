@@ -1,0 +1,108 @@
+/*
+ * Tailwind for the marketing pages, added in rebuild phase 2 as Bulma's
+ * replacement for new work. The layout classes the ported markup already uses
+ * live in src/marketing/styles/_layout.scss; this is what phase 3's new pages
+ * are meant to be built with.
+ *
+ * Three deliberate choices, and all three are what make it safe to load this
+ * globally in a build that already has Infima:
+ *
+ *   1. `prefix(ow)` namespaces every utility and every custom property, so a
+ *      class is `ow:flex`, not `flex`, and a variable is `--ow-spacing`, not
+ *      `--spacing`. Nothing Tailwind emits can collide with an Infima,
+ *      Docusaurus or marketing class. This is the thing Bulma could not do, and
+ *      the reason its bare `.navbar` and `.button` collided with Infima's.
+ *
+ *   2. Preflight is left out. The layer imports below pull in `theme` and
+ *      `utilities` but not `base`, which is where Tailwind's global element
+ *      reset lives. Loading it would restyle every documentation page, since
+ *      Docusaurus emits one shared stylesheet. The marketing pages get their
+ *      reset from `_layout.scss` instead, scoped under `.marketing`.
+ *
+ *   3. `source(none)` disables automatic content detection, which would
+ *      otherwise crawl up from this file and scan the whole repository,
+ *      `submodules/` and its eight vendored repos included. The `@source` lines
+ *      below name the two directories that hold page and component code, so
+ *      utilities are generated from those and nothing else. (It also used to
+ *      pick up `website-legacy/`, the staged Gatsby site, which was deleted on
+ *      2026-08-07; the reason for the flag is unchanged without it.)
+ *
+ * A consequence of 2 worth knowing before using this: without preflight there is
+ * no `box-sizing: border-box` reset and no margin zeroing outside `.marketing`.
+ * Tailwind utilities used on a documentation page will apply, but they sit on
+ * Infima's element defaults rather than a clean slate.
+ *
+ * A fourth choice, `important` on the utilities import, is about the cascade
+ * rather than about scoping, and it is not optional here.
+ *
+ * A fifth, added in phase 3: the utilities are deliberately NOT in a layer, and
+ * that is load-bearing. They were in `layer(utilities)` when phase 2 added them,
+ * which was fine in development and silently wrong in production. Docusaurus's
+ * production CSS minifier merges every `@media` block and moves the result to
+ * the end of the file, which lifts Tailwind's responsive variants out of the
+ * `@layer utilities` block they were emitted inside. Layered and unlayered
+ * `!important` declarations do not rank by source order (layered wins), so a
+ * hoisted `.ow\:lg\:flex-row` lost to an in-layer `.ow\:flex-col` no matter how
+ * wide the window was. Measured, not inferred: `--no-minify` kept both rules in
+ * the layer and the variant worked, the minified build put them on opposite
+ * sides of the layer boundary and it did not.
+ *
+ * Unlayered, both rules are `!important` and unlayered, so source order decides
+ * again and Tailwind's own ordering (variants after the utilities they override)
+ * holds. The layer was never doing anything else: utilities need `important` to
+ * beat `.marketing X` either way, since `.ow\:py-8` is one class against two.
+ * `theme` stays layered because it only carries custom properties.
+ *
+ * The marketing SCSS is unlayered and nested under `.marketing`, so every one of
+ * its rules outranks a bare utility twice over: unlayered CSS beats layered CSS
+ * whatever the specificity, and `.marketing h1` carries a class more than
+ * `.ow\:py-8` does. Without `important`, utilities silently lose to the reset in
+ * `_layout.scss` and to any page partial with an opinion. Measured before adding
+ * it: `ow:py-8` on the privacy `<h1>` computed to 0px, `ow:font-bold` on a
+ * `<span>` computed to 900, `ow:py-4` on an `<article class="section">` computed
+ * to 48px. An `!important` declaration in a layer does beat an unlayered normal
+ * one, so this is what makes the utilities usable at all.
+ *
+ * The layer beneath cannot be moved instead: putting the marketing SCSS in a
+ * layer would make it lose to Infima, which is unlayered and outside our control.
+ *
+ * What this costs, and it is worth knowing before phase 3: an `ow:` utility can
+ * no longer be overridden by an ordinary SCSS rule. If a partial needs to win
+ * against one, remove the utility from the markup rather than escalating with a
+ * second `!important`.
+ */
+
+@layer theme;
+
+@import "tailwindcss/theme.css" layer(theme) prefix(ow);
+@import "tailwindcss/utilities.css" prefix(ow) source(none) important;
+
+@source "../marketing";
+@source "../pages";
+
+/*
+ * The marketing palette, so phase 3 markup can say `ow:text-navy` instead of
+ * carrying a hex value in the JSX.
+ *
+ * Mirrored by hand from src/marketing/styles/_color-codes.scss, which stays the
+ * source of truth: the SCSS tree is 2,800 lines and is not moving to Tailwind,
+ * so a value changes there first and then here. Only the colours the new pages
+ * actually use are listed, rather than the whole palette, so the two files are
+ * cheap to keep in step.
+ *
+ * The names deliberately avoid Tailwind's own palette (`blue`, `slate`, `gray`
+ * and the rest). Redefining `--color-blue-800` would silently change what
+ * `ow:bg-blue-800` means for anyone who assumes Tailwind's default, whereas
+ * `navy` and `mist` are unambiguous. Theme variables are declared without the
+ * prefix and emitted with it, as `--ow-color-navy`.
+ */
+@theme {
+  --color-navy: #003055; /* $navy-black, the heading and body colour */
+  --color-navy-mid: #04518c; /* $navy-dark, buttons and the darker band */
+  --color-ink: #5e6068; /* $c-grey-500, secondary text */
+  --color-rule: #dfdfe1; /* $grey-3, hairlines between rows */
+  --color-mist: #f2f3f5; /* $grey-2, the grey section background */
+  --color-pale: #dfecf2; /* $blue-block, the pale blue band */
+  --color-link: #0b75a2; /* $blue-links */
+  --color-accent: #f2d021; /* $yellow, the rule under a heading */
+}
