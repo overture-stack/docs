@@ -12,7 +12,6 @@
 
 import {
   ARRANGER_DOCS_LINK,
-  KEYCLOAK_DEPLOY_LINK,
   LECTERN_DOCS_LINK,
   LYRIC_DOCS_LINK,
   MAESTRO_DOCS_LINK,
@@ -180,10 +179,6 @@ export const groups: ComponentGroup[] = [
     title: "Control",
     blurb:
       "Access and authorization sit around both groups rather than inside them. Every component delegates to Keycloak, so a deployment applies its own institution's identity rules across the whole stack, and an Overture provider extension adds API keys for command line and programmatic access.",
-    link: {
-      to: KEYCLOAK_DEPLOY_LINK,
-      label: "Configuring access and authorization",
-    },
   },
 ];
 
