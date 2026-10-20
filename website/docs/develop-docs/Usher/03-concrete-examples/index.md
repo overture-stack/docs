@@ -27,6 +27,7 @@ The following is the grant an administrator defines, naming a resource, a catego
 
 ```json
 {
+
   "resource": "dataset_A",                     // Which resource this grant applies to
   "category": "global.indigenous_nation_data", // Which category within that resource
   "holder": "researcher@example.org",          // Who receives the grant
