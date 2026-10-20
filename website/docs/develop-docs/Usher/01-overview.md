@@ -39,4 +39,4 @@ flowchart LR
     class Admin,PermissionUI future
 ```
 
-**The admin flow shown above is a planned next step, not part of the Usher specification.** The Permission Management Service (UI) and the admin's workflow through it are future design work outlined in [Permission UI](04-permission-ui.md). Usher's specification defines the admin API and the underlying grant model that supports it. These capabilities enable a permission management UI and its workflows.
+**The admin flow shown above is a planned next step, not part of the Usher specification.** The Permission Management Service (UI) and the admin's workflow through it are future design work outlined in [Permission Management](04-permission-management.md). Usher's specification defines the admin API and the underlying grant model that supports it. These capabilities enable a permission management UI and its workflows.
