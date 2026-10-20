@@ -21,22 +21,31 @@ Access control spans three responsibilities:
 Usher holds the grants and the recipients' acceptance decisions. A permission interface would connect user actions to those backend operations. Keycloak is the initial identity provider. Keeping authorization separate allows Usher to integrate with other identity systems.
 
 ```mermaid
-flowchart LR
-    Researcher["Researcher"] -->|"1. Sign in"| Keycloak["Keycloak: identity"]
-    Researcher -->|"2. Search request + identity token"| Arranger["Ushered Arranger: restrict results and counts"]
-    Arranger -->|"3. Identity token"| Usher["Usher: determine permissions"]
-    Keycloak -.->|"4. Public keys (JWKS)"| Usher
-    PolicyDB[("Policy DB: grants and acceptance decisions")] -->|"5. Read grants"| Usher
-    Usher -->|"6. Permissions token"| Arranger
-    Arranger -->|"7. Query"| ES[("Data: ES index")]
-    Arranger -->|"8. Results"| Researcher
+sequenceDiagram
+    actor Researcher
+    participant Keycloak as Keycloak: identity
+    participant Arranger as Ushered Arranger
+    participant Usher as Usher
+    participant PolicyDB as Policy DB: grants and acceptance decisions
+    participant ES as Data: ES index
+    actor Admin
+    participant PermissionUI as Permission Management Service (UI)
 
-    Admin["Admin"] --> PermissionUI["Permission Management Service (UI)"]
-    PermissionUI --> Usher
-    Usher --> PolicyDB
+    Researcher->>Keycloak: 1. Sign in
+    Researcher->>Arranger: 2. Search request + identity token
+    Arranger->>Usher: 3. Identity token
+    Keycloak-->>Usher: 4. Public keys (JWKS)
+    PolicyDB-->>Usher: 5. Read grants
+    Usher->>Arranger: 6. Permissions token
+    Arranger->>ES: 7. Query
+    Arranger->>Researcher: 8. Results
 
-    classDef future fill:#ffcc80,stroke:#e65100,color:#4e2600,stroke-width:3px,stroke-dasharray: 5 5;
-    class Admin,PermissionUI future
+    rect rgb(255, 204, 128)
+    Note over Admin,PolicyDB: Planned next step, not part of the Usher specification
+    Admin->>PermissionUI: Manage permissions
+    PermissionUI->>Usher: Grant/revoke requests
+    Usher->>PolicyDB: Write grants
+    end
 ```
 
 **The admin flow shown above is a planned next step, not part of the Usher specification.** The Permission Management Service (UI) and the admin's workflow through it are future design work outlined in [Permission Management](04-permission-management.md). Usher's specification defines the admin API and the underlying grant model that supports it. These capabilities enable a permission management UI and its workflows.
