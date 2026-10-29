@@ -25,6 +25,7 @@ core_links=(
   "website/docs/develop-docs/05-Maestro     maestro"
   "website/docs/develop-docs/06-Arranger    arranger"
   "website/docs/develop-docs/07-Stage       stage"
+  "website/docs/develop-docs/Usher          usher"
 )
 for entry in "${core_links[@]}"; do
   read -r link comp <<<"$entry"

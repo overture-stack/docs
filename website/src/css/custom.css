@@ -231,6 +231,42 @@
   color: #c9924a;
 }
 
+/* Category labels can't hold markup, so an in-development category gets its
+   badge from a pseudo-element; pages use the .in-development-badge span. */
+.in-development-badge,
+.sidebar-in-development > .menu__list-item-collapsible > .menu__link::after {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 500;
+  line-height: 1.4;
+  padding: 0 7px;
+  border: 1px solid rgba(122, 79, 30, 0.25);
+  border-radius: 999px;
+  background-color: rgba(232, 213, 191, 0.35);
+  color: #8a6a45;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+[data-theme="dark"] .in-development-badge,
+[data-theme="dark"]
+  .sidebar-in-development
+  > .menu__list-item-collapsible
+  > .menu__link::after {
+  border-color: rgba(201, 146, 74, 0.3);
+  background-color: rgba(61, 46, 26, 0.4);
+  color: #b8915e;
+}
+
+.sidebar-in-development > .menu__list-item-collapsible > .menu__link::after {
+  content: "In development";
+  font-size: 0.6rem;
+  /* Infima rotates a collapsed category's ::after, which it uses for carets. */
+  transform: none !important;
+  align-self: center;
+  margin-left: 6px;
+}
+
 /* Team page avatar cards: tighten the gap the default h3 margin leaves
    between the name and the subtitle underneath it. */
 .avatar__name {

@@ -22,3 +22,6 @@
 [submodule "submodules/lyric"]
 	path = submodules/lyric
 	url = https://github.com/overture-stack/lyric
+[submodule "submodules/usher"]
+	path = submodules/usher
+	url = https://github.com/overture-stack/usher

@@ -36,6 +36,10 @@ npm run start:marketing   # overture.bio, the marketing site
 
 Both serve on port 3000, so to run them side by side give one of them another port: `npm run start:marketing -- --port 3001`.
 
+Keep `npm start` running while editing documentation, and open the localhost URL printed by that command. Save changes in `submodules/<project>/docs/`; the development watcher follows the links under `website/docs/` and updates the browser automatically. Restart the server after changing `docsPlugin.ts` or regenerating those links.
+
+`npm run serve` previews the last production build. It does not rebuild or reload when source files change.
+
 > [!IMPORTANT]
 > Docusaurus requires node version 18 or higher. All npm commands run from `website/`; there is no package manifest at the repository root.
 

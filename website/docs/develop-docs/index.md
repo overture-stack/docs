@@ -20,3 +20,4 @@ These developer docs cover Overture component by component, alongside our [API r
 | **[Maestro](/develop/Maestro/overview)** | Indexes metadata from Song into Elasticsearch for search and exploration |
 | **[Arranger](/develop/Arranger/overview)** | A model-agnostic search API and UI component library for building data portals |
 | **[Stage](/develop/Stage/overview)** | A React-based UI framework for building the front-end of data portals |
+| **[Usher](/develop/Usher/overview)** <span className="in-development-badge">In development</span> | An authorization service that manages which data people can access and what they can do with it |

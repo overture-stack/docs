@@ -103,6 +103,7 @@ const sidebars: SidebarsConfig = {
         {
           type: "category",
           label: "Usher",
+          className: "sidebar-in-development",
           link: {
             type: "doc",
             id: "Usher/overview",

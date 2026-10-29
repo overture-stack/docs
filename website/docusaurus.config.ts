@@ -72,22 +72,24 @@ const documentationPlugins: PluginConfig[] = [
     "@docusaurus/plugin-client-redirects",
     {
       redirects: [
-        // Usher's examples and project stories now form a four-page guide.
+        // Preserve Usher's earlier examples and planning-page URLs.
         {
-          to: "/develop/Usher/concrete-technical-example",
-          from: "/develop/Usher/concrete-examples",
+          from: [
+            "/develop/Usher/concrete-examples",
+            "/develop/Usher/concrete-technical-example",
+          ],
+          to: "/develop/Usher/how-access-works",
         },
         {
-          to: "/develop/Usher/user-project-requirements",
           from: [
+            "/develop/Usher/building-applications",
             "/develop/Usher/concrete-examples/ims-example",
             "/develop/Usher/concrete-examples/pcgl-example",
             "/develop/Usher/concrete-examples/ohcrn-example",
+            "/develop/Usher/permission-management",
+            "/develop/Usher/user-project-requirements",
           ],
-        },
-        {
-          to: "/develop/Usher/building-applications",
-          from: "/develop/Usher/permission-management",
+          to: "/develop/Usher/adopting-usher",
         },
         // Guides -> journeys
         { to: "/deploy", from: ["/guides", "/guides/getting-started"] },

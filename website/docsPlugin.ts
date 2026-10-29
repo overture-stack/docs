@@ -55,6 +55,11 @@ module.exports = function (context, options) {
             resource.request = resource.request.replace(/^node:/, "");
           }),
         ],
+        // Module resolution preserves the docs' symlink paths, so the watcher
+        // must also follow them to the source files under submodules/.
+        watchOptions: {
+          followSymlinks: true,
+        },
       };
     },
   };
